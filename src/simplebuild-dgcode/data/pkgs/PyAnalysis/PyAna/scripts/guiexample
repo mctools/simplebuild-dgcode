@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+import PyAna.PyQtUtils
+import numpy
+import sys
+import math
+
+def make_fn(code_str):
+    """Parse math expression and return python function which can evaluate
+       it. Warning: This is an example only and is NOT safe security-wise since
+       we for simplicity expose all numpy functions and not just the purely
+       mathematical ones
+    """
+
+    #All functions from the numpy module (NB: potential security hole!):
+    _globals = { v:getattr(numpy, v) for v in dir(numpy) if not v.startswith('_') }
+    #A few functions are missing - take them from the math module:
+    for extra in ('erfc','erf'):
+        if not extra in _globals:
+            _globals.update({ extra : numpy.vectorize(getattr(math,extra)) })
+    _globals['__builtins__'] = None
+    return eval('lambda x: %s' % code_str, _globals, {}) or None
+
+class MyGuiApp(PyAna.PyQtUtils.MyGuiAppBase):
+    def __init__(self):
+        super().__init__('PyAna/examplelayout.ui')
+
+        w=self.connectSignal( 'myComboBox','QComboBox','currentTextChanged',
+                              lambda txt : self.plotFctFromString(txt,'mplwidget_combobox') )
+        self.plotFctFromString(w.currentText(),'mplwidget_combobox')
+
+        w=self.connectSignal( 'myLineEdit','QLineEdit','textChanged',
+                              lambda txt : self.plotFctFromString(txt,'mplwidget_userinput') )
+        self.plotFctFromString(w.text(),'mplwidget_userinput')
+
+        self.connectAction('actionQuit', lambda : sys.exit(0) )
+
+    def plotFctFromString(self,txt,mplwidget_name):
+        w = self.getMPLWidget(mplwidget_name)
+        fig,ax = w.canvas.fig,w.canvas.ax
+        ax.clear()#not the most efficient if we update often
+        w.contentsChanged()
+        try:
+            fn = make_fn(txt.strip()) if txt.strip() else None
+        except (SyntaxError,TypeError) as e:
+            print('ERROR:',e)
+            return
+        if not fn:
+            return
+        x=numpy.linspace(0.0,10.0,1000)
+        try:
+            fnx = fn(x)
+        except TypeError as e:
+            print('ERROR:',e)
+            return
+        ax.plot(x,fnx,label=txt)
+        ax.grid()
+        ax.legend()
+        fig.tight_layout()
+        w.canvas.draw()
+
+PyAna.PyQtUtils.launch_qtapp(MyGuiApp)

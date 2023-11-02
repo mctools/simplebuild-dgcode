@@ -1,0 +1,7 @@
+package(USEPKG G4Launcher G4MCPLPlugins MCPLTests G4StdGeometries G4StdGenerators)
+
+##########################################################
+
+G4MCPL Tests.
+
+Primary author: thomas.kittelmann@ess.eu

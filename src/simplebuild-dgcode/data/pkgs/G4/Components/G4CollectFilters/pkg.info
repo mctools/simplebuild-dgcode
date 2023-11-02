@@ -1,0 +1,8 @@
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+
+Package providing step filters GRIFF data collection.
+
+Primary author: thomas.kittelmann@ess.eu

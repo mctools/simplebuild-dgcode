@@ -1,0 +1,79 @@
+package(USEPKG Utils)
+
+############################################################
+
+C++ utilities for tokenizing and parsing simple expressions.
+
+primary author: thomas.kittelmann@ess.eu
+
+//pow or ^ (can we support **?)
+//float() and int() for i2f and f2i (does nothing on floats and ints respectively)
+//bool()
+//
+// && || > >= == < <= < and python versions "and" and "or"
+//
+//needed standard functions and constants:
+//
+//e,pi,inf,nan,isnan(),all f2f math funcs (sin(),exp(),atan(),...),floor, ceil,round
+
+//TODO: option for aggressive optimisation? (allows 0*val -> 0 and val^0 -> 1)
+//TODO: check "FPE"-like errors in debug build (/0, 0*inf, 0^0, ...). And in any build in constructor if relevant args are constant.
+//TODO: implement integer multiply/divide with powers of 2 with bitshifts.
+
+//NB: pow(int,int) can be implemented with:
+// int power(int a, int n) {
+//     int res = 1;
+//     while (n) {
+//         if (n & 1)
+//             res *= a;
+//         a *= a;
+//         n >>= 1;
+//     }
+//     return res;
+// }
+// but should make sure (a,n)!=0 and n>=0
+//some tests at https://github.com/bmars/shunting-yard/blob/master/tests/test-shunting-yard.c
+
+//Goal: Implicit multiplication only in front of named identifiers,
+//e.g. variable names ("0.5step_edep"), constant names ("2 pi", "2meV"), function names ("3sin(..)").
+// -> only with litteral numerical values in front? Don't allow: "2 meV c^2" ?, "3sin(..)cos(..)" ?
+//"5.0 2.0" => syntax error (unless we imply multiplication)
+//"5.0 'hello'" => always syntax error
+
+  //TODO: Be sure to cache calls to createXXX(..) when building the AST, so identical
+  //constants (like, step_energy) and functions (with given set of arguments) can be shared
+  //instances - allowing for later implementation of evaluation caching.
+  //Todo: make sure x*x ends up as fixedpow2(x)
+
+
+
+//
+
+libinc/Token.hh : Token class
+libinc/Tokenizer.hh : createTokens implementation
+libinc/ASTNode.hh : Bare interface with base + float/int/string bases.
+libinc/ASTStdLib.hh : AST classes and factory functions for standard functions and operators.
+libinc/ASTBuilder.hh : Implements token->AST via shunting yard alg and calling (abstract) "createXXX".
+libinc/ASTBuilderStd.hh : Adds standard math using ASTStdLib.
+
+
+// "operators with the same precedence must have the same associativity" . TODO:
+Check this at runtime!
+
+  //optional interpretation: litteral float/integer values directly in front of
+  //named identifiers implies "*" operator. Allows "5 eV", "4pi" and
+  //"2sin(..)". However does not allow "1 and ..." when "and" is synonym to
+  //"&&". Solution: all operators specify return type, and exclude those with
+  //bool return type? (or, more generally, exclude those where there is no "*" operator for the two types).
+  //
+  //This would require bool as a specific type though.
+  //
+  //compromise: only apply when the named identifier has a floating point return type in it's context!
+  //problem: how do we know the context? '2 max(3,4)' -> int -> syntaxerror, '2 max(3,5.0)' -> float -> '2 * max(3,5.0)'
+  //
+  //make it an explicit property (implicit_premult), which by default is set only for floating point constants like pi and eV?
+
+
+//TODO: Since we know the types we can definitions of larger functions in the header file: http://stackoverflow.com/questions/115703/storing-c-template-function-definitions-in-a-cpp-file ... the smaller functions we of course WANT to be inlined).
+
+todo: arg1 * (arg2^-1) -> arg1/arg2 ?

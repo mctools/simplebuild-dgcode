@@ -1,0 +1,11 @@
+package(USEPKG Utils DMSCUtils SimpleHists)
+
+######################################################################
+
+Utilities for launching and analysing "scans", i.e. sets of jobs which differ
+only by their parameters. The jobs can be launched either locally or at
+clusters.
+
+primary author: thomas.kittelmann@ess.eu
+
+

@@ -1,0 +1,29 @@
+inline GriffAnaUtils::TrackFilter_Charged::TrackFilter_Charged()
+  : m_allowNegative(true), m_allowPositive(true)
+{
+}
+
+inline GriffAnaUtils::TrackFilter_Charged * GriffAnaUtils::TrackFilter_Charged::setNegativeOnly()
+{
+  m_allowNegative = true;
+  m_allowPositive = false;
+  return this;
+}
+
+inline GriffAnaUtils::TrackFilter_Charged * GriffAnaUtils::TrackFilter_Charged::setPositiveOnly()
+{
+  m_allowNegative = false;
+  m_allowPositive = true;
+  return this;
+}
+
+inline bool GriffAnaUtils::TrackFilter_Charged::filter(const GriffDataRead::Track*trk) const
+{
+  double q(trk->charge());
+  if (!q)
+    return false;
+  if (q<0)
+    return m_allowNegative;
+  assert(q>0);
+  return m_allowPositive;
+}

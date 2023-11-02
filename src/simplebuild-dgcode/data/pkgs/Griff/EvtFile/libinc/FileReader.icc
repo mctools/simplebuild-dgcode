@@ -1,0 +1,27 @@
+
+inline bool EvtFile::FileReader::isInit() const
+{
+  return m_isInitialised;
+}
+
+inline void EvtFile::FileReader::read(char*data,unsigned nbytes)
+{
+  m_is.read( data, nbytes);
+}
+
+template<class T>
+inline void EvtFile::FileReader::read(T&t)
+{
+  m_is.read( (char*)&t, sizeof(t));
+}
+
+inline void EvtFile::FileReader::clearEOF()
+{
+  //get rid of any eof bit, keeping the others
+  m_is.clear(m_is.rdstate() & (std::iostream::badbit|std::iostream::failbit));
+}
+
+inline std::uint32_t EvtFile::FileReader::eventCheckSum() const
+{
+  return m_currentEventInfo->checkSum;
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import BasicExamples.anotherpuremodule as m1
+import BasicExamples.somepuremodule as m2
+import BasicExamples.anothermodule as m3
+import BasicExamples.somemodule as m4
+
+m1.somefunc()
+m2.somefunc()
+m3.somecppfunc()
+m4.somecppfunc()
+
+someobj = m4.SomeClass(17)
+print("Example of exposed class: %i"%someobj.n())

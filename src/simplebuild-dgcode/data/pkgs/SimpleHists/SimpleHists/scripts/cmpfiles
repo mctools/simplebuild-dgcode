@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+import SimpleHists as sh
+import sys
+import pathlib
+import matplotlib.pyplot as plt
+
+args=sys.argv[1:]
+do_normalise = '--norm' in args
+if do_normalise:
+    args.remove('--norm')
+do_logy = '--logy' in args
+if do_logy:
+    args.remove('--logy')
+do_pdf = '--pdf' in args
+if do_pdf:
+    args.remove('--pdf')
+
+files=[]
+labels=[]
+files_seen = set()
+for a in args:
+    if '::' in a:
+        a,lbl = a.split('::',1)
+    else:
+        lbl = None
+    f=pathlib.Path(a)
+    if not f.exists():
+        raise SystemExit(f'File not found: {a}')
+    f=f.resolve().absolute()
+    if f in files_seen:
+        continue
+    files.append( f )
+    if lbl is None:
+        lbl=f.name
+        while lbl in labels:
+            lbl+="'"
+    labels.append( lbl )
+
+if not files:
+    raise SystemExit('Please provide the names of multiple .shist files (compatible histograms within will be compared)')
+
+hcs = [ sh.HistCollection(f) for f in files ]
+
+common_keys = sorted(list(set.intersection( *list(set(hc.getKeys()) for hc in hcs))))
+
+for key in common_keys:
+    histlist = []
+    for hc in hcs:
+        h=hc.hist(key)
+        if histlist and not histlist[0].mergeCompatible(h):
+            histlist=None
+            print('Skipping histogram (not similar metadata in all files):',key)
+            break
+        histlist.append( h )
+    if not histlist:
+        continue
+    if do_normalise:
+        list(h.norm() for h in histlist)
+    h0 = histlist.pop(0)
+    if hasattr(h0,'overlay'):
+        h0.overlay(histlist,labels,logy=do_logy)
+    else:
+        h0.plot(show='almost')
+        plt.suptitle(labels[0])
+        for i in range(len(histlist)):
+            histlist[i].plot(show='almost')
+            plt.suptitle(labels[i+1])
+    if do_pdf:
+        fn=f'histcmp_{key}.pdf'
+        plt.savefig(fn)
+        print(f'Wrote {fn}')
+        plt.cla()
+    else:
+        plt.show()

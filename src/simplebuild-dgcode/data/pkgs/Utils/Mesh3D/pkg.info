@@ -1,0 +1,9 @@
+package(USEPKG Mesh Utils PyAna)
+
+#############################################################
+
+Python module for loading .mesh3d files containing 3-dimensional data meshes
+(created with Mesh<3>::saveToFile), and command line utilities for working on
+such files: Inspecting, merging and viewing contents.
+
+primary author: thomas.kittelmann@ess.eu

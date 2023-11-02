@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import re
+import pipes
+
+queues = ['verylong','short','newlong', 'quark', 'neutronics','strange']
+
+def usage(ec):
+    print("Usage:")
+    print()
+    print("  %s QUEUE [--email=EMAIL] [--comment=COMMENT] [--name=NAME] [--setupsh=SETUPSH] DIR CMD"%(os.path.basename(sys.argv[0])))
+    print()
+    print('Submits CMD to run in QUEUE. The command will be launched in DIR')
+    print('stdout and stderr will be placed in DIR/stdout.txt and DIR/stderr.txt')
+    print('EMAIL is required unless the EMAIL environment variable is set.')
+    print()
+    print('If a COMMENT is provided, it will be stored inside a comment.txt file in the rundir')
+    print()
+    print('If a NAME is provided, it will become the job name in the queue system')
+    print()
+    print('If a SETUPSH is provided, it will be used rather than $SBLD_INSTALL_PREFIX/setup.sh')
+    print()
+    print('QUEUE must be one of: %s'%' '.join(queues))
+    print()
+    print('Append "/exclusive" to the QUEUE name for whole-node jobs')
+    sys.exit(ec)
+
+args=sys.argv[1:]
+
+if not args or args[0] in ['-h','--help']:
+    usage(0)
+
+queue=args.pop(0).lower()
+exclusive=False
+if queue.endswith('/exclusive'):
+    exclusive=True
+    queue=queue[0:len(queue)-len('/exclusive')]
+
+if not args or not queue in queues:
+    usage(1)
+
+email=None
+if args[0].startswith('--email='):
+    email=args.pop(0)[8:]
+if not email:
+    email=os.getenv('EMAIL')
+    if not email:
+        print("ERROR: Email address must either be supplied on command line or in EMAIL environment variable")
+        usage(1)
+if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
+    print("Invalid email: %s"%email)
+    usage(1)
+
+comment=None
+if args[0].startswith('--comment='):
+    comment=args.pop(0)[10:]
+
+name=None
+if args[0].startswith('--name='):
+    name=args.pop(0)[7:]
+
+setupsh=None
+if args[0].startswith('--setupsh='):
+    setupsh=args.pop(0)[10:]
+if not setupsh:
+    setupsh = os.path.join(os.getenv('SBLD_INSTALL_PREFIX'),'setup.sh')
+if not os.path.exists(setupsh):
+    print("ERROR: %s not found"%setupsh)
+    usage(1)
+
+if not args:
+    usage(1)
+
+rundir=args.pop(0)
+if os.path.exists(rundir):
+    print("ERROR: Run directory %s already exists"%rundir)
+    sys.exit(1)
+
+if not args:
+    usage(1)
+
+if name==None:
+    name=args[0]
+    if name.startswith('sb_'):
+        name=name[3:]
+    if not name:
+        name='generic_dgcode'
+
+cmd_quoted = ' '.join(pipes.quote(arg) for arg in args)
+
+rundir=os.path.abspath(rundir)
+import Core.System
+try:
+    Core.System.mkdir_p(rundir)
+except:
+    print('Problems creating run directory %s'%rundir)
+    sys.exit(1)
+
+slurmlines=[]
+slurmlines += ['SBATCH --job-name=%s'%name]
+slurmlines += ['SBATCH --output=%s/slurm_stdout.txt'%rundir]#should be empty since runscript redirects to stdout.txt
+slurmlines += ['SBATCH --error=%s/slurm_stderr.txt'%rundir]#should be empty since runscript redirects to stderr.txt
+slurmlines += ['SBATCH --mail-type=FAIL']
+slurmlines += ['SBATCH --mail-type=REQUEUE']
+slurmlines += ['SBATCH --mail-user=%s'%email]
+slurmlines += ['SBATCH --partition=%s'%queue]
+slurmlines += ['SBATCH --cpus-per-task=1']
+if exclusive:
+    slurmlines += ['SBATCH --exclusive']
+
+from Utils.runscript import create_run_script
+
+extra_prerun_lines=[]
+if True:
+    #Need epilog bug workaround for DMSC:
+    extra_prerun_lines.append( Core.System.quote_cmd(['touch','/tmp/slurm_disable_epilog.%s'%os.environ['USER']]))
+
+create_run_script(os.path.join(rundir,'run.sh'),cmd=args, setupsh = setupsh, headerlines=slurmlines,
+                  extra_prerun_lines = extra_prerun_lines)
+
+if comment:
+    fh=open(os.path.join(rundir,'comment.txt'),'w')
+    fh.write(comment)
+    fh.close()
+
+#ec = os.system('cd %s && touch state.submit && sbatch run.sh'%rundir)
+ec = Core.System.system('cd %s && touch state.submit && sbatch run.sh > slurm_submitstdout.txt'%rundir)
+if ec != 0:
+    Core.System.system('cd %s && echo 999 > exitcode.txt'%rundir)
+    print("Problems encountered while submitting!")
+    sys.exit(1)
+
+print("Submitted job with:")
+print("  NAME: %s"%name)
+print("  COMMAND: %s"%cmd_quoted)
+print("  QUEUE: %s"%queue)
+print("  EXCLUSIVE: %s"%("yes" if exclusive else "no"))
+print("  EMAIL: %s"%email)
+print("  RUNDIR: %s"%rundir)

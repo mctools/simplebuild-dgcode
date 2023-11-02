@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+sb_generatortests_custompygen2 | sed 's#Address of G4Track *: *0x.*#Address of G4Track : 0x<snip>#'

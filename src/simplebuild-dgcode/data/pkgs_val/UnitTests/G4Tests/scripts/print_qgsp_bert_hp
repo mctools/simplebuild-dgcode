@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+sb_g4utils_g4logsanitiser sb_g4tests_dumpphyslist QGSP_BERT_HP

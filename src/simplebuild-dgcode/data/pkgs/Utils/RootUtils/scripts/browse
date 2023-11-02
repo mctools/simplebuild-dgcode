@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import sys,os
+args=sys.argv[1:]
+
+def usage(err=""):
+    if err:
+        print("ERROR: %s"%err)
+        print()
+    print("Usage:")
+    print()
+    print("  %s <ROOT-file(s)>"%os.path.basename(sys.argv[0]))
+    print()
+    print("Loads and opens a TBrowser on the specified ROOT-file(s)")
+    sys.exit(1 if err else 0)
+
+if not args:
+    usage("No ROOT files specified")
+
+def remove_duplicates(seq):
+    """order preserving removal of list duplicates"""
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in seq if not (x in seen or seen_add(x))]
+
+args = remove_duplicates(os.path.relpath(os.path.realpath(a)) for a in args)
+
+if not all(os.path.exists(f) for f in args):
+    usage("Input file(s) not found.")
+if '-h' in args or '--help' in args:
+    usage()
+
+def main():
+    os.close(0)   #close stdin
+    import time
+    import ROOT
+    files = [ROOT.TFile.Open(f) for f in args]
+    if len(files)==1:
+        tbrowse = ROOT.TBrowser("browser",files[0])
+    else:
+        tl = ROOT.TList()
+        tl.SetName("File list")
+        for f in files:
+            tl.Add(f)
+        tbrowse = ROOT.TBrowser("browser",tl)
+    try:
+        while tbrowse:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("")
+
+sys.exit(main())

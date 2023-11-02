@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+
+#find files outside of pkg.info directories, as well as files next to pkg.info. This is not a complete safeguard.
+
+import pathlib
+import os
+import simplebuild.cfg as cfg
+pkgs = cfg.pkgs
+
+topdirs = cfg.dirs.pkgsearchpath
+normpath = lambda p : pathlib.Path(p).resolve().absolute()
+
+all_pkgdirs = set(normpath(p['dirname']) for _,p in pkgs.items())
+
+
+ignore_dirs = [cfg.dirs.blddir, cfg.dirs.installdir, *[d / '.git' for d in topdirs], normpath(pathlib.Path(os.environ['DGCODE_DIR'])/'packages'/'Projects'/'FmwkAttic'/'Validation'/'DynPkgs')]
+
+
+def is_valid_pkg_subdir(name):
+    return ( name in ('libinc','libsrc','python','scripts','data')
+             or name.startswith('app_')
+             or name.startswith('pycpp_') )
+def file_should_be_ignored(f):
+    return ( f in ignore_dirs
+             or any(fp in ignore_dirs for fp in f.parents) )
+
+def all_files():
+    for td in topdirs:
+        for p in td.rglob("*"):
+            if file_should_be_ignored(p):
+                continue
+            yield normpath(p)
+
+#for f in all_files():
+#    print(f)
+
+
+for f in all_files():
+    if f.is_dir():
+        if f in all_pkgdirs:
+            continue
+        if f.parent in all_pkgdirs and is_valid_pkg_subdir(f.name):
+            continue
+        if not any( (f in p.parents) for p in all_pkgdirs):
+            raise SystemExit(f'ERROR: Forbidden directory: {f}')
+    else:
+        if hasattr(cfg.dirs,'projdir') and f == cfg.dirs.projdir/'bootstrap.sh':
+          continue
+        if f.name == 'LICENSE':
+            #must be in pkg directory:
+            if f.parent in all_pkgdirs:
+                continue
+            raise SystemExit(f'ERROR: Unexpected LICENSE file: {f}')
+        if f.name == 'pkg.info':
+            #must be in a pkg directory
+            if not f.parent in all_pkgdirs:
+                raise SystemExit(f'ERROR: Unexpected pkg.info file: {f}')
+            continue
+        if f.name.endswith('~') or f.name.startswith('#') or f.name.startswith('.#'):
+            print(f'Ignoring what looks like a temporary file: {f}')
+            continue
+        #must NOT be directly in a pkg directory:
+        if f.parent in all_pkgdirs:
+            raise SystemExit(f'ERROR: File should not be in the root of a package directory (only pkg.info file should be here): {f}')
+        if f.parent.parent in all_pkgdirs and is_valid_pkg_subdir(f.parent.name):
+            continue
+        raise SystemExit(f'ERROR: File outside valid directory: {f}')

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+sb_mcpltests_miscphys mp.mcpl && \
+sb_mcpl_tool -l0 mp.mcpl && \
+sb_mcpl_tool -l0 $SBLD_DATA_DIR/MCPLTests/miscphys.mcpl.gz

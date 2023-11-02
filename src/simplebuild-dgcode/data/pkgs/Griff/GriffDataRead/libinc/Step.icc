@@ -1,0 +1,111 @@
+inline const GriffDataRead::Track * GriffDataRead::Step::getTrack() const
+{
+  return m_segment->getTrack();
+}
+
+inline const GriffDataRead::Segment * GriffDataRead::Step::getSegment() const
+{
+  return m_segment;
+}
+
+inline unsigned GriffDataRead::Step::iStep() const
+{
+  return this - m_segment->stepBegin();
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Step::getNextStep() const
+{
+  const Step * next = this + 1;
+  return next == m_segment->stepEnd() ? 0 : next;
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Step::getPreviousStep() const
+{
+  return this == m_segment->stepBegin() ? 0 : this - 1;
+}
+
+inline void GriffDataRead::Step::set(const Segment *ss,const char *d)
+{
+  assert(ss&&d);
+  m_segment = ss; m_data = d;
+}
+
+// m_data points at an area of memory with the following interpretation:
+//---------------------
+// double globpos[3]
+// double time;
+// double ~= |eKin|*(atVolEdge?-1:1)
+// float locpos[3]
+// float mom[3]
+// index_type processDefinedStep
+//---------------------
+// float edep
+// float edepNonionising
+// float steplength;
+// std::uint32_t flags
+//---------------------
+// double globpos[3]
+// double time;
+// double ~= |eKin|*(atVolEdge?-1:1)
+// float locpos[3]
+// float mom[3]
+// index_type processDefinedStep
+//---------------------
+
+inline const double* GriffDataRead::Step::preGlobalArray() const { return reinterpret_cast<const double*>(m_data); }
+inline const double* GriffDataRead::Step::postGlobalArray() const { return reinterpret_cast<const double*>(m_data+84); }
+inline const float* GriffDataRead::Step::preLocalArray() const { return reinterpret_cast<const float*>(m_data+40); }
+inline const float* GriffDataRead::Step::postLocalArray() const { return reinterpret_cast<const float*>(m_data+124); }
+inline const float* GriffDataRead::Step::preMomentumArray() const { return reinterpret_cast<const float*>(m_data+52); }
+inline const float* GriffDataRead::Step::postMomentumArray() const { return reinterpret_cast<const float*>(m_data+136); }
+
+inline double GriffDataRead::Step::preGlobalX() const { return ByteStream::interpret<double>(m_data); }
+inline double GriffDataRead::Step::preGlobalY() const { return ByteStream::interpret<double>(m_data+8); }
+inline double GriffDataRead::Step::preGlobalZ() const { return ByteStream::interpret<double>(m_data+16); }
+inline double GriffDataRead::Step::preTime() const { return ByteStream::interpret<double>(m_data+24); }
+inline double GriffDataRead::Step::preEKin() const { return std::fabs(ByteStream::interpret<double>(m_data+32)); }
+inline bool GriffDataRead::Step::preAtVolEdge() const { return bool(std::signbit(ByteStream::interpret<double>(m_data+32))); }
+inline double GriffDataRead::Step::preLocalX() const { return ByteStream::interpret<float>(m_data+40); }
+inline double GriffDataRead::Step::preLocalY() const { return ByteStream::interpret<float>(m_data+44); }
+inline double GriffDataRead::Step::preLocalZ() const { return ByteStream::interpret<float>(m_data+48); }
+inline double GriffDataRead::Step::preMomentumX() const { return ByteStream::interpret<float>(m_data+52); }
+inline double GriffDataRead::Step::preMomentumY() const { return ByteStream::interpret<float>(m_data+56); }
+inline double GriffDataRead::Step::preMomentumZ() const { return ByteStream::interpret<float>(m_data+60); }
+inline const std::string& GriffDataRead::Step::preProcessDefinedStep() const
+{
+  static_assert(GriffFormat::Format::SIZE_STEPPREPOSTPART==68);
+  return m_segment->m_trk->m_dr->m_dbProcNames.getString(ByteStream::interpret<EvtFile::index_type>(m_data+64));
+}
+inline const char * GriffDataRead::Step::preProcessDefinedStepCStr() const { return preProcessDefinedStep().c_str(); }
+inline double GriffDataRead::Step::eDep() const { return ByteStream::interpret<float>(m_data+68); }
+inline double GriffDataRead::Step::eDepNonIonising() const { return ByteStream::interpret<float>(m_data+72); }
+inline double GriffDataRead::Step::stepLength() const { return ByteStream::interpret<float>(m_data+76); }
+inline std::uint32_t GriffDataRead::Step::stepStatus_raw() const { return ByteStream::interpret<std::uint32_t>(m_data+80); }
+inline double GriffDataRead::Step::postGlobalX() const { return ByteStream::interpret<double>(m_data+84); }
+inline double GriffDataRead::Step::postGlobalY() const { return ByteStream::interpret<double>(m_data+92); }
+inline double GriffDataRead::Step::postGlobalZ() const { return ByteStream::interpret<double>(m_data+100); }
+inline double GriffDataRead::Step::postTime() const { return ByteStream::interpret<double>(m_data+108); }
+inline double GriffDataRead::Step::postEKin() const { return std::fabs(ByteStream::interpret<double>(m_data+116)); }
+inline bool GriffDataRead::Step::postAtVolEdge() const { return bool(std::signbit(ByteStream::interpret<double>(m_data+116))); }
+inline double GriffDataRead::Step::postLocalX() const { return ByteStream::interpret<float>(m_data+124); }
+inline double GriffDataRead::Step::postLocalY() const { return ByteStream::interpret<float>(m_data+128); }
+inline double GriffDataRead::Step::postLocalZ() const { return ByteStream::interpret<float>(m_data+132); }
+inline double GriffDataRead::Step::postMomentumX() const { return ByteStream::interpret<float>(m_data+136); }
+inline double GriffDataRead::Step::postMomentumY() const { return ByteStream::interpret<float>(m_data+140); }
+inline double GriffDataRead::Step::postMomentumZ() const { return ByteStream::interpret<float>(m_data+144); }
+inline const std::string& GriffDataRead::Step::postProcessDefinedStep() const
+{
+  static_assert(GriffFormat::Format::SIZE_STEPPREPOSTPART==68);
+  return m_segment->m_trk->m_dr->m_dbProcNames.getString(ByteStream::interpret<EvtFile::index_type>(m_data+148));
+}
+inline const char * GriffDataRead::Step::postProcessDefinedStepCStr() const { return postProcessDefinedStep().c_str(); }
+
+inline GriffDataRead::Step::STATUS GriffDataRead::Step::stepStatus() const
+{
+  return STATUS(stepStatus_raw());
+}
+
+inline const char* GriffDataRead::Step::stepStatusCStr() const
+{
+  return stepStatusStr().c_str();
+}

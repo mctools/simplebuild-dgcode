@@ -1,0 +1,9 @@
+package(USEEXT Geant4)
+
+######################################################################
+
+Utilities for easily and flexibly creating G4Materials representing gas mixtures
+with consistent state parameters, under the ideal gas assumption (using Amagat's
+law for the mixtures).
+
+primary author: thomas.kittelmann@ess.eu

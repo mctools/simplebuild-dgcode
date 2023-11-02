@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+#A bit hackish, but we basically want to compile mcpl without zlib support:
+set -e
+CC=$(sb_core_queryenv system langs c compiler)
+CFLAGS=$(sb_core_queryenv system langs c cflags)
+P=$(sb_core_queryenv --pkgdir MCPL)
+$CC ${CFLAGS} $P/libsrc/mcpl.c -std=c99 -DMCPL_HEADER_INCPATH='"MCPL/mcpl.h"' -I$SBLD_INCLUDE_DIR $P/app_tool/main.c -lm -o mcpl_tool_nogz && \
+MCPLTESTS_TESTTOOL=./mcpl_tool_nogz sb_mcpltestsfmt2_testtool

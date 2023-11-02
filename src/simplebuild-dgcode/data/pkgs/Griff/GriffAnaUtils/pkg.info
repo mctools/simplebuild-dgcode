@@ -1,0 +1,8 @@
+package(USEPKG GriffDataRead)
+
+######################################################################
+
+
+Package providing utilities for analysis of Geant4 data files.
+
+Primary author: thomas.kittelmann@ess.eu

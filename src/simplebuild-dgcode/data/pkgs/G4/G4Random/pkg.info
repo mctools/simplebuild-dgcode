@@ -1,0 +1,8 @@
+package(USEPKG G4Interfaces USEEXT NCrystal)
+
+######################################################################
+
+
+Package providing utilities for random number generation in Geant4 jobs.
+
+Primary author: thomas.kittelmann@ess.eu

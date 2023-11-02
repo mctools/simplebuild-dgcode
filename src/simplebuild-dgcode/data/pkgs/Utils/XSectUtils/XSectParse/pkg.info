@@ -1,0 +1,9 @@
+package(USEPKG Utils)
+
+######################################################################
+
+
+Package with integration tests, i.e. full Geant4 jobs built with utilities from
+several packages.
+
+Primary authors: thomas.kittelmann@ess.eu

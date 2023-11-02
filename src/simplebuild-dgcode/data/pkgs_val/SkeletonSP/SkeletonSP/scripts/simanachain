@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+import G4Utils.chain
+G4Utils.chain.chain('sb_skeletonsp_sim','sb_skeletonsp_ana','REDUCED')
+

@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+#The following lines messing with TERM are to prevent "import ROOT" to result in
+#printing of escape characters to the screen on some systems (such as DMSC,
+#April 2015), thus breaking our test.
+#
+#Solution found on:
+#http://stackoverflow.com/questions/15760712/python-readline-module-prints-escape-character-during-import
+import os
+if os.environ.get('TERM','').startswith('xterm'):
+    os.environ['TERM'] = 'vt100'
+
+#and this line is to prevent the SimpleHist import from triggering a matplotlib
+#import which on some systems can give a spurious warning from pygtk:
+os.environ['DISPLAY'] = ''
+
+#aaaand this is to prevent the ROOT import from complaining about missing
+#DISPLAY variable, and switching to batch mode.
+import sys
+sys.argv += ['-b']
+
+#aaaaaaaaaaaand, this early import is to prevent troubles for modules directly
+#or indirectly importing the hashlib module after import ROOT, as import ROOT on
+#some platforms leaves hashlib importing not working:
+import hashlib
+
+
+import SimpleHists2ROOT.Convert as C
+import Core.FindData as FD
+fnsh = FD('SimpleHists','ref.shist')
+
+#test file-level conversion:
+C.convertToROOTFile(fnsh,'ref.root')
+
+import RootUtils.HistFile
+hists= RootUtils.HistFile.getHists('ref.root')
+for hname,h in sorted(hists.items()):
+    print('-'*80)
+    h.Print("all")
+
+print('-'*80)
+#test direct hist2hist conversion:
+import SimpleHists as sh
+hc=sh.HistCollection(fnsh)
+for key in sorted(hc.keys):
+    hr=C.convertToROOT(hc.hist(key),key+'_direct')
+    hr.Print("base")

@@ -1,0 +1,19 @@
+package( USEPKG Units USEEXT Numpy )
+
+######################################################################
+
+Package providing simple common module to set up numpy and matplotlib.
+
+A simple:
+
+  from PyAna import *
+
+at the top of a plotting script will provide numpy, matplotlib and
+matplotlib.pyplot (including aliased to np, mpl, plt respectively) and
+math, os and sys modules. Other customisations are currently:
+
+  * matplotlib.pyplot.legend(..): numpoints=1 by default (recover standard with numpoints=2
+  * matplotlib.pyplot.legend(..): draggable by default (disable with nondraggable=True)
+  * Interactive plotters can be closed with shortcut key 'Q'.
+
+primary author: thomas.kittelmann@ess.eu

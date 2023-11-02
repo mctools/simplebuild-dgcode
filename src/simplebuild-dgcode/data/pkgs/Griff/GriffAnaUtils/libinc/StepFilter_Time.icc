@@ -1,0 +1,48 @@
+inline GriffAnaUtils::StepFilter_Time::StepFilter_Time(const double& time, TIME_FILTER_MODE m)
+  : m_slt(std::numeric_limits<double>::infinity()),
+    m_sgt(-std::numeric_limits<double>::infinity()),
+    m_egt(-std::numeric_limits<double>::infinity()),
+    m_elt(std::numeric_limits<double>::infinity()),
+    m_segmFilter(0)
+{
+  TIME_FILTER_MODE mode_segment(m);
+  if (m==STARTS_BEFORE) {
+    m_slt = time;///== > segment STARTS_BEFORE
+    //NOE
+  } else if (m==STARTS_AFTER) {
+    m_sgt = m_egt = time;//==> segment ENDS_AFTER
+    mode_segment = ENDS_AFTER;
+  } else if (m==ENDS_BEFORE) {
+    m_slt = m_elt = time;///== > segment STARTS_BEFORE
+    mode_segment = STARTS_BEFORE;
+  } else if (m==ENDS_AFTER) {
+    m_egt = time;//==> segment ENDS_AFTER
+    //NOS
+  } else {
+    assert(m==CONTAINS);
+    m_slt = m_egt = time;//==> segment CONTAINS
+  }
+  m_segmFilter = new SegmentFilter_Time(time,mode_segment);
+  m_segmFilter->ref();
+}
+
+inline bool GriffAnaUtils::StepFilter_Time::filter(const GriffDataRead::Step*step) const
+{
+  double t = step->preTime();
+  if (t>m_slt) return false;
+  if (t<m_sgt) return false;
+  t = step->postTime();
+  if (t>m_elt) return false;
+  if (t<m_egt) return false;
+  return true;
+}
+
+inline GriffAnaUtils::ISegmentFilter* GriffAnaUtils::StepFilter_Time::associatedSegmentFilter()
+{
+  return m_segmFilter;
+}
+
+inline GriffAnaUtils::StepFilter_Time::~StepFilter_Time()
+{
+  m_segmFilter->unref();
+}

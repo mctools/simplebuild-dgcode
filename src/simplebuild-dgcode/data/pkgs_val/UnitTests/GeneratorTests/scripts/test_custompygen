@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+sb_generatorexamples_custompygen_inline -lESS_Empty|grep G4Launcher|grep -v '\[seed .*\]'
+if [ ${PIPESTATUS[0]} != 0 ]; then
+    exit 1
+fi
+sb_generatorexamples_custompygen_module -lESS_Empty|grep G4Launcher|grep -v '\[seed .*\]'
+if [ ${PIPESTATUS[0]} != 0 ]; then
+    exit 1
+fi

@@ -1,0 +1,29 @@
+*** Load and dump reference file
+Mesh3D:
+  Name       : fakepatterns
+  Comments   : just a file for debugging
+  Cell units : <none>
+  Cells      : [(3, 10.0, 13.0), (5, 10.0, 15.0), (8, 10.0, 18.0)]
+  Stats      : {'somefakestat': 0.3, 'someotherfakestat': -17.3}
+  cell[0,1,2] = 0.5
+  cell[1,3,5] = 3
+*** Create new file
+*** Dump it
+Mesh3D:
+  Name       : fakepatterns
+  Comments   : just a file for debugging
+  Cell units : <none>
+  Cells      : [(3, 10.0, 13.0), (5, 10.0, 15.0), (8, 10.0, 18.0)]
+  Stats      : {'somefakestat': 0.3, 'someotherfakestat': -17.3}
+  cell[0,1,2] = 0.5
+  cell[1,3,5] = 3
+*** Merge with (identical) reference file
+*** Dump result
+Mesh3D:
+  Name       : fakepatterns
+  Comments   : just a file for debugging
+  Cell units : <none>
+  Cells      : [(3, 10.0, 13.0), (5, 10.0, 15.0), (8, 10.0, 18.0)]
+  Stats      : {'somefakestat': 0.6, 'someotherfakestat': -34.6}
+  cell[0,1,2] = 1
+  cell[1,3,5] = 6

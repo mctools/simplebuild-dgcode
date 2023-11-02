@@ -1,0 +1,7 @@
+package(USEEXT ZLib)
+
+######################################################################
+
+Package providing ZLib related utilities.
+
+Primary author: thomas.kittelmann@ess.eu

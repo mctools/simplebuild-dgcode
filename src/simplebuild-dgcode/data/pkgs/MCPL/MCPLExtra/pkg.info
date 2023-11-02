@@ -1,0 +1,8 @@
+package(USEPKG MCPL MCPLExprParser SimpleHists)
+
+##########################################################
+
+Additional MCPL functionality above that which is found in the MCPL package
+(which must remain independent of our framework).
+
+Primary author: thomas.kittelmann@ess.eu

@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+try:
+    import PySimpleGUI as sg
+except ImportError:
+    print('ERROR: PySimpleGUI not found. Try to fix this by for instance running the command "python3 -m pip install PySimpleGUI"')
+    raise
+import fnmatch
+
+#w, h = sg.Window.get_screen_size()
+#print (w,h)
+#
+display_list=sg.theme_list()
+sg.theme('Dark Brown')
+
+tooltip_filter='Case-insensitive filter expression. Wildcards allowed.'
+layout = [[sg.Text('Browsing SimpleHists file: BlaBla.shist',tooltip='BlaBlaBla.....')],
+          [sg.Text('Click a Theme color to see demo window')],
+          [sg.Listbox(values=display_list, size=(20, 12), key='-LIST-', enable_events=True)],
+          [sg.Text('Filter:', font='ANY 14',tooltip='Bla bla...'), sg.Input(size=(15,1), font='any 14', key='-filter-',enable_events=True)],
+          [sg.Button('Exit')]]
+
+window = sg.Window('Theme Browser', layout, return_keyboard_events=True, )
+
+while True:  # Event Loop
+    event, values = window.read()
+    if event in (sg.WIN_CLOSED, 'Exit','',''):
+        break
+    if event == '-filter-':
+        print("FILTERING")
+        if display_list is not None:
+            pattern=values['-filter-'].lower().strip()
+            if not pattern.endswith('*'):
+                pattern += '*'
+            if not pattern.startswith('*'):
+                pattern = '*'+pattern
+            new_output = [l for l in display_list if fnmatch.fnmatch(l.lower(),pattern)]
+            window['-LIST-'].update(new_output)
+        continue
+    elif event=='-LIST-':
+        _ = values['-LIST-']
+        if not _:
+            continue
+        sg.theme(_[0])
+        sg.popup_get_text('This is {}'.format(values['-LIST-'][0]))
+        continue
+
+window.close()

@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+#extremely simple script to print contents of a pickle file to stdout. Interface could be more helpful...
+
+import pprint
+import pickle
+import sys
+assert len(sys.argv)==2
+
+fn=sys.argv[1]
+if fn.endswith('.gz'):
+    import gzip
+    fh=gzip.open(fn)
+elif fn.endswith('.bz2'):
+    import bz2
+    fh = bz2.BZ2File(fn, 'rb')
+else:
+    fh=open(fn,'rb')
+
+d=pickle.load(fh)
+
+pp = pprint.PrettyPrinter(indent=2,width=2)
+pp.pprint(d)

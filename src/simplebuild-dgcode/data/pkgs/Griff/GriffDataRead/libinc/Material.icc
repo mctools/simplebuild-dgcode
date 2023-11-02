@@ -1,0 +1,15 @@
+inline const char* GriffDataRead::Material::getNameCStr() const { return getName().c_str(); }
+inline double GriffDataRead::Material::density() const { return m_density; }
+inline double GriffDataRead::Material::temperature() const { return m_temperature; }
+inline double GriffDataRead::Material::pressure() const { return m_pressure; }
+inline double GriffDataRead::Material::radiationLength() const { return m_radlen; }
+inline double GriffDataRead::Material::nuclearInteractionLength() const { return m_nuclearinterlength; }
+inline bool GriffDataRead::Material::hasMeanExitationEnergy() const { return m_ion_meanexcitationenergy >= 0.0; }
+inline double GriffDataRead::Material::meanExitationEnergy() const { return hasMeanExitationEnergy() ? m_ion_meanexcitationenergy : 0.0; }
+inline bool GriffDataRead::Material::isSolid() const { return m_state==1; }
+inline bool GriffDataRead::Material::isGas() const { return m_state==3; }
+inline bool GriffDataRead::Material::isLiquid() const { return m_state==2; }
+inline bool GriffDataRead::Material::isUndefinedState() const { return m_state==0; }
+inline unsigned GriffDataRead::Material::numberElements() const { return m_elements.size(); }
+inline double GriffDataRead::Material::elementFraction(unsigned ielem) const { assert(ielem<m_elements.size()); return m_elements[ielem].fraction; }
+inline const char* GriffDataRead::Material::stateCStr() const { return stateStr().c_str(); }

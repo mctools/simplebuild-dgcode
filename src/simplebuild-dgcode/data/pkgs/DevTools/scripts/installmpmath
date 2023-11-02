@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+
+print("Checking for presence of mpmath module...")
+try:
+    import mpmath
+except ImportError:
+    print("  ERROR: mpmath not installed. Try to rectify with:\n")
+    print("    $> python3 -mpip install mpmath\n")
+    raise SystemExit(1)
+print("  SUCCESS. The mpmath module seems to be available.")
+
+print("Checking for presence of gmpy2 module...")
+try:
+    import gmpy2
+except ImportError:
+    print("  WARNING: gmpy2 module not installed which can make mpmath MUCH slower")
+    print("  On ubuntu this can be rectified with:\n")
+    print("    $> sudo apt install libmpfr-dev libmpc-dev")
+    print("    $> python3 -mpip install gmpy2\n")
+else:
+    print("  SUCCESS. The gmpy2 module seems to be available - this speeds up mpmath.")
+print()
+print()
+print("To get you started, here is an example of how to use mpmath in python code:")
+print()
+print("import mpmath")
+print("mp = mpmath.mp")
+print("mp.dps = 100 #100 significant digits")
+print("print( 'sin(2/3) = ', mp.sin( mp.mpf(2) / mp.mpf(3) ) )")
+print()

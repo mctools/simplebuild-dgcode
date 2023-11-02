@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+import os
+import G4Launcher
+defphyslist = 'QGSP_BIC_HP_EMZ' if G4Launcher.g4version() > 1030 else 'QGSP_BIC_HP'
+
+#############################################################
+#Process user input:
+from optparse import OptionParser#NOTE: The optparse module is deprecated - we should stop using it at some point
+parser = OptionParser(description='This script allows you to extract cross-sections from Geant4, '
+                      'for given specified combinations of material, physics list and particle type.'
+                      ' Note that power users might want to fine-tune the granularity of the'
+                      ' extraction by setting environment variables G4XSECTSPY_LOGDELTAE'
+                      ' (default value 0.005) and G4XSECTSPY_NSAMPLE (default value 50).')
+parser.add_option("-p", '--particle', type='string',dest="particle",
+                  help='Name or PDG code of particle',default='neutron')
+parser.add_option("-l", '--physlist', type='string',dest="physlist",
+                  help='Name of physics list (default %s)'%defphyslist,default=defphyslist)
+parser.add_option("-m",'--material',type='string',default='',dest="matname",
+                  help='Material given by NamedMaterialProvider syntax')
+parser.add_option("-s", "--noshow", action='store_false',default=True,dest="show",
+                  help='Don\'t show extracted cross-sections in interactive plots')
+parser.add_option("-f", "--nofile", action='store_false',default=True,dest="savefig",
+                  help='Don\'t save plots of extracted cross-sections in PDF files')
+parser.add_option("-w", "--wavelengths", action='store_true',default=False,dest="wavelength",
+                  help='Show plots versus neutron wavelength rather than energy')
+(opt, args) = parser.parse_args()
+if args:
+    parser.error('Unknown arguments: %s'%' '.join(args))
+if not opt.particle:
+    parser.error('Particle type must be specified. Example "-p neutron"')
+if not opt.matname:
+    parser.error('Material name must be specified. Example "-m ESS_Al"')
+if not opt.physlist:
+    parser.error('Physics list must be specified. Example "-l %s"'%defphyslist)
+if opt.wavelength and opt.particle not in ['2112','neutron']:
+    parser.error('Option --wavelength only possible for neutrons')
+
+par_particle = opt.particle
+par_material = opt.matname
+par_physlist = opt.physlist
+opt_save_fig = opt.savefig
+opt_show = opt.show
+
+#############################################################
+#Define geometry and particle generation:
+import G4StdGeometries.GeoEmptyWorld as Geo
+import G4StdGenerators.FlexGen as Gen
+geo = Geo.create()
+gen = Gen.create()
+geo.material = par_material
+geo.dimension_cm = 0.001
+if par_particle.isdigit():
+    gen.pdgCode = int(par_particle)
+else:
+    gen.particleName = par_particle
+
+#############################################################
+#Launch G4 simulation in order to produce x-section file:
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('none')#no Griff
+launcher.setPhysicsList(par_physlist)
+import G4XSectDump.XSectSpy as spy
+launcher.postinit_hook(spy.installForOneFile)#just 1 file
+#just 1 event:
+import sys
+sys.argv = [sys.argv[0],'-n','1']
+launcher.go()
+
+#############################################################
+#Present results
+filename=spy.lastWrittenFile()
+bn=os.path.splitext(filename)[0]
+mat_file = bn+'.g4mat.txt'
+save_fig_xsect=bn+'.xsect.pdf'
+save_fig_mfp=bn+'.mfp.pdf'
+matprint = spy.lastG4MaterialPrinted()
+fh=open(mat_file,'w')
+fh.write(matprint)
+fh.close()
+print()
+print('-'*77)
+print('-'*77)
+print('-'*77)
+print()
+print('Cross-sections were extracted for the G4Material:')
+print()
+print('   %s'%matprint.replace('\n','\n   '))
+print()
+print('The above G4Material dump is also placed in:')
+print()
+print('   %s'%mat_file)
+print()
+print('Requested cross-sections were written to the file:')
+print()
+print('   %s'%filename)
+print()
+print('If desired, it can be analysed using utilities from the XSectParse package.')
+print()
+if opt_save_fig or opt_show:
+    import XSectParse.PlotXSectFile
+if opt_save_fig:
+    XSectParse.PlotXSectFile.plot_file(filename,mfp=False,save_fig=save_fig_xsect,show=False,versus_wavelength=opt.wavelength)
+    XSectParse.PlotXSectFile.plot_file(filename,mfp=True,save_fig=save_fig_mfp,show=False,versus_wavelength=opt.wavelength)
+    print()
+    print('Plots of cross-sections and mean-free-path were created in:')
+    print()
+    print('   %s'%save_fig_xsect)
+    print('   %s'%save_fig_mfp)
+if opt_show:
+    print()
+    print('Now launching a cross-section plot for interactive interaction...')
+    print()
+    XSectParse.PlotXSectFile.plot_file(filename,mfp=False,save_fig=False,show=True,versus_wavelength=opt.wavelength)
+    print()
+    print('Now launching a mean-free-path plot for interactive interaction...')
+    print()
+    XSectParse.PlotXSectFile.plot_file(filename,mfp=True,save_fig=False,show=True,versus_wavelength=opt.wavelength)

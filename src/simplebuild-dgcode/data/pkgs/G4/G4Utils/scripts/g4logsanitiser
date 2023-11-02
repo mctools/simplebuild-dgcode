@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+G4DATADIRGUESS=$(python3 -c 'import pathlib,os;print(pathlib.Path(os.environ["G4NEUTRONHPDATA"]).parent.absolute().resolve())')
+"$@" \
+    | sed 's@'"${G4DATADIRGUESS}/NDL"'@<<G4DATADIR>>/G4NDL@' \
+    | sed 's@'"${G4DATADIRGUESS}"'@<<G4DATADIR>>@'

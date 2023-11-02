@@ -1,0 +1,10 @@
+package(USEPKG GriffFormat)
+
+######################################################################
+
+
+Package providing utilities for reading Griff data files written during Geant4
+simulation with the GriffDataCollect package. This package does not depend on
+Geant4, making it easy to analyse the data with whatever tool the user likes.
+
+Primary author: thomas.kittelmann@ess.eu

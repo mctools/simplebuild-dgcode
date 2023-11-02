@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+
+#<SKEL_MUST_MODIFY_FILE>
+
+#Here we analyse the output of parameter scans produced by the sister "scan"
+#script.
+
+import ScanUtils.ScanLoader
+import SimpleHistsUtils.cmphists
+from PyAna import *
+
+jobs=ScanUtils.ScanLoader.get_scan_jobs(sys.argv[1],dict_by_label=True)
+
+#### Plot 1:
+labelsandhists = [('%g mm sample'%j.setup().geo().sample_radius_mm,j.hist('det_hitradius')) for j in jobs['plot1']]
+SimpleHistsUtils.cmphists.cmphists(labelsandhists)
+
+#### Plot 2:
+labelsandhists = [('%g Aa neutron'%j.setup().gen().neutron_wavelength_aangstrom,j.hist('det_hitradius')) for j in jobs['plot2']]
+SimpleHistsUtils.cmphists.cmphists(labelsandhists)

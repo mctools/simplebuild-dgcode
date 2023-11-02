@@ -1,0 +1,81 @@
+inline SimpleHists::Hist2D::Hist2D(unsigned nbinsx, double xmin, double xmax,
+                                   unsigned nbinsy, double ymin, double ymax)
+  : HistBase()
+{
+  init(nbinsx, xmin, xmax, nbinsy, ymin, ymax);
+}
+
+inline SimpleHists::Hist2D::Hist2D(const std::string& title,
+                                   unsigned nbinsx, double xmin, double xmax,
+                                   unsigned nbinsy, double ymin, double ymax)
+  : HistBase(title)
+{
+  init(nbinsx, xmin, xmax, nbinsy, ymin, ymax);
+}
+
+inline unsigned SimpleHists::Hist2D::icell(unsigned ibinx,unsigned ibiny) const
+{
+  //same order as in numpy.histogram2d() for easy export
+  assert(ibinx<m_data.nbinsx);
+  assert(ibiny<m_data.nbinsy);
+  return ibiny + m_data.nbinsy*ibinx;
+}
+
+inline unsigned SimpleHists::Hist2D::getNBinsX() const { return m_data.nbinsx; }
+inline unsigned SimpleHists::Hist2D::getNBinsY() const { return m_data.nbinsy; }
+inline double SimpleHists::Hist2D::getBinContent(unsigned ibinx,unsigned ibiny) const { return m_content[icell(ibinx,ibiny)]; }
+
+
+inline double SimpleHists::Hist2D::getBinCenterX(unsigned ibinx) const { assert(ibinx<m_data.nbinsx); return m_data.xmin + (ibinx+0.5)*m_deltaX; }
+inline double SimpleHists::Hist2D::getBinCenterY(unsigned ibiny) const { assert(ibiny<m_data.nbinsy); return m_data.ymin + (ibiny+0.5)*m_deltaY; }
+inline double SimpleHists::Hist2D::getBinLowerX(unsigned ibinx) const {  assert(ibinx<m_data.nbinsx); return m_data.xmin + ibinx*m_deltaX; }
+inline double SimpleHists::Hist2D::getBinLowerY(unsigned ibiny) const {  assert(ibiny<m_data.nbinsy); return m_data.ymin + ibiny*m_deltaY; }
+inline double SimpleHists::Hist2D::getBinUpperX(unsigned ibinx) const
+{
+  assert(ibinx<m_data.nbinsx);
+  return ibinx==m_data.nbinsx-1 ? m_data.xmax : m_data.xmin + (ibinx+1)*m_deltaX;
+}
+inline double SimpleHists::Hist2D::getBinUpperY(unsigned ibiny) const
+{
+  assert(ibiny<m_data.nbinsy);
+  return ibiny==m_data.nbinsy-1 ? m_data.ymax : m_data.ymin + (ibiny+1)*m_deltaY;
+}
+
+inline double SimpleHists::Hist2D::getBinWidthX() const { return m_deltaX; }
+inline double SimpleHists::Hist2D::getBinWidthY() const { return m_deltaY; }
+inline double SimpleHists::Hist2D::getUnderflowX() const { return m_data.underflowx; }
+inline double SimpleHists::Hist2D::getUnderflowY() const { return m_data.underflowy; }
+inline double SimpleHists::Hist2D::getOverflowX() const { return m_data.overflowx; }
+inline double SimpleHists::Hist2D::getOverflowY() const { return m_data.overflowy; }
+inline double SimpleHists::Hist2D::getXMin() const { return m_data.xmin; }
+inline double SimpleHists::Hist2D::getXMax() const { return m_data.xmax; }
+inline double SimpleHists::Hist2D::getYMin() const { return m_data.ymin; }
+inline double SimpleHists::Hist2D::getYMax() const { return m_data.ymax; }
+
+inline bool SimpleHists::Hist2D::empty() const
+{
+  return !m_data.sumW;
+}
+
+inline double SimpleHists::Hist2D::getIntegral() const
+{
+  return m_data.sumW;
+}
+
+inline int SimpleHists::Hist2D::valueToBinX(double val) const
+{
+  //returns -1 for underflow, nbins for overflow
+  assert(!(val!=val)&&"Hist2D ERROR: NAN in input!");
+  if (val<m_data.xmin) return -1;
+  if (val>=m_data.xmax) return val==m_data.xmax ? m_data.nbinsx-1 : m_data.nbinsx;
+  return static_cast<int>(m_invDeltaX*(val-m_data.xmin));
+}
+
+inline int SimpleHists::Hist2D::valueToBinY(double val) const
+{
+  //returns -1 for underflow, nbins for overflow
+  assert(!(val!=val)&&"Hist2D ERROR: NAN in input!");
+  if (val<m_data.ymin) return -1;
+  if (val>=m_data.ymax) return val==m_data.ymax ? m_data.nbinsy-1 : m_data.nbinsy;
+  return static_cast<int>(m_invDeltaY*(val-m_data.ymin));
+}

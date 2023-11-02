@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import SimpleHists as sh
+from SimpleHistsUtils.Sampler import Sampler
+
+import math
+import numpy
+
+def createHist():
+    h = sh.Hist1D(20,-0.2,2.0)
+    n = 10000-1;
+    for i in range(0,n+1):
+        x = - math.log(float(i if i else 1.0)/n)
+        if x>1.0 and x<1.5:
+            x -= 5.0
+        if x>5:
+            x = 0.3
+        x -= 0.05
+        h.fill(x)
+    return h
+
+h_orig = createHist()
+h_orig.dump(True)
+sampler = Sampler(h_orig);
+
+h_sampled = sh.Hist1D(100,-5,5.0)
+h_sampled.fill(sampler.sampleMany(numpy.linspace(0.0,1.0,1000000)))
+h_sampled.dump(True)

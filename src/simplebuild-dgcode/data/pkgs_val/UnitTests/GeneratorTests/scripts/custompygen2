@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import G4CustomPyGen
+from Units import units
+
+#Nothing random here, but stresses multi-particle gen, weights, time, etc.
+class MyPyGen(G4CustomPyGen.GenBase):
+    def generate_event(self,gun):
+        gun.set_type('neutron')
+        gun.set_direction(0,0,1)
+        gun.set_position(0,0,0)
+        gun.set_energy(1.0*units.MeV)
+        gun.set_weight(0.5)
+        gun.set_time(-1.0*units.second)
+        gun.fire()
+        gun.set_type('alpha')
+        gun.set_direction(1,0,0)
+        gun.set_position(1*units.mm,1*units.mm,1*units.mm)
+        gun.set_energy(2.0*units.MeV)
+        gun.set_weight(1.0)
+        gun.set_time(2.0*units.second)
+        gun.fire()
+        gun.set_type('e-')
+        gun.set_direction(1,0,0)
+        gun.set_position(2*units.mm,2*units.mm,2*units.mm)
+        gun.set_energy(2.0*units.MeV)
+        gun.set_weight(0.1)
+        gun.set_time(1.0*units.second)
+        gun.fire()
+gen = MyPyGen()
+
+import G4StdGeometries.GeoEmptyWorld as Geo
+geo = Geo.create()
+
+import G4Launcher
+launcher = G4Launcher(geo,gen)
+launcher.cmd_postinit('/tracking/verbose 3')
+launcher.setPhysicsList('ESS_Empty')
+launcher.startSimulation(1)
+del launcher#could also call launcher._shutdown() to completely defy garbage collection unpredictability

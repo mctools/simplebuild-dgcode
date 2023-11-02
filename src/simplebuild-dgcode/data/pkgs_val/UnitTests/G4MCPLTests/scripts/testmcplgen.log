@@ -1,0 +1,1800 @@
+
+
+          ################################
+          !!! G4Backtrace is activated !!!
+          ################################
+
+
+**************************************************************
+ Geant4 version Name: geant4-11-00-patch-03 [MT]   (16-September-2022)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+G4Launcher:: Pre-init started
+G4Launcher:: Installing FPE detection
+G4Launcher:: setSeed() not called, picking standard seed.
+G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
+G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up geometry:
+G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoEmptyWorld]:
+G4Launcher::   -->   [str] material = "Vacuum"
+G4Launcher::   -->   [dbl] dimension_cm = 200
+G4Launcher:: Setting up particle generation:
+G4Launcher::   --> ParticleGenerator[G4MCPLPlugins/MCPLGen]:
+G4Launcher::   -->   [str] input_file = "MCPLTests/miscphys.mcpl.gz"
+G4Launcher::   -->   [str] input_filter = "(true)"
+G4Launcher::   -->   [dbl] dx_meter = 0.02
+G4Launcher::   -->   [dbl] dy_meter = 0
+G4Launcher::   -->   [dbl] dz_meter = 0
+G4Launcher::   -->   [dbl] rotx_degree = 0
+G4Launcher::   -->   [dbl] roty_degree = 90
+G4Launcher::   -->   [dbl] rotz_degree = 0
+G4Launcher::   -->   [int] skip_events = 0
+G4Launcher::   -->   [flg] allow_zero_weight = no
+G4Launcher:: Requested to not set output of GRIFF files:
+G4Launcher:: Pre-init done
+G4Launcher:: Calling G4RunManager::Initialize()
+G4Launcher:: G4RunManager::Initialize() done
+G4Launcher:: Applying command: /tracking/verbose 1
+G4Launcher:: Starting simulation
+G4Launcher:: Begin simulation of event 1 [seed 123456789]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 2 [seed 2915572356146167334]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 3 [seed 467584824058734778]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 4 [seed 11556549066416575241]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 5 [seed 16135024132704166519]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 6 [seed 9359512691871278208]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120  2.52e-08        0        0         0       World initStep
+    1   -2e+03        0     -120  2.52e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 7 [seed 9451830001080943893]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20  2.52e-08        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03  2.52e-08        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 8 [seed 12041582812102220051]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20  2.52e-08        0        0         0       World initStep
+    1      100   -2e+03      -20  2.52e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 9 [seed 14426664432972020249]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120  2.52e-08        0        0         0       World initStep
+    1    2e+03        0     -120  2.52e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 10 [seed 5039506889794497565]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20  2.52e-08        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03  2.52e-08        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 11 [seed 11602130093010225689]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20   2.5e-08        0        0         0       World initStep
+    1      100    2e+03      -20   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 12 [seed 15267574210858074881]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120   2.5e-08        0        0         0       World initStep
+    1   -2e+03        0     -120   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 13 [seed 10973992832983855889]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20   2.5e-08        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03   2.5e-08        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 14 [seed 10529791946883119696]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20   2.5e-08        0        0         0       World initStep
+    1      100   -2e+03      -20   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 15 [seed 7756707422131177938]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120   2.5e-08        0        0         0       World initStep
+    1    2e+03        0     -120   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 16 [seed 3834778728240026418]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 17 [seed 17283354153544309834]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 18 [seed 15175852015837625147]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 19 [seed 723961745777158002]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 20 [seed 14193409362565871337]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 21 [seed 8401862315048431105]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120  2.52e-08        0        0         0       World initStep
+    1    2e+03        0     -120  2.52e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 22 [seed 7209451285940171116]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20  2.52e-08        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03  2.52e-08        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 23 [seed 6699957386738289015]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20  2.52e-08        0        0         0       World initStep
+    1      100    2e+03      -20  2.52e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 24 [seed 6254388714784650315]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120  2.52e-08        0        0         0       World initStep
+    1   -2e+03        0     -120  2.52e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 25 [seed 4994181863146039801]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20  2.52e-08        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03  2.52e-08        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 26 [seed 10914694192692299860]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20   2.5e-08        0        0         0       World initStep
+    1      100   -2e+03      -20   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 27 [seed 13626141451847504043]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120   2.5e-08        0        0         0       World initStep
+    1    2e+03        0     -120   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 28 [seed 1676627811301393143]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20   2.5e-08        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03   2.5e-08        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 29 [seed 2543852551799420983]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20   2.5e-08        0        0         0       World initStep
+    1      100    2e+03      -20   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 30 [seed 12672496290560168133]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_neutron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120   2.5e-08        0        0         0       World initStep
+    1   -2e+03        0     -120   2.5e-08        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 31 [seed 10194282071466178397]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 32 [seed 6507806026048065854]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 33 [seed 2959373111420755757]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 34 [seed 6593624771837931183]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 35 [seed 16748580548334040473]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 36 [seed 8820078055884694668]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 37 [seed 5046009899288623080]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 38 [seed 132622897969337155]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 39 [seed 14858335233439905110]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 40 [seed 6182429398212476283]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_proton,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 41 [seed 3682505223472123049]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 42 [seed 3060105526571858496]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 43 [seed 6015502098979456499]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 44 [seed 5522968036754176870]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 45 [seed 4515481203612669226]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 46 [seed 16568018347922101011]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 47 [seed 8021659307119688605]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 48 [seed 824085084577222519]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 49 [seed 11683470994278055592]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 50 [seed 13716127454619588280]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 51 [seed 12370985009891912665]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120  1.91e-06        0        0         0       World initStep
+    1    2e+03        0     -120  1.91e-06        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 52 [seed 9858440254272852766]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20  1.91e-06        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03  1.91e-06        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 53 [seed 15220848869837684594]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20  1.91e-06        0        0         0       World initStep
+    1      100    2e+03      -20  1.91e-06        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 54 [seed 5245813092564996790]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120  1.91e-06        0        0         0       World initStep
+    1   -2e+03        0     -120  1.91e-06        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 55 [seed 7206512375878562628]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = gamma,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20  1.91e-06        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03  1.91e-06        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 56 [seed 9044004784352536618]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 57 [seed 16269150097106826128]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 58 [seed 4809129722118968911]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 59 [seed 7724548096064149038]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 60 [seed 3090345782208075349]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 61 [seed 5484908426863385453]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 62 [seed 9599258125577542051]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 63 [seed 15219969076911048195]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 64 [seed 17277130440767974131]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 65 [seed 9526431616353848965]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 66 [seed 10114593723760797070]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 67 [seed 9062492972921260981]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 68 [seed 13966842761068754834]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 69 [seed 18022016720313934113]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 70 [seed 1719495273799773228]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 71 [seed 17786001439744030444]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 72 [seed 6412574557241315629]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 73 [seed 3711473542233492687]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 74 [seed 9445833821647039144]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 75 [seed 7143331588592492689]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = e+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 76 [seed 11109296722432114596]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 77 [seed 8700713512044902509]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 78 [seed 889988387883986214]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 79 [seed 10886508744019591808]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 80 [seed 646067173438430676]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 81 [seed 9024909188791725363]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 82 [seed 12550638546285418868]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 83 [seed 10979593511078503416]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 84 [seed 1719997522251992741]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 85 [seed 18020083132774323236]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 86 [seed 3276847163801530573]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20         0        0        0         0       World initStep
+    1      100        0      -20         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 87 [seed 6515950304241792409]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120         0        0        0         0       World initStep
+    1 7.35e-15        0     -120         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 88 [seed 1737566602906562149]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20         0        0        0         0       World initStep
+    1 1.22e-15      100      -20         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 89 [seed 16599107595926285689]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20         0        0        0         0       World initStep
+    1      100        0      -20         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 90 [seed 1459801040086353024]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120         0        0        0         0       World initStep
+    1 7.35e-15        0     -120         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 91 [seed 16805018727997480757]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 92 [seed 7002399503426537533]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 93 [seed 4575509491923659522]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 94 [seed 2916392611899982360]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 95 [seed 7141568198463680849]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 96 [seed 13711201234523873350]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 97 [seed 12676371110486721507]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 98 [seed 10480148751758568415]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 99 [seed 12122204366507060201]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 100 [seed 8445036297749824700]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 101 [seed 3038000443974209922]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20         0        0        0         0       World initStep
+    1      100        0      -20         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 102 [seed 16703737020334774113]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120         0        0        0         0       World initStep
+    1 7.35e-15        0     -120         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 103 [seed 13344081509660243142]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20         0        0        0         0       World initStep
+    1 1.22e-15      100      -20         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 104 [seed 17979195252618122384]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20         0        0        0         0       World initStep
+    1      100        0      -20         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 105 [seed 11573754418808630720]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = mu+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120         0        0        0         0       World initStep
+    1 7.35e-15        0     -120         0        0        0         0       World User Limit
+G4Launcher:: Begin simulation of event 106 [seed 13021379441997844805]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 107 [seed 11906522191038153610]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 108 [seed 13991287781550258717]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 109 [seed 6894140504225065217]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 110 [seed 4069174507514657461]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 111 [seed 17935074339034726768]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 112 [seed 6817580884566064394]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 113 [seed 18189484148955130182]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 114 [seed 16160516803723869189]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 115 [seed 9162301272771010212]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 116 [seed 12543052464632397319]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 117 [seed 893659682816543062]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 118 [seed 3211098763759310245]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 119 [seed 11929987770253810363]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 120 [seed 16161115058235836681]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 121 [seed 3816165258569818193]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 122 [seed 3578306122192871005]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 123 [seed 13470595138375948835]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 124 [seed 14048629664907084051]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 125 [seed 14466776706684391343]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_nu_tau,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 126 [seed 13372750456905908558]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 127 [seed 6742983693478278496]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 128 [seed 7642704014834853873]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 129 [seed 5166186692685624046]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 130 [seed 1260784454694437765]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 131 [seed 5307504504421631382]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 132 [seed 3595050427466353340]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 133 [seed 11200898154759646672]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 134 [seed 2087350044456913652]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 135 [seed 3585380470201438923]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi+,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 136 [seed 14340348071993131009]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 137 [seed 6398773258986857690]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 138 [seed 5527429292745458128]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 139 [seed 8946259477300141205]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03       0.5        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 140 [seed 4388025594650120175]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 141 [seed 2422310735252382952]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 142 [seed 18267866675123194300]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 143 [seed 18144159060694160902]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 144 [seed 13734435862201752819]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 145 [seed 10409437853461792760]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi-,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 146 [seed 17605006942433941629]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100   -2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 147 [seed 14925128625376890922]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1    2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 148 [seed 601359867489225682]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20       0.5        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03       0.5        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 149 [seed 5797617441939358242]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20       0.5        0        0         0       World initStep
+    1      100    2e+03      -20       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 150 [seed 8861131994018895899]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120       0.5        0        0         0       World initStep
+    1   -2e+03        0     -120       0.5        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 151 [seed 12056141271314013984]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 152 [seed 13543688887513227186]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 153 [seed 7055657306960358953]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 154 [seed 7650406549625900968]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 155 [seed 6589767305330647816]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = pi0,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 156 [seed 375866894336479330]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 157 [seed 18351896729035678225]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 158 [seed 5228213204220557515]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 159 [seed 2989648938389976802]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 160 [seed 11074029585972220047]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 161 [seed 10217847300669149303]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 162 [seed 12674935377030827847]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 163 [seed 8915585973980642867]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 164 [seed 11025028729477289838]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 165 [seed 1368504574450966399]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_deuteron,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 166 [seed 13660684384228626679]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = Al27,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 167 [seed 4077648359356826456]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = Al27,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 168 [seed 15376179435136688007]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = Al27,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 169 [seed 17702125492460819762]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = Al27,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 170 [seed 17404653864272533445]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = Al27,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 171 [seed 10380514934820211917]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = U235,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 172 [seed 2009339312693328170]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = U235,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 173 [seed 7136065151150727414]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = U235,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 174 [seed 13078401769899285437]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = U235,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 175 [seed 6074911090170739570]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = U235,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 176 [seed 6872062195432156909]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 177 [seed 7706236519706527433]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 178 [seed 15851691849210983583]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 179 [seed 13570121211612916972]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 180 [seed 11561121924516845910]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 181 [seed 9379509994297936344]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 182 [seed 6380475796208994702]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 183 [seed 6221386808074701855]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 184 [seed 15462191136956256002]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 185 [seed 17062640484659130888]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_He3,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 186 [seed 15902088176790909452]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 187 [seed 14458474529285200394]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 188 [seed 12707062265146957629]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 189 [seed 9856798866048361540]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 190 [seed 5186352531334720951]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 -1.22e-13      100    2e+03     6e+03        0 2.02e+03  2.02e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 191 [seed 3637407632519894583]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100    2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 192 [seed 5783289311600454273]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1   -2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 193 [seed 9852396283236556835]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 1.22e-15      100      -20     6e+03        0        0         0       World initStep
+    1 1.22e-13      100   -2e+03     6e+03        0 1.98e+03  1.98e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 194 [seed 17703118546903018413]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0      100        0      -20     6e+03        0        0         0       World initStep
+    1      100   -2e+03      -20     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: Begin simulation of event 195 [seed 16521140205608081349]
+
+*********************************************************************************************************
+* G4Track Information:   Particle = anti_alpha,   Track ID = 1,   Parent ID = 0
+*********************************************************************************************************
+
+Step#    X(mm)    Y(mm)    Z(mm) KinE(MeV)  dE(MeV) StepLeng TrackLeng  NextVolume ProcName
+    0 7.35e-15        0     -120     6e+03        0        0         0       World initStep
+    1    2e+03        0     -120     6e+03        0    2e+03     2e+03  OutOfWorld Transportation
+G4Launcher:: No more events to process.
+G4Launcher:: Simulation done

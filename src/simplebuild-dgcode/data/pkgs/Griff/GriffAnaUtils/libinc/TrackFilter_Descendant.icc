@@ -1,0 +1,35 @@
+inline GriffAnaUtils::TrackFilter_Descendant::TrackFilter_Descendant()
+  : m_ancestor(0),
+#ifndef NDEBUG
+    m_ancestorStartTime(-1.0),
+#endif
+    m_includeAncestor(true)
+{
+}
+
+inline void GriffAnaUtils::TrackFilter_Descendant::setAncestor(const GriffDataRead::Track*t,bool includeAncestor)
+{
+  assert(t);
+#ifndef NDEBUG
+  m_ancestorStartTime = t->startTime();
+#endif
+  m_ancestor = t;
+  m_includeAncestor = includeAncestor;
+}
+
+inline bool GriffAnaUtils::TrackFilter_Descendant::filter(const GriffDataRead::Track*trk) const
+{
+#ifndef NDEBUG
+  if (!m_ancestor||m_ancestor->startTime()!=m_ancestorStartTime) {
+    printf("\n\nTrackFilter_Descendant ERROR: setAncestor must be invoked each event before filter is used!!\n\n");
+    assert(0&&"TrackFilter_Descendant ERROR: setAncestor must be invoked each event before filter is used!!");
+  }
+#endif
+  if (m_includeAncestor&&trk==m_ancestor)
+    return true;
+  while(trk) {
+    if ((trk=trk->getParent())==m_ancestor)
+      return true;
+  }
+  return false;
+}

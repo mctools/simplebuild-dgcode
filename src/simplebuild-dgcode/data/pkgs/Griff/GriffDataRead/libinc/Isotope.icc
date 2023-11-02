@@ -1,0 +1,5 @@
+inline const char* GriffDataRead::Isotope::getNameCStr() const { return getName().c_str(); }
+inline int32_t GriffDataRead::Isotope::Z() const { return m_Z; }
+inline int32_t GriffDataRead::Isotope::N() const { return m_N; }
+inline double GriffDataRead::Isotope::A() const { return m_A; }
+inline int32_t GriffDataRead::Isotope::m() const { return m_m; }

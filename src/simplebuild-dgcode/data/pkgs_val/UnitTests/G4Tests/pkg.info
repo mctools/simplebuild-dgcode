@@ -1,0 +1,9 @@
+package(USEPKG G4StdGenerators G4Launcher G4CollectFilters G4Utils G4Materials G4Examples GriffDataRead Mesh3D XSectParse G4XSectDump USEEXT Numpy)
+
+######################################################################
+
+
+Package with integration tests, i.e. full Geant4 jobs built with utilities from
+several packages.
+
+Primary authors: thomas.kittelmann@ess.eu

@@ -1,0 +1,7 @@
+package( USEPKG PyAna USEEXT matplotlib )
+
+######################################################################
+
+Unit tests for PyAna pkg.
+
+primary author: thomas.kittelmann@ess.eu

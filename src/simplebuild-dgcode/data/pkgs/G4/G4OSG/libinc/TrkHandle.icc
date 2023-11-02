@@ -1,0 +1,42 @@
+inline G4OSG::TrkHandle::TrkHandle(THCommon* common,
+                                   unsigned trkIdxInEvt,
+                                   unsigned evtIdxInFile)
+  : m_common(common),
+    m_colors(0),
+    m_trkIdxInEvt(trkIdxInEvt),
+    m_evtIdxInFile(evtIdxInFile),
+    m_displayed(false),
+    m_highlighted(false),
+    m_vertexArray(0)
+
+{
+  assert(common);
+}
+
+inline const osg::ref_ptr<osg::Geode> G4OSG::TrkHandle::osgGeode() const
+{
+  if (!m_osgGeode.valid())
+    setupGeode();
+  return m_osgGeode;
+}
+
+inline bool G4OSG::TrkHandle::isDisplayed() const
+{
+  return m_displayed;
+}
+
+inline void G4OSG::TrkHandle::setDisplayed(bool t)
+{
+  if(t!=m_displayed) {
+    if(t) {
+      display();
+    } else {
+      hide();
+    }
+  }
+}
+
+inline bool G4OSG::TrkHandle::isHighlighted() const
+{
+  return m_highlighted;
+}

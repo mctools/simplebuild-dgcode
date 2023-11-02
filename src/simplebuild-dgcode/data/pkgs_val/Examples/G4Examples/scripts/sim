@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import G4StdGenerators.FlexGen as Gen
+import G4StdGeometries.GeoSlab as Geo
+import G4Examples.ExampleHooks as hooks
+import G4Launcher
+
+geo = Geo.create()
+gen = Gen.create()
+
+geo.target_depth_cm = 0.01
+
+gen.particleName = 'neutron'
+gen.neutron_wavelength_aangstrom = 20.2
+gen.fixed_z_meters = -1.5
+
+
+launcher = G4Launcher(geo,gen)
+
+#Add pre/post init hooks defined in C++:
+
+launcher.prepreinit_hook(hooks.prepreInitHook)
+launcher.preinit_hook(hooks.preInitHook)
+launcher.postinit_hook(hooks.postInitHook)
+
+#Just for fun (but perhaps not useful), here are a few hooks implemented in
+#python as well:
+
+def preprehook_py():
+    print("preprehook_py called!")
+def prehook_py():
+    print("prehook_py called!")
+def posthook_py():
+    print("posthook_py called!")
+
+launcher.prepreinit_hook(preprehook_py)
+launcher.preinit_hook(prehook_py)
+launcher.postinit_hook(posthook_py)
+
+launcher.go()

@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import GriffDataRead
+import GriffFormat.dumpfile
+import sys
+
+args=sys.argv[1:]
+
+show_uncompressed_sizes=False
+if '-u' in args:
+    args.remove('-u')
+    show_uncompressed_sizes=True
+
+
+dr=GriffDataRead.GriffDataReader(args)
+dr.allowSetupChange()
+
+nsetups=0
+nevts=0
+while dr.loopEvents():
+    nevts+=1
+    if dr.setupChanged():
+        nsetups+=1
+        print()
+        dr.setup().dump(">>> ")
+        print()
+
+if nsetups==1:
+    print("All %i events had similar setup"%nevts)
+else:
+    print("Files with %i different setups were found in %i events"%(nsetups,nevts))
+
+print()
+brief=True
+bad=False
+for f in args:
+    ok=GriffFormat.dumpfile.dumpFileInfo(f,brief,show_uncompressed_sizes)
+    if not ok:
+        bad=True
+if bad:
+    sys.exit(1)
+

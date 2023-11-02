@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#set -e
+#set -u
+sb_sh2rtests_run >& output.log
+EC=$?
+if [ "x$EC" != "x0" ]; then
+  cat output.log
+  exit $EC
+fi
+cat output.log \
+    | grep -v TGClient::TGClient \
+    | grep -v "In case you run from a remote ssh session"

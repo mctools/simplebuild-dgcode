@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+DD=$SBLD_DATA_DIR/GriffDataRead
+
+sb_griffanautils_extractevts $DD/10evts_singleneutron_on_b10_reduced.griff out.griff 5 999
+sb_griffanautils_extractevts $DD/10evts_singleneutron_on_b10_reduced.griff out.griff 5
+sb_griffanautils_extractevts $DD/10evts_singleneutron_on_b10_reduced.griff out.griff 9
+
+for m in reduced full minimal; do
+    f=$DD/10evts_singleneutron_on_b10_${m}.griff
+    sb_griffanautils_extractevts $f out.griff 0 1 2 3 4 5 6 7 8 9
+    diff $f out.griff
+    sb_griffanautils_extractevts $f out.griff 0 7
+    sb_griffformat_dumpfile out.griff
+    sb_griffformat_info out.griff
+done
+
+

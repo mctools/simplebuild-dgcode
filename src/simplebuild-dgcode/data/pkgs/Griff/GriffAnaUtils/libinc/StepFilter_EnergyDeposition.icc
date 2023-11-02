@@ -1,0 +1,25 @@
+inline GriffAnaUtils::StepFilter_EnergyDeposition::StepFilter_EnergyDeposition(const double& threshold)
+  : m_threshold(threshold),
+    m_segmFilter(0)
+{
+}
+
+inline bool GriffAnaUtils::StepFilter_EnergyDeposition::filter(const GriffDataRead::Step*step) const
+{
+  return step->eDep()>m_threshold;
+}
+
+inline GriffAnaUtils::ISegmentFilter* GriffAnaUtils::StepFilter_EnergyDeposition::associatedSegmentFilter()
+{
+  if (!m_segmFilter) {
+    m_segmFilter = new SegmentFilter_EnergyDeposition(m_threshold);
+    m_segmFilter->ref();
+  }
+  return m_segmFilter;
+}
+
+inline GriffAnaUtils::StepFilter_EnergyDeposition::~StepFilter_EnergyDeposition()
+{
+  if (m_segmFilter)
+    m_segmFilter->unref();
+}

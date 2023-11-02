@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import SimpleHists as sh
+from SimpleHists._util import selected_keys,test_and_fix_target
+import os,sys
+
+def parse_cmd_line():
+    import argparse as AP
+    parser = AP.ArgumentParser(description='Extract subset of histograms in an .shist file and save in a new smaller file')
+
+    parser.add_argument('source', metavar='source', type=str, help='source file')
+    parser.add_argument('target', metavar='target', type=str, help='target file')
+    parser.add_argument('selection', metavar='selection', type=str, nargs='*',
+                        help='hist keys (wildcards allowed) or indices (ranges allowed)')
+
+    args=parser.parse_args()
+
+    ##### Make sure that the .shist file does not have to be the first and second positional argument
+    all_pos = [args.source]+[args.target]+args.selection
+    all_shist=[a for a in all_pos if a.endswith('.shist')]
+    all_sel=[a for a in all_pos if not a.endswith('.shist')]
+    assert len(all_shist)+len(all_sel)==len(all_pos)
+    if not len(all_shist)==2:
+        parser.error('Please specify exactly two .shist files: one existing source file and one target file')
+    args.selection=all_sel
+    args.source=all_shist[0]
+    args.target=all_shist[1]
+
+    #Now deal with arguments:
+    if not os.path.exists(args.source):
+        parser.error('File not found: %s'%args.source)
+    args.target=test_and_fix_target(parser.error,args.target)
+
+    if not args.selection:
+        parser.error('Please select histograms to extract by providing either patterns for keys or indices')
+    return args
+
+args=parse_cmd_line()
+
+hc = sh.HistCollection(args.source)
+args.selection = selected_keys(hc.keys,args.selection)
+if not args.selection:
+    print('ERROR: Selection does not pick any keys!')
+    sys.exit(1)
+
+hc_out = sh.HistCollection()
+for i,k in args.selection:
+    hc_out.add(hc.remove(k),k)
+hc_out.saveToFile(args.target)

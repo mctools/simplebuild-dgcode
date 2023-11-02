@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+import sys,os
+from optparse import OptionParser#NOTE: The optparse module is deprecated - we should stop using it at some point
+parser = OptionParser(usage='%prog [options]')
+parser.add_option("-n", "--nevts",type="int", dest="nevts", default=10,help="Number of events to simulate")
+parser.add_option("-o", "--output",type="string", dest="outfile", default='testoutput',help="Destination of output data")
+parser.add_option("-m", "--mode",type="choice",choices=['FULL','REDUCED','MINIMAL'], dest="mode",
+                  default='FULL',help="How much step information to store: FULL, REDUCED or MINIMAL")
+parser.add_option("-f", "--filter",action='store_true',default=False,dest="filter",
+                  help='add volume filter')
+
+(opt, args) = parser.parse_args(sys.argv[1:])
+if args: parser.error("Unrecognised arguments: %s"%' '.join(args))
+if not opt.outfile: parser.error("Please specify valid output file")
+
+
+import G4Tests.GeoTest
+import Units
+import G4Launcher
+
+geo = G4Tests.GeoTest.create()
+geo.boronThickness_micron=200
+geo.worldExtent_meters=1
+
+vis = False#todo: as option
+launcher = G4Launcher()
+launcher.setGeo(geo)
+launcher.setParticleGun("neutron",
+                      0.025*Units.units.eV,
+                      (0,0,-1.5*geo.getParameterDouble("worldExtent_meters")*Units.units.meter),
+                      (0,0,1))
+
+launcher.setOutput(opt.outfile,opt.mode)
+launcher.setSeed(1119)
+if opt.filter:
+    import G4CollectFilters.StepFilterVolume
+    f = G4CollectFilters.StepFilterVolume.create()
+    f.volumeList = ["lv_targetbox"]
+    launcher.setFilter(f)
+
+if vis:
+    launcher.setVis()
+
+
+if G4Launcher.g4version()<1030:
+    # The following two lines were appropriate/needed in older Geant4 with the QGSP_BIC_HP
+    # physics list. If not interested in Geant4 10.00.p03 support, it is safe to remove
+    # the next two lines (and the if-statement). More info at DGSW-305.
+    launcher.cmd_postinit('/process/eLoss/StepFunction 0.1 0.001 um')
+    launcher.cmd_postinit('/process/eLoss/minKinEnergy 10 eV')
+
+if vis:
+    launcher.startSession()
+else:
+    launcher.startSimulation(opt.nevts)

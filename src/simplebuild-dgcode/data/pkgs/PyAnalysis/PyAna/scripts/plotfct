@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+import os,sys,numpy,math
+
+args=sys.argv[1:]
+if not args or '-h' in args or '--help' in args:
+    print("Usage:")
+    print()
+    print("%s lowlim uplim fct1 [fct2] [fct3] [...]"%os.path.basename(sys.argv[0]))
+    print()
+    sys.exit(0)
+
+evalctx = {}
+for m,obj in math.__dict__.items():
+    if not m.startswith('_') and not m in evalctx:
+        evalctx[m]=obj
+#expose select builtins only (for security):
+evalctx['__builtins__']=None
+evalctx['abs']=lambda x : abs(x)
+evalctx['max']=max
+evalctx['min']=min
+evalctx['float']=float
+evalctx['int']=int
+evalctx['step']=lambda x : (1.0 if x>0.0 else 0.0)
+
+lower = eval(args[0],evalctx)
+upper = eval(args[1],evalctx)
+fexprs = args[2:]
+
+
+import matplotlib.pyplot as plt
+if 'keymap.quit' in plt.rcParams and not 'q' in plt.rcParams['keymap.quit']:
+    plt.rcParams['keymap.quit'] = tuple(list(plt.rcParams['keymap.quit'])+['q','Q'])
+_plt_legend_orig = plt.legend
+def _plt_legend(*args,**kwargs):
+    if not 'numpoints' in kwargs:
+        kwargs['numpoints']=1
+    l = _plt_legend_orig(*args,**kwargs)
+    if not 'notdraggable' in kwargs:
+        if hasattr(l,'set_draggable'):
+            l.set_draggable(True)
+        elif hasattr(l,'draggable'):
+            l.draggable()
+    else:
+        del kwargs['notdraggable']
+    return l
+plt.legend=_plt_legend
+
+x=numpy.linspace(lower,upper,2000)
+
+for f in fexprs:
+    y=numpy.vectorize(eval("lambda x: float(%s)"%f,evalctx))(x)
+    plt.plot(x,y,label = f if len(fexprs)>1 else None)
+if len(fexprs)==1:
+    plt.title(fexprs[0])
+else:
+    plt.legend()
+plt.grid()
+plt.xlim(lower,upper)
+plt.show()

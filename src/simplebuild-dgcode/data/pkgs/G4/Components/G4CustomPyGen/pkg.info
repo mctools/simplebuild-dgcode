@@ -1,0 +1,19 @@
+package(USEPKG G4Interfaces)
+
+####################################################################
+
+Package containing infrastructure to allow people to implement custom generators
+in python, for instance right in their simulation scripts.
+
+TODO:
+  * gun should accept wavelength parameters
+  * gun should accept tuple/list parameters for vectors
+  * gun should provide attribute access to parameters (e.g. gun.energy = ...)
+  * gun should have a .fire() method, in case user wants to provide multiple
+    particles per event (will be triggered once automatically in case user didn't
+    invoke it).
+  * gun should default to 1.8Aa neutron
+  * need test scripts and examples, as well as testing module-resident
+  py-generator.
+
+primary author: thomas.kittelmann@ess.eu

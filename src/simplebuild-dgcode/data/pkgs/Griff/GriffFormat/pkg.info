@@ -1,0 +1,24 @@
+package(USEPKG EvtFile)
+
+######################################################################
+
+
+Package setting up a Geant4-specific container format for Geant4 event data
+based on the EvtFile package.
+
+Note that the package does *not* depend on Geant4, which means that the data can
+be read and analysed without complicated dependencies. For that reason,
+functionality For writing out the files from within a Geant4 job in the first
+place, is provided in a separate package: G4DataCollect. Utilities for reading
+and analysing such files are in GriffDataRead and GriffAnaUtils respectively.
+
+Primary author: thomas.kittelmann@ess.eu
+
+TODO:
+  * Need scripts for dumping the contents of .griff files.
+  * Support file merging. This would require special code since the database
+    section is non-trivial to merge (meaning that the track/step sections will be
+    as well)
+  * needs script which can strip stepdata from a file (also need to be able to
+    not record it in the first place)
+  * Store seeds in file

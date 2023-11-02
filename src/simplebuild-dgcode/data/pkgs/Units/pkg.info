@@ -1,0 +1,14 @@
+package()
+
+######################################################################
+
+Package with a few convenience units and constants, mirrored in both C++ and
+Python. The values are designed to be mostly compatible with those used in CLHEP
+and Geant4, most notably meaning millimetres, nanoseconds, and MeV being
+unity. A few constants might differ slightly as we use NIST/CODATA values as the
+primary source of data, and there are certainly not as many constants and units
+available as in CLHEP.
+
+This package will never have any external dependencies.
+
+Primary author: thomas.kittelmann@ess.eu

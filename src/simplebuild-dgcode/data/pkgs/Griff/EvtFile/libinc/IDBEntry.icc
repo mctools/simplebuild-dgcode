@@ -1,0 +1,42 @@
+inline EvtFile::IDBEntry::IDBEntry()
+  : m_hash(UINT_MAX),
+    m_refCount(0)
+{
+}
+
+inline bool EvtFile::IDBEntry::operator<(const IDBEntry& o) const {
+  if (m_hash!=o.m_hash)
+    return m_hash < o.m_hash;
+  return lessThan(o);
+}
+
+inline bool EvtFile::IDBEntry::operator==(const IDBEntry& o) const {
+  if (m_hash!=o.m_hash)
+    return false;
+  return equals(o);
+}
+
+inline bool EvtFile::IDBEntry::operator!=(const IDBEntry& o) const {
+  if (m_hash!=o.m_hash)
+    return true;
+  return !equals(o);
+}
+
+inline void EvtFile::IDBEntry::ref()
+{
+  ++m_refCount;
+}
+
+inline void EvtFile::IDBEntry::unref() {
+  assert(m_refCount>0);
+  if (m_refCount==1)
+    delete this;
+  else
+    --m_refCount;
+}
+
+inline void EvtFile::IDBEntry::setHash()
+{
+  if (m_hash==UINT_MAX)
+    m_hash = calculateHash();
+}

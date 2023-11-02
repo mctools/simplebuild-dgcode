@@ -1,0 +1,77 @@
+package(USEEXT Geant4 OSG USEPKG GriffDataRead)
+
+######################################################################
+
+OpenSceneGraph based viewer for Geant4
+
+Note that the included font file, data/RobotoMono_wght_.ttf, file is
+deliberately chosen because it has an Apache-2.0 LICENSE like the rest of
+dgcode, hence making it simple to include it here (it also needed to be
+monospace of course). Specifically it was copied from the file
+apache/robotomono/RobotoMono[wght].ttf in the git repo
+https://github.com/google/fonts (commit id
+4b31e06771036d0132bbcf26dccd976f4fce4286). The LICENSE file in the same
+directory of that repo in that commit is the Apache-2.0 license.
+
+Primary author: thomas.kittelmann@ess.eu
+
+todo (random thoughts):
+  - in order to potentially make this viewer exportable, it might be valuable to
+    not depend on other packages here (decision to be revisited)
+  - fps counter?
+  - hower-text under cursor (with volume name), transparent gray
+  - check all includes and general code cleanup
+  - highlight selected node (and nodes with same material, log-vol, shape, etc)
+  - test that anti-aliasing works
+  - display of e.g. picked point(s) (and line between them with distance label)
+  - embedded text info
+  - different visual effects? one for selection, one for showing vertices and triangles,
+    one for showing all "aluminium" around, etc.
+   -special colouring;
+     - according to vis-attributes
+     - by material, name, etc. (has to be edited - such maps must then be persistifiable
+       in editable format)
+ - options which would allow e.g. wireframe world and normal daughters
+ - iconbox for zapped volumes
+ - zoom to clicked volume
+  -animated zooms
+ - proper material, cubic volume, surface area, weight, etc. printouts
+ - simulated particles display
+ - options to scale axes and to move them around
+ - shortcut for axis aligned views or axis rotations!
+ - for super imgs: add user manipulatable light sources and enable shading
+ - iconbox idea: one shortcut to flip between de-iconising all iconised volumes
+    and iconising all visible volumes. Flip-zap-flip to resurrect a volume.
+ - switch perspective and ortographic
+ - HUD help screen (and info, toggle on/off with F1)
+ - HUD status-bar (toggle on/off with F1)
+ - change cursor when in pick-point-mode?
+ - "zap" mode which forces into wireframe and makes inactive to picking rather
+   than simply hiding
+ - cutaways (by phi or plan or wedge...)
+ - workaround random FPE problems in osg
+ - background colour
+ - export images, also with transparent background.
+ - save/store up to 10 views
+ - click to orient view to normal of selected surface
+ - should zap-state be remembered? Right now you can contract+expand a sibling
+   and it is forgotten.
+ - measurement points: corner-snapping or not should be saved (along with
+   surface normals), so we can say give info on (can we easily take into account that
+   planes are finite?):
+   dist(point1,point2)
+   dist(point1,plane2) [if point2 not corner-snapped]
+   dist(plane1,point2) [if point1 not corner-snapped]
+   dist(plane1,plane2) [if neither points1 are corner-snapped and if planes are
+   parallel]
+ - ORIENT_TO_SURFACE: If already oriented, then align the rotation with the
+   edges of the picked surface (using perhaps primitiveIndex of the Intersection
+   struct on the vertex arrays?? Has to remember triangles vs. quads of course)
+ - Arrow keys for zoom/rotate, enter for ...? dbl click for...?
+ - text/box colour should change with background colour changes
+ - scale down font as appropriate in small window (or just set characterheight
+   once and for all?). Problems seen in ubuntu in virtualbox on osx.
+ - GraphicsWindow/setCursor
+ - wheel zoom changes center
+ - wheel zoom should also use shift/ctrl to control speed (like arrow up/down)
+ - should be able to interact with tracks

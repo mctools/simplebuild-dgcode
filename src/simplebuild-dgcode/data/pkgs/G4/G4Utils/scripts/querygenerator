@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+import os,sys,glob
+import importlib
+import Core.System
+
+def detect_generator_examples():
+    #Use standard generator modules as examples, if G4StdGenerators package is present:
+    gens = glob.glob(os.path.join(os.getenv('SBLD_INSTALL_PREFIX'),'python','G4StdGenerators','*Gen.so'))
+    gens = sorted([('.'.join(s.split(os.sep)[-2:])).replace('.so','') for s in gens])
+    #And why not the python examples, if present:
+    try:
+        import G4CustomPyGen
+        import G4CustomPyGen.Examples
+        for k,v in sorted(G4CustomPyGen.Examples.__dict__.items()):
+            if not k.startswith('_') and isinstance(v, type) and issubclass(v,G4CustomPyGen.GenBase):
+                gens += ['G4CustomPyGen.Examples/%s'%k]
+    except ImportError:
+        #G4CustomPyGen package not present
+        pass
+    return gens
+
+def parse():
+    #
+    progname=os.path.basename(sys.argv[0])
+    epilog,gens = None,detect_generator_examples()
+    if 'G4StdGenerators.FlexGen' in gens:
+        epilog='\nExamples of how to select generators and display their parameters:\n\n'
+        for g in gens:
+            epilog+='      %s -g %s\n'%(progname,g)
+        epilog+='\nExamples of how to modify parameters and visualise the resulting tracks:\n\n'
+        epilog+='      %s -g G4StdGenerators.FlexGen -v fixed_x_meters=-2 -d300\n'%progname
+        epilog+='      %s -g G4StdGenerators.SimpleGen -v particleName="e-"\n'%progname
+        if 'G4StdGenerators.ProfiledBeamGen' in gens:
+            epilog+='      %s -g G4StdGenerators.ProfiledBeamGen -v -n10000 spread_x_mm=20 spread_mode=GAUSSIAN\n'%progname
+            epilog+='      %s -g G4CustomPyGen.Examples/CorrelatedBeamGen -v -n10000 -d10\n'%progname
+        epilog+='\n'
+    else:
+        epilog='\nExamples: (no examples since G4StdGenerators package is disabled!!)\n\n'
+
+
+    from optparse import OptionParser,OptionGroup#NOTE: The optparse module is deprecated - we should stop using it at some point
+    class MyOptParser(OptionParser):
+        #sub-class which respects line breaks in epilog
+        def format_epilog(self, formatter):
+            return self.epilog
+
+    parser = MyOptParser(usage='%prog [options] [par1=val1 par2=val2 ...]',
+                          description='Queries any generator module. Specifically it instantiates the generator chosen with -g/--generator, applies the settings indicated by any par=val items on the command line, and dumps the resulting parameters. If -v/--visualise is specified, a number of events is generated with the generator in an actual Geant4 job in an empty world, and the result is visualised.',epilog=epilog)
+    parser.add_option('-g','--generator',default='',action='store',dest="gen",
+                      help='Select generator [REQUIRED]')
+    parser.add_option('-v','--visualise',default=False,action='store_true',dest="vis",
+                      help='Simulate and visualise tracks')
+    parser.add_option("-n", "--nevts",metavar="N",
+                      type="int", dest="nevts", default=-1,
+                      help="Number of events to generate for visualisation")
+    parser.add_option("-d", "--dimension",metavar="D",
+                      type="float", dest="geo_dim_cm", default=100,
+                      help="Dimension in centimetres of geometry used for visualisation")
+    parser.add_option("--verbose",action='store_true',default=False,dest="trackingverbose",
+                      help='enables verbose tracking printouts')
+    (opt, args) = parser.parse_args()
+    if not opt.gen:
+        parser.error('Please select generator with -g GENERATOR (-h/--help for examples)')
+    gen = opt.gen.split('/')
+    if len(gen)>2:
+        parser.error('Specified generator has a bad format (supply -h/--help for examples)')
+    try:
+        GenMod = importlib.import_module(gen[0])
+    except ImportError:
+        parser.error('Could not import module of chosen generator module ("%s")'%gen[0])
+        sys.exit(1)
+    if len(gen)==1:
+        #generator implemented in C++:L
+        gen = GenMod.create()
+    else:
+        #generator implemented in python:
+        #gen=eval('GenMod.%s()'%gen[1])
+        gen=GenMod.__dict__[gen[1]]()
+    for a in args:
+        if not '=' in a or not a.index('=')>0:
+            parser.error('Unexpected argument: %s'%Core.System.quote(a))
+        else:
+            if not hasattr(gen,a.split('=')[0]):
+                parser.error('Chosen generator has no parameter named %s'%a.split('=')[0])
+    try:
+        gen.swallowCmdLine(args)
+    except RuntimeError as e:
+        if e.message=='Parameter failure':
+            parser.error('%s parameter validation for generator'%gen.getName())
+            sys.exit(1)
+        raise
+    opt.gen=gen
+    return opt
+
+opt = parse()
+if not opt.vis and not opt.trackingverbose:
+    try:
+        opt.gen.dump()
+    except RuntimeError as e:
+        if e.message=='Parameter failure':
+            print('Aborting due to bad parameter settings')
+            sys.exit(1)
+        raise
+    sys.exit(0)
+
+import G4Launcher
+import G4StdGeometries.GeoEmptyWorld as Geo
+opt.geo=Geo.create()
+opt.geo.dimension_cm = opt.geo_dim_cm
+launcher = G4Launcher(opt.geo,opt.gen)
+if opt.vis:
+    launcher.setOutput('vis','FULL')
+else:
+    launcher.setOutput('none')
+launcher.setPhysicsList('QGSP_BIC')#not 'ESS_Empty' since it does not have a full set of particles
+sys.argv = [sys.argv[0]]
+if opt.nevts!=-1:
+    sys.argv += ['--nevts=%i'%opt.nevts]
+if opt.vis:
+    sys.argv += ['--dataviewer']
+if opt.trackingverbose:
+    sys.argv += ['--verbose']
+def previewer_callback(launcher):
+    print('='*80)
+    print('==  Showing %i events generated with the following settings:'%opt.nevts)
+    print('='*80)
+    opt.geo.dump('==  ')
+    opt.gen.dump('==  ')
+    print('='*80)
+launcher._previewer_callback = previewer_callback
+launcher.go()

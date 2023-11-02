@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+
+import simplebuild.cfg
+import pathlib
+
+AbsPath = lambda p : pathlib.Path(p).expanduser().resolve().absolute()
+
+def pkgs_in_dir(p):
+    p=AbsPath(p)
+    for pkgname,info in sorted(simplebuild.cfg.pkgs.items()):
+        dn=AbsPath(info['dirname'])
+        if ( p == dn ) or ( p in dn.parents ):
+            yield pkgname,info
+
+def find_project_topdir(projectName):
+    for p in simplebuild.cfg.dirs.pkgsearchpath:
+        if ( p / projectName ).is_dir():
+            return p / projectName
+
+def filter_pkgs_exclude_dirs( pkginfos, excluded_dirs ):
+    for info in pkginfos:
+        p=AbsPath(info['dirname'])
+        excluded=False
+        for ed in excluded_dirs:
+            if ed in p.parents:
+                excluded = True
+        if not excluded:
+            yield info
+
+def analyse_project(projectName):
+    cfg = simplebuild.cfg
+    projtopdir = find_project_topdir(projectName)
+    if not projtopdir:
+        raise RuntimeError(f'Project topdirectory for project named "{projectName}" not found.')
+    exclude_dirs = [ projtopdir ]
+
+    for pkgname,info in pkgs_in_dir(projtopdir):
+        clients = [ cfg.pkgs[name] for name in info.get('clients_direct',[]) ]
+        deps = [ cfg.pkgs[name] for name in info.get('deps_pkgs_direct',[]) ]
+        badclients = filter_pkgs_exclude_dirs(clients,exclude_dirs)
+        baddeps = filter_pkgs_exclude_dirs(deps,exclude_dirs)
+        for bad in badclients:
+            print('Cross-project dependency: %s used by %s'%(pkgname,bad['name']))
+        for bad in baddeps:
+            print('Cross-project dependency: %s used by %s'%(bad['name'],pkgname))
+
+if __name__ == '__main__':
+    import sys
+    assert len(sys.argv)==2,"Please provide project name"
+    analyse_project(sys.argv[1])
+
+

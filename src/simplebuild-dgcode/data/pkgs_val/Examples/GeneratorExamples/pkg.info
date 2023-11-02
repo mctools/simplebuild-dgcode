@@ -1,0 +1,8 @@
+package(USEPKG G4CustomPyGen)
+
+#############################################################
+
+Examples involving of the various generators provided in Framework/. We could
+add G4StdGenerators examples as well, but they are anyway in the Skeleton/.
+
+primary author: thomas.kittelmann@ess.eu

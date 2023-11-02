@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+sb_g4examples_sim -lESS_Empty && \
+sb_g4examples_simhookclass -lESS_Empty some_param_dbl=23.3

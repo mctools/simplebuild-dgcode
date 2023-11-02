@@ -1,0 +1,9 @@
+package(USEPKG GriffAnaUtils)
+
+###############################################################################
+
+Test GriffAnaUtils.
+
+Primary author: thomas.kittelmann@ess.eu
+
+

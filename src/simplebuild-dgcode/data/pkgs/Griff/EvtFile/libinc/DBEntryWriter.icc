@@ -1,0 +1,19 @@
+inline EvtFile::DBEntryWriter::index_type EvtFile::DBEntryWriter::getIndex( IDBEntry* t )
+{
+  t->setHash();
+
+  //Will add the data and assign it an index if not already there.
+  map_type& themap = m_map[t->hash()%NMAPS];
+  map_type::const_iterator it = themap.find(t);
+  if (it==themap.end()) {
+    //NB: The call to insert(..) does NOT invalidate the iterators
+    //cached in our vector: "The insert members shall not affect the
+    //validity of iterators and references to the container"
+    t->ref();//ref pointers in themap (unref in destructor)
+    std::pair<map_type::const_iterator,bool> res=themap.insert(map_type::value_type(t,m_nextIndex++));
+    assert(res.second);
+    it=res.first;
+    m_addedSinceLastWrite.push_back(it);
+  }
+  return it->second;
+}

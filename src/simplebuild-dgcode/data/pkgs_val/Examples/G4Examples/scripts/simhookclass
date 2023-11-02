@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+import G4StdGenerators.FlexGen as Gen
+import G4StdGeometries.GeoSlab as Geo
+import G4Examples.ExampleHookClass as HookClass
+import G4Launcher
+
+geo = Geo.create()
+gen = Gen.create()
+hc = HookClass.ExampleHookClass()
+hc.some_param_int = 5
+
+geo.target_depth_cm = 0.01
+
+gen.particleName = 'neutron'
+gen.neutron_wavelength_aangstrom = 20.2
+gen.fixed_z_meters = -1.5
+
+
+launcher = G4Launcher(geo,gen)
+
+#Add hooks:
+
+launcher.prepreinit_hook(hc.prepreInitHook)
+launcher.preinit_hook(hc.preInitHook)
+launcher.postinit_hook(hc.postInitHook)
+#Get hook parameters from command line:
+hc.swallowCmdLine()
+#Dump hook parameters from command line (todo: should/could integrater better with launcher options):
+hc.dump("Custom Hook Class parameters: ")
+print()
+
+#def custom():
+#    hc.dump()
+#launcher.add_flag('--hookdump',custom)
+
+launcher.go()
+#del hc
+#hc=2

@@ -1,0 +1,7 @@
+package(USEPKG RandUtils)
+
+#############################################################
+
+Tests and benchmarks of random generators.
+
+primary author: thomas.kittelmann@ess.eu

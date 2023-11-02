@@ -1,0 +1,8 @@
+
+inline unsigned G4DataCollectInternals::DBTouchableEntry::calculateHash() const
+{
+#ifdef GRIFF_EXTRA_TESTS
+  extraTests();
+#endif
+  return (unsigned)(intptr_t)m_pv;
+}

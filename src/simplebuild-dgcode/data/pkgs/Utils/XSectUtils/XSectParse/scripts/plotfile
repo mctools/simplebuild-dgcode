@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import os, sys
+
+args=sys.argv[1:]
+
+def usage(error=None):
+    if error:
+        print("\nError: %s\n"%error)
+    print("Usage:\n")
+    pn=os.path.basename(sys.argv[0])
+    print("  %s [-h|--help] [-l] [xsectfile1] [xsectfile2] [...]\n"%pn)
+    print()
+    print(" Script for quickly plotting the contents of xsectfiles dumped by the  ")
+    print(" G4XSectDump.XSectSpy module (usually through the -x option to a simulation script)")
+    print()
+    print(" -h/--help : Show usage information")
+    print(" -l        : Display mean free path length rather than cross sections\n")
+    sys.exit(1 if error else 0)
+
+if '-h' in args or '--help' in args:
+    usage()
+
+showMFP=False
+if '-l' in args:
+    args.remove('-l')
+    showMFP=True
+
+files=[]
+for f in args:
+    if f.startswith('-'):
+        usage('unknown argument %s'%f)
+    if not os.path.exists(f):
+        usage('file not found %s'%f)
+    files+=[f]
+
+if not files:
+    usage("no input files")
+
+for ifile,filename in enumerate(files):
+    import XSectParse.PlotXSectFile
+    XSectParse.PlotXSectFile.plot_file(filename,mfp=showMFP,save_fig=None)

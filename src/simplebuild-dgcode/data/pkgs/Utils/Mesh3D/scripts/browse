@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+def parse():
+    import os
+    import argparse as AP
+    # sumflag='--summary'
+
+    descr="""Browse contents of FILE which must be a .mesh3d file, such as those produced
+    by the --heatmap option to Geant4 simulation scripts. Default behaviour is
+    to print a brief summary of the file contents and to launch a graphical
+    browser for the contents (requires matplotlib to be installed)."""
+
+    parser = AP.ArgumentParser(description=descr)
+    pa=parser.add_argument
+    pa('FILE', help='mesh3d file to inspect')
+    pa('-d','--dump',action='count',help='print cell contents; specify twice to include empty cells')
+    pa('-s','--nosummary',action='store_true', help='do not print a summary of the file contents')
+    pa('-g','--nographical',action='store_true',help='do not launch graphical browser')
+    pa('-a','--altgraphical',action='store_true',help='alternative graphical browser rendering 3D voxels')
+    a=parser.parse_args()
+    if a.dump and a.dump>2:
+        parser.error('-d/--dump flag specified too many times')
+    if not os.path.exists(a.FILE):
+        parser.error('file not found: %s'%a.FILE)
+    return a
+
+args=parse()
+
+import Mesh3D
+mesh=Mesh3D.Mesh3D(args.FILE)
+if not args.nosummary:
+    mesh.print_summary()
+if args.dump:
+    mesh.dump_cells(args.dump>1)
+if not args.nographical:
+    import Mesh3D.viewer
+    if not args.altgraphical:
+        Mesh3D.viewer.Mesh3DViewer(mesh)
+    else:
+        Mesh3D.viewer.experimental_volume_rendering(mesh)

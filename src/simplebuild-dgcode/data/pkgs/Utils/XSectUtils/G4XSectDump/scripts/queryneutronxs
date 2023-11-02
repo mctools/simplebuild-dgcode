@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+import argparse
+import pathlib
+import os
+import numpy as np
+import time
+import io
+
+###############
+def parse_args():
+    descr="""
+    Run Geant4 and use the ESS-dgcode hooks to extract neutron cross sections
+    for the indicated element. Results are summarised as 'scatter' or
+    'absorption' (by taking the Geant4 "hadElastic" process to mean scattering
+    as everything else as absorption), and dumped into a simple ASCII file.
+    """
+    parser = argparse.ArgumentParser(description=descr.strip())
+    parser.add_argument("ELEMENT",help="Element or isotope to inspect in a format like: H, Fe, B10, He3, ...")
+    parser.add_argument('--output','-o',default=None,
+                        help=('Name of output file (specify "stdout" to print to stdout). If not'
+                              +' supplied, it will become g4xs_<ELEMENT>.txt. Specify "none" to skip entirely.'))
+    parser.add_argument('--plot','-p',action='store_true',
+                        help='Show interactive plots of the results as well as producing an output file.')
+    parser.add_argument('--luxury','-l', action='count',default=0,
+                        help='Increase result luxury (granularity, statistics). Specify more than once to increase even further.')
+
+
+    args=parser.parse_args()
+    if not args.output in ('stdout','none'):
+        args.output = pathlib.Path(args.output or 'g4xs_%s.txt'%(args.ELEMENT.strip()))
+    return args
+
+def parse(parsed_result):
+    procs=parsed_result['procs']
+    assert len(procs)==2
+    egrid = procs['scatter'][0]
+    assert np.array_equal(egrid,procs['absorption'][0])
+    import Units
+    egrid /= Units.units.eV
+    xs_scatter = procs['scatter'][1]/Units.units.barn
+    xs_absorption = procs['absorption'][1]/Units.units.barn
+    return egrid,xs_scatter,xs_absorption
+
+def toASCII(parsed_result,element,nsamples):
+    from G4Launcher._init import g4version, g4versionstr
+
+    res = io.BytesIO()
+    egrid,xs_s,xs_a = parse(parsed_result)
+
+    header=[
+        'Neutron cross sections extracted from Geant4 by the ESS dgcode framework (doi:10.1016/j.physb.2018.03.025).',
+        f'Element: {element}',
+        f'Geant4 version: {g4version()} "{g4versionstr()}"',
+        f'Samples per energy point: %i'%nsamples,
+        'Energy_eV SigmaScat_Barn SigmaAbs_Barn'
+    ]
+    np.savetxt( res,
+                np.column_stack( [egrid, xs_s, xs_a] ),
+                header = '\n'.join(header),
+                fmt='%g',
+                delimiter=' ',
+                newline='\n'
+               )
+    return res.getvalue().decode()
+
+def doPlot(parsed_result):
+    from PyAna import plt
+    egrid,xs_s,xs_a = parse(parsed_result)
+    plt.plot(egrid,xs_s,label='Scattering')
+    plt.plot(egrid,xs_a,label='Absorption')
+    plt.legend()
+    plt.grid()
+    plt.loglog()
+    plt.show()
+
+args = parse_args()
+
+print (f'Extracting neutron cross sections for element {args.ELEMENT}')
+opt_nsample = 50
+opt_logdeltae = 0.005
+for i in range(args.luxury):
+    opt_nsample *= 5
+    opt_logdeltae /= 2
+_=[('G4XSECTSPY_NSAMPLE',str(opt_nsample)),
+   ('G4XSECTSPY_LOGDELTAE','%.13g'%opt_logdeltae)]
+print(f"Setting for luxury level %i:"%args.luxury)
+for k,v in _:
+   print(f"  {k}={v}")
+   os.environ[k]=v
+
+t0 = time.monotonic()
+import G4XSectDump.query#import AFTER os.environ was modified above
+p=G4XSectDump.query.rung4_extract_collapsed_neutronxs(args.ELEMENT)
+print('Extraction took: %g seconds.'%(time.monotonic() - t0))
+
+
+if args.output != 'none':
+    txt = toASCII(p,args.ELEMENT,opt_nsample)
+    if args.output!='stdout':
+        args.output.write_text( txt )
+        print("Wrote %s"%args.output.name)
+    else:
+        print( txt )
+
+if args.plot:
+    doPlot(p)
+
+
+
+#        double nsample=50.0;
+#    double nsample_user = getenv("G4XSECTSPY_NSAMPLE") ? atof(getenv("G4XSECTSPY_NSAMPLE")) : 0.0;
+#    double logdeltae=0.005;
+#    double logdeltae_user = getenv("G4XSECTSPY_LOGDELTAE") ? atof(getenv("G4XSECTSPY_LOGDELTAE")) : 0.0;
+#args.dump > 1)
+#

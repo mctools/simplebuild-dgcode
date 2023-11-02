@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+#Test all combinations of MCPL_HASZLIB, MCPL_NO_CUSTOM_GZIP and MCPL_NO_EXT_GZIP
+
+#A bit hackish, but we want to compile mcpl again and again:
+
+CC=$(sb_core_queryenv system langs c compiler)
+CFLAGS=$(sb_core_queryenv system langs c cflags)
+CAN_USE_RPATHLINK=$(sb_core_queryenv --bool01 system langs c can_use_rpathlink_flag)
+P=$(sb_core_queryenv --pkgdir MCPL)
+
+ZLIB_C_CFLAGS=$(sb_core_queryenv extdeps ZLib cflags_c)
+#Assume same for C++ and C: ZLIB_CXX_CFLAGS=$(sb_core_queryenv extdeps ZLib cflags_cxx)
+ZLIB_LDFLAGS=$(sb_core_queryenv extdeps ZLib ldflags)
+
+
+mkdir -p fakebadgzip/
+echo 'int main(void){ return 1; }' | $CC ${CFLAGS} -xc - -o fakebadgzip/gzip
+if [ $? != 0 ]; then
+    exit 1
+fi
+
+rpathflags="-Wl,-rpath,$SBLD_LIB_DIR -Wl,-rpath,$SBLD_LIB_DIR/links"
+if [ x$CAN_USE_RPATHLINK == x1 ]; then
+    rpathflags="${rpathflags} -Wl,-rpath-link,$SBLD_LIB_DIR -Wl,-rpath-link,$SBLD_LIB_DIR/links"
+fi
+
+if [ "x${CONDA_PREFIX:-}" != x ]; then
+    rpathflags="${rpathflags} -Wl,-rpath,${CONDA_PREFIX}/lib -Wl,-rpath,${CONDA_PREFIX}/lib"
+    if [ x$CAN_USE_RPATHLINK == x1 ]; then
+        rpathflags="${rpathflags} -Wl,-rpath-link,${CONDA_PREFIX}/lib -Wl,-rpath-link,${CONDA_PREFIX}/lib"
+    fi
+fi
+
+echo '#include "mcpl.h"' > main.c
+echo 'int main(void) {mcpl_closeandgzip_outfile(mcpl_create_outfile("out.mcpl"));return 0;}' >> main.c
+for a in 0 1; do
+    for b in 0 1; do
+        for c in 0 1; do
+            rm -f out.mcpl*
+            flags=""
+            flagsprint=""
+            if [ $a == 1 ]; then
+                flags="-DMCPL_HASZLIB ${flags} ${ZLIB_LDFLAGS} ${ZLIB_C_CFLAGS}"
+                flagsprint="-DMCPL_HASZLIB ${flagsprint} \${ZLIBFLAGS}"
+            fi
+            if [ $b == 1 ]; then
+                flags="${flags} -DMCPL_NO_CUSTOM_GZIP"
+                flagsprint="${flagsprint} -DMCPL_NO_CUSTOM_GZIP"
+            fi
+            if [ $c == 1 ]; then
+                flags="${flags} -DMCPL_NO_EXT_GZIP"
+                flagsprint="${flagsprint} -DMCPL_NO_EXT_GZIP"
+            fi
+            echo "=========================================================================="
+            echo "=== Testing flags: ${flagsprint}"
+            #echo "===    rpathflags: ${rpathflags}"
+            $CC ${CFLAGS} -std=c99 -lm ${flags} ${rpathflags} -I$SBLD_INCLUDE_DIR/MCPL -L$SBLD_LIB_DIR/ $P/libsrc/mcpl.c main.c -lm ${flags} ${rpathflags} -o main && ./main
+            EC=$?
+            ls -1 out.mcpl*
+            if [ $? == 0 ]; then
+                echo "=== Again with broken gzip:"
+                rm -f out.mcpl*
+                failure=0
+                PATH="$PWD/fakebadgzip:$PATH" ./main || failure=1
+                ls -1 out.mcpl*
+                if [ $failure == 1 ]; then
+                    echo "  ==> Exit code non-zero (failure)."
+                else
+                    echo "  ==> Exit code 0."
+                fi
+            else
+                echo "compilation failed"
+                exit 1
+            fi
+        done
+    done
+done

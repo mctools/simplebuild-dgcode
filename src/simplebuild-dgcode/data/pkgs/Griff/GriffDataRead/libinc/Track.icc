@@ -1,0 +1,104 @@
+//These are actually forbidden, only needed so that std::vector<Track> think it could be allowed:
+inline GriffDataRead::Track::Track() : m_dr(0), m_pdef(0), m_data(0) { assert(false); }
+inline GriffDataRead::Track::~Track(){ assert(false);  }
+inline GriffDataRead::Track & GriffDataRead::Track::operator= ( const GriffDataRead::Track & o )
+{ assert(false); m_dr = o.m_dr; m_data = o.m_data; m_pdef=o.m_pdef; return *this; }
+inline GriffDataRead::Track::Track( const GriffDataRead::Track & o ) { assert(false); *this = o; }
+
+inline void GriffDataRead::Track::set(GriffDataReader*dr,const char*data) { m_dr = dr; m_data = data; m_pdef=0; }
+
+inline const GriffDataRead::Segment * GriffDataRead::Track::getSegment(unsigned i) const { assert(i<nSegments()); return m_firstSegment + i; }
+inline const GriffDataRead::Segment * GriffDataRead::Track::segmentBegin() const { return m_firstSegment; }
+inline const GriffDataRead::Segment * GriffDataRead::Track::segmentEnd() const { return m_firstSegment + nSegments(); }
+
+inline const GriffDataRead::Track * GriffDataRead::Track::getParent() const
+{
+  unsigned pid=parentID();
+  return pid == 0 ? 0 : m_dr->getTrackByID(pid);
+}
+
+inline int32_t GriffDataRead::Track::getDaughterID(unsigned i) const
+{
+  assert(i<nDaughters());
+  return ByteStream::interpret<int32_t>(m_data+28+4*i);
+}
+
+inline const int32_t * GriffDataRead::Track::daughterIDBegin() const
+{
+  return reinterpret_cast<const int32_t*>(m_data+28);
+}
+
+inline const int32_t * GriffDataRead::Track::daughterIDEnd() const
+{
+  return daughterIDBegin()+nDaughters();
+}
+
+inline const GriffDataRead::Track * GriffDataRead::Track::getDaughter(unsigned i) const
+{
+  return m_dr->getTrackByID(getDaughterID(i));
+}
+
+inline const std::string& GriffDataRead::Track::creatorProcess() const
+{
+  return m_dr->m_dbProcNames.getString(ByteStream::interpret<EvtFile::index_type>(m_data+12));
+}
+
+inline const std::string& GriffDataRead::Track::pdgName() const
+{
+  return m_dr->m_dbPDGNames.getString(pdef()->nameIdx);
+}
+
+inline const std::string& GriffDataRead::Track::pdgType() const
+{
+  return m_dr->m_dbPDGTypes.getString(pdef()->typeIdx);
+}
+
+inline const std::string& GriffDataRead::Track::pdgSubType() const
+{
+  return m_dr->m_dbPDGSubTypes.getString(pdef()->subTypeIdx);
+}
+
+inline const char* GriffDataRead::Track::pdgNameCStr() const { return pdgName().c_str(); }
+inline const char* GriffDataRead::Track::pdgTypeCStr() const { return pdgType().c_str(); }
+inline const char* GriffDataRead::Track::pdgSubTypeCStr() const { return pdgSubType().c_str(); }
+inline const char* GriffDataRead::Track::creatorProcessCStr() const { return creatorProcess().c_str(); }
+
+inline void GriffDataRead::Track::lookupPartDef() const
+{
+  assert(!m_pdef);
+  m_pdef = m_dr->m_dbPDGCodes.getParticleDefinition(pdgCode());
+  assert(m_pdef);
+}
+
+inline const GriffFormat::ParticleDefinition * GriffDataRead::Track::pdef() const {
+  if (!m_pdef)
+    lookupPartDef();
+  assert(m_pdef);
+  return m_pdef;
+}
+
+inline int32_t GriffDataRead::Track::pdgCode() const { return ByteStream::interpret<int32_t>(m_data+4); }
+inline float GriffDataRead::Track::weight() const { return ByteStream::interpret<float>(m_data+8); }
+inline bool GriffDataRead::Track::isPrimary() const { return parentID()==0; }
+inline bool GriffDataRead::Track::isSecondary() const { return parentID()!=0; }
+inline double GriffDataRead::Track::mass() const { return pdef()->mass; }
+inline double GriffDataRead::Track::width() const { return pdef()->width; }
+inline double GriffDataRead::Track::charge() const { return pdef()->charge; }
+inline double GriffDataRead::Track::lifeTime() const { return pdef()->lifeTime; }
+inline int32_t GriffDataRead::Track::atomicNumber() const { return pdef()->atomicNumber; }
+inline int32_t GriffDataRead::Track::atomicMass() const { return pdef()->atomicMass; }
+inline float GriffDataRead::Track::magneticMoment() const { return pdef()->magneticMoment; }
+inline double GriffDataRead::Track::spin() const { return pdef()->spin(); }
+inline bool GriffDataRead::Track::stable() const { return pdef()->stable; }
+inline bool GriffDataRead::Track::shortLived() const { return pdef()->shortLived; }
+inline int32_t GriffDataRead::Track::trackID() const { return ByteStream::interpret<int32_t>(m_data); }
+inline int32_t GriffDataRead::Track::parentID() const { return ByteStream::interpret<int32_t>(m_data+16); }
+inline std::uint32_t GriffDataRead::Track::nDaughters() const { return ByteStream::interpret<std::uint32_t>(m_data+24); }
+inline std::uint32_t GriffDataRead::Track::nSegments() const { return ByteStream::interpret<std::uint32_t>(m_data+20); }
+inline double GriffDataRead::Track::startTime() const { return m_firstSegment->startTime(); }
+inline double GriffDataRead::Track::startEKin() const { return m_firstSegment->startEKin(); }
+inline const GriffDataRead::Step * GriffDataRead::Track::firstStep() const { return segmentBegin()->stepBegin(); }
+inline const GriffDataRead::Step * GriffDataRead::Track::lastStep() const { return (segmentEnd()-1)->stepEnd() - 1; }
+inline const GriffDataRead::Segment * GriffDataRead::Track::firstSegment() const { return segmentBegin(); }
+inline const GriffDataRead::Segment * GriffDataRead::Track::lastSegment() const { return segmentEnd()-1; }
+inline const GriffDataReader * GriffDataRead::Track::getDataReader() const { return m_dr; }

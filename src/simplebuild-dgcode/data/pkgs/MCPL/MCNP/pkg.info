@@ -1,0 +1,10 @@
+package(USEPKG MCPL USEEXT ZLib EXTRA_INCDEPS libsrc/sswmcpl.c:MCPL/mcpl.h libsrc/sswmcpl.c:MCNP/sswread.h libsrc/sswmcpl.c:MCNP/sswmcpl.h libsrc/sswread.c:MCNP/sswread.h EXTRA_COMPILE_FLAGS -DSSWREAD_HASZLIB -DSSWREAD_HDR_INCPATH='"MCNP/sswread.h"' -DSSWMCPL_HDR_INCPATH='"MCNP/sswmcpl.h"' -DMCPL_HEADER_INCPATH='"MCPL/mcpl.h"')
+
+
+
+
+#############################################################
+
+Utilities implemented in C for dealing with MCNP SSW files.
+
+primary author: thomas.kittelmann@ess.eu

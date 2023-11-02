@@ -1,0 +1,43 @@
+G4Launcher:: Pre-init started
+G4Launcher:: Installing FPE detection
+G4Launcher:: setSeed() not called, picking standard seed.
+G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
+G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up geometry:
+G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
+G4Launcher::   -->   [dbl] target_depth_cm = 0.01
+G4Launcher::   -->   [dbl] target_width_cm = 100
+G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher:: Setting up particle generation:
+G4Launcher::   --> ParticleGenerator[sb_generatorexamples_custompygen_inline/MyPyGen]:
+G4Launcher::   -->   [dbl] energy_MeV = 1
+G4Launcher::   -->   [dbl] extent_mm = 2
+G4Launcher::   -->   [str] particle_name = "neutron"
+G4Launcher:: Installing hooks for capturing output in "simresults" in mode FULL
+G4Launcher:: Pre-init done
+G4Launcher:: Calling G4RunManager::Initialize()
+G4Launcher:: G4RunManager::Initialize() done
+G4Launcher:: Starting simulation of 10 events
+G4Launcher:: Simulation done
+G4Launcher:: Pre-init started
+G4Launcher:: Installing FPE detection
+G4Launcher:: setSeed() not called, picking standard seed.
+G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
+G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up geometry:
+G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
+G4Launcher::   -->   [dbl] target_depth_cm = 0.01
+G4Launcher::   -->   [dbl] target_width_cm = 100
+G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher:: Setting up particle generation:
+G4Launcher::   --> ParticleGenerator[G4CustomPyGen.Examples/CorrelatedBeamGen]:
+G4Launcher::   -->   [dbl] spread_x_mm = 5
+G4Launcher::   -->   [dbl] spread_y_mm = 10
+G4Launcher::   -->   [dbl] correlation = 0.8
+G4Launcher::   -->   [dbl] neutron_wavelength_aa = 1.8
+G4Launcher:: Installing hooks for capturing output in "simresults" in mode FULL
+G4Launcher:: Pre-init done
+G4Launcher:: Calling G4RunManager::Initialize()
+G4Launcher:: G4RunManager::Initialize() done
+G4Launcher:: Starting simulation of 10 events
+G4Launcher:: Simulation done

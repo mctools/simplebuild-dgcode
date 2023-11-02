@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+#Test that the parameters in SimpleGen are a strict subset of the parameters on
+#FlexGen, and have identical types and default values (so people can always
+#start with SimpleGen and rename it to FlexGen if they need more flexibility).
+
+#############################################################
+#Define particle generation:
+import G4StdGenerators.FlexGen as genf
+import G4StdGenerators.SimpleGen as gens
+f = genf.create()
+s = gens.create()
+
+assert s.getName().replace('Simple','Flex') == f.getName()
+
+pars_s = set(s.getParameterList())
+pars_f = set(f.getParameterList())
+
+#assert pars_s is a subset of pars_f:
+assert not pars_s.difference(pars_f)
+
+#assert that all parameter types match:
+assert all(type(getattr(s,p)) == type(getattr(f,p)) for p in pars_s)
+
+#assert that all parameter values match:
+assert all(getattr(s,p) == getattr(f,p) for p in pars_s)
+
+#and that flexgen use same mode as the only one available in simplegen
+assert f.momdir_spherical == False

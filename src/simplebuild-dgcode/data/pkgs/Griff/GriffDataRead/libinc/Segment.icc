@@ -1,0 +1,142 @@
+inline const GriffDataRead::Track* GriffDataRead::Segment::getTrack() const { return m_trk; }
+inline double GriffDataRead::Segment::startTime() const { return ByteStream::interpret<double>(m_data); }
+inline double GriffDataRead::Segment::endTime() const { return ByteStream::interpret<double>(m_data+32); }
+inline double GriffDataRead::Segment::startEKin() const { return ByteStream::interpret<double>(m_data+8); }
+inline double GriffDataRead::Segment::endEKin() const { return ByteStream::interpret<double>(m_data+40); }
+inline float GriffDataRead::Segment::eDep() const { return ByteStream::interpret<float>(m_data+24); }
+inline float GriffDataRead::Segment::eDepNonIonising() const { return ByteStream::interpret<float>(m_data+28); }
+inline unsigned GriffDataRead::Segment::volumeDepthStored() const { return getTouchable().storedDepth(); }
+inline int GriffDataRead::Segment::volumeCopyNumber(unsigned idepth) const { return getTouchable().copyNumber(idepth); }
+inline unsigned GriffDataRead::Segment::iSegment() const { return this - m_trk->segmentBegin(); }
+inline bool GriffDataRead::Segment::isInWorldVolume() const { return volumeDepthStored()==1; }
+
+inline bool GriffDataRead::Segment::startAtVolumeBoundary() const
+{
+  return ByteStream::interpret<EvtFile::index_type>(m_data+16) & 0x40000000;
+}
+
+inline bool GriffDataRead::Segment::endAtVolumeBoundary() const
+{
+  return ByteStream::interpret<EvtFile::index_type>(m_data+16) & 0x80000000;
+}
+
+inline bool GriffDataRead::Segment::nextWasFiltered() const
+{
+  return ByteStream::interpret<EvtFile::index_type>(m_data+16) & 0x20000000;
+}
+
+inline const GriffDataRead::Segment * GriffDataRead::Segment::getPreviousSegment() const
+{
+  return this == m_trk->segmentBegin() ? 0 : this - 1;
+}
+
+inline const GriffDataRead::Segment * GriffDataRead::Segment::getNextSegment() const
+{
+  const Segment * next = this + 1;
+  return next == m_trk->segmentEnd() ? 0 : next;
+}
+
+inline void GriffDataRead::Segment::setupSteps() const
+{
+  if (!m_stepsEnd)
+    actualSetupSteps();
+  assert(m_stepsEnd);
+  assert(m_stepsBegin||m_stepsEnd==(void*)0x1);
+
+}
+
+inline int32_t GriffDataRead::Segment::rawStepIdx() const
+{
+  return ByteStream::interpret<int32_t>(m_data+20);
+}
+
+inline unsigned GriffDataRead::Segment::nStepsOriginal() const
+{
+  setupSteps();
+  if (m_stepsEnd==(void*)0x1) {
+    //minimal mode
+    assert(rawStepIdx()<0);
+    return (unsigned)(-rawStepIdx());
+  }
+  assert(m_stepsBegin);
+  assert(m_stepsBegin->m_data);
+  return ByteStream::interpret<std::uint32_t>(m_stepsBegin->m_data - 2*sizeof(std::uint32_t));
+}
+
+inline unsigned GriffDataRead::Segment::nStepsStored() const
+{
+  setupSteps();
+  if (m_stepsEnd==(void*)0x1)
+    return 0;//minimal mode
+  return m_stepsEnd-m_stepsBegin;
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Segment::getStep(unsigned i) const
+{
+  setupSteps();
+  assert(m_stepsEnd&&m_stepsEnd!=(void*)0x1);
+  assert(i<nStepsStored());
+  return m_stepsBegin + i;
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Segment::stepBegin() const
+{
+  setupSteps();
+  assert(m_stepsEnd!=(void*)0x1&&"Do not call stepBegin for MINIMAL data");
+  assert(m_stepsBegin);
+  return m_stepsBegin;
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Segment::firstStep() const
+{
+  return GriffDataRead::Segment::stepBegin();
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Segment::lastStep() const
+{
+  return GriffDataRead::Segment::stepEnd()-1;
+}
+
+inline const GriffDataRead::Step * GriffDataRead::Segment::stepEnd() const
+{
+  setupSteps();
+  assert(m_stepsEnd!=(void*)0x1&&"Do not call stepEnd for MINIMAL data");
+  assert(m_stepsEnd);
+  return m_stepsEnd;
+}
+
+inline const char* GriffDataRead::Segment::volumeNameCStr(unsigned idepth) const
+{
+  return volumeName(idepth).c_str();
+}
+
+inline const char* GriffDataRead::Segment::physicalVolumeNameCStr(unsigned idepth) const
+{
+  return physicalVolumeName(idepth).c_str();
+}
+
+inline const std::string& GriffDataRead::Segment::volumeName(unsigned idepth) const
+{
+  return m_trk->m_dr->m_dbVolNames.getString(getTouchable().volNameIdx(idepth));
+}
+
+inline const std::string& GriffDataRead::Segment::physicalVolumeName(unsigned idepth) const
+{
+  return m_trk->m_dr->m_dbVolNames.getString(getTouchable().physVolNameIdx(idepth));
+}
+
+inline const GriffDataRead::Material* GriffDataRead::Segment::material(unsigned idepth) const
+{
+  return getTouchable().material(idepth,m_trk->m_dr);
+}
+
+inline bool GriffDataRead::Segment::inSameVolume(const GriffDataRead::Segment* o) const
+{
+  assert(o);
+  return touchableIndex() == o->touchableIndex();
+}
+
+inline EvtFile::index_type GriffDataRead::Segment::touchableIndex() const
+{
+  return ByteStream::interpret<EvtFile::index_type>(m_data+16) & 0x1FFFFFFF;
+}

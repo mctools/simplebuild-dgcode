@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+import itertools
+import importlib
+
+__totcount = [0]
+def test_pars(pars,genname):
+    GenMod = importlib.import_module('G4StdGenerators.%s'%genname)
+    l=[]
+    for parname,parvals in sorted(pars.items()):
+        l+=[ [('%s=%s'%(parname,pv) if pv!=None else None) for pv in parvals] ]
+    for a in itertools.product(*l):
+        a = [e for e in a if e!=None]
+        print('\n'+'-'*50)
+        print('Test %i : %s <-- %s'%(__totcount[0],genname,' '.join(a)))
+        gen=GenMod.create()
+        gen.noHardExitOnParameterFailure()
+        for kv in a:
+            assert hasattr(gen,kv.split('=')[0]),'%s unknown par error %s'%(genname,kv)
+        try:
+            gen.swallowCmdLine(a)
+            gen.dump()
+        except RuntimeError:
+            pass
+        __totcount[0] += 1
+
+
+pars={'particleName':[None,'neutron','e+'],
+      'fixed_energy_eV':[None,'100','0.025'],
+      'neutron_wavelength_aangstrom':[None,'1.8']}
+
+test_pars(pars,'SimpleGen')
+
+pars.update({'pdgCode':[None,'2112','11']})
+
+test_pars(pars,'FlexGen')
+
+pars.update({'neutron_wavelength_spread_aangstrom':[None,'0.1'],
+             'neutron_thermal_spectrum_kelvin':[None,'300.0']})
+pars['energy_eV']=pars['fixed_energy_eV']
+del pars['fixed_energy_eV']
+
+test_pars(pars,'ProfiledBeamGen')
+
+print('Done. Performed %i tests'%__totcount[0])

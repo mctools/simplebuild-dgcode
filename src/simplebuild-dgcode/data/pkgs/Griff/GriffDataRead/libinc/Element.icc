@@ -1,0 +1,13 @@
+inline const char* GriffDataRead::Element::getNameCStr() const { return getName().c_str(); }
+inline const char* GriffDataRead::Element::getSymbolCStr() const { return getSymbol().c_str(); }
+inline double GriffDataRead::Element::Z() const { return m_Z; }
+inline double GriffDataRead::Element::N() const { return m_N; }
+inline double GriffDataRead::Element::A() const { return m_A; }
+inline bool GriffDataRead::Element::naturalAbundances() const { return m_naturalabundances; }
+inline unsigned GriffDataRead::Element::numberIsotopes() const { return m_isotopes.size(); }
+inline double GriffDataRead::Element::isotopeRelativeAbundance(unsigned i_isotope) const
+{
+  assert(i_isotope<m_isotopes.size());
+  return m_isotopes[i_isotope].relativeabundance;
+}
+

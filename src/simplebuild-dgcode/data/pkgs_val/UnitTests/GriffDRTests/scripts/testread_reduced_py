@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+
+import GriffDataRead
+import Core.FindData
+import Core.FPE
+import sys
+
+Core.FPE.catch_fpe()
+datafile = Core.FindData("GriffDataRead","10evts_singleneutron_on_b10_reduced.griff")
+dr = GriffDataRead.GriffDataReader(datafile,3)
+
+print("Now dumping all data in selected events:\n")
+dr.goToFirstEvent()
+ievt = 0
+
+while dr.eventActive():
+    print("(ievt,seed,run,evt,mode)=(%i,%i,%i,%i,%s): ntrks=%i"%(ievt,dr.seed(),dr.runNumber(),dr.eventNumber(),dr.eventStorageMode(),dr.nTracks()))
+    for trk in dr.tracks:
+        print("   +", end='',flush=True)
+        trk.dump_full()
+        print()
+        for seg in trk.segments:
+            print("      + segment%i="%seg.iSegment(), end='',flush=True)
+            seg.dump()
+            print()
+            if not seg.hasStepInfo():
+                continue
+            stepmax = seg.nStepsStored()
+            for step in seg.steps:
+                #reduce the size of the test logfile a bit by not printing each and every step:
+                if step.iStep()<4 or step.iStep()>stepmax-3 or step.iStep()%20==0:
+                    print("         + step%i="%step.iStep(), end='',flush=True)
+                    step.dump()
+                    print()
+    ievt+=1
+    if ievt==3:
+        break
+    dr.goToNextEvent()

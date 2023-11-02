@@ -1,0 +1,7 @@
+package(USEPKG Mesh3D USEEXT Numpy)
+
+#############################################################
+
+Mesh unit tests.
+
+primary author: thomas.kittelmann@ess.eu

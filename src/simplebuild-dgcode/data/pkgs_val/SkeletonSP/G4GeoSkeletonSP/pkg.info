@@ -1,0 +1,10 @@
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+Package containing geometries for the SkeletonSP simulation project
+
+Primary author(s): PLEASE-PUT-RELEVANT-NAMES-AND-EMAILS-HERE
+
+--> <SKEL_MUST_MODIFY_FILE> <--
+

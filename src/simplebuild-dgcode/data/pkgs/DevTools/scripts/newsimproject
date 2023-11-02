@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+import Core.System
+import Core.FindData3
+import Utils.PathUtils as PU
+import Utils.textball
+import argparse
+import pathlib
+import os
+import copy
+import simplebuild.cfg as cfg
+
+normpath_or_none = lambda p : (PU.normpath(p) if p else None)
+legacy_mode = not hasattr(cfg.dirs,'projdir')
+
+if not legacy_mode:
+  default_projdir = PU.normpath(cfg.dirs.projdir)
+else:
+  default_projdir = PU.normpath(os.environ['DGCODE_DIR']) / 'packages/Projects'
+
+assert default_projdir.is_dir()
+def get_target_dir(target_dir, project_name):
+  return target_dir if target_dir else default_projdir / project_name
+
+def parse_cmdline():
+    descr="""
+    Creates, and populates with skeleton code, new packages for a simulation project"""
+    parser = argparse.ArgumentParser(description=descr.strip())
+    parser.add_argument('project_name', metavar='PROJECTNAME', type=str,
+                        help="""Project name. Should be short and descriptive CamelCased string with no spaces""")
+    parser.add_argument("-d", "--target_dir",metavar='DIR',type=normpath_or_none, default=None,
+                        help="""Target directory (defaults to %s/<PROJECTNAME>/)."""%default_projdir)
+    args=parser.parse_args()
+    if not args.project_name:
+        parser.error('Must supply project name')
+    try:
+        args.project_name.encode('ascii')
+    except UnicodeEncodeError:
+        parser.error('Invalid characters in project name')
+    if not args.project_name[0].isupper():
+        parser.error('Project name must begin with upper case letter (and be CamelCased)')
+    if not args.project_name.isalnum():
+        parser.error('Only alpha numeric characters should be used in the project name')
+    if len(args.project_name)<3:
+        parser.error('Project name too short.')
+    if get_target_dir(args.target_dir, args.project_name).exists():
+        parser.error(f'Project already exists: {get_target_dir(args.target_dir, args.project_name)}')
+    if args.project_name in cfg.pkgs:
+        parser.error(f'Project name already taken: {args.project_name}')
+    return args
+args=parse_cmdline()
+
+target_dir = get_target_dir(args.target_dir, args.project_name)
+
+sourcefile = Core.FindData3('DevTools','newsimprojectskeleton.textball')
+assert sourcefile.exists() and not sourcefile.is_dir()
+assert not target_dir.exists()
+target_dir.mkdir()
+
+class ProjectFileProvider:
+    def __init__(self,projectname,sourcefile):
+        self._srciter = Utils.textball.TextBallIter( sourcefile )
+        skeltxt = ( 'After you have modified this file as needed for your '
+                    +'project you can remove this line and commit <NOCOM'+'MIT>' )
+        self._map = list(sorted(set([('SkeletonSP',projectname),
+                                     ('SKELETONSP',projectname.upper()),
+                                     ('skeletonsp',projectname.lower()),
+                                     ('<SKEL_MUST_MODIFY_FILE>',skeltxt)
+                                     ])))
+    def _mapstr(self, s):
+        for k,v in self._map:
+            if k in s:
+                s = s.replace(k,v)
+        return s
+
+    def __iter__(self):
+        for vfile in self._srciter:
+            path = pathlib.Path( *list(self._mapstr(p) for p in vfile.path.parts) )
+            if path.is_dir() or isinstance(vfile.content,bytes):
+                yield vfile.modified( path=path )
+            else:
+                yield vfile.modified( path=path,
+                                      content=self._mapstr(copy.deepcopy(vfile.content)) )
+
+n = PU.write_vfiles_under_dir( ProjectFileProvider(args.project_name, sourcefile),
+                               target_dir,
+                               write_callbackfct = lambda p : print(f'Created file: {p.relative_to(target_dir.parent)}')
+                               )
+
+text=f"""
+Created {n} new files from the simulation project skeleton under 
+
+        {target_dir}
+
+Now you can go through them and replace their contents as needed for your project.
+
+Do not forget to update documentation in comments and pkg.info files!
+"""
+is_std_loc = target_dir.parent == default_projdir
+proj_pkg_selection_enabled = ( legacy_mode or
+                               os.environ.get('DGCODE_ENABLE_PROJECTS_PKG_SELECTION_FLAG','').lower() in ['true', '1'] )
+maybe_tell_about_minusp = True
+
+if not legacy_mode and not any([target_dir.is_relative_to(d) for d in cfg.dirs.pkgsearchpath]):
+  maybe_tell_about_minusp = False
+  text+=f"""
+The path of the directory chosen for the new simulation project is not in the package search path.
+Consider adding it to the $DGCODE_EXTRA_PKG_PATH environment variable to be able to build the new project packages!
+"""
+
+if maybe_tell_about_minusp and is_std_loc and proj_pkg_selection_enabled:
+  text+=f"""
+The Projects package selection option is turned on. Do not forget to enable the new sim project
+when using dgbuild by the --project flag (e.g., "dgbuild -p{args.project_name}") or by the ONLY variable!
+"""
+
+flag='p%s'%args.project_name if (is_std_loc and proj_pkg_selection_enabled) else 'a'
+text+=f"""
+Make sure that everything is tested with at least "dgbuild -t -{flag}" before
+committing anything to a public repository!
+"""
+print(text)

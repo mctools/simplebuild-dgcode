@@ -1,0 +1,7 @@
+package(USEPKG ExprParser G4MCPL USEEXT Geant4)
+
+############################################################
+
+G4-related expression parsing utilities.
+
+primary author: thomas.kittelmann@ess.eu

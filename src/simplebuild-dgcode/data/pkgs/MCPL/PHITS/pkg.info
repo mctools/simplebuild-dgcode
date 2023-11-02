@@ -1,0 +1,7 @@
+package(USEPKG MCPL USEEXT ZLib EXTRA_INCDEPS libsrc/phitsmcpl.c:MCPL/mcpl.h libsrc/phitsmcpl.c:PHITS/phitsread.h libsrc/phitsmcpl.c:PHITS/phitsmcpl.h libsrc/phitsread.c:PHITS/phitsread.h EXTRA_COMPILE_FLAGS -DPHITSREAD_HASZLIB -DPHITSREAD_HDR_INCPATH='"PHITS/phitsread.h"' -DPHITSMCPL_HDR_INCPATH='"PHITS/phitsmcpl.h"' -DMCPL_HEADER_INCPATH='"MCPL/mcpl.h"')
+
+#############################################################
+
+Utilities implemented in C for dealing with binary PHITS dump files.
+
+primary author: thomas.kittelmann@ess.eu

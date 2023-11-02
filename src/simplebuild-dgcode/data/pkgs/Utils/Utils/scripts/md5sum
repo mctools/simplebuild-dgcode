@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import sys
+import hashlib
+
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
+def print_md5sum(filename=None):
+    m = hashlib.md5()
+    if filename == None:
+        #stdinput
+        import fileinput
+        for line in fileinput.input(mode='rb'):
+            m.update(line)
+        print('%s  -'%(m.hexdigest()))
+    else:
+        print('%s  %s'%(md5(filename),filename))
+
+if __name__=='__main__':
+    for f in sys.argv[1:] if len(sys.argv)>1 else [None]:
+        print_md5sum(f)

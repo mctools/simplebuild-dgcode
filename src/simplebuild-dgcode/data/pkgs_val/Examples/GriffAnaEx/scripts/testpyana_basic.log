@@ -1,0 +1,46 @@
+GriffDataReader opened file 10evts_singleneutron_on_b10_full.griff
+Loading file with boron thickness of 200 micron
+Reading event 0/0 [ntrks=4] ===========================================
+  segment of alpha with edep starts at z=-0.0785965 mm
+  segment of Li7[0.0] with edep starts at z=-0.0785965 mm
+Event had a total edep in the targetbox of 2.31874 MeV
+Reading event 0/1 [ntrks=8] ===========================================
+  segment of alpha with edep starts at z=-0.0768288 mm
+  segment of Li7[0.0] with edep starts at z=-0.0768288 mm
+  segment of gamma with edep starts at z=-0.0768288 mm
+  segment of gamma with edep starts at z=-0.0768288 mm
+  segment of e- with edep starts at z=-0.075674 mm
+  segment of e- with edep starts at z=-0.0789228 mm
+Event had a total edep in the targetbox of 2.31191 MeV
+Reading event 0/2 [ntrks=4] ===========================================
+  segment of alpha with edep starts at z=-0.0892465 mm
+  segment of Li7[0.0] with edep starts at z=-0.0892465 mm
+Event had a total edep in the targetbox of 2.31483 MeV
+Reading event 0/3 [ntrks=1] ===========================================
+Event had a total edep in the targetbox of 0 MeV
+Reading event 0/4 [ntrks=1] ===========================================
+Event had a total edep in the targetbox of 0 MeV
+Reading event 0/5 [ntrks=4] ===========================================
+  segment of alpha with edep starts at z=-0.0564041 mm
+  segment of Li7[0.0] with edep starts at z=-0.0564041 mm
+Event had a total edep in the targetbox of 2.31046 MeV
+Reading event 0/6 [ntrks=8] ===========================================
+  segment of alpha with edep starts at z=-0.0352254 mm
+  segment of Li7[0.0] with edep starts at z=-0.0352254 mm
+  segment of gamma with edep starts at z=-0.0352254 mm
+  segment of gamma with edep starts at z=-0.0352254 mm
+  segment of e- with edep starts at z=-0.0280116 mm
+  segment of e- with edep starts at z=-0.0428625 mm
+Event had a total edep in the targetbox of 2.31191 MeV
+Reading event 0/7 [ntrks=4] ===========================================
+  segment of alpha with edep starts at z=-0.0622733 mm
+  segment of Li7[0.0] with edep starts at z=-0.0622733 mm
+Event had a total edep in the targetbox of 2.31662 MeV
+Reading event 0/8 [ntrks=4] ===========================================
+  segment of alpha with edep starts at z=-0.0996604 mm
+  segment of Li7[0.0] with edep starts at z=-0.0996604 mm
+Event had a total edep in the targetbox of 2.20142 MeV
+Reading event 0/9 [ntrks=4] ===========================================
+  segment of alpha with edep starts at z=-0.0260427 mm
+  segment of Li7[0.0] with edep starts at z=-0.0260427 mm
+Event had a total edep in the targetbox of 2.30996 MeV

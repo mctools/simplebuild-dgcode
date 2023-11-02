@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ $# != 1 ]; then
+    echo "Please supply queue name such as short, verylong, newlong, quark, strange, neutronics... (run \"sinfo\" for list of queues)"
+    exit 1
+fi
+#srun -p "$1" --pty bash
+echo "Running command: srun -p $1 -N 1 -n 1 --exclusive --pty bash -i"
+srun -p "$1" -N 1 -n 1 --exclusive --pty bash -i

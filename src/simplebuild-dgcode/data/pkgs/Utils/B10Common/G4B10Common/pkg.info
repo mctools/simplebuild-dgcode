@@ -1,0 +1,8 @@
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+
+Common classes for all B10 based detector geometries
+
+Primary authors: thomas.kittelmann@ess.eu

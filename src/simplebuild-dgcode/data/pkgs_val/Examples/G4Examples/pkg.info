@@ -1,0 +1,7 @@
+package(USEPKG G4Launcher Utils G4HeatMap G4StdGeometries G4CustomPyGen G4StdGenerators)
+
+######################################################################
+
+Small examples for G4 framework.
+
+primary author: thomas.kittelmann@ess.eu

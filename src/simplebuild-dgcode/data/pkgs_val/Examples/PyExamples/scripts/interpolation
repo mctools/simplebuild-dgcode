@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+from PyAna import *
+from scipy.interpolate import interp1d
+#some fake data:
+datax = np.linspace(0, 10, 10)
+datay = np.cos(-datax**2/8.0)
+#create linear and cubic interpolation functions based on the data:
+f = interp1d(datax, datay)
+f2 = interp1d(datax, datay, kind='cubic')
+#plot:
+x = np.linspace(0, 10, 200)
+plt.plot(datax,datay,'o',x,f(x),'-', x, f2(x),'--')
+plt.legend(['data', 'linear', 'cubic'], loc='best',numpoints=1)
+plt.show()
+

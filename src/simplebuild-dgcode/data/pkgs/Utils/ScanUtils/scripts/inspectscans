@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import sys,os
+
+def usage(ok=True):
+    print("Usage:")
+    print()
+    print("%s [--diffonly|-d] [-p plotlabel] <directory holding scan job dirs>"%os.path.basename(sys.argv[0]))
+    print()
+    print("Use flag --diffonly or -d to hide parameters which are the same in all jobs")
+    sys.exit(0 if ok else 1)
+
+args=sys.argv[1:]
+if not args or '-h' in args or '--help' in args:
+    usage()
+
+ignore_same=False
+if '-d' in args:
+    args.remove('-d')
+    ignore_same=True
+if '--diffonly' in args:
+    args.remove('--diffonly')
+    ignore_same=True
+plot_label=None
+if args[0]=='-p':
+    args.pop(0)
+    plot_label=args.pop(0)
+if len(args)>1 or not os.path.isdir(args[0]):
+    usage(False)
+
+import ScanUtils.ScanLoader
+import ScanUtils.JobExtract
+import GriffDataRead
+GriffDataRead.GriffDataReader.setOpenMsg(False)
+jobs=ScanUtils.ScanLoader.get_scan_jobs(args[0])
+if plot_label:
+    nall=len(jobs)
+    jobs=[j for j in jobs if j.label()==plot_label]
+    print("Selecting jobs with label %s (%i of %i jobs)"%(plot_label,len(jobs),nall))
+
+ScanUtils.JobExtract.summarise_geogenpars(jobs,ignore_same=ignore_same)
+
+ips = ScanUtils.JobExtract.interesting_pars([j.setup() for j in jobs],always=set(),never=set(),do_print=False)
+if ips:
+    print()
+    print("All in all, %i parameters vary from job to job:"%len(ips))
+    print()
+    for ip in ips:
+        print("      %s"%ip)
+    print()
+else:
+    print("No parameters vary between jobs!!")
+
+if not plot_label:
+    labels=set(j.label() for j in jobs)
+    print("Job labels found:",' '.join(labels))
+    print("Select just jobs with a given label by -p <label> (just before the dirname)")

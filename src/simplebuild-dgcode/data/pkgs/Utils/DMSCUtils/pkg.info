@@ -1,0 +1,7 @@
+package(USEPKG Utils)
+
+######################################################################
+
+ESS-DMSC related utilities. This is likely of no use to non-ESS projects.
+
+Primary author: thomas.kittelmann@ess.eu

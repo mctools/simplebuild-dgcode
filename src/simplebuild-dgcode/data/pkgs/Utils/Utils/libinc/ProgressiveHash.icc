@@ -1,0 +1,12 @@
+
+inline ProgressiveHash::ProgressiveHash()
+{
+  reset();
+}
+
+inline void ProgressiveHash::reset()
+{
+  m_hash_state = 0xe3304a54;// ~= ess_hash ;-)
+  m_hash_carry = 0;
+  m_data_length = 0;
+}

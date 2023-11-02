@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+#<SKEL_MUST_MODIFY_FILE>
+
+#Here we setup parameter scans, in which a large number of jobs are configured
+#and launched locally or at a cluster. Both Geant4 simulation and Griff analysis
+#run at each step, and the sister script "scanana" script is subsequently used
+#to extract and plot info from the resulting histogram files.
+
+from ScanUtils.ScanLauncher import ScanLauncher,ParameterGroup
+from numpy import linspace
+
+#Global setup for all scan jobs:
+scan = ScanLauncher("sb_skeletonsp_simanachain",autoseed=True)
+scan.add_global_parameter("rundir")
+scan.add_global_parameter("--cleanup")
+scan.add_global_parameter("--nevts",100000)
+scan.add_global_parameter('--physlist','QGSP_BIC_HP_EMZ')
+scan.add_global_parameter('material_lab','IdealGas:formula=CO2:pressure_atm=2.0')
+
+#scan jobs to investigate sample size effect:
+plot1 = ParameterGroup()
+plot1.add('sample_radius_mm', linspace(1.0, 20.0, 5) )
+plot1.add('neutron_wavelength_aangstrom', 2.2)
+scan.add_job(plot1,'plot1')
+
+#scan jobs to investigate neutron wavelength effect:
+plot2 = ParameterGroup()
+plot2.add('sample_radius_mm', 5.0)
+plot2.add('neutron_wavelength_aangstrom', [1.8, 2.2, 2.5] )
+scan.add_job(plot2,'plot2')
+
+######################################################
+## Consume command line and potentially launch scan:
+scan.go()

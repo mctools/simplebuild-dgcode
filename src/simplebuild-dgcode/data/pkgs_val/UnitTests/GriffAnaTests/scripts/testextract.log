@@ -1,0 +1,225 @@
+GriffDataReader opened file 10evts_singleneutron_on_b10_reduced.griff
+Copied event #5 to output file
+WARNING: Some requested events were not extracted (file has just 10 events).
+Extracted 1 events from input file into new file out.griff
+GriffDataReader opened file 10evts_singleneutron_on_b10_reduced.griff
+Copied event #5 to output file
+No more events requested from input file - ending.
+Extracted 1 events from input file into new file out.griff
+GriffDataReader opened file 10evts_singleneutron_on_b10_reduced.griff
+Copied event #9 to output file
+No more events requested from input file - ending.
+Extracted 1 events from input file into new file out.griff
+GriffDataReader opened file 10evts_singleneutron_on_b10_reduced.griff
+Copied event #0 to output file
+Copied event #1 to output file
+Copied event #2 to output file
+Copied event #3 to output file
+Copied event #4 to output file
+Copied event #5 to output file
+Copied event #6 to output file
+Copied event #7 to output file
+Copied event #8 to output file
+Copied event #9 to output file
+No more events requested from input file - ending.
+Extracted 10 events from input file into new file out.griff
+GriffDataReader opened file 10evts_singleneutron_on_b10_reduced.griff
+Copied event #0 to output file
+Copied event #7 to output file
+No more events requested from input file - ending.
+Extracted 2 events from input file into new file out.griff
+Dumping out.griff:
+  File format version: 2
+  Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
+         0      0      0        24      2212          464         529     3229 [success]
+         1      0      7        24       123          464         517     1128 [success]
+  Total [nevts=2]:              48      2335          928        1046     4357 [success]
+GriffDataReader opened file out.griff
+
+>>> ===========================  GRIFF SETUP  ===========================
+>>>   UserData:
+>>>     <none>
+>>>   MetaData:
+>>>     "G4Date" : "(1-February-2013)"
+>>>     "G4PhysicsList" : "QGSP_BIC_HP"
+>>>     "G4Version" : "geant4-09-06-patch-01"
+>>>     "G4VersionNumber" : "961"
+>>>     "GriffMode" : "REDUCED"
+>>>     "RandEngine" : "dSFMTEngine"
+>>>     "datadir/G4LEDATA" : "G4EMLOW6.32"
+>>>     "datadir/G4LEVELGAMMADATA" : "PhotonEvaporation2.3"
+>>>     "datadir/G4NEUTRONHPDATA" : "G4NDL4.2"
+>>>     "datadir/G4NEUTRONXSDATA" : "G4NEUTRONXS1.2"
+>>>     "datadir/G4PIIDATA" : "G4PII1.3"
+>>>     "datadir/G4RADIOACTIVEDATA" : "RadioactiveDecay3.6"
+>>>     "datadir/G4REALSURFACEDATA" : "RealSurface1.0"
+>>>     "datadir/G4SAIDXSDATA" : "G4SAIDDATA1.1"
+>>>     "genName" : "GeoSetup/SingleParticleGun"
+>>>     "geoName" : "GeoTest"
+>>>   Geant4 Commands:
+>>>     "/process/eLoss/StepFunction 0.1 0.001 um"
+>>>     "/process/eLoss/minKinEnergy 10 eV"
+>>>   GeoConstructor[GeoTest]:
+>>>     [dbl] boronThickness_micron = 200
+>>>     [dbl] worldExtent_meters = 1
+>>>   ParticleGenerator[GeoSetup/SingleParticleGun]:
+>>>     [dbl] x_meter = 0
+>>>     [dbl] y_meter = 0
+>>>     [dbl] z_meter = -1.5
+>>>     [dbl] energy_eV = 0.025
+>>>     [dbl] momdirx = 0
+>>>     [dbl] momdiry = 0
+>>>     [dbl] momdirz = 1
+>>>     [int] nParticles = 1
+>>>     [str] particleName = "neutron"
+>>>     [int] pdgCode = 0
+>>> =====================================================================
+
+All 2 events had similar setup
+
+Dumping out.griff:
+  File format version: 2
+  Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
+  Total [nevts=2]:              48      2335          928        1046     4357 [success]
+GriffDataReader opened file 10evts_singleneutron_on_b10_full.griff
+Copied event #0 to output file
+Copied event #1 to output file
+Copied event #2 to output file
+Copied event #3 to output file
+Copied event #4 to output file
+Copied event #5 to output file
+Copied event #6 to output file
+Copied event #7 to output file
+Copied event #8 to output file
+Copied event #9 to output file
+No more events requested from input file - ending.
+Extracted 10 events from input file into new file out.griff
+GriffDataReader opened file 10evts_singleneutron_on_b10_full.griff
+Copied event #0 to output file
+Copied event #7 to output file
+No more events requested from input file - ending.
+Extracted 2 events from input file into new file out.griff
+Dumping out.griff:
+  File format version: 2
+  Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
+         0      0      0        24      2209          464        6360     9057 [success]
+         1      0      7        24       123          464        6747     7358 [success]
+  Total [nevts=2]:              48      2332          928       13107    16415 [success]
+GriffDataReader opened file out.griff
+
+>>> ===========================  GRIFF SETUP  ===========================
+>>>   UserData:
+>>>     <none>
+>>>   MetaData:
+>>>     "G4Date" : "(1-February-2013)"
+>>>     "G4PhysicsList" : "QGSP_BIC_HP"
+>>>     "G4Version" : "geant4-09-06-patch-01"
+>>>     "G4VersionNumber" : "961"
+>>>     "GriffMode" : "FULL"
+>>>     "RandEngine" : "dSFMTEngine"
+>>>     "datadir/G4LEDATA" : "G4EMLOW6.32"
+>>>     "datadir/G4LEVELGAMMADATA" : "PhotonEvaporation2.3"
+>>>     "datadir/G4NEUTRONHPDATA" : "G4NDL4.2"
+>>>     "datadir/G4NEUTRONXSDATA" : "G4NEUTRONXS1.2"
+>>>     "datadir/G4PIIDATA" : "G4PII1.3"
+>>>     "datadir/G4RADIOACTIVEDATA" : "RadioactiveDecay3.6"
+>>>     "datadir/G4REALSURFACEDATA" : "RealSurface1.0"
+>>>     "datadir/G4SAIDXSDATA" : "G4SAIDDATA1.1"
+>>>     "genName" : "GeoSetup/SingleParticleGun"
+>>>     "geoName" : "GeoTest"
+>>>   Geant4 Commands:
+>>>     "/process/eLoss/StepFunction 0.1 0.001 um"
+>>>     "/process/eLoss/minKinEnergy 10 eV"
+>>>   GeoConstructor[GeoTest]:
+>>>     [dbl] boronThickness_micron = 200
+>>>     [dbl] worldExtent_meters = 1
+>>>   ParticleGenerator[GeoSetup/SingleParticleGun]:
+>>>     [dbl] x_meter = 0
+>>>     [dbl] y_meter = 0
+>>>     [dbl] z_meter = -1.5
+>>>     [dbl] energy_eV = 0.025
+>>>     [dbl] momdirx = 0
+>>>     [dbl] momdiry = 0
+>>>     [dbl] momdirz = 1
+>>>     [int] nParticles = 1
+>>>     [str] particleName = "neutron"
+>>>     [int] pdgCode = 0
+>>> =====================================================================
+
+All 2 events had similar setup
+
+Dumping out.griff:
+  File format version: 2
+  Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
+  Total [nevts=2]:              48      2332          928       13107    16415 [success]
+GriffDataReader opened file 10evts_singleneutron_on_b10_minimal.griff
+Copied event #0 to output file
+Copied event #1 to output file
+Copied event #2 to output file
+Copied event #3 to output file
+Copied event #4 to output file
+Copied event #5 to output file
+Copied event #6 to output file
+Copied event #7 to output file
+Copied event #8 to output file
+Copied event #9 to output file
+No more events requested from input file - ending.
+Extracted 10 events from input file into new file out.griff
+GriffDataReader opened file 10evts_singleneutron_on_b10_minimal.griff
+Copied event #0 to output file
+Copied event #7 to output file
+No more events requested from input file - ending.
+Extracted 2 events from input file into new file out.griff
+Dumping out.griff:
+  File format version: 2
+  Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
+         0      0      0        24      2212          464           0     2700 [success]
+         1      0      7        24       123          464           0      611 [success]
+  Total [nevts=2]:              48      2335          928           0     3311 [success]
+GriffDataReader opened file out.griff
+
+>>> ===========================  GRIFF SETUP  ===========================
+>>>   UserData:
+>>>     <none>
+>>>   MetaData:
+>>>     "G4Date" : "(1-February-2013)"
+>>>     "G4PhysicsList" : "QGSP_BIC_HP"
+>>>     "G4Version" : "geant4-09-06-patch-01"
+>>>     "G4VersionNumber" : "961"
+>>>     "GriffMode" : "MINIMAL"
+>>>     "RandEngine" : "dSFMTEngine"
+>>>     "datadir/G4LEDATA" : "G4EMLOW6.32"
+>>>     "datadir/G4LEVELGAMMADATA" : "PhotonEvaporation2.3"
+>>>     "datadir/G4NEUTRONHPDATA" : "G4NDL4.2"
+>>>     "datadir/G4NEUTRONXSDATA" : "G4NEUTRONXS1.2"
+>>>     "datadir/G4PIIDATA" : "G4PII1.3"
+>>>     "datadir/G4RADIOACTIVEDATA" : "RadioactiveDecay3.6"
+>>>     "datadir/G4REALSURFACEDATA" : "RealSurface1.0"
+>>>     "datadir/G4SAIDXSDATA" : "G4SAIDDATA1.1"
+>>>     "genName" : "GeoSetup/SingleParticleGun"
+>>>     "geoName" : "GeoTest"
+>>>   Geant4 Commands:
+>>>     "/process/eLoss/StepFunction 0.1 0.001 um"
+>>>     "/process/eLoss/minKinEnergy 10 eV"
+>>>   GeoConstructor[GeoTest]:
+>>>     [dbl] boronThickness_micron = 200
+>>>     [dbl] worldExtent_meters = 1
+>>>   ParticleGenerator[GeoSetup/SingleParticleGun]:
+>>>     [dbl] x_meter = 0
+>>>     [dbl] y_meter = 0
+>>>     [dbl] z_meter = -1.5
+>>>     [dbl] energy_eV = 0.025
+>>>     [dbl] momdirx = 0
+>>>     [dbl] momdiry = 0
+>>>     [dbl] momdirz = 1
+>>>     [int] nParticles = 1
+>>>     [str] particleName = "neutron"
+>>>     [int] pdgCode = 0
+>>> =====================================================================
+
+All 2 events had similar setup
+
+Dumping out.griff:
+  File format version: 2
+  Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
+  Total [nevts=2]:              48      2335          928           0     3311 [success]

@@ -1,0 +1,11 @@
+inline osg::MatrixTransform * G4OSG::createMatrixTransform(const G4VPhysicalVolume&v) {
+  osg::MatrixTransform * mt = new osg::MatrixTransform;
+  G4OSG::setMatrix(*mt,v);
+  return mt;
+}
+
+inline osg::MatrixTransform * G4OSG::createMatrixTransform(const G4Transform3D&t) {
+  osg::MatrixTransform * mt = new osg::MatrixTransform;
+  G4OSG::setMatrix(*mt,t);
+  return mt;
+}

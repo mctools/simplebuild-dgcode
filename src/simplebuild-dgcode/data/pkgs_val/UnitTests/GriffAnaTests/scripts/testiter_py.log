@@ -1,0 +1,239 @@
+GriffDataReader opened file 10evts_singleneutron_on_b10_full.griff
+Found event 0/0 [ntrks=4] ===========================================
+  Found segment 0 (edep=1472.3keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=846.4keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found segment outside target: 2 (gamma in world)
+  Found step 0 (edep=102.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=113.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=106.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=93.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=89.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=85.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=80.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=73.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=73.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=70.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=60.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=56.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=95.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=84.0keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=83.6keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=66.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=63.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=56.3keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 6 (edep=50.5keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/1 [ntrks=8] ===========================================
+  Found segment 0 (edep=1472.5keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=836.9keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Found segment 0 (edep=1.1keV in lv_targetbox) on track 7 (pdg=11)
+  Found segment 0 (edep=1.1keV in lv_targetbox) on track 8 (pdg=11)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found segment outside target: 2 (gamma in world)
+  Found step 0 (edep=111.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=107.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=106.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=91.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=83.2keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=81.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=83.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=80.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=71.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=69.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=65.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=61.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 12 (edep=53.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 13 (edep=50.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=97.8keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=84.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=73.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=75.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=62.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=51.8keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/2 [ntrks=4] ===========================================
+  Found segment 0 (edep=1472.3keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=842.5keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found step 0 (edep=115.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=101.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=100.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=101.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=88.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=89.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=82.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=74.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=77.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=68.2keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=61.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=54.8keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 12 (edep=52.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=89.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=91.8keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=77.4keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=67.6keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=64.6keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/3 [ntrks=1] ===========================================
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 3 (neutron in lv_recordingbox)
+  Found segment outside target: 4 (neutron in world)
+Found event 0/4 [ntrks=1] ===========================================
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 3 (neutron in lv_recordingbox)
+  Found segment outside target: 4 (neutron in world)
+Found event 0/5 [ntrks=4] ===========================================
+  Found segment 0 (edep=1472.7keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=837.8keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found step 0 (edep=111.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=108.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=101.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=101.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=94.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=90.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=75.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=73.8keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=68.8keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=65.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=67.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=59.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 12 (edep=50.8keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=89.6keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=81.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=75.3keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=70.3keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=61.1keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=56.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 6 (edep=51.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/6 [ntrks=8] ===========================================
+  Found segment 0 (edep=1472.4keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=833.5keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Found segment 0 (edep=2.8keV in lv_targetbox) on track 7 (pdg=11)
+  Found segment 0 (edep=2.8keV in lv_targetbox) on track 8 (pdg=11)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found step 0 (edep=109.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=108.2keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=101.8keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=96.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=88.8keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=76.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=79.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=82.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=74.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=66.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=57.2keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=58.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 12 (edep=59.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 13 (edep=51.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=93.1keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=87.3keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=89.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=70.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=58.4keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=56.6keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 6 (edep=50.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/7 [ntrks=4] ===========================================
+  Found segment 0 (edep=1472.4keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=844.3keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found segment outside target: 2 (gamma in world)
+  Found step 0 (edep=107.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=102.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=92.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=94.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=88.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=90.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=82.2keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=81.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=75.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=65.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=64.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=59.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 13 (edep=50.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=92.0keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=87.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=79.1keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=72.8keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=64.0keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=55.4keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 6 (edep=53.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/8 [ntrks=4] ===========================================
+  Found segment 0 (edep=1472.3keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=729.1keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found segment outside target: 1 (Li7[0.0] in lv_recordingbox)
+  Found step 0 (edep=116.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=99.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=107.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=96.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=85.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=87.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=87.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=78.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=68.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=65.9keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=62.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=61.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 12 (edep=51.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=88.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=85.1keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=85.8keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=65.6keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=69.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=56.3keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 6 (edep=53.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+Found event 0/9 [ntrks=4] ===========================================
+  Found segment 0 (edep=1472.7keV in lv_targetbox) on track 2 (pdg=1000020040)
+  Found segment 0 (edep=837.3keV in lv_targetbox) on track 4 (pdg=1000030070)
+  Loop over all alpha/lithium tracks: track 2 (alpha)
+  Loop over all alpha/lithium tracks: track 4 (Li7[0.0])
+  Found segment outside target: 0 (neutron in world)
+  Found segment outside target: 1 (neutron in lv_recordingbox)
+  Found segment outside target: 1 (gamma in lv_recordingbox)
+  Found step 0 (edep=99.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 1 (edep=101.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 2 (edep=105.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 3 (edep=99.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 4 (edep=87.1keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 5 (edep=95.6keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 6 (edep=83.4keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 7 (edep=69.2keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 8 (edep=69.7keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 9 (edep=60.0keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 10 (edep=64.3keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 11 (edep=56.5keV in lv_targetbox) on track 2 (alpha) segment 0
+  Found step 0 (edep=94.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 1 (edep=83.5keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 2 (edep=80.2keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 3 (edep=75.7keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 4 (edep=62.0keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0
+  Found step 5 (edep=54.9keV in lv_targetbox) on track 4 (Li7[0.0]) segment 0

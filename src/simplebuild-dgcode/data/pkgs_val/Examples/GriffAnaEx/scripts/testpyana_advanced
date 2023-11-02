@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+import GriffDataRead
+import GriffAnaUtils
+import Core.FindData
+import Units
+
+#Same analysis as in the cppana_advanced application in this package (see
+#comments in there and in cppana_basic). But this time in python which is a lot
+#more handy. Unfortunately it is also potentially a lot slower.
+
+datafile = Core.FindData("GriffDataRead","10evts_singleneutron_on_b10_full.griff")
+dr = GriffDataRead.GriffDataReader(datafile)
+
+print("Loading file with boron thickness of %g micron"%dr.setup().geo().boronThickness_micron)
+
+si = GriffAnaUtils.SegmentIterator(dr)
+si.addFilter(GriffAnaUtils.SegmentFilter_Volume.create("lv_targetbox"))
+si.addFilter(GriffAnaUtils.SegmentFilter_EnergyDeposition.create(0.0))
+
+while dr.loopEvents():
+    print("Reading event %i/%i [ntrks=%i] ==========================================="%(dr.runNumber(),
+                                                                                        dr.eventNumber(),
+                                                                                        dr.nTracks()))
+    edep = 0.0;
+
+    for seg in si:
+        edep += seg.eDep()
+        print("  segment of %s with edep starts at z=%g mm"%(seg.getTrack().pdgName(),
+                                                             seg.firstStep().preGlobalZ()/Units.units.mm))
+
+    print("Event had a total edep in the targetbox of %g MeV"%(edep/Units.units.MeV))

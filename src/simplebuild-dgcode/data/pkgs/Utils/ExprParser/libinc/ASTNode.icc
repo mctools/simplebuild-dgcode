@@ -1,0 +1,129 @@
+namespace ExprParser {
+
+  template<class val_type> inline constexpr ExprType exprType();
+  template<> inline constexpr ExprType exprType<int_type>() { return ET_INT; }
+  template<> inline constexpr ExprType exprType<float_type>() { return ET_FLOAT; }
+  template<> inline constexpr ExprType exprType<str_type>() { return ET_STRING; }
+
+  template<class val_type> inline constexpr char exprTypeChar();
+  template<> inline constexpr char exprTypeChar<int_type>() { return 'i'; }
+  template<> inline constexpr char exprTypeChar<float_type>() { return 'f'; }
+  template<> inline constexpr char exprTypeChar<str_type>() { return 's'; }
+
+  template<class TValue>
+  inline ExprType ExprEntity<TValue>::returnType() const { return exprType<TValue>(); }
+
+  template<class TValue>
+  inline str_type ExprEntityConstantValue<TValue>::name() const { return str_type("ConstantValue_")+exprTypeChar<TValue>(); }
+
+
+  template<class TValue>
+  inline void _ensure_type(const ExprEntityPtr& p)
+  {
+    if (!p)
+      EXPRPARSER_THROW(LogicError,"Trying to evaluate type of null entity");
+    if (p->returnType()!=exprType<TValue>()
+        ||!dynamic_cast<ExprEntity<TValue>*>(p.get()))
+      EXPRPARSER_THROW(LogicError,"Type error in abstract syntax tree");
+  }
+  template<class TValue>
+  inline void _ensure_type_dbg(const ExprEntityPtr& p)
+  {
+#ifndef NDEBUG
+    _ensure_type<TValue>(p);
+#else
+    (void)p;
+#endif
+  }
+  template<class TValue>
+  inline TValue _eval(const ExprEntityPtr& p) {
+    _ensure_type_dbg<TValue>(p);
+    return static_cast<ExprEntity<TValue>*>(p.get())->evaluate();
+  }
+
+  inline const ExprEntityPtr& ExprEntityBase::child(size_t i) const
+  {
+#ifndef NDEBUG
+    if (i >= m_children.size())
+      EXPRPARSER_THROW(LogicError,"child access out of range");
+#endif
+    return m_children[i];
+  }
+  inline ExprEntityPtr& ExprEntityBase::child(size_t i)
+  {
+#ifndef NDEBUG
+    if (i >= m_children.size())
+      EXPRPARSER_THROW(LogicError,"child access out of range");
+#endif
+    return m_children[i];
+  }
+
+  template<typename T, typename ...Arg>
+  inline ExprEntityPtr makeobj(Arg && ... arg)
+  {
+#if 0
+    //Use std::make_shared directly. This has the theoretical advantage of one
+    //less malloc for the control block, in principle allowing for sliiightly
+    //better cache usage. However, this means an instance of std::shared_ptr<T>
+    //is generated even though we only ever use std::shared_ptr<ExprEntityBase>,
+    //leading to tremendously inflated compilation times and object size.
+    return std::make_shared<T>(std::forward<Arg>(arg)...);
+#else
+    //Cast to base before involving std::shared, never invoking std::shared_ptr<T>:
+    //
+    //This was inspired by:
+    //http://blog2.emptycrate.com/content/template-code-bloat-revisited-smaller-makeshared
+    //
+    //TODO: Figure out a smart way involving allocators and placement new to get
+    //control block and allocated object in the same allocated area of memory.
+#  ifndef NDEBUG
+    return ExprEntityPtr(dynamic_cast<ExprEntityBase*>(new T(std::forward<Arg>(arg)...)));
+#  else
+    return ExprEntityPtr(static_cast<ExprEntityBase*>(new T(std::forward<Arg>(arg)...)));
+#  endif
+#endif
+  }
+
+  template<class TValue>
+  inline ExprEntityPtr ExprEntity<TValue>::optimisedVersion()
+  {
+    //todo: Can we move this to .cc and make sure implementations don't get copied to clients?
+    if (isConstant()) {
+      if (dynamic_cast<ExprEntityConstantValue<TValue>*>(this))
+        return 0;//we are already optimal
+      return makeobj<ExprEntityConstantValue<TValue>>(evaluate());
+    }
+    optimiseChildren();
+    auto p = specialOptimisedVersion();
+    if (p) {
+      for (int i =0; i<100000; ++i) {
+        _ensure_type<TValue>(p);
+        if (i==99999)
+          EXPRPARSER_THROW(LogicError,"non-converging optimisation loop");
+        ExprEntityPtr p_opt = p->optimisedVersion();
+        if (!p_opt)
+          break;
+        p = p_opt;
+      }
+    }
+    return p;
+  }
+
+  template<class TValue>
+  inline ExprEntityConstantValue<TValue>::ExprEntityConstantValue(TValue val)
+    : ExprEntity<TValue>(),
+    m_val(val)
+  {
+  }
+
+  template<class TValue>
+  inline Evaluator<TValue>::Evaluator(ExprEntityPtr p)
+  {
+    static_assert(std::is_same<TValue,float_type>()
+                  ||std::is_same<TValue,int_type>()
+                  ||std::is_same<TValue,str_type>()
+                  ||std::is_same<TValue,bool>(),"forbidden type");
+    setArg(p);
+  }
+
+}

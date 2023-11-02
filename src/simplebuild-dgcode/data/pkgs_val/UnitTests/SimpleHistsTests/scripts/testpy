@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#Gtk gives spurious harmless warnings on some platforms only.
+sb_simplehiststests_realtestpy "$@" 2>&1|grep -v 'Gtk-Message: Failed to load module'
+exit ${PIPESTATUS[0]}

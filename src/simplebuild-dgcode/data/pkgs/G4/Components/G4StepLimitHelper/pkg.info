@@ -1,0 +1,7 @@
+package(USEEXT Geant4 )
+
+
+######################################################################
+A helper module for setting user step limits. 
+
+Primary author: Xiao Xiao Cai <caixx@ihep.ac.cn>

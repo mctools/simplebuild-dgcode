@@ -1,0 +1,8 @@
+package()
+
+######################################################################
+
+Package to contain various utilities (likely mostly python modules) for
+performing analysis in python.
+
+primary author: thomas.kittelmann@cern.ch

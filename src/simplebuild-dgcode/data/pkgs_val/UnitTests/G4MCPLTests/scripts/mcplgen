@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+#empty geometry:
+import G4StdGeometries.GeoEmptyWorld as Geo
+geo=Geo.create()
+geo.material="Vacuum"
+geo.dimension_cm=200
+
+#Setup MCPL generator:
+import G4MCPLPlugins.MCPLGen as Gen
+gen = Gen.create()
+gen.input_file = "MCPLTests/miscphys.mcpl.gz"
+#gen.input_filter = "(true)"
+gen.dx_meter = 0.02
+gen.roty_degree = 90
+
+#Launch with verbose tracking output:
+import G4Launcher
+g4 = G4Launcher(geo,gen)
+g4.setPhysicsList("ESS_Empty")
+g4.setOutput("none")
+g4.cmd_postinit("/tracking/verbose 1")
+g4.setRndEvtMsgMode('ALWAYS')
+g4.go()
+

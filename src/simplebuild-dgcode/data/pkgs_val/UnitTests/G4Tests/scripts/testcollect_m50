@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+sb_g4utils_g4logsanitiser sb_g4tests_datacollect -m MINIMAL -o testoutput_minimal.griff -n 50 |grep -v 'G4Launcher:: Begin simulation of event'
+sb_griffformat_info testoutput_minimal.griff |grep -v 'Total \['
+

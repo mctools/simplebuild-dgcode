@@ -1,0 +1,7 @@
+package(USEEXT NCrystal)
+
+###############################################################
+
+Package providing C++/python encapsulation of a good standalone random generator.
+
+primary author : thomas.kittelmann@ess.eu

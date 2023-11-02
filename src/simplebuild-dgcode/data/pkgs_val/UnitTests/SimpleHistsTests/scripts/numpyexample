@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+
+import SimpleHists as sh
+import numpy.random
+
+#create a few histograms (here using numpy distributions, but one could imagine
+#that the histograms are retrieved from a file created previously via
+#sh.HistCollection).
+
+h1 = sh.Hist1D("Dist 1",40,-10.0,10.0)
+h1.fill(-4.0,2.4)
+h1.fill(2.4)
+h1.fill(numpy.random.normal(0.3,2.3,1e5))
+
+h2 = sh.Hist1D("Dist 2",40,-20.0,10.0)
+h2.fill(numpy.random.normal(-2.3,4.3,1e5))
+
+h3 = sh.Hist1D("Dist 3",80,-10.0,10.0)
+h3.fill(numpy.random.normal(-5.3,2.3,0.5e5))
+h3.fill(numpy.random.normal(4,1.3,0.5e5))
+
+#We could have a quick view with h1.plot() or h2.plot(), but in case more
+#specific/elaborate layout and data-treatment is desired, one can retrieve the
+#bin contents and divisions via h1.content() and h1.bins(), or even by simply
+#putting "**h1.bar_args()" at the end of the call to ax.bar (this sets width,
+#height and left arguments automatically). Here is an example of this:
+
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.add_subplot(111,projection='3d')
+for i,h in enumerate([h1,h2,h3]):
+    color = ['r','g','b','y'][i%4]
+    ax.bar(zs=i, zdir='y', color=color, alpha=0.8,**h.bar_args())
+
+ax.set_xlabel('Values')
+ax.set_ylabel('Dists')
+ax.set_zlabel('Count')
+ax.set_title("Custom plotting of SimpleHists")
+plt.show()

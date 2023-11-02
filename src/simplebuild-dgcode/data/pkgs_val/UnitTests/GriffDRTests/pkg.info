@@ -1,0 +1,9 @@
+package(USEPKG GriffDataRead)
+
+###############################################################################
+
+Test reading of griff files.
+
+Primary author: thomas.kittelmann@ess.eu
+
+

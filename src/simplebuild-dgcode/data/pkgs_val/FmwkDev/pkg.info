@@ -1,0 +1,7 @@
+package(USEPKG Utils)
+
+######################################################################
+
+Utilities and scripts for framework maintenance.
+
+Primary author(s): thomas.kittelmann@ess.eu

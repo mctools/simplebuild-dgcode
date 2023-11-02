@@ -1,0 +1,18 @@
+------------------------------------------------------------
+Testing sb_basicexamples_apythonscript:
+
+somefunc in BasicExamples.anotherpuremodule
+somefunc in BasicExamples.somepuremodule
+in somecppfunc in BasicExamples.anothermodule
+in somecppfunc in BasicExamples.somemodule
+Example of exposed class: 17
+------------------------------------------------------------
+Testing sb_basicexamples_cppprog:
+
+somefunc in the BasicExamples library called
+------------------------------------------------------------
+Testing sb_basicexamples_cprog:
+
+This is an application written in C
+------------------------------------------------------------
+All tests ended with exit code 0

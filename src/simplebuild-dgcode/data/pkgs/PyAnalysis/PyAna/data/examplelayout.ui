@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindowBla</class>
+ <widget class="QMainWindow" name="MainWindowBla">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>2378</width>
+    <height>1513</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Some title here</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QComboBox" name="myComboBox">
+          <item>
+           <property name="text">
+            <string>sin(x)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>sin(x)**2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>cos(x)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplWidget" name="mplwidget_combobox" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Plot f(x)=</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="myLineEdit"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="MplWidget" name="mplwidget_userinput" native="true"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>2378</width>
+     <height>39</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuBlablabla">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuBla">
+    <property name="title">
+     <string>Bla</string>
+    </property>
+   </widget>
+   <addaction name="menuBlablabla"/>
+   <addaction name="menuBla"/>
+  </widget>
+  <action name="actionOpen">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MplWidget</class>
+   <extends>QWidget</extends>
+   <header>PyAna.PyQtMPLWidgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

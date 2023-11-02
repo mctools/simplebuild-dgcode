@@ -1,0 +1,9 @@
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+A helper module for inserting geantinos in the primary events, duplicating the
+direction of particles already there (to be able to access the otherwise
+undisturbed path through the geometry of the primary particles).
+
+Primary author: Thomas Kittelmann <thomas.kittelmann@ess.eu

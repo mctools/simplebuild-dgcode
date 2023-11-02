@@ -1,0 +1,8 @@
+package(USEEXT Geant4)
+
+######################################################################
+
+
+Small test of using Geant4 without the use of the framework.
+
+Primary authors: milan.klausz@ess.eu

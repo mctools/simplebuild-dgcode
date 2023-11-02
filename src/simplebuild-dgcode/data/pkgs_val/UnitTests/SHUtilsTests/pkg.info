@@ -1,0 +1,7 @@
+package(USEPKG SimpleHistsUtils USEEXT Numpy)
+
+#############################################################
+
+SimpleHistsUtils functionality tests
+
+primary author: thomas.kittelmann@ess.eu

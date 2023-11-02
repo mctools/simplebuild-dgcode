@@ -1,0 +1,303 @@
+#include <cassert>
+#include <algorithm>
+#include <stdexcept>
+#include <cassert>
+#include <cmath>
+#include <cstring>
+#include <cstdio>
+
+namespace Mesh {
+  template <int NDIM, class TStorage>
+  inline long MeshFiller<NDIM,TStorage>::stdCoordToCell(const double(&pt)[NDIM]) const {
+    long icell = 0;
+    for (int i = 0; i < NDIM; ++i) {
+      if (pt[i]<0.0||pt[i]>m_axis[i].n)
+        return -1;//outside grid
+      long ibin = std::min<long>(m_axis[i].n-1,std::max<long>(0,static_cast<long>(std::floor(pt[i]))));
+      assert(ibin<m_axis[i].n);
+      icell += m_cellfactor[i] * ibin;
+    }
+    return icell;
+  }
+
+  template <int NDIM, class TStorage>
+  inline long MeshFiller<NDIM,TStorage>::cellIdCollapse(const long(&cell)[NDIM]) const
+  {
+    static_assert(NDIM>0&&NDIM<99);
+    long cell1d = 0;
+    for (int i = 0; i < NDIM; ++i) {
+      if (cell[i]<0||cell[i]>=m_axis[i].n)
+        throw std::runtime_error("Cell ID out of range");
+      cell1d += m_cellfactor[i] * cell[i];
+    }
+    return cell1d;
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::cellIdExpand(long cell1d, long(&cell)[NDIM]) const
+  {
+    if (cell1d<0||cell1d>=m_ncells)
+      throw std::runtime_error("Cell ID out of range");
+    //C-style ordering
+    for (int i = 0; i<(NDIM-1); ++i) {
+      cell[i] = cell1d / m_cellfactor[i];
+      cell1d %= m_cellfactor[i];
+    }
+    cell[NDIM-1] = cell1d;
+#ifndef NDEBUG
+    for (int i = 0; i < NDIM; ++i)
+      assert(cell[0]>=0&&cell[i]<m_axis[i].n);
+#endif
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::dump() const
+  {
+    long nc = nCells();
+    long cell[NDIM];
+    for (long ic = 0; ic< nc; ++ic) {
+      cellIdExpand(ic,cell);
+      double cont = cellContent(ic);
+      printf("Cell[");
+      for (int i=0; i<NDIM; ++i)
+        printf("%li%s",cell[i],(i==NDIM-1?"":", "));
+      printf("] = %g\n",cont);
+    }
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::Axis::set(long nn, double aa, double bb)
+  {
+    assert(!(aa!=aa));
+    assert(!(bb!=bb));
+    if (nn<1)
+      throw std::runtime_error("Number of axis point must be >= 1");
+    if (aa>=bb)
+      throw std::runtime_error("Axis upper limit must be strictly higher than axis lower limit");
+    n=nn;
+    a=aa;
+    b=bb;
+    invwidth = nn / ( bb - aa );
+  }
+
+  template <int NDIM, class TStorage>
+  inline long MeshFiller<NDIM,TStorage>::calcTotNCells(const long(&ncells)[NDIM])
+  {
+    int64_t ntot = 1;//needs extra range to ensure to catch user errors in the following
+    const long maxncells = 100000000;//prevent users from shooting themselves in the foot.
+    for (int i = 0; i<NDIM; ++i) {
+      if (ncells[i]<1)
+        throw std::runtime_error("Number of cells along each dimension must be >= 1");
+      if (ncells[i]>maxncells || (ntot *= ncells[i]) > maxncells)
+        throw std::runtime_error("Total number of cells must be <= 100.000.000");
+    }
+    return ntot;
+
+  }
+
+  //Test for compatiblity (identical cell layout, but not necessarily contents):
+  template <int NDIM, class TStorage>
+  inline bool MeshFiller<NDIM,TStorage>::compatible(MeshFiller& other) const
+  {
+    for (int i = 0; i<NDIM; ++i) {
+      const Axis& t = m_axis[i];
+      const Axis& o = other.m_axis[i];
+      if (t.n!=o.n||t.a!=o.a||t.b!=o.b)
+        return false;
+    }
+    assert(nCells()==other.nCells());
+    return true;
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::reinit(const long(&ncells)[NDIM],
+                                                const double(&cell_lower)[NDIM],
+                                                const double(&cell_upper)[NDIM])
+  {
+    m_data.clear();
+    m_ncells = calcTotNCells(ncells);//error checks ncells as well
+    m_data.resize(m_ncells);
+
+    //C-style ordering
+    for (int i = NDIM-1; i >= 0; --i) {
+      if (!(cell_lower[i]<cell_upper[i]))//catch nan's as well in this check
+        throw std::runtime_error("Lower cell range must be less than upper cell range");
+      m_axis[i].set(ncells[i],cell_lower[i],cell_upper[i]);
+      m_cellfactor[i] = ( i==NDIM-1 ? 1 : m_cellfactor[i+1]*ncells[i+1] );
+    }
+
+  }
+
+  template <int NDIM, class TStorage>
+  inline MeshFiller<NDIM,TStorage>::MeshFiller()
+    : m_ncells(0)
+  {
+    //construct invalid object (to be fleshed out via a reinit call).
+    for (int i = 0; i<NDIM; ++i)
+      m_cellfactor[i] = 0;
+  }
+
+  template <int NDIM, class TStorage>
+  inline MeshFiller<NDIM,TStorage>::MeshFiller(const long(&ncells)[NDIM],
+                                               const double(&cell_lower)[NDIM],
+                                               const double(&cell_upper)[NDIM])
+  {
+    reinit(ncells,cell_lower,cell_upper);
+  }
+
+  template <int NDIM, class TStorage>
+  MeshFiller<NDIM,TStorage>::~MeshFiller()
+  {
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::toStdCoords(const double(&in)[NDIM], double (&out)[NDIM]) const
+  {
+    //For simplicity and efficiency, we define a standard grid with cell edges at
+    //integer values, extending over the cube from (0,0,0,...) to (nx,ny,nz,...):
+    for (int i = 0; i < NDIM; ++i)
+      out[i] = ( in[i] - m_axis[i].a ) * m_axis[i].invwidth;
+  }
+
+  template <int NDIM, class TStorage>
+  inline double MeshFiller<NDIM,TStorage>::cellContent(long cell1d) const
+  {
+    assert(cell1d<(long)m_data.size());
+    return m_data[cell1d];
+  }
+
+  template <int NDIM, class TStorage>
+  inline double MeshFiller<NDIM,TStorage>::cellContent(const long(&cell)[NDIM]) const
+  {
+    return cellContent(cellIdCollapse(cell));
+  }
+
+  template <int NDIM, class TStorage>
+  inline double MeshFiller<NDIM,TStorage>::contentAt(const double(&position)[NDIM]) const
+  {
+    //Convert to standard coordinates:
+    double pt[NDIM];
+    toStdCoords(position,pt);
+    long icell = stdCoordToCell(pt);
+    if (icell<0)
+      return 0.0;//outside grid
+    assert(icell<(long)m_data.size());
+    return m_data[icell];
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::fill(double dep, const double(&position)[NDIM])
+  {
+    //Convert to standard coordinates:
+    double pt[NDIM];
+    toStdCoords(position,pt);
+    long icell = stdCoordToCell(pt);
+    if (icell<0)
+      return;//outside grid
+    assert(icell<(long)m_data.size());
+    m_data[icell] += dep;
+  }
+
+  template <int NDIM, class TStorage>
+  inline double MeshFiller<NDIM,TStorage>::contentAt(const double(&pos0)[NDIM], const double(&pos1)[NDIM]) const
+  {
+    m_intersection_cache.clear();
+    getIntersections( pos0, pos1, m_intersection_cache);
+    if (m_intersection_cache.empty())
+      return 0.0;
+    double res = 0.0;
+    auto itE = m_intersection_cache.end();
+    for (auto it = m_intersection_cache.begin();it!=itE;++it)
+      res += m_data[it->first] * it->second;
+    return res;
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::fill( double dep,
+                                               const double(&pos0)[NDIM],
+                                               const double(&pos1)[NDIM] )
+  {
+    if (!dep)
+      return;
+    m_intersection_cache.clear();
+    getIntersections( pos0, pos1, m_intersection_cache);
+    if (!m_intersection_cache.empty()) {
+      auto itE = m_intersection_cache.end();
+      for (auto it = m_intersection_cache.begin();it!=itE;++it) {
+        m_data[it->first] += it->second * dep;
+      }
+    }
+  }
+
+  template <int NDIM, class TStorage>
+  inline void MeshFiller<NDIM,TStorage>::getIntersections( const double(&pos0)[NDIM],
+                                                           const double(&pos1)[NDIM],
+                                                           std::vector<std::pair<long,double>>& res ) const
+  {
+    //Parameterise the line segment in std coords with p + t*v for 0<=t<=1:
+    double p[NDIM], v[NDIM], v_inv[NDIM];
+    toStdCoords(pos0,p);
+    toStdCoords(pos1,v);
+
+    for (int i = 0; i < NDIM; ++i) {
+      v[i] -= p[i];
+      //v_inv[i] = ( v[i] ? 1.0/v[i] : std::numeric_limits<double>::infinity() );
+      v_inv[i] = ( v[i] ? 1.0/v[i] : std::numeric_limits<double>::max() );
+    }
+    double tmin(0.0), tmax(1.0);
+
+    //Truncate to grid area (inspired by
+    //http://tavianator.com/fast-branchless-raybounding-box-intersections-part-2-nans/):
+
+    for (int i = 0; i < NDIM; ++i) {
+      double t1 = - p[i] * v_inv[i];
+      double t2 = (m_axis[i].n - p[i])*v_inv[i];
+      tmin = std::max(tmin, std::min(t1, t2));
+      tmax = std::min(tmax, std::max(t1, t2));
+    }
+
+    if  (tmax <= tmin) {
+      //segment doesn't cross our grid at all
+      return;
+    }
+    assert(tmin>=0.0);
+
+    //Ok, time for the hard stuff...
+    double binedge_lower[NDIM];
+    for (int i = 0; i < NDIM; ++i)
+      binedge_lower[i] = std::max(0.0,std::min(std::floor(p[i] + tmin*v[i]),m_axis[i].n-1.0));
+
+    while (tmax>tmin) {
+      double loc_tmax = tmax;
+      double * bin_to_change = 0;
+      double change = 0.0;
+      for (int i = 0; i < NDIM; ++i) {
+        double tl = (binedge_lower[i] - p[i]) * v_inv[i];
+        double tu = (1.0 + binedge_lower[i] - p[i]) * v_inv[i];
+        double tlumax = std::max(tl, tu);
+        if (loc_tmax > tlumax) {
+          loc_tmax = tlumax;
+          bin_to_change = &(binedge_lower[i]);
+          change = tl>tu ? -1.0 : 1.0;
+        }
+      }
+      //Fill in this bin:
+      double contrib = loc_tmax-tmin;
+      if (contrib) {
+        long icell(0);
+        for (int i = 0; i < NDIM; ++i) {
+          long ibin = std::min<long>(m_axis[i].n,std::max<long>(0,static_cast<long>(binedge_lower[i])));
+          icell += m_cellfactor[i] * ibin;
+        }
+        assert(icell<(long)m_data.size());
+        res.emplace_back(icell,contrib);
+      }
+      //move to next bin if any:
+      if (!bin_to_change)
+        return;
+      *bin_to_change += change;
+      tmin = loc_tmax;
+    }
+  }
+
+}

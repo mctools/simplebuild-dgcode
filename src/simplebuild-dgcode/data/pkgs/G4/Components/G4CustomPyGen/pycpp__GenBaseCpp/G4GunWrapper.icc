@@ -1,0 +1,61 @@
+inline void G4CustomPyGen::G4GunWrapper::set_energy(double e)
+{
+  m_gun->SetParticleEnergy(e);
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_wavelength_angstrom(double wl)
+{
+  set_wavelength(wl*CLHEP::angstrom);
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_time(double t)
+{
+  m_gun->SetParticleTime(t);
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_weight(double w)
+{
+  m_weight = w;
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_position(double x,double y,double z)
+{
+  m_gun->SetParticlePosition(G4ThreeVector(x,y,z));
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_direction(double dx,double dy,double dz)
+{
+  m_gun->SetParticleMomentumDirection(G4ThreeVector(dx,dy,dz));
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_random_direction()
+{
+  m_gun->SetParticleMomentumDirection(G4Utils::randIsotropicDirection());
+}
+
+inline void G4CustomPyGen::G4GunWrapper::set_momentum(double px,double py,double pz)
+{
+  m_gun->SetParticleMomentumDirection(G4ThreeVector(px,py,pz));
+}
+
+inline void G4CustomPyGen::G4GunWrapper::fire()
+{
+  ++m_nfired;
+  int iv = m_currentEvt->GetNumberOfPrimaryVertex();
+  m_gun->GeneratePrimaryVertex(m_currentEvt);
+  if (m_weight!=1.0)
+    m_currentEvt->GetPrimaryVertex(iv)->SetWeight(m_weight);
+}
+
+
+inline void G4CustomPyGen::G4GunWrapper::allow_empty_events()
+{
+  m_empty_allowed = true;
+}
+
+
+inline void G4CustomPyGen::G4GunWrapper::fireIfNeeded()
+{
+  if (!m_nfired && !m_empty_allowed)
+    fire();
+}

@@ -1,0 +1,13 @@
+
+recursive-include src/simplebuild-dgcode/data/pkgs LICENSE pkg.info *.cc *.hh *.icc *.c *.h *.f *.py
+recursive-include src/simplebuild-dgcode/data/pkgs/**/data *
+recursive-include src/simplebuild-dgcode/data/pkgs/**/scripts *
+recursive-include src/simplebuild-dgcode/data/pkgs_val LICENSE pkg.info *.cc *.hh *.icc *.c *.h *.f *.py
+recursive-include src/simplebuild-dgcode/data/pkgs_val/**/data *
+recursive-include src/simplebuild-dgcode/data/pkgs_val/**/scripts *
+recursive-include src simplebuild.cfg
+
+global-exclude *~* *\#* .*
+global-exclude *.pyc *.pyo */__pycache__/* */.ruff_cache/*
+global-exclude *.gch *.exe *.so *.dylib *.o *.a
+global-exclude vgcore.* .DS_Store .vscode *.reflogupdate*.orig

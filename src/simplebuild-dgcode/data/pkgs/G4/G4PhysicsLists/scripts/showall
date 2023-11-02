@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+
+import G4PhysicsLists
+G4PhysicsLists.printAvailableLists()

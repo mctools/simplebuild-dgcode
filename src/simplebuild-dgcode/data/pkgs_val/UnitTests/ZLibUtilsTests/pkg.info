@@ -1,0 +1,7 @@
+package(USEPKG ZLibUtils)
+
+#############################################################
+
+ZLibUtils functionality tests
+
+primary author: thomas.kittelmann@ess.eu

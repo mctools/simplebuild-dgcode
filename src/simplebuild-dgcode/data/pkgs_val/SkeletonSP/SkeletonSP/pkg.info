@@ -1,0 +1,11 @@
+package(USEPKG PyAna ScanUtils GriffAnaUtils SimpleHists)
+
+######################################################################
+
+Package containing launch scripts and Griff analysis code for the SkeletonSP simulation project.
+
+PLEASE-DESCRIBE-YOUR-PROJECT-HERE
+
+Primary author(s): PLEASE-PUT-RELEVANT-NAMES-AND-EMAILS-HERE
+
+--> <SKEL_MUST_MODIFY_FILE> <--

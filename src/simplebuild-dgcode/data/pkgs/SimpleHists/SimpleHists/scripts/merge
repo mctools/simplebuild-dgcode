@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import SimpleHists as sh
+import os
+from SimpleHists._util import test_and_fix_target
+
+def parse_cmd_line():
+    import argparse as AP
+    parser = AP.ArgumentParser(description='Merge contents of two or more .shist files'
+                               +' into a new one. Note that the metadata of the histograms'
+                               +' must be exactly similar or the merging will fail.',
+                               usage='%(prog)s [-h] -o TARGET <SRCFILES>')
+
+    parser.add_argument('srcfiles', metavar='SRCFILES', type=str, nargs='+',
+                        help='Two or more .shist files to merge (wildcards allowed)')
+    parser.add_argument('-o',dest='target', metavar='TARGET', type=str,
+                        help='destination file',required=True)#ARGH, fixme, why does it show up in
+                                                              #the "optional" section of --help?
+
+    args=parser.parse_args()
+
+    #for convenience, expand any input file with '*', '[' or '?' in it via glob,
+    #and always expanduser:
+    tmp=[]
+    for sfraw in args.srcfiles:
+        sf=os.path.expanduser(sfraw)
+        if '*' in sf or '[' in sf or '?' in sf:
+            import glob
+            sf=glob.glob(sf)
+            if not sf:
+                parser.error('No files selected by pattern "%s"'%sfraw)
+            tmp+=sf
+        else:
+            if not os.path.exists(sf):
+                parser.error('Input file not found: %s'%sf)
+            tmp+=[sf]
+    args.srcfiles=tmp
+
+    if len(args.srcfiles)<2:
+        parser.error('Please provide at least 2 input files')
+
+    #Guard against multiple:
+    srcabs=[os.path.abspath(os.path.realpath(s)) for s in args.srcfiles]
+    if len(set(srcabs))!=len(args.srcfiles):
+        parser.error('Multiple identical input files specified')
+    args.srcfiles=srcabs
+
+    args.target=test_and_fix_target(parser.error,args.target)
+
+    return args
+
+args=parse_cmd_line()
+
+print("Merging %i files"%len(args.srcfiles))
+
+hc=None
+for src in args.srcfiles:
+    print("... opening %s"%os.path.relpath(src))
+    if not hc:
+        hc=sh.HistCollection(src)
+    else:
+        hc.merge(src)
+
+print("... writing %s"%os.path.relpath(args.target))
+hc.saveToFile(args.target,False)
+print("Merging OK")
+

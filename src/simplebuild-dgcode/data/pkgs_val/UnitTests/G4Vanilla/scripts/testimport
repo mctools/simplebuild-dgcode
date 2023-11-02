@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+
+#See ../pycpp__init/mod.cc for why this is an interesting test.
+
+import G4Vanilla

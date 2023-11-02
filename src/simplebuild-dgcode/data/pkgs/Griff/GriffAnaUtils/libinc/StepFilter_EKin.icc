@@ -1,0 +1,44 @@
+inline GriffAnaUtils::StepFilter_EKin::StepFilter_EKin()
+  : m_minPreEKin(-1.0),
+    m_maxPreEKin(std::numeric_limits<double>::max()),
+    m_minPostEKin(-1.0),
+    m_maxPostEKin(std::numeric_limits<double>::max())
+{
+}
+
+inline GriffAnaUtils::StepFilter_EKin::~StepFilter_EKin()
+{
+}
+
+inline GriffAnaUtils::StepFilter_EKin* GriffAnaUtils::StepFilter_EKin::setMinPreEKin(double e)
+{
+  m_minPreEKin = e;
+  return this;
+}
+
+inline GriffAnaUtils::StepFilter_EKin* GriffAnaUtils::StepFilter_EKin::setMaxPreEKin(double e)
+{
+  m_maxPreEKin = e;
+  return this;
+}
+
+inline GriffAnaUtils::StepFilter_EKin* GriffAnaUtils::StepFilter_EKin::setMinPostEKin(double e)
+{
+  m_minPostEKin = e;
+  return this;
+}
+
+inline GriffAnaUtils::StepFilter_EKin* GriffAnaUtils::StepFilter_EKin::setMaxPostEKin(double e)
+{
+  m_maxPostEKin = e;
+  return this;
+}
+
+inline bool GriffAnaUtils::StepFilter_EKin::filter(const GriffDataRead::Step*step) const
+{
+  double pre = step->preEKin();
+  if (pre<m_minPreEKin||pre>m_maxPreEKin)
+    return false;
+  double post = step->postEKin();
+  return !(post<m_minPostEKin||post>m_maxPostEKin);
+}

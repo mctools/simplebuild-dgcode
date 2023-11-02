@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+
+import DevTools._installutils
+import Core.System as Sys
+import sys,os
+
+class CMakeInstaller(DevTools._installutils.stdinstaller):
+    def _detect_platform(self):
+        import platform
+        m=platform.machine()
+        if m in ['i486','i586','i686']: m='i386'
+        p=sys.platform
+        if p.lower().startswith('linux'): p='Linux'
+        elif p.lower().startswith('darwin'): p='Darwin'
+        return p,m
+    def _tarbase_name(self,version):
+        p,m=self._detect_platform()
+        return 'cmake-%s-%s-%s'%(version,p.lower(),m)
+    def name(self): return 'CMake'
+    def default_version(self): return '3.18.4'
+    def download_command(self,version):
+        vmajor,vminor,vpatch=version.split('.')
+        return ['sb_devtools_wget',
+                'https://github.com/Kitware/CMake/releases/download/v%s/%s.tar.gz'%(version,self._tarbase_name(version))]
+                #'https://cmake.org/files/v%s.%s/%s.tar.gz'%(vmajor,vminor,self._tarbase_name(version))]
+    def unpack_command(self,version):
+        assert version
+        return ['tar','xf','%s.tar.gz'%self._tarbase_name(version)]
+    def src_work_subdir(self,version): return self._tarbase_name(version)
+    def in_source_buildandconfig(self): return False
+    def hide_flags(self): return ['--debug','--jobs','--nocleanup','<customoptions>']
+    def dbg_flags(self): return []
+    def configure_command(self,instdir,srcdir,blddir,version,extra_options):
+        if extra_options:
+            print("ERROR: CMake installation from binary sources supports no custom flags!")
+            sys.exit(1)
+        install_x = os.path.join(blddir,'install.x')
+        with open(install_x,'w') as fh:
+            fh.write('#!/usr/bin/env bash\n')
+            fh.write('mkdir -p %s\n'%Sys.quote(os.path.join(instdir)))
+            for subdir in ['bin','doc','man','share']:
+                fh.write('mv %s %s && \\\n'%(Sys.quote(os.path.join(srcdir,subdir)),
+                                             Sys.quote(os.path.join(instdir,subdir))))
+            fh.write('echo "::: Moved all directories directly from unpacked source to installation target."\n')
+        Sys.chmod_x(install_x)
+        return ['echo','::: Created install.x']
+    def validate_version(self,version):
+        parts=version.split('.')
+        if len(parts)!=3: return False
+        for p in parts:
+            if not p.isdigit():
+                return False
+        return True
+    def allow_local_source(self): return True
+    def local_source_to_version(self,srcfile_basename):
+        b,e='cmake-','.tar.gz'
+        if not srcfile_basename.startswith(b): return None
+        if not srcfile_basename.endswith(e): return None
+        return srcfile_basename.split('-')[1]
+    def setup_file_contents(self,instdir):
+        return ['export CMAKE_ROOT=%s'%instdir,
+                'export PATH=$CMAKE_ROOT/bin:${PATH:-}']
+    def unsetup_file_contents(self,instdir):
+        return ['if [ "x${CMAKE_ROOT:-}" == "x%s" ]; then'%instdir,
+                '    prunepath PATH "$CMAKE_ROOT"',
+                '    unset CMAKE_ROOT',
+                'fi']
+    def prefix_env_var(self): return 'CMAKE_ROOT'
+    def libdirs_in_installation(self): return []
+    def build_command(self,nprocs): return 'echo "::: Nothing to do for build step"'
+    def install_command(self,nprocs): return './install.x'
+
+CMakeInstaller().go()
+

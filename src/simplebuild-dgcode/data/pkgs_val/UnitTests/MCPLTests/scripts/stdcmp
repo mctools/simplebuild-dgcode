@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+#Check compilation with various C and C++ standards (with all combinations of
+#MCPL_HASZLIB, MCPL_NO_CUSTOM_GZIP and MCPL_NO_EXT_GZIP so all code gets
+#exposed).
+
+lang="$1"
+
+#A bit hackish, but we want to compile mcpl again and again:
+CC="$(sb_core_queryenv system langs c compiler)"
+CCXX="$(sb_core_queryenv system langs cxx compiler)"
+CFLAGS_C="$(sb_core_queryenv system langs c cflags)"
+CFLAGS_CXX="$(sb_core_queryenv system langs cxx cflags)"
+P=$(sb_core_queryenv --pkgdir MCPL)
+
+ZLIB_C_CFLAGS="$(sb_core_queryenv extdeps ZLib cflags_c)"
+#Assume same for C++ and C: ZLIB_CXX_CFLAGS="$(sb_core_queryenv extdeps ZLib cflags_cxx)"
+ZLIB_LDFLAGS="$(sb_core_queryenv extdeps ZLib ldflags)"
+
+#sliiiightly faster compilation with -O0:
+CC="$CC -O0"
+CCXX="$CCXX -O0"
+
+echo '#include "mcpl.h"' > main.c
+echo 'int main(void) { return 0;}' >> main.c
+
+for a in 0 1; do
+    for b in 0 1; do
+        for c in 0 1; do
+            rm -f out.mcpl*
+            flags=""
+            linkflags="-lm -L$SBLD_LIB_DIR/"
+            hiddencflags="-Wall -Wextra -Werror -pedantic"
+            if [ $a == 1 ]; then
+                linkflags="${linkflags} ${ZLIB_LDFLAGS}"
+                flags="${flags} -DMCPL_HASZLIB"
+                hiddencflags="${hiddencflags} ${ZLIB_C_CFLAGS}"
+            fi
+            if [ $b == 1 ]; then
+                flags="${flags} -DMCPL_NO_CUSTOM_GZIP"
+            fi
+            if [ $c == 1 ]; then
+                flags="${flags} -DMCPL_NO_EXT_GZIP"
+            fi
+            echo "=========================================================================="
+            echo "=== Testing flags: ${flags}"
+            #skip c++03 comp of mcpl.c to save time (also, not always available)
+            if [ "$lang" == "cxx" ]; then
+                stds="c++98 c++11"
+            else
+                stds="c99 c11"
+            fi
+            for std in $stds; do
+                echo "=== -> mcpl.h & mcpl.c with --std=${std}"
+                COMP=$CC
+                CFLAGS="${CFLAGS_C}"
+                X=-xc
+                if [[ ${std} == c++* ]]; then
+                    COMP=$CCXX
+                    CFLAGS="${CFLAGS_CXX}"
+                    X=-xc++
+                fi
+                #silently ignore standards not supported by compiler:
+                echo 'int main(void){ return 0;}' |$COMP ${CFLAGS} -std=${std} $X - >  /dev/null 2>&1
+                if [ $? != 0 ]; then
+                    if [ "x${std}" != "xc++11" -a "x${std}" != "xc11" ]; then
+                        #sanity check to make sure we dont always run on silent...
+                        echo "Compiler claims to not support $std which is weird..."
+                        exit 1
+                    fi
+                    continue
+                fi
+                $COMP ${CFLAGS} -pedantic -c -std=${std} ${flags} ${hiddencflags} -I$SBLD_INCLUDE_DIR/MCPL $X $P/libsrc/mcpl.c $X main.c
+                if [ $? != 0 ]; then
+                    echo "Failure during ${std} compilation of mcpl.c!"
+                    exit 1
+                fi
+            done
+            if [ "$lang" == "cxx" ]; then
+                stds="c++03"
+            else
+                stds="c89 c90"
+            fi
+            for std in $stds; do
+                echo "=== -> mcpl.h with --std=${std}"
+                COMP=$CC
+                CFLAGS="${CFLAGS_C}"
+                X=-xc
+                if [[ ${std} == c++* ]]; then
+                    COMP=$CCXX
+                    CFLAGS="${CFLAGS_CXX}"
+                    X=-xc++
+                fi
+                #silently ignore standards not supported by compiler:
+                echo 'int main(void){ return 0; }' |$COMP ${CFLAGS} -std=${std} $X - >  /dev/null 2>&1
+                if [ $? != 0 ]; then
+                    if [ "x${std}" != "xc++11" -a "x${std}" != "xc++03" -a "x${std}" != "xc90" ]; then
+                        #sanity check to make sure we dont always run on silent...
+                        echo "Compiler claims to not support $std which is weird..."
+                        exit 1
+                    fi
+                    continue
+                fi
+                $COMP ${CFLAGS} -pedantic -c -std=${std} ${flags} ${hiddencflags} -I$SBLD_INCLUDE_DIR/MCPL/ $X main.c
+                if [ $? != 0 ]; then
+                    echo "Failure during ${std} compilation of mcpl.h!"
+                    exit 1
+                fi
+            done
+        done
+    done
+done

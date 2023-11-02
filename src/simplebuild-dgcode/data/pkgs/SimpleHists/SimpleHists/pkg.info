@@ -1,0 +1,53 @@
+package(USEPKG Utils USEEXT ZLib)
+
+######################################################################
+
+
+Package containing a few very simple histogramming classes which can be filled
+on the fly and later on serialised, printed or converted to numpy arrays.
+
+On purpose we do NOT include an error array like in ROOT in 2D hists. One can
+merge(=add) and scale histograms with positive factors. One can NOT subtract
+histograms or scale with negative factors. The only annotations allowed are
+title, xlabel and ylabel, and while plot methods exists on the python side,
+using them will never change the histogram state itself.
+
+FIXME: Double check on a low-bin histogram that getPercentileBin works correctly, also when under/overflow plays a role.
+
+TODO: units support? I.e. scale all vals with 1/unitx and all weights with 1/unity
+TODO: add test for getBinSum
+TODO: median on 2d hists.
+TODO: Fix HistCounts plotting when no counters are added.
+TODO: name: MOPHI (Merge-able One-Pass HIstograms)?
+todo: custom exception rather than std::runtime_error?
+TODO: access counters as properties
+TODO: access hists as properties so tab completion would work in ipython? Would not work for all keys (only alphanum+'_' allowed)
+TODO: plotcounts need some love for labels, errors and logscale hover.
+TODO: hoverhandler: mouse leave figure should remove hoverf
+FIXME: Mouse events do not work in secondary windows...
+TODO: button to change y-axis (0->max, minnonzero->max). Automatically select the second when going to log-scale.
+TODO: HistCollection needs browser/display mode
+      - arrows for going back and forth
+      - keys for bringing up a navigation menu
+TODO: Disable hover-box+highlight when mouse over stat/info window or when in zoom mode.
+TODO: info script needs: savefig
+TODO: info script needs: better plotting (needs just 1 window and menu for navigation)
+TODO: plotter: Somehow export python module for getting the standard plot environment?
+TODO: plotter: xylabels should be either centered or at end of axis? (or simply implement snapping?)
+TODO: plotter: dblclick on title/labels to edit
+TODO: plotter: persistify state? (could serialise histogram + changed settings)
+TODO: make sure we get rid of all todo's/fixme's from the code.
+TODO: dump methods should put common stuff in HistBase
+TODO: browse script should show hist type
+TODO: HistCol: getNHists?, .histograms property so one can loop over hists in python (and C++ with iterators)?
+TODO: Hist2D should also have ZLabel property (if we support lego).
+TODO: A "comment" field on histbase (like title/labels, but not displayed in plots)
+TODO: 2d needs mode to display lego plots and projections (problem: stuff can be overflowing in the other direction)
+TODO: Needs scale(x>0) function, and a specialised normalise function() (can exist on both 1d and 2d hists).
+//Scale(a): m_contents[i]*=a,m_errors[i]*=a*a,overflow*=a (triggers initErrors() first!)
+assert(a>0). normalise should have option to include overflow bins in calculation of scale-factor.
+#TODO: Copy constructor (or clone method?)
+#TODO: 1d y-log-scale mode needs to change ylim (to keep the axes)
+TODO: replace all(ish) asserts with throw's
+
+primary author: thomas.kittelmann@ess.eu

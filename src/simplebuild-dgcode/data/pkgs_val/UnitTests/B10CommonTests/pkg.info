@@ -1,0 +1,7 @@
+package(USEPKG G4B10Common GriffB10Common)
+
+######################################################################
+
+Test for the the B10Common utilities.
+
+Primary author: thomas.kittelmann@ess.eu

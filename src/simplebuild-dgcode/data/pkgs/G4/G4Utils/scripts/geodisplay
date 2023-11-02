@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+import sys
+import importlib
+from optparse import OptionParser#NOTE: The optparse module is deprecated - we should stop using it at some point
+#from Units import units as Units
+import G4Launcher
+
+parser = OptionParser(usage='%prog [options] [par1=val1] [par2=val2] [...]')
+parser.add_option("-t", "--test", action='store_true',default=False,dest="test",help='Test geometry consistency and exit')
+parser.add_option("-d", "--dump", action='store_true',default=False,dest="dump",help='Dump parameters')
+parser.add_option("-g", "--geometry",type="string", dest="custom_geo",
+                  default='G4StdGeometries.GeoSlab',help="Geometry to visualise (default G4StdGeometries.GeoSlab)")
+parser.add_option("-p", "--generator",type="string", dest="custom_gen",
+                  default='G4StdGenerators.SimpleGen',help="Particle Generator to setup (default G4StdGenerators.SimpleGen)")
+#parser.add_option("--viewer", action='store_true',default=False,dest="osgviewer",
+#                  help='Experimental OpenSceneGraph based geometry visualisation')
+parser.add_option("--g4viewer", action='store_false',default=True,dest="osgviewer",
+                  help='Use Geant4\'s default viewer rather than dgcode\'s custom OpenSceneGraph based geometry visualisation')
+parser.add_option("--allowfpe",action='store_true',default=False,dest="allowfpe",
+                  help="Do not trap floating point errors")
+(opt, args) = parser.parse_args(sys.argv[1:])
+
+geomod = importlib.import_module(opt.custom_geo)
+genmod = importlib.import_module(opt.custom_gen)
+geo = geomod.create()
+gen = genmod.create()
+
+geo.swallowCmdLine(args)
+gen.swallowCmdLine(args)
+
+if args:
+    parser.error("Unrecognised arguments: %s"%' '.join(args))
+
+if opt.test and opt.dump :
+    parser.error("Incompatible paramters: -t/--test can't be used with -d/--dump")
+
+if opt.dump:
+    gen.dump()
+    geo.dump()
+    sys.exit(0)
+
+launcher = G4Launcher(geo,gen)
+#launcher.setParticleGun("neutron",0.025*units.eV,(0,0,0),(0,0,1))
+launcher.setOutput("none")
+launcher.setSeed(1118)
+
+if opt.allowfpe:
+    launcher.allowFPE()
+
+if opt.test:
+    launcher.setPhysicsList("ESS_Empty")
+    launcher.cmd_postinit("/geometry/test/tolerance 0.000001 mm")
+    launcher.cmd_postinit("/geometry/test/run")
+    launcher.init()
+else:
+    if opt.osgviewer:
+        #fixme: some the code below could be shared with _launcher.py
+        try:
+            import G4OSG.Viewer
+        except ImportError:
+            print("WARNING: Failed to import G4OSG.Viewer module (perhaps you do not have OpenSceneGraph installed!\n\n")
+            raise
+        launcher.setPhysicsList("ESS_Empty")
+        def launch_viewer_then_exit():
+            print('='*80)
+            print("== Launching viewer!")
+            print('='*80)
+            ec=G4OSG.Viewer.run()
+            print('='*80)
+            print("==  Viewer done: Exiting.")
+            print('='*80)
+            import sys
+            sys.exit(ec if ec<128 else 127)
+        launcher.postinit_hook(launch_viewer_then_exit)
+        launcher.init()
+        #launcher.postinit_hook(G4OSG.Viewer.run()
+        #launcher.startSimulation(1)
+    else:
+        launcher.setVis()
+        launcher.startSession()

@@ -1,0 +1,11 @@
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+GeoEmptyWorld: An empty 1.0m^3 box world.
+
+GeoSlab: A simple "slab" (a box of a given depth and very large transverse
+         dimensions), with recording volumes before and after, for all sorts of
+         shielding and physics validation purposes.
+
+Primary author(s): thomas.kittelmann@ess.eu

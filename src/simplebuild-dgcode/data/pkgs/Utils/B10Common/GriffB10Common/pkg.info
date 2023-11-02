@@ -1,0 +1,7 @@
+package(USEPKG GriffAnaUtils SimpleHistsUtils)
+
+######################################################################
+
+Common analysis utilities for analysis of simulations of B10 based detectors.
+
+Primary author: thomas.kittelmann@ess.eu

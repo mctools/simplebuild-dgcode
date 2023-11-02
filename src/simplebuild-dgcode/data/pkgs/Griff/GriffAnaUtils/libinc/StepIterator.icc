@@ -1,0 +1,74 @@
+inline GriffAnaUtils::StepIterator::StepIterator(GriffDataReader* dr)
+  : m_segmentIter(dr),
+    m_itStep(0),
+    m_itStepEnd(0),
+    m_beginEventCB(this),
+    m_dr(dr)
+{
+  dr->registerBeginEventCallBack(&m_beginEventCB);
+  reset();
+}
+
+inline GriffAnaUtils::StepIterator::~StepIterator()
+{
+  if (m_dr)
+    m_dr->deregisterBeginEventCallBack(&m_beginEventCB);
+  for (auto it = m_stepFilters.begin();it!=m_stepFilters.end();++it)
+    (*it)->unref();
+}
+
+inline GriffAnaUtils::ITrackFilter* GriffAnaUtils::StepIterator::addFilter(ITrackFilter*f)
+{
+  m_segmentIter.addFilter(f);
+  return f;
+}
+
+inline GriffAnaUtils::ISegmentFilter* GriffAnaUtils::StepIterator::addFilter(ISegmentFilter*f)
+{
+  m_segmentIter.addFilter(f);
+  return f;
+}
+
+inline GriffAnaUtils::IStepFilter* GriffAnaUtils::StepIterator::addFilter(IStepFilter*f)
+{
+  assert(f);
+  m_stepFilters.push_back(f);
+  f->ref();
+  ISegmentFilter * sf = f->associatedSegmentFilter();
+  ITrackFilter * tf = f->associatedTrackFilter();
+  if (sf) m_segmentIter.addFilter(sf);
+  if (tf) m_segmentIter.addFilter(tf);
+  return f;
+}
+
+inline void GriffAnaUtils::StepIterator::reset()
+{
+  m_itStep = m_itStepEnd = 0;
+  m_segmentIter.reset();
+}
+
+inline bool GriffAnaUtils::StepIterator::stepOK(const GriffDataRead::Step*o) const
+{
+  for (auto it = m_stepFilters.begin(); it<m_stepFilters.end();++it)
+    if ( (*it)->enabled() && (*it)->filter(o)==(*it)->negated() )
+      return false;
+  return true;
+}
+
+inline const GriffDataRead::Step* GriffAnaUtils::StepIterator::next()
+{
+  //find next OK step on current track:
+  while(m_itStep!=m_itStepEnd) {
+    if (stepOK(m_itStep))
+      return m_itStep++;
+    ++m_itStep;
+  }
+
+  //find next OK segment:
+  const GriffDataRead::Segment* segment = m_segmentIter.next();
+  if (!segment)
+    return 0;//end iteration
+  m_itStep = segment->stepBegin();
+  m_itStepEnd = segment->stepEnd();
+  return next();
+}

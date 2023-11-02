@@ -1,0 +1,8 @@
+package()
+
+######################################################################
+
+This package is supposed to provide facilities which might be helpful during
+development and debugging.
+
+Primary author: thomas.kittelmann@ess.eu

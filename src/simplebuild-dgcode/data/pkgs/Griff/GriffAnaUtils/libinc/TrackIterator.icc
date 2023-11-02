@@ -1,0 +1,56 @@
+inline GriffAnaUtils::TrackIterator::TrackIterator(GriffDataReader* dr)
+  : m_dr(dr),
+    m_itTrack(0),
+    m_itTrackEnd(0),
+    m_beginEventCB(this)
+{
+  dr->registerBeginEventCallBack(&m_beginEventCB);
+  reset();
+}
+
+inline GriffAnaUtils::TrackIterator::~TrackIterator()
+{
+  if (m_dr)
+    m_dr->deregisterBeginEventCallBack(&m_beginEventCB);
+  for (auto it = m_trackFilters.begin();it!=m_trackFilters.end();++it)
+    (*it)->unref();
+}
+
+inline GriffAnaUtils::ITrackFilter* GriffAnaUtils::TrackIterator::addFilter(ITrackFilter*f)
+{
+  assert(f);
+  m_trackFilters.push_back(f);
+  f->ref();
+  return f;
+}
+
+inline void GriffAnaUtils::TrackIterator::reset()
+{
+  if (!m_dr->eventActive()) {
+    m_itTrack = m_itTrackEnd = 0;//prevent any iteration
+  } else {
+    m_itTrack = m_dr->trackBegin();
+    m_itTrackEnd = m_dr->trackEnd();
+  }
+}
+
+inline bool GriffAnaUtils::TrackIterator::trackOK(const GriffDataRead::Track*o) const
+{
+  for (auto it = m_trackFilters.begin(); it<m_trackFilters.end();++it)
+    if ( (*it)->enabled() && (*it)->filter(o)==(*it)->negated() )
+      return false;
+  return true;
+}
+
+inline const GriffDataRead::Track* GriffAnaUtils::TrackIterator::next()
+{
+  //find next OK track:
+  while(m_itTrack!=m_itTrackEnd) {
+    if (trackOK(m_itTrack))
+      break;
+    ++m_itTrack;
+  }
+  if (m_itTrack==m_itTrackEnd)
+    return 0;//end iteration
+  return m_itTrack++;
+}

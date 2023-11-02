@@ -1,0 +1,8 @@
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+
+Package providing various generators.
+
+Primary authors: thomas.kittelmann@ess.eu

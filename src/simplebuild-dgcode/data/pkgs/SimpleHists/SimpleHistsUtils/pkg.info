@@ -1,0 +1,9 @@
+package(USEPKG SimpleHists Utils)
+
+######################################################################
+
+
+Package containing utilities which deals with SimpleHists, but which are perhaps
+a bit too domain and project specific to be part of SimpleHists themselves.
+
+primary author: thomas.kittelmann@ess.eu

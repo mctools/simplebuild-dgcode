@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+prog=`which $1`
+if [ $? != 0 ]; then
+    echo "Error: Command not found: $1"
+    exit 1
+fi
+shift 1
+valgrind --tool=callgrind   --trace-children=yes $prog "$@"
+
+#--instr-atstart=no
+# --trace-children-skip='*lgrind*'
+

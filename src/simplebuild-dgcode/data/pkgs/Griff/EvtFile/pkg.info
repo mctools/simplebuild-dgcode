@@ -1,0 +1,9 @@
+package(USEPKG Utils ZLibUtils)
+
+######################################################################
+
+Package holding data structures associated with a custom data format for holding
+event data (such as the output of Geant4 simulations). It also provides
+functionality for reading and writing such data structures.
+
+Primary author: thomas.kittelmann@ess.eu

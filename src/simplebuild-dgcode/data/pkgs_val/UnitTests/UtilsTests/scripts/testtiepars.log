@@ -1,0 +1,405 @@
+############## Testing type Double ######################
+Parameters initial values:
+
+  A:
+    [dbl] apar1 = 12.2
+    [int] apar2 = 5
+  B:
+    [dbl] bpar1 = 5.5
+    [int] bpar2 = 2
+  C:
+    [dbl] cpar1 = 1.1
+    [str] cpar2 = "hello"
+
+Parameters after tying A.apar1 to B.bpar1:
+
+  A:
+    [dbl] apar1 = 5.5
+    [int] apar2 = 5
+  B:
+    [dbl] bpar1 = 5.5
+    [int] bpar2 = 2
+  C:
+    [dbl] cpar1 = 1.1
+    [str] cpar2 = "hello"
+
+Parameters after tying C.cpar1 to A.apar1:
+
+  A:
+    [dbl] apar1 = 5.5
+    [int] apar2 = 5
+  B:
+    [dbl] bpar1 = 5.5
+    [int] bpar2 = 2
+  C:
+    [dbl] cpar1 = 5.5
+    [str] cpar2 = "hello"
+
+Parameters after setting C.cpar1 to 17.2:
+
+  A:
+    [dbl] apar1 = 17.2
+    [int] apar2 = 5
+  B:
+    [dbl] bpar1 = 17.2
+    [int] bpar2 = 2
+  C:
+    [dbl] cpar1 = 17.2
+    [str] cpar2 = "hello"
+
+############## Testing type Int ######################
+Parameters initial values:
+
+  A:
+    [int] apar1 = 12
+    [int] apar2 = 5
+  B:
+    [int] bpar1 = 5
+    [int] bpar2 = 2
+  C:
+    [int] cpar1 = 1
+    [str] cpar2 = "hello"
+
+Parameters after tying A.apar1 to B.bpar1:
+
+  A:
+    [int] apar1 = 5
+    [int] apar2 = 5
+  B:
+    [int] bpar1 = 5
+    [int] bpar2 = 2
+  C:
+    [int] cpar1 = 1
+    [str] cpar2 = "hello"
+
+Parameters after tying C.cpar1 to A.apar1:
+
+  A:
+    [int] apar1 = 5
+    [int] apar2 = 5
+  B:
+    [int] bpar1 = 5
+    [int] bpar2 = 2
+  C:
+    [int] cpar1 = 5
+    [str] cpar2 = "hello"
+
+Parameters after setting C.cpar1 to 17:
+
+  A:
+    [int] apar1 = 17
+    [int] apar2 = 5
+  B:
+    [int] bpar1 = 17
+    [int] bpar2 = 2
+  C:
+    [int] cpar1 = 17
+    [str] cpar2 = "hello"
+
+############## Testing type Boolean ######################
+Parameters initial values:
+
+  A:
+    [flg] apar1 = yes
+    [int] apar2 = 5
+  B:
+    [flg] bpar1 = no
+    [int] bpar2 = 2
+  C:
+    [flg] cpar1 = yes
+    [str] cpar2 = "hello"
+
+Parameters after tying A.apar1 to B.bpar1:
+
+  A:
+    [flg] apar1 = no
+    [int] apar2 = 5
+  B:
+    [flg] bpar1 = no
+    [int] bpar2 = 2
+  C:
+    [flg] cpar1 = yes
+    [str] cpar2 = "hello"
+
+Parameters after tying C.cpar1 to A.apar1:
+
+  A:
+    [flg] apar1 = no
+    [int] apar2 = 5
+  B:
+    [flg] bpar1 = no
+    [int] bpar2 = 2
+  C:
+    [flg] cpar1 = no
+    [str] cpar2 = "hello"
+
+Parameters after setting C.cpar1 to True:
+
+  A:
+    [flg] apar1 = yes
+    [int] apar2 = 5
+  B:
+    [flg] bpar1 = yes
+    [int] bpar2 = 2
+  C:
+    [flg] cpar1 = yes
+    [str] cpar2 = "hello"
+
+############## Testing type String ######################
+Parameters initial values:
+
+  A:
+    [str] apar1 = "hello"
+    [int] apar2 = 5
+  B:
+    [str] bpar1 = "world"
+    [int] bpar2 = 2
+  C:
+    [str] cpar1 = ""
+    [str] cpar2 = "hello"
+
+Parameters after tying A.apar1 to B.bpar1:
+
+  A:
+    [str] apar1 = "world"
+    [int] apar2 = 5
+  B:
+    [str] bpar1 = "world"
+    [int] bpar2 = 2
+  C:
+    [str] cpar1 = ""
+    [str] cpar2 = "hello"
+
+Parameters after tying C.cpar1 to A.apar1:
+
+  A:
+    [str] apar1 = "world"
+    [int] apar2 = 5
+  B:
+    [str] bpar1 = "world"
+    [int] bpar2 = 2
+  C:
+    [str] cpar1 = "world"
+    [str] cpar2 = "hello"
+
+Parameters after setting C.cpar1 to howdy:
+
+  A:
+    [str] apar1 = "howdy"
+    [int] apar2 = 5
+  B:
+    [str] bpar1 = "howdy"
+    [int] bpar2 = 2
+  C:
+    [str] cpar1 = "howdy"
+    [str] cpar2 = "hello"
+
+############## Testing self-ties of type Double ######################
+Parameters initial values:
+
+  A:
+    [dbl] par1 = 12.2
+    [dbl] par2 = 5.5
+    [dbl] par3 = 1.1
+
+Parameters after tying A.par1 to A.par3:
+
+  A:
+    [dbl] par1 = 1.1
+    [dbl] par2 = 5.5
+    [dbl] par3 = 1.1
+
+Parameters after tying A.par3 to A.par2:
+
+  A:
+    [dbl] par1 = 5.5
+    [dbl] par2 = 5.5
+    [dbl] par3 = 5.5
+
+Parameters after setting A.par2 to 17.2:
+
+  A:
+    [dbl] par1 = 17.2
+    [dbl] par2 = 17.2
+    [dbl] par3 = 17.2
+
+############## Testing self-ties of type Int ######################
+Parameters initial values:
+
+  A:
+    [int] par1 = 12
+    [int] par2 = 5
+    [int] par3 = 1
+
+Parameters after tying A.par1 to A.par3:
+
+  A:
+    [int] par1 = 1
+    [int] par2 = 5
+    [int] par3 = 1
+
+Parameters after tying A.par3 to A.par2:
+
+  A:
+    [int] par1 = 5
+    [int] par2 = 5
+    [int] par3 = 5
+
+Parameters after setting A.par2 to 17:
+
+  A:
+    [int] par1 = 17
+    [int] par2 = 17
+    [int] par3 = 17
+
+############## Testing self-ties of type Boolean ######################
+Parameters initial values:
+
+  A:
+    [flg] par1 = yes
+    [flg] par2 = no
+    [flg] par3 = yes
+
+Parameters after tying A.par1 to A.par3:
+
+  A:
+    [flg] par1 = yes
+    [flg] par2 = no
+    [flg] par3 = yes
+
+Parameters after tying A.par3 to A.par2:
+
+  A:
+    [flg] par1 = no
+    [flg] par2 = no
+    [flg] par3 = no
+
+Parameters after setting A.par2 to True:
+
+  A:
+    [flg] par1 = yes
+    [flg] par2 = yes
+    [flg] par3 = yes
+
+############## Testing self-ties of type String ######################
+Parameters initial values:
+
+  A:
+    [str] par1 = "hello"
+    [str] par2 = "world"
+    [str] par3 = ""
+
+Parameters after tying A.par1 to A.par3:
+
+  A:
+    [str] par1 = ""
+    [str] par2 = "world"
+    [str] par3 = ""
+
+Parameters after tying A.par3 to A.par2:
+
+  A:
+    [str] par1 = "world"
+    [str] par2 = "world"
+    [str] par3 = "world"
+
+Parameters after setting A.par2 to howdy:
+
+  A:
+    [str] par1 = "howdy"
+    [str] par2 = "howdy"
+    [str] par3 = "howdy"
+
+############## Testing parameter exposing ######################
+Parameters initial values:
+
+  A:
+    [dbl] par1 = 2.1
+    [int] par2 = 5
+    [int] par3 = 6
+    [flg] par4 = no
+    [str] par5 = "something"
+
+  B:
+    [dbl] par1 = 12.1
+    [int] par2 = 15
+    [int] par3 = 16
+    [flg] par4 = no
+    [str] par5 = "something else"
+
+Parameters after explicit exposure:
+
+  A:
+    [dbl] par1 = 2.1
+    [int] par2 = 5
+    [int] par3 = 6
+    [flg] par4 = no
+    [str] par5 = "something"
+    [dbl] exposedp1 = 12.1
+    [int] exposedp2 = 15
+    [int] exposedp3 = 16
+    [flg] exposedp4 = no
+    [str] exposedp5 = "something else"
+    [str] exposedp5v2 = "something else"
+
+  B:
+    [dbl] par1 = 12.1
+    [int] par2 = 15
+    [int] par3 = 16
+    [flg] par4 = no
+    [str] par5 = "something else"
+
+Parameters after general exposure:
+
+  A:
+    [dbl] par1 = 2.1
+    [int] par2 = 5
+    [int] par3 = 6
+    [flg] par4 = no
+    [str] par5 = "something"
+    [dbl] exposedp1 = 12.1
+    [int] exposedp2 = 15
+    [int] exposedp3 = 16
+    [flg] exposedp4 = no
+    [str] exposedp5 = "something else"
+    [str] exposedp5v2 = "something else"
+    [dbl] b_par1 = 12.1
+    [int] b_par2 = 15
+    [int] b_par3 = 16
+    [flg] b_par4 = no
+    [str] b_par5 = "something else"
+
+  B:
+    [dbl] par1 = 12.1
+    [int] par2 = 15
+    [int] par3 = 16
+    [flg] par4 = no
+    [str] par5 = "something else"
+
+Parameters after a.b_... changes:
+
+  A:
+    [dbl] par1 = 2.1
+    [int] par2 = 5
+    [int] par3 = 6
+    [flg] par4 = no
+    [str] par5 = "something"
+    [dbl] exposedp1 = 1.234
+    [int] exposedp2 = 25
+    [int] exposedp3 = 16
+    [flg] exposedp4 = yes
+    [str] exposedp5 = "changed"
+    [str] exposedp5v2 = "changed"
+    [dbl] b_par1 = 1.234
+    [int] b_par2 = 25
+    [int] b_par3 = 16
+    [flg] b_par4 = yes
+    [str] b_par5 = "changed"
+
+  B:
+    [dbl] par1 = 1.234
+    [int] par2 = 25
+    [int] par3 = 16
+    [flg] par4 = yes
+    [str] par5 = "changed"
+

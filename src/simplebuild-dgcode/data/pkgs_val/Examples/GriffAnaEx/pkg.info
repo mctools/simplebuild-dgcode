@@ -1,0 +1,21 @@
+package(USEPKG GriffAnaUtils)
+
+######################################################################
+
+Package providing examples for analysis of Griff files.
+
+4 of the examples are used to show-case both C++ versus python and "basic" analysis (loop
+through all objects) versus "advanced" analysis (based on iterators with selection filters
+from the GriffAnaUtils package). They are:
+
+  sb_griffanaex_testcppana_basic    ("basic" C++ analysis in app_testcppana_basic/main.cc   )
+  sb_griffanaex_testpyana_basic     ( same but in python in scripts/testpyana_basic         )
+  sb_griffanaex_testcppana_advanced ("advanced" C++ analysis in testcppana_advanced/main.cc )
+  sb_griffanaex_testpyana_advanced  ( same but in python in scripts/testpyana_advanced      )
+
+Another example shows how advanced analysis can even work with custom selection
+filters (filters must be defined in C++):
+
+  sb_griffanaex_customfilter (in app_customfilter/main.cc)
+
+Primary author: thomas.kittelmann@ess.eu

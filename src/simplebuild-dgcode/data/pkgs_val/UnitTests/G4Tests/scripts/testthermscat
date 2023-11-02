@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+import Core.System as Sys
+import XSectParse.ParseXSectFile as XSparse
+import Units
+import sys
+import pathlib
+import shlex
+import numpy
+import os
+
+# Verify that our dynamic thermal scattering support ("+TS") actually works, by
+# looking at cross-section curves for polyethylene, and verifying that they are
+# in the right range.
+
+
+val_xs_PEwithTS = [ ( 2e-2, 38.0, 44.0 ),# format is : ( neutron energy (eV), min xs/atom (barn), max xs/atom )
+                    ( 3e-6, 3.6e2, 4.2e2 )
+                   ]
+val_xs_PEfreegas = [ ( 2e-2, 22.0, 24.0 ),
+                     ( 3e-6, 1.45e3, 1.55e3 )
+                   ]
+
+os.environ['G4XSECTSPY_NSAMPLE']='5'#default 50
+os.environ['G4XSECTSPY_LOGDELTAE']='0.05'#default 0.005
+
+
+settings = [ dict( mat='G4_POLYETHYLENE', physlist='QGSP_BIC_HP+TS', expected = val_xs_PEwithTS ),
+             dict( mat='G4_POLYETHYLENE', physlist='QGSP_BIC_HP', expected = val_xs_PEfreegas ),
+             dict( mat='NCrystal:cfg=Polyethylene_CH2.ncmat', physlist='QGSP_BIC_HP', expected = val_xs_PEwithTS ),
+             dict( mat='NCrystal:cfg=Polyethylene_CH2.ncmat', physlist='QGSP_BIC_HP+TS', expected = val_xs_PEwithTS ),
+             dict( mat='NCrystal:cfg=[gasmix::CH2/1kgm3]', physlist='QGSP_BIC_HP', expected = val_xs_PEfreegas ),
+             dict( mat='NCrystal:cfg=[gasmix::CH2/1kgm3]', physlist='QGSP_BIC_HP+TS', expected = val_xs_PEfreegas ),
+            ]
+
+
+use_tmp_dir = not '--local' in sys.argv[1:]
+
+unit_eV = Units.units.eV
+unit_barn = Units.units.barn
+
+with ( Sys.work_in_tmpdir() if use_tmp_dir else Sys.changedir('.') ):
+    workdir_base = pathlib.Path('.').absolute().resolve()
+    for i,opt in enumerate(settings):
+        workdir_subpath = f'rung4/run{i}'
+        print('===> Testing material "%s" with physics list "%s" in subdir %s'%( opt['mat'],
+                                                                                 opt['physlist'],
+                                                                                 workdir_subpath ))
+        workdir = workdir_base / workdir_subpath
+        workdir.mkdir( parents = True )
+        with Sys.changedir(workdir):
+            cmd = ['sb_g4xsectdump_query','-m',opt['mat'],'-l',opt['physlist'],'--noshow']
+            cmd = ' '.join(shlex.quote(e) for e in cmd) + ' >& output.log'
+            print(f"====> About to invoke: {cmd}")
+            Sys.system_throw(cmd,catch_output=True)
+            files = [p for p in pathlib.Path('.').glob('xsects_discreteprocs_neutron*.txt')
+                     if not p.name.endswith('.g4mat.txt')]
+            assert len(files)==1
+            parsed_result = XSparse.parse( files[0].absolute().resolve() )
+            _pdata = parsed_result['procs']['hadElastic']
+            _E, _xs = _pdata[:,0]/unit_eV, _pdata[:,1]/unit_barn
+            expected = opt['expected']
+            expected_E = [E for E,minxs,maxxs in expected]
+            xs_at_expectedE = numpy.interp( expected_E, _E, _xs )
+            for (E,minxs,maxxs),actualXS in zip(expected,xs_at_expectedE):
+                print(f"At E={E:g}eV found xs={actualXS:g} (expected in range [{minxs:g},{maxxs:g}])")
+            if not minxs <= actualXS <= maxxs:
+                raise SystemExit('Unexpected cross section value!')

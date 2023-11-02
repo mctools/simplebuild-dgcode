@@ -1,0 +1,7 @@
+package(USEPKG G4Interfaces G4StdGeometries Utils G4Launcher)
+
+######################################################################
+
+Custom hook for extracting cross-sections and mean-free-path length from Geant4.
+
+Primary authors: thomas.kittelmann@ess.eu

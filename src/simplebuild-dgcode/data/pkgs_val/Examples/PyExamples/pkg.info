@@ -1,0 +1,7 @@
+package()
+
+######################################################################
+
+A place to collect various examples of how to use scipy/numpy/matploblib/pylab
+
+Primary author: thomas.kittelmann@ess.eu

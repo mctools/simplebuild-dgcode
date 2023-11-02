@@ -1,0 +1,7 @@
+package(USEPKG G4Interfaces GriffDataRead)
+
+######################################################################
+
+Package providing a generator which can fire particles found in griff files.
+
+Primary authors: thomas.kittelmann@ess.eu

@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+#test a generator defined in G4CustomPyGen.Examples:
+
+from G4CustomPyGen.Examples import CorrelatedBeamGen as Gen
+gen=Gen()
+
+import G4StdGeometries.GeoSlab as geomodule
+geo = geomodule.create()
+
+import G4Launcher
+launcher = G4Launcher(geo,gen)
+launcher.go()

@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+from UtilsTests.usenp import gensquares
+gs=gensquares()
+assert len(gs)==100000
+assert (gs==[x*float(x) for x in range(100000)]).all()
+print('%.1f'%gs[0])
+print('%.1f'%gs[1])
+print('%.1f'%gs[2])
+print('%.1f'%gs[99997])
+print('%.1f'%gs[99998])
+print('%.1f'%gs[99999])

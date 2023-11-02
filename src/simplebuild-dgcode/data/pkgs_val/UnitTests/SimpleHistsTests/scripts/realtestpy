@@ -1,0 +1,268 @@
+#!/usr/bin/env python3
+import SimpleHists as sh
+import Core.FindData
+
+import sys
+import os
+import pickle
+
+h = sh.Hist1D("A title (0)",5,0.0,10.0)
+h.dump(True)
+
+h.setXLabel("some xlabel")
+h.setTitle("A title")
+h.setYLabel("some ylabel")
+h.setComment("some comment")
+h.fill(0.001)
+h.fill(0.001,0.5)
+h.fill(5.001,1.5)
+h.fill(15.001)#overflow
+h.fill(-15.001,0.333)#underflow
+
+h.dump(True)
+
+buf = h.serialise()
+
+print("\nSerialised to buffer of length %i\n"%len(buf))
+print("Deserialisation 1:\n")
+
+h2 = sh.Hist1D(buf)
+h2.dump(True)
+
+print("\nDeserialisation 2:\n")
+
+h3 = sh.deserialise(buf)
+h3.dump(True)
+
+print('\nPython class name:\n')
+print(' ',type(h3))
+
+print('\nTest HistBase python properties with setters:\n')
+
+print(' ',h.title,'->', end=' ')
+h.title='new title'
+print(h.title)
+
+print(' ',h.xlabel,'->', end=' ')
+h.xlabel='new xlabel'
+print(h.xlabel,'->', end=' ')
+h.setXLabel('another xlabel')
+print(h.xlabel)
+
+print(' ',h.ylabel,'->', end=' ')
+h.ylabel='new ylabel'
+print(h.ylabel,'->', end=' ')
+h.setYLabel('another ylabel')
+print(h.ylabel)
+
+print(' ',h.comment,'->', end=' ')
+h.comment='new comment'
+print(h.comment,'->', end=' ')
+h.setComment('another comment')
+print(h.comment)
+
+def py2str(o):
+    if isinstance(o,float):
+        #in py3 str(nbr)=repr(nbr), but in py2 str(nbr) is shortened a'la "%.12g":
+        return '%.12g'%o
+    else:
+        return str(o)
+
+
+print('\nTest Hist1D python read-only properties:\n')
+print('  nBins =',h.nbins)
+print('  xMin =',h.xmin)
+print('  xMax =',h.xmax)
+print('  integral =',h.integral)
+print('  mean =',py2str(h.mean))
+print('  rms =',py2str(h.rms))
+print('  underflow =',h.underflow)
+print('  overflow =',h.overflow)
+
+#Test merging:
+
+print("\nMerge test premerge:\n")
+
+hmerge1 = sh.Hist1D(buf)
+hmerge2 = sh.Hist1D(buf)
+
+hmerge1.fill(2.5,0.4);
+hmerge2.fill(8.8,4.3);
+hmerge1.dump(True);
+hmerge2.dump(True);
+
+hmerge2da = sh.Hist2D(4,-10.0,10.0,3,-12.0,13.0)
+hmerge2db = sh.Hist2D(4,-10.0,10.0,3,-12.0,13.0)
+hmerge2da.fill(0.0,0.0)
+hmerge2da.fill(1.0,-5.0)
+hmerge2da.fill(3.0,7.0,2.2)
+hmerge2db.fill(-9.0,-2.0,0.1)
+hmerge2db.fill(20.0,-5.0)
+hmerge2db.fill(3.0,7.0,2.2)
+hmerge2db.fill(0.4,6)
+hmerge2db.fill(1.4,1.6,13.2)
+hmerge2da.merge(hmerge2db)
+hmerge2da.dump(True)
+
+print("\nMerge test postmerge:\n")
+
+hmerge1.merge(hmerge2);
+hmerge1.dump(True);
+
+print("\nTest HistCollection:\n")
+
+hc=sh.HistCollection()
+h1d = hc.book1D(7,-5.0,5.0,"a_test_hist")
+h1d.setXLabel("A fine xlabel")
+h1d.fill(1.2);
+h1d.fill(-2.4,0.01);
+print("\nSome histogram before persistification:\n")
+h1d.dump(True);
+hc.saveToFile("testhc",True);
+
+hc2=sh.HistCollection("testhc")
+print("\nSame histogram after persistification+loading:\n")
+hc2.hist("a_test_hist").dump(True)
+
+print("Test normalisation - original:")
+hnorm = sh.deserialise(buf)
+hnorm.dump(True,"  ")
+print("Test normalisation:")
+hnorm.norm()
+hnorm.dump(True,"  ")
+
+#We also test the numpy interface, however we do this only when numpy is
+#installed on the system (since it is not an absolute prerequisite for the
+#histograms). The test should succeed both with and without numpy present, so no
+#additional printouts are allowed.
+
+try:
+    import numpy
+except ImportError:
+    numpy=None
+if numpy:
+    h1 = sh.Hist1D("Dist 1",40,-10.0,10.0)
+    h1.fill(-4.0,2.4)
+    h1.fill(2.4)
+    h1.fill(numpy.random.normal(0.3,2.3,int(1e5)))
+
+    h2 = sh.Hist1D("Dist 2",40,-20.0,10.0)
+    h2.fill(numpy.random.normal(-2.3,4.3,int(1e5)))
+
+    h3 = sh.Hist1D("Dist 3",80,-10.0,10.0)
+    h3.fill(numpy.random.normal(-5.3,2.3,int(0.5e5)))
+    h3.fill(numpy.random.normal(4,1.3,50000),numpy.ones(50000)*1.2)#with weights
+
+    c=h1.contents()
+    b=h1.binedges()
+    assert isinstance(c,numpy.ndarray)
+    assert isinstance(b,numpy.ndarray)
+    assert len(c)==h1.nbins
+    assert len(b)==h1.nbins+1
+    assert set(h1.bar_args().keys())==set(['width','height','left','align']) or set(h1.bar_args().keys())==set(['width','height','x','align'])
+
+#2D:
+
+h2d = sh.Hist2D("A 2d hist",5,0.0,5.0,3,-2.0,2.0)
+h2d.dump(True)#test empty dump
+h2d.setXLabel("some xlabel")
+h2d.setYLabel("some ylabel")
+h2d.setComment("some comment")
+h2d.fill(0.5,0.2)
+h2d.fill(0.0,17.5,12.2)#overflow y
+h2d.dump(True)
+if numpy:
+    h2d.fill(numpy.random.normal(0.3,2.3,int(1e5)),numpy.random.normal(0.3,2.3,int(1e5)))
+    h2d.fill(numpy.random.normal(0.3,2.3,int(1e5)),numpy.random.normal(0.3,2.3,int(1e5)),numpy.ones(int(1e5))*1.2)
+
+#HistCounts:
+
+stats = sh.HistCounts("Stats")
+c1 = stats.addCounter("Counter 1")
+c2 = stats.addCounter("counter_2")
+c2.comment = "This is a comment about the second counter"
+c3 = stats.addCounter("Counter 3","<Counter 3>")
+stats.addCounter("An unused counter")
+c4 = stats.addCounter("A counter summing c1 and c2")
+c1 += 1
+c1 += 1
+c2 += 12.2
+for i in range(100):
+    c3 += 1.0
+c4 += c1
+c4 += c2
+
+stats.dump(True,"s1: ")
+stats2 = stats.clone()
+c1+=1;c2+=1;c3+=1;c4+=1
+
+stats2.dump(True,"s2: ")
+statbuf= stats2.serialise()
+print("Serialised to %i bytes"%len(statbuf))
+del stats2
+
+hdeser = sh.deserialise(statbuf)
+hdeser.dump(True,"s3: ")
+
+
+print("Test browse script + reading of reference file")
+
+sys.stdout.flush()
+ec=os.system("sb_simplehists_browse -dd %s"%Core.FindData('SimpleHists','ref.shist'))
+assert ec==0
+sys.stdout.flush()
+
+print("Test browse script + reading of reference file in version 0x01")
+
+sys.stdout.flush()
+ec=os.system("sb_simplehists_browse -dd %s"%Core.FindData('SimpleHists','refv1.shist'))
+assert ec==0
+sys.stdout.flush()
+
+
+print("Test pickling/unpickling")
+
+#Create some simple histograms
+hc=sh.HistCounts("Some test counts")
+c=hc.addCounter("some stuff","Some stuff!")
+c += 10.4
+h1d=sh.Hist1D("Some test counts",7,0.0,7.0)
+h1d.xlabel='a label'
+h1d.fill(3.0,1.2)
+h2d=sh.Hist2D("Some test counts",7,0.0,7.0,3,-1.0,2.0)
+h2d.xlabel='a label'
+h2d.fill(3.0,-0.5,10.2)
+
+#Dump in a pickle file:
+fh=open('out.pkl','wb')
+pickle.dump([hc,h1d,h2d],fh)
+fh.close()
+
+#load again and dump
+pkl_hc,pkl_h1d,pkl_h2d = pickle.load(open('out.pkl','rb'))
+pkl_hc.dump(True)
+pkl_h1d.dump(True)
+pkl_h2d.dump(True)
+
+#finally, show a gui if running by hand and supplying --gui.
+
+if '--gui' in sys.argv[1:]:
+    print('-'*80)
+    h = sh.Hist1D("An awesome histogram",100,0.0,10.0)
+    h.xlabel = 'X values'
+    h.ylabel = 'Counts / %g X'%h.binwidth
+    h.comment = "A comment about the histogram goes here..."
+    h.fill(numpy.random.normal(4.5,1.5,1e5))
+    h.dump(False)
+    h.plot()#statbox_exactcorner=True
+    h2d = sh.Hist2D("An awesome 2d histogram",15,0.0,5.0,14,-2.0,2.0)
+    h2d.fill(numpy.random.normal(0.3,2.3,1e6),numpy.random.normal(0.3,2.3,1e6))
+    h2d.xlabel = 'X values'
+    h2d.ylabel = 'Y values'
+    h2d.comment = "A comment about the histogram goes here..."
+    h2d.dump(False)
+    print('-----')
+    #h2d.norm()
+    h2d.plot()#,statbox_exactcorner=True
+else:
+    print('\n(not showing gui since --gui was not supplied as argument)')

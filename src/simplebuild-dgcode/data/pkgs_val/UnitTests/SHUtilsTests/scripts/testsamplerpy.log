@@ -1,0 +1,146 @@
+Hist1D(nbins=20,xmin=-0.2,xmax=2):
+  title     : <none>
+  xLabel    : <none>
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 10000
+  mean      : 0.187953
+  rms       : 1.87965
+  median    : 0.405 +- 0.055
+  minfilled : -4.04988
+  maxfilled : 4.94073
+  underflow : 1447
+  overflow  : 1220
+  content[ibin=0] : 0 +- 0
+  content[ibin=1] : 676 +- 26
+  content[ibin=2] : 972 +- 31.1769
+  content[ibin=3] : 870 +- 29.4958
+  content[ibin=4] : 847 +- 29.1033
+  content[ibin=5] : 698 +- 26.4197
+  content[ibin=6] : 626 +- 25.02
+  content[ibin=7] : 560 +- 23.6643
+  content[ibin=8] : 502 +- 22.4054
+  content[ibin=9] : 449 +- 21.1896
+  content[ibin=10] : 189 +- 13.7477
+  content[ibin=11] : 0 +- 0
+  content[ibin=12] : 0 +- 0
+  content[ibin=13] : 0 +- 0
+  content[ibin=14] : 0 +- 0
+  content[ibin=15] : 233 +- 15.2643
+  content[ibin=16] : 208 +- 14.4222
+  content[ibin=17] : 187 +- 13.6748
+  content[ibin=18] : 167 +- 12.9228
+  content[ibin=19] : 149 +- 12.2066
+Hist1D(nbins=100,xmin=-5,xmax=5):
+  title     : <none>
+  xLabel    : <none>
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 1e+06
+  mean      : 0.510847
+  rms       : 1.59427
+  median    : 0.35 +- 0.05
+  minfilled : -4.04988
+  maxfilled : 4.94073
+  underflow : 0
+  overflow  : 0
+  content[ibin=0] : 0 +- 0
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 0 +- 0
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 0 +- 0
+  content[ibin=5] : 0 +- 0
+  content[ibin=6] : 0 +- 0
+  content[ibin=7] : 0 +- 0
+  content[ibin=8] : 0 +- 0
+  content[ibin=9] : 1875 +- 43.3013
+  content[ibin=10] : 3759 +- 61.3107
+  content[ibin=11] : 3759 +- 61.3107
+  content[ibin=12] : 3758 +- 61.3025
+  content[ibin=13] : 3759 +- 61.3107
+  content[ibin=14] : 3758 +- 61.3025
+  content[ibin=15] : 3759 +- 61.3107
+  content[ibin=16] : 3758 +- 61.3025
+  content[ibin=17] : 3759 +- 61.3107
+  content[ibin=18] : 3758 +- 61.3025
+  content[ibin=19] : 3759 +- 61.3107
+  content[ibin=20] : 3758 +- 61.3025
+  content[ibin=21] : 3759 +- 61.3107
+  content[ibin=22] : 3759 +- 61.3107
+  content[ibin=23] : 3758 +- 61.3025
+  content[ibin=24] : 3759 +- 61.3107
+  content[ibin=25] : 3758 +- 61.3025
+  content[ibin=26] : 3759 +- 61.3107
+  content[ibin=27] : 3758 +- 61.3025
+  content[ibin=28] : 3759 +- 61.3107
+  content[ibin=29] : 3758 +- 61.3025
+  content[ibin=30] : 3759 +- 61.3107
+  content[ibin=31] : 3759 +- 61.3107
+  content[ibin=32] : 3758 +- 61.3025
+  content[ibin=33] : 3759 +- 61.3107
+  content[ibin=34] : 3758 +- 61.3025
+  content[ibin=35] : 3759 +- 61.3107
+  content[ibin=36] : 3758 +- 61.3025
+  content[ibin=37] : 3759 +- 61.3107
+  content[ibin=38] : 3758 +- 61.3025
+  content[ibin=39] : 3759 +- 61.3107
+  content[ibin=40] : 3758 +- 61.3025
+  content[ibin=41] : 3759 +- 61.3107
+  content[ibin=42] : 3759 +- 61.3107
+  content[ibin=43] : 3758 +- 61.3025
+  content[ibin=44] : 3759 +- 61.3107
+  content[ibin=45] : 3758 +- 61.3025
+  content[ibin=46] : 3759 +- 61.3107
+  content[ibin=47] : 3758 +- 61.3025
+  content[ibin=48] : 0 +- 0
+  content[ibin=49] : 55309 +- 235.179
+  content[ibin=50] : 82982 +- 288.066
+  content[ibin=51] : 81873 +- 286.135
+  content[ibin=52] : 77836 +- 278.991
+  content[ibin=53] : 70227 +- 265.004
+  content[ibin=54] : 60837 +- 246.652
+  content[ibin=55] : 55109 +- 234.753
+  content[ibin=56] : 49854 +- 223.28
+  content[ibin=57] : 45155 +- 212.497
+  content[ibin=58] : 40818 +- 202.035
+  content[ibin=59] : 17182 +- 131.08
+  content[ibin=60] : 1718 +- 41.4488
+  content[ibin=61] : 0 +- 0
+  content[ibin=62] : 0 +- 0
+  content[ibin=63] : 0 +- 0
+  content[ibin=64] : 10591 +- 102.913
+  content[ibin=65] : 20272 +- 142.38
+  content[ibin=66] : 18337 +- 135.414
+  content[ibin=67] : 16636 +- 128.981
+  content[ibin=68] : 15018 +- 122.548
+  content[ibin=69] : 13546 +- 116.387
+  content[ibin=70] : 4148 +- 64.405
+  content[ibin=71] : 4149 +- 64.4127
+  content[ibin=72] : 4148 +- 64.405
+  content[ibin=73] : 4149 +- 64.4127
+  content[ibin=74] : 4149 +- 64.4127
+  content[ibin=75] : 4148 +- 64.405
+  content[ibin=76] : 4149 +- 64.4127
+  content[ibin=77] : 4149 +- 64.4127
+  content[ibin=78] : 4148 +- 64.405
+  content[ibin=79] : 4149 +- 64.4127
+  content[ibin=80] : 4148 +- 64.405
+  content[ibin=81] : 4149 +- 64.4127
+  content[ibin=82] : 4149 +- 64.4127
+  content[ibin=83] : 4148 +- 64.405
+  content[ibin=84] : 4149 +- 64.4127
+  content[ibin=85] : 4149 +- 64.4127
+  content[ibin=86] : 4148 +- 64.405
+  content[ibin=87] : 4149 +- 64.4127
+  content[ibin=88] : 4148 +- 64.405
+  content[ibin=89] : 4149 +- 64.4127
+  content[ibin=90] : 4149 +- 64.4127
+  content[ibin=91] : 4148 +- 64.405
+  content[ibin=92] : 4149 +- 64.4127
+  content[ibin=93] : 4149 +- 64.4127
+  content[ibin=94] : 4148 +- 64.405
+  content[ibin=95] : 4149 +- 64.4127
+  content[ibin=96] : 4148 +- 64.405
+  content[ibin=97] : 4149 +- 64.4127
+  content[ibin=98] : 4149 +- 64.4127
+  content[ibin=99] : 1690 +- 41.1096

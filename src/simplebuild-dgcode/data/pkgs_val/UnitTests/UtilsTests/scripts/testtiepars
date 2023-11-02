@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+from Utils.DummyParamHolder import DummyParamHolder as P
+
+l = []
+l += [('Double',12.2,5.5,1.1,17.2)]
+l += [('Int',12,5,1,17)]
+l += [('Boolean',True,False,True,True)]
+l += [('String',"hello","world","","howdy")]
+
+for pt,va,vb,vc,vf in l:
+    print("############## Testing type %s ######################"%pt)
+    a = P()
+
+    getattr(a,'addParameter%s'%pt)("apar1",va)
+    a.addParameterInt("apar2",5)
+
+    b = P()
+    getattr(b,'addParameter%s'%pt)("bpar1",vb)
+    b.addParameterInt("bpar2",2)
+
+    c = P()
+    getattr(c,'addParameter%s'%pt)("cpar1",vc)
+    c.addParameterString("cpar2","hello")
+
+    def dump(p):
+        print("Parameters %s:"%p)
+        print()
+        print("  A:")
+        a.dumpNoLock("    ")
+        print("  B:")
+        b.dumpNoLock("    ")
+        print("  C:")
+        c.dumpNoLock("    ")
+        print()
+
+    dump("initial values")
+
+    a.tieParameters("apar1",b,"bpar1")
+    dump("after tying A.apar1 to B.bpar1")
+    c.tieParameters("cpar1",a,"apar1")
+    dump("after tying C.cpar1 to A.apar1")
+    c.cpar1 = vf
+    dump("after setting C.cpar1 to %s"%str(vf))
+
+for pt,va,vb,vc,vf in l:
+    print("############## Testing self-ties of type %s ######################"%pt)
+
+    a = P()
+    getattr(a,'addParameter%s'%pt)("par1",va)
+    getattr(a,'addParameter%s'%pt)("par2",vb)
+    getattr(a,'addParameter%s'%pt)("par3",vc)
+
+    def dump(p):
+        print("Parameters %s:"%p)
+        print()
+        print("  A:")
+        a.dumpNoLock("    ")
+        print()
+
+    dump("initial values")
+    a.tieParameters("par1",a,"par3")
+    dump("after tying A.par1 to A.par3")
+    a.tieParameters("par3",a,"par2")
+    dump("after tying A.par3 to A.par2")
+    a.par2 = vf
+    dump("after setting A.par2 to %s"%str(vf))
+
+
+print("############## Testing parameter exposing ######################")
+
+a = P()
+a.addParameterDouble("par1",2.1,0.0,10.0)
+a.addParameterInt("par2",5)
+a.addParameterInt("par3",6)
+a.addParameterBoolean("par4",False)
+a.addParameterString("par5","something")
+
+b = P()
+b.addParameterDouble("par1",12.1,0.0,20.0)
+b.addParameterInt("par2",15)
+b.addParameterInt("par3",16)
+b.addParameterBoolean("par4",False)
+b.addParameterString("par5","something else")
+
+def dump(p):
+    print("Parameters %s:"%p)
+    print()
+    print("  A:")
+    a.dumpNoLock("    ")
+    print()
+    print("  B:")
+    b.dumpNoLock("    ")
+    print()
+
+dump("initial values")
+
+a.exposeParameter("par1",b,"exposedp1")
+a.exposeParameter("par2",b,"exposedp2")
+a.exposeParameter("par3",b,"exposedp3")
+a.exposeParameter("par4",b,"exposedp4")
+a.exposeParameter("par5",b,"exposedp5")
+a.exposeParameter("par5",b,"exposedp5v2")
+
+dump("after explicit exposure")
+
+a.exposeParameters(b,"b_")
+
+dump("after general exposure")
+
+a.b_par1 = 1.234
+a.b_par2 = 25
+a.b_par4 = True
+a.b_par5 = "changed"
+dump("after a.b_... changes")
+

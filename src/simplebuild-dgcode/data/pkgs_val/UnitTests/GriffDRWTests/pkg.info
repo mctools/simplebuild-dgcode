@@ -1,0 +1,9 @@
+package(USEPKG G4Interfaces GriffDataRead G4CustomPyGen G4Launcher USEEXT Numpy)
+
+###############################################################################
+
+Test both writing and reading of griff files.
+
+Primary author: thomas.kittelmann@ess.eu
+
+

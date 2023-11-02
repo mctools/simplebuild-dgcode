@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+sb_g4mcpltests_mcplgen |sed 's#^'"${G4NEUTRONHPDATA}"'$#<G4NEUTRONHPDATA>#'
+EC=${PIPESTATUS[0]}
+if [ $EC != 0 ]; then
+    echo "ERROR!"
+    exit 1
+fi
+

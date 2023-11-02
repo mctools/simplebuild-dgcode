@@ -1,0 +1,7 @@
+package(USEPKG MCPL USEEXT Geant4)
+
+##########################################################
+
+Package implementing Geant4 wrappers for mcpl user flags.
+
+Primary author: thomas.kittelmann@ess.eu

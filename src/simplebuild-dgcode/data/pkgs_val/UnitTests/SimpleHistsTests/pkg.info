@@ -1,0 +1,7 @@
+package(USEPKG SimpleHists)
+
+#############################################################
+
+Simple hists functionality tests
+
+primary author: thomas.kittelmann@ess.eu

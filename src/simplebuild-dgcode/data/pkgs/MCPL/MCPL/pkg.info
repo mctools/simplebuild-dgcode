@@ -1,0 +1,8 @@
+package(USEEXT ZLib EXTRA_INCDEPS libsrc/mcpl.c:MCPL/mcpl.h EXTRA_COMPILE_FLAGS -DMCPL_HASZLIB -DMCPL_HEADER_INCPATH='"MCPL/mcpl.h"')
+
+##########################################################
+
+Package implementing binary files with particle listings for interchanging and
+reshooting events between various MC apps (McStas, Geant4, MCNP, ...).
+
+Primary author: thomas.kittelmann@ess.eu

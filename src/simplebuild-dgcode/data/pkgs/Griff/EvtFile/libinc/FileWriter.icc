@@ -1,0 +1,34 @@
+inline void FileWriter::writeDataDBSection(const char* data, unsigned n)//data nbytes
+{
+  //TODO: Could we do something slightly more efficient here by a custom data array and integer?
+  unsigned l(m_section_database.size());
+  m_section_database.resize(l+n);//useless initialisation happens...
+  std::memcpy(&(m_section_database[l]),data,n);
+}
+
+inline void FileWriter::writeDataBriefSection(const char* data, unsigned n)
+{
+  unsigned l(m_section_briefdata.size());
+  m_section_briefdata.resize(l+n);
+  std::memcpy(&(m_section_briefdata[l]),data,n);
+}
+
+inline void FileWriter::writeDataFullSection(const char* data, unsigned n)
+{
+  unsigned l(m_section_fulldata.size());
+  m_section_fulldata.resize(l+n);
+  std::memcpy(&(m_section_fulldata[l]),data,n);
+}
+
+inline void FileWriter::registerPreFlushCallback(IFWPreFlushCB&cb)
+{
+  m_preFlushCBs.push_back(&cb);
+}
+
+//Avoid one case of bad usage:
+template<>
+inline void FileWriter::writeDataDBSection(const std::string&) { assert(false&&"Only write POD's with these template methods"); }
+template<>
+inline void FileWriter::writeDataBriefSection(const std::string&) { assert(false&&"Only write POD's with these template methods"); }
+template<>
+inline void FileWriter::writeDataFullSection(const std::string&) { assert(false&&"Only write POD's with these template methods"); }

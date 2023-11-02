@@ -1,0 +1,194 @@
+
+
+          ################################
+          !!! G4Backtrace is activated !!!
+          ################################
+
+
+**************************************************************
+ Geant4 version Name: geant4-11-00-patch-03 [MT]   (16-September-2022)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+ExampleHooks::prepreInitHook called!
+preprehook_py called!
+G4Launcher:: Pre-init started
+G4Launcher:: Installing FPE detection
+G4Launcher:: setSeed() not called, picking standard seed.
+G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
+G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up geometry:
+G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
+G4Launcher::   -->   [dbl] target_depth_cm = 0.01
+G4Launcher::   -->   [dbl] target_width_cm = 100
+G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher:: Setting up particle generation:
+G4Launcher::   --> ParticleGenerator[G4StdGenerators/FlexGen]:
+G4Launcher::   -->   [dbl] fixed_x_meters = 0
+G4Launcher::   -->   [flg] randomize_x = no
+G4Launcher::   -->   [dbl] random_min_x_meters = 0
+G4Launcher::   -->   [dbl] random_max_x_meters = 0
+G4Launcher::   -->   [dbl] fixed_y_meters = 0
+G4Launcher::   -->   [flg] randomize_y = no
+G4Launcher::   -->   [dbl] random_min_y_meters = 0
+G4Launcher::   -->   [dbl] random_max_y_meters = 0
+G4Launcher::   -->   [dbl] fixed_z_meters = -1.5
+G4Launcher::   -->   [flg] randomize_z = no
+G4Launcher::   -->   [dbl] random_min_z_meters = 0
+G4Launcher::   -->   [dbl] random_max_z_meters = 0
+G4Launcher::   -->   [dbl] fixed_energy_eV = 0.00020048086070873
+G4Launcher::   -->   [flg] randomize_energy = no
+G4Launcher::   -->   [dbl] random_min_energy_eV = 0
+G4Launcher::   -->   [dbl] random_max_energy_eV = 0
+G4Launcher::   -->   [dbl] neutron_wavelength_aangstrom = 20.2
+G4Launcher::   -->   [flg] momdir_spherical = no
+G4Launcher::   -->   [dbl] fixed_polarangle_deg = 0
+G4Launcher::   -->   [flg] randomize_polarangle = no
+G4Launcher::   -->   [dbl] random_min_polarangle_deg = 0
+G4Launcher::   -->   [dbl] random_max_polarangle_deg = 180
+G4Launcher::   -->   [dbl] fixed_azimuthalangle_deg = 0
+G4Launcher::   -->   [flg] randomize_azimuthalangle = no
+G4Launcher::   -->   [dbl] random_min_azimuthalangle_deg = 0
+G4Launcher::   -->   [dbl] random_max_azimuthalangle_deg = 360
+G4Launcher::   -->   [dbl] fixed_xdir = 0
+G4Launcher::   -->   [flg] randomize_xdir = no
+G4Launcher::   -->   [dbl] random_min_xdir = 0
+G4Launcher::   -->   [dbl] random_max_xdir = 0
+G4Launcher::   -->   [dbl] fixed_ydir = 0
+G4Launcher::   -->   [flg] randomize_ydir = no
+G4Launcher::   -->   [dbl] random_min_ydir = 0
+G4Launcher::   -->   [dbl] random_max_ydir = 0
+G4Launcher::   -->   [dbl] fixed_zdir = 1
+G4Launcher::   -->   [flg] randomize_zdir = no
+G4Launcher::   -->   [dbl] random_min_zdir = 0
+G4Launcher::   -->   [dbl] random_max_zdir = 0
+G4Launcher::   -->   [int] fixed_nparticles = 1
+G4Launcher::   -->   [flg] randomize_nparticles = no
+G4Launcher::   -->   [dbl] random_nparticles_poissonmean = 1
+G4Launcher::   -->   [str] particleName = "neutron"
+G4Launcher::   -->   [int] pdgCode = 0
+G4Launcher:: Installing hooks for capturing output in "simresults" in mode FULL
+G4Launcher:: Pre-init done
+ExampleHooks::preInitHook called!
+prehook_py called!
+G4Launcher:: Calling G4RunManager::Initialize()
+Checking overlaps for volume Target:0 (G4Box) ... OK! 
+Checking overlaps for volume RecordBack:0 (G4Box) ... OK! 
+Checking overlaps for volume RecordFwd:0 (G4Box) ... OK! 
+G4Launcher:: G4RunManager::Initialize() done
+ExampleHooks::postInitHook called!
+posthook_py called!
+G4Launcher:: Starting simulation of 10 events
+G4Launcher:: Begin simulation of event 1 [seed 123456789]
+G4Launcher:: Begin simulation of event 2 [seed 2915572356146167334]
+G4Launcher:: Begin simulation of event 3 [seed 467584824058734778]
+G4Launcher:: Begin simulation of event 4 [seed 11556549066416575241]
+G4Launcher:: Begin simulation of event 5 [seed 16135024132704166519]
+G4Launcher:: Begin simulation of event 6 [seed 9359512691871278208]
+G4Launcher:: Begin simulation of event 7 [seed 9451830001080943893]
+G4Launcher:: Begin simulation of event 8 [seed 12041582812102220051]
+G4Launcher:: Begin simulation of event 9 [seed 14426664432972020249]
+G4Launcher:: Begin simulation of event 10 [seed 5039506889794497565]
+G4Launcher:: Simulation done
+ExampleHookClass::constructor
+Custom Hook Class parameters: [int] some_param_int = 5
+Custom Hook Class parameters: [dbl] some_param_dbl = 23.3
+
+
+
+          ################################
+          !!! G4Backtrace is activated !!!
+          ################################
+
+
+**************************************************************
+ Geant4 version Name: geant4-11-00-patch-03 [MT]   (16-September-2022)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+ExampleHookClass::prepreInitHook called (pars are 5 and 23.3)
+G4Launcher:: Pre-init started
+G4Launcher:: Installing FPE detection
+G4Launcher:: setSeed() not called, picking standard seed.
+G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
+G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up geometry:
+G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
+G4Launcher::   -->   [dbl] target_depth_cm = 0.01
+G4Launcher::   -->   [dbl] target_width_cm = 100
+G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher:: Setting up particle generation:
+G4Launcher::   --> ParticleGenerator[G4StdGenerators/FlexGen]:
+G4Launcher::   -->   [dbl] fixed_x_meters = 0
+G4Launcher::   -->   [flg] randomize_x = no
+G4Launcher::   -->   [dbl] random_min_x_meters = 0
+G4Launcher::   -->   [dbl] random_max_x_meters = 0
+G4Launcher::   -->   [dbl] fixed_y_meters = 0
+G4Launcher::   -->   [flg] randomize_y = no
+G4Launcher::   -->   [dbl] random_min_y_meters = 0
+G4Launcher::   -->   [dbl] random_max_y_meters = 0
+G4Launcher::   -->   [dbl] fixed_z_meters = -1.5
+G4Launcher::   -->   [flg] randomize_z = no
+G4Launcher::   -->   [dbl] random_min_z_meters = 0
+G4Launcher::   -->   [dbl] random_max_z_meters = 0
+G4Launcher::   -->   [dbl] fixed_energy_eV = 0.00020048086070873
+G4Launcher::   -->   [flg] randomize_energy = no
+G4Launcher::   -->   [dbl] random_min_energy_eV = 0
+G4Launcher::   -->   [dbl] random_max_energy_eV = 0
+G4Launcher::   -->   [dbl] neutron_wavelength_aangstrom = 20.2
+G4Launcher::   -->   [flg] momdir_spherical = no
+G4Launcher::   -->   [dbl] fixed_polarangle_deg = 0
+G4Launcher::   -->   [flg] randomize_polarangle = no
+G4Launcher::   -->   [dbl] random_min_polarangle_deg = 0
+G4Launcher::   -->   [dbl] random_max_polarangle_deg = 180
+G4Launcher::   -->   [dbl] fixed_azimuthalangle_deg = 0
+G4Launcher::   -->   [flg] randomize_azimuthalangle = no
+G4Launcher::   -->   [dbl] random_min_azimuthalangle_deg = 0
+G4Launcher::   -->   [dbl] random_max_azimuthalangle_deg = 360
+G4Launcher::   -->   [dbl] fixed_xdir = 0
+G4Launcher::   -->   [flg] randomize_xdir = no
+G4Launcher::   -->   [dbl] random_min_xdir = 0
+G4Launcher::   -->   [dbl] random_max_xdir = 0
+G4Launcher::   -->   [dbl] fixed_ydir = 0
+G4Launcher::   -->   [flg] randomize_ydir = no
+G4Launcher::   -->   [dbl] random_min_ydir = 0
+G4Launcher::   -->   [dbl] random_max_ydir = 0
+G4Launcher::   -->   [dbl] fixed_zdir = 1
+G4Launcher::   -->   [flg] randomize_zdir = no
+G4Launcher::   -->   [dbl] random_min_zdir = 0
+G4Launcher::   -->   [dbl] random_max_zdir = 0
+G4Launcher::   -->   [int] fixed_nparticles = 1
+G4Launcher::   -->   [flg] randomize_nparticles = no
+G4Launcher::   -->   [dbl] random_nparticles_poissonmean = 1
+G4Launcher::   -->   [str] particleName = "neutron"
+G4Launcher::   -->   [int] pdgCode = 0
+G4Launcher:: Installing hooks for capturing output in "simresults" in mode FULL
+G4Launcher:: Pre-init done
+ExampleHookClass::preInitHook called (pars are 5 and 23.3)
+G4Launcher:: Calling G4RunManager::Initialize()
+Checking overlaps for volume Target:0 (G4Box) ... OK! 
+Checking overlaps for volume RecordBack:0 (G4Box) ... OK! 
+Checking overlaps for volume RecordFwd:0 (G4Box) ... OK! 
+G4Launcher:: G4RunManager::Initialize() done
+ExampleHookClass::postInitHook called (pars are 5 and 23.3)
+G4Launcher:: Starting simulation of 10 events
+G4Launcher:: Begin simulation of event 1 [seed 123456789]
+G4Launcher:: Begin simulation of event 2 [seed 2915572356146167334]
+G4Launcher:: Begin simulation of event 3 [seed 467584824058734778]
+G4Launcher:: Begin simulation of event 4 [seed 11556549066416575241]
+G4Launcher:: Begin simulation of event 5 [seed 16135024132704166519]
+G4Launcher:: Begin simulation of event 6 [seed 9359512691871278208]
+G4Launcher:: Begin simulation of event 7 [seed 9451830001080943893]
+G4Launcher:: Begin simulation of event 8 [seed 12041582812102220051]
+G4Launcher:: Begin simulation of event 9 [seed 14426664432972020249]
+G4Launcher:: Begin simulation of event 10 [seed 5039506889794497565]
+G4Launcher:: Simulation done
+ExampleHookClass::destructor

@@ -1,0 +1,246 @@
+inline bool GriffDataReader::goToNextEvent()
+{
+  if (!eventActive())
+    return false;//we are no-where to begin with...
+  clearEvent();
+  if (m_fr->goToNextEvent()) {
+    beginEventActions();
+    return true;
+  }
+  if (m_fr->bad())
+    return false;//something went wrong
+  return goToNextFile();
+}
+
+inline bool GriffDataReader::goToFirstEvent()
+{
+  clearEvent();
+  m_eventLoopStart = true;
+  m_loopCount = 0;
+  const unsigned n = m_inputFiles.size();
+  for (unsigned i = 0; i < n; ++i) {
+    initFile(i);
+    if (eventActive()) {
+      m_loops=m_loopsOrig;
+      m_fileIdx = i;
+      beginEventActions();
+      return true;
+    }
+  }
+  return false;
+}
+
+inline bool GriffDataReader::skipEvents(unsigned n)
+{
+  if (!eventActive())
+    return false;//we are no-where to begin with...
+
+  if (n>0) {
+    clearEvent();
+    //We make sure we handle the file transitions correctly by simply calling
+    //goToNextEvent n times...:
+    while ( n-- > 0 )
+      {
+        if (!goToNextEvent())
+          return false;
+      }
+  }
+  return eventActive();
+}
+
+inline bool GriffDataReader::loopEvents()
+{
+  if (m_eventLoopStart) {
+    m_loopCount = 0;
+    m_eventLoopStart = false;
+    return eventActive();
+  }
+  ++m_loopCount;
+  if (!goToNextEvent())
+    return false;
+  return eventActive();
+}
+
+inline std::uint64_t GriffDataReader::loopCount() const { return m_loopCount; }
+inline bool GriffDataReader::eventActive() const { return m_fr && m_fr->eventActive(); }
+inline unsigned GriffDataReader::runNumber() const { assert(eventActive()); return m_fr->runNumber(); }
+inline unsigned GriffDataReader::eventNumber() const { assert(eventActive()); return m_fr->eventNumber(); }
+inline int32_t GriffDataReader::currentEventVersion() const { assert(eventActive()); return m_fr->version(); }
+
+inline unsigned GriffDataReader::nTracks() const
+{
+  assert(eventActive());
+  return ByteStream::interpret<std::uint32_t>(m_fr->getBriefData()+sizeof(std::uint64_t)+sizeof(EvtFile::index_type));
+}
+
+inline unsigned GriffDataReader::nPrimaryTracks() const
+{
+  assert(eventActive());
+  return primaryTrackEnd()-primaryTrackBegin();
+}
+
+inline const GriffDataRead::Track* GriffDataReader::getTrack(unsigned i) const
+{
+  loadTracks();
+  assert(m_tracksBegin+i<m_tracksEnd);
+  return m_tracksBegin + i;
+}
+
+inline bool GriffDataReader::hasTrackID(int id) const
+{
+  loadTracks();
+  if (m_tracksBegin==m_tracksEnd)
+    return false;
+  if (id<1) {
+    assert(m_tracks.front().trackID()>id);
+    return false;
+  }
+  if (m_tracksContiguous) {
+    if (m_tracksBegin + (id-1)<m_tracksEnd) {
+      assert((m_tracksBegin + (id-1))->trackID()==id);
+      return true;
+    }
+    assert((m_tracksEnd-1)->trackID()<id);
+    return false;
+  } else {
+    assert(false&&"hasTrackByID not implemented yet for all filtered events");//FIXME
+    return false;
+  }
+}
+
+inline const GriffDataRead::Track* GriffDataReader::getTrackByID(int id) const
+{
+  loadTracks();
+  assert(id>=1);
+  if (m_tracksContiguous) {
+    assert(id-1<m_tracksEnd-m_tracksBegin);
+    assert((m_tracksBegin+(id-1))->trackID()==id);
+    return m_tracksBegin+(id-1);
+  } else {
+    assert(false&&"getTrackByID not implemented yet for all filtered events");//FIXME
+    return 0;
+  }
+}
+
+inline const GriffDataRead::Track* GriffDataReader::trackBegin() const { loadTracks(); return m_tracksBegin; }
+inline const GriffDataRead::Track* GriffDataReader::trackEnd() const { loadTracks(); return m_tracksEnd; }
+inline const GriffDataRead::Track* GriffDataReader::primaryTrackBegin() const { loadTracks(); return m_primaryTracksBegin; }
+inline const GriffDataRead::Track* GriffDataReader::primaryTrackEnd() const { loadTracks(); return m_primaryTracksEnd; }
+
+inline GriffFormat::Format::MODE GriffDataReader::eventStorageMode() const
+{
+  assert(eventActive());
+  return (GriffFormat::Format::MODE)ByteStream::interpret<std::uint32_t>(m_fr->getBriefData()+sizeof(std::uint64_t)+sizeof(EvtFile::index_type)+sizeof(std::uint32_t));
+}
+
+inline const char * GriffDataReader::eventStorageModeStr() const
+{
+  GriffFormat::Format::MODE mode = eventStorageMode();
+  if (mode == GriffFormat::Format::MODE_FULL) return "FULL";
+  if (mode == GriffFormat::Format::MODE_REDUCED) return "REDUCED";
+  assert(mode == GriffFormat::Format::MODE_MINIMAL);
+  return "MINIMAL";
+}
+
+
+inline std::uint64_t GriffDataReader::seed() const
+{
+  assert(eventActive());
+  return ByteStream::interpret<std::uint64_t>(m_fr->getBriefData());
+}
+
+inline void GriffDataReader::loadTracks() const
+{
+  if (m_needsLoad)
+    actualLoadTracks();
+}
+
+inline void GriffDataReader::clearEvent()
+{
+  if (m_tracksBegin!=0&&!m_endEventCallBacks.empty()) {
+    for (auto it = m_endEventCallBacks.begin();it!=m_endEventCallBacks.end();++it)
+      (*it)->endEvent(this);
+  }
+  m_needsLoad = true;
+  m_tracksBegin = 0;
+  m_tracksEnd = 0;
+  m_primaryTracksBegin = 0;
+  m_primaryTracksEnd = 0;
+  m_mempool_steps.releaseAll();
+  if (!m_mempool_dynamic.empty()) {
+    auto itE=m_mempool_dynamic.end();
+    for (auto it=m_mempool_dynamic.begin();it!=itE;++it)
+      delete[] *it;
+    m_mempool_dynamic.clear();
+  }
+}
+
+inline EvtFile::index_type GriffDataReader::metaDataIdx() const
+{
+  assert(eventActive());
+  return ByteStream::interpret<EvtFile::index_type>(m_fr->getBriefData()+sizeof(std::uint64_t));
+}
+
+inline void GriffDataReader::beginEventActions()
+{
+  if (!m_allowSetupChange)
+    checkSetupConsistency();
+  fireBeginEventCallBacks();
+}
+
+inline void GriffDataReader::fireBeginEventCallBacks()
+{
+  for (auto it = m_beginEventCallBacks.begin();it!=m_beginEventCallBacks.end();++it)
+    (*it)->beginEvent(this);
+}
+
+inline bool GriffDataReader::setupChanged()
+{
+  assert(eventActive());
+  EvtFile::index_type mdidx = metaDataIdx();
+  if (m_fileIdx==m_lastAccessedMetaDataIdx.second)//file did not change
+    return m_lastAccessedMetaDataIdx.first != mdidx;//so the index itself tells us everything
+  return setupChangedFullCheck(mdidx);//new file => must make a full comparison
+}
+
+inline std::uint32_t GriffDataReader::eventCheckSum() const
+{
+  assert(eventActive());
+  return m_fr->eventCheckSum();
+}
+
+inline bool GriffDataReader::verifyEventDataIntegrity()
+{
+  assert(eventActive());
+  return m_fr->verifyEventDataIntegrity();
+}
+
+inline unsigned GriffDataReader::eventIndexInCurrentFile() const
+{
+  assert(eventActive());
+  return m_fr->eventIndex();
+}
+
+inline bool GriffDataReader::seekEventByIndexInCurrentFile(unsigned idx)
+{
+  if (eventActive()&&m_fr->eventIndex() == idx)
+    return true;
+  assert(m_fr);
+  clearEvent();
+  if (!m_fr->seekEventByIndex(idx))
+    return false;
+  if (m_fr->bad())
+    return false;//something went wrong
+  beginEventActions();
+  return true;
+}
+
+inline void GriffDataReader::registerBeginEventCallBack(GriffDataRead::BeginEventCallBack*cb)
+{
+  m_beginEventCallBacks.push_back(cb);
+}
+
+inline void GriffDataReader::registerEndEventCallBack(GriffDataRead::EndEventCallBack*cb)
+{
+  m_endEventCallBacks.push_back(cb);
+}

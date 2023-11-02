@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+import G4CustomPyGen
+import Units
+import numpy
+
+class SphereUniformGen(G4CustomPyGen.GenBase):
+    """Not random at all, will generate npoints
+    particles distributed over a sphere"""
+
+    def unlimited(self):
+        return False
+
+    def declare_parameters(self):
+        self.addParameterInt("npoints",100,4,100000000)
+        self.addParameterInt("evtshift",0,0,100000000)
+
+    def init_generator(self,gun):
+        gun.set_type('gamma')
+        gun.set_position(0,0,0)
+        gun.set_energy(1*Units.units.MeV)
+        nsq = int(round(numpy.sqrt(self.npoints)))
+        assert nsq*nsq==self.npoints,"npoints must be a square number"
+        _costh = numpy.linspace(-1.,1.,nsq)
+        _phi = numpy.linspace(0.,2*numpy.pi,nsq)
+        def gen_costh_phi():
+            for c in _costh:
+                for p in _phi:
+                    yield (c,p)
+        if self.evtshift:
+            self._genvals = [cp for cp in gen_costh_phi()]
+            self._i = self.evtshift
+        else:
+            self._gen = gen_costh_phi()
+        self._ileft = self.npoints
+
+    def generate_event(self,gun):
+        if self.evtshift:
+            c,p = self._genvals[self._i % len(self._genvals)]
+            self._i += 1
+        else:
+            c,p = next(self._gen)
+        s=numpy.sqrt(1-c*c)
+        gun.set_direction(s*numpy.cos(p),s*numpy.sin(p),c)
+        self._ileft -= 1
+        if not self._ileft:
+            self.signalEndOfEvents(False)#False meaning that current event is ok
+
+gen = SphereUniformGen()
+
+import GriffDRWTests.GeoGriffTests as geomodule
+geo = geomodule.create()
+
+import G4Launcher
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('grifftests','REDUCED')
+launcher.go()
+

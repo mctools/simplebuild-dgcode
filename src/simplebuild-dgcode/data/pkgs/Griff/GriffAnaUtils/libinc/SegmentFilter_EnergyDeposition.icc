@@ -1,0 +1,9 @@
+inline GriffAnaUtils::SegmentFilter_EnergyDeposition::SegmentFilter_EnergyDeposition(const double& threshold)
+  : m_threshold(threshold)
+{
+}
+
+inline bool GriffAnaUtils::SegmentFilter_EnergyDeposition::filter(const GriffDataRead::Segment*segment) const
+{
+  return segment->eDep()>m_threshold;
+}

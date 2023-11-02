@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+#Example of how any program can also be used in a test even if not named as
+#such: simply create a little wrapper bash script like this one.
+
+progprefix=sb_basicexamples_
+
+for prog in apythonscript cppprog cprog; do
+    prog=${progprefix}${prog}
+    echo "------------------------------------------------------------"
+    echo "Testing $prog:"
+    echo
+    $prog || exit $?
+done
+echo "------------------------------------------------------------"
+echo "All tests ended with exit code 0"
+exit 0

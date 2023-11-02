@@ -1,0 +1,7 @@
+package()
+
+######################################################################
+
+Testing catching (some) illegal dependencies (e.g. a Framework/ package depending on a Projects/ package)
+
+Primary author(s): thomas.kittelmann@ess.eu

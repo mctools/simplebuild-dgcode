@@ -1,0 +1,44 @@
+inline GriffAnaUtils::SegmentFilter_EKin::SegmentFilter_EKin()
+  : m_minStartEKin(-1.0),
+    m_maxStartEKin(std::numeric_limits<double>::max()),
+    m_minEndEKin(-1.0),
+    m_maxEndEKin(std::numeric_limits<double>::max())
+{
+}
+
+inline GriffAnaUtils::SegmentFilter_EKin::~SegmentFilter_EKin()
+{
+}
+
+inline GriffAnaUtils::SegmentFilter_EKin* GriffAnaUtils::SegmentFilter_EKin::setMinStartEKin(double e)
+{
+  m_minEndEKin = e;
+  return this;
+}
+
+inline GriffAnaUtils::SegmentFilter_EKin* GriffAnaUtils::SegmentFilter_EKin::setMaxStartEKin(double e)
+{
+  m_maxEndEKin = e;
+  return this;
+}
+
+inline GriffAnaUtils::SegmentFilter_EKin* GriffAnaUtils::SegmentFilter_EKin::setMinEndEKin(double e)
+{
+  m_minEndEKin = e;
+  return this;
+}
+
+inline GriffAnaUtils::SegmentFilter_EKin* GriffAnaUtils::SegmentFilter_EKin::setMaxEndEKin(double e)
+{
+  m_maxEndEKin = e;
+  return this;
+}
+
+inline bool GriffAnaUtils::SegmentFilter_EKin::filter(const GriffDataRead::Segment*segment) const
+{
+  double pre = segment->startEKin();
+  if (pre<m_minStartEKin||pre>m_maxStartEKin)
+    return false;
+  double post = segment->endEKin();
+  return !(post<m_minEndEKin||post>m_maxEndEKin);
+}

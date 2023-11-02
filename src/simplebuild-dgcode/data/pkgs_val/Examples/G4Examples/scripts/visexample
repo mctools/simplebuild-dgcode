@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import sys,os
+from optparse import OptionParser#NOTE: The optparse module is deprecated - we should stop using it at some point
+parser = OptionParser(usage='%prog [options]')
+parser.add_option("-b", "--boronthickness",type="float", dest="boronthickness_micron",
+                  default=200.0,help="Boron Thickness in microns")
+(opt, args) = parser.parse_args(sys.argv[1:])
+if args: parser.error("Unrecognised arguments: %s"%' '.join(args))
+
+import G4StdGeometries.GeoSlab as Geo
+from Units import units
+import G4Launcher
+
+geo = Geo.create()
+geo.boronThickness_micron = opt.boronthickness_micron
+
+launcher = G4Launcher()
+launcher.setGeo(geo)
+launcher.setParticleGun("neutron",0.025*units.eV,
+                      (0,0,-1.5*units.meter),
+                      (0,0,1))
+
+launcher.setOutput("none")
+launcher.setSeed(1117)
+launcher.setVis()
+launcher.startSession()

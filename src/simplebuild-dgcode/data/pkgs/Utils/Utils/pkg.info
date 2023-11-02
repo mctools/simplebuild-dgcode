@@ -1,0 +1,11 @@
+package(USEPKG Units)
+
+######################################################################
+
+This package is supposed to provide various utility functions that do not fit
+elsewhere and is of slightly more specialised use than the stuff in the Core
+package.
+
+This package will never have any external dependencies.
+
+Primary author: thomas.kittelmann@ess.eu

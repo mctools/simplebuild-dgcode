@@ -1,0 +1,30 @@
+inline GriffAnaUtils::SegmentFilter_Time::SegmentFilter_Time(const double& time, TIME_FILTER_MODE m)
+  : m_slt(std::numeric_limits<double>::infinity()),
+    m_sgt(-std::numeric_limits<double>::infinity()),
+    m_egt(-std::numeric_limits<double>::infinity()),
+    m_elt(std::numeric_limits<double>::infinity())
+{
+  if (m==STARTS_BEFORE)
+    m_slt = time;
+  else if (m==STARTS_AFTER)
+    m_sgt = m_egt = time;
+  else if (m==ENDS_BEFORE)
+    m_slt = m_elt = time;
+  else if (m==ENDS_AFTER)
+    m_egt = time;
+  else {
+    assert(m==CONTAINS);
+    m_slt = m_egt = time;
+  }
+}
+
+inline bool GriffAnaUtils::SegmentFilter_Time::filter(const GriffDataRead::Segment*segment) const
+{
+  double t = segment->startTime();
+  if (t>m_slt) return false;
+  if (t<m_sgt) return false;
+  t = segment->endTime();
+  if (t>m_elt) return false;
+  if (t<m_egt) return false;
+  return true;
+}

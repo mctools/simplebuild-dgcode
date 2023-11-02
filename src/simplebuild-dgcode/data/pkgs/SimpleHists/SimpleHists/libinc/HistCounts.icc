@@ -1,0 +1,83 @@
+
+struct SimpleHists::HistCounts::CounterInternal {
+  CounterInternal(const std::string&l,const std::string&dl)
+    : m_content(0.0),
+      m_errorsq(0.0),
+      m_label(l),
+      m_displayLabel(dl)
+  {
+  }
+  CounterInternal(){}
+  double m_content;
+  double m_errorsq;
+  std::string m_label;
+  std::string m_displayLabel;
+  std::string m_comment;
+};
+
+
+inline SimpleHists::HistCounts::Counter::Counter(CounterInternal * ci)
+  : m_counter(ci)
+{
+}
+
+inline SimpleHists::HistCounts::Counter& SimpleHists::HistCounts::Counter::operator+=(const double& w)
+{
+  m_counter->m_content += w;
+  m_counter->m_errorsq += w*w;
+  return *this;
+}
+
+inline SimpleHists::HistCounts::Counter& SimpleHists::HistCounts::Counter::operator++()
+{
+  ++(m_counter->m_content);
+  ++(m_counter->m_errorsq);
+  return *this;
+}
+
+inline size_t SimpleHists::HistCounts::nCounters() const
+{
+  return m_counters.size();
+}
+
+inline double SimpleHists::HistCounts::Counter::getValue() const
+{
+  return m_counter->m_content;
+}
+
+inline double SimpleHists::HistCounts::Counter::getError() const
+{
+  return sqrt(m_counter->m_errorsq);
+}
+
+inline double SimpleHists::HistCounts::Counter::getErrorSquared() const
+{
+  return m_counter->m_errorsq;
+}
+
+inline const std::string& SimpleHists::HistCounts::Counter::getLabel() const
+{
+  return m_counter->m_label;
+}
+
+inline const std::string& SimpleHists::HistCounts::Counter::getDisplayLabel() const
+{
+  return m_counter->m_displayLabel;
+}
+
+inline const std::string& SimpleHists::HistCounts::Counter::getComment() const
+{
+  return m_counter->m_comment;
+}
+
+inline SimpleHists::HistCounts::Counter& SimpleHists::HistCounts::Counter::operator+=(const Counter& o)
+{
+  m_counter->m_content += o.m_counter->m_content;
+  m_counter->m_errorsq += o.m_counter->m_errorsq;
+  return *this;
+}
+
+inline bool SimpleHists::HistCounts::hasCounter(const std::string& label) const
+{
+  return m_label2counter.find(label)!=m_label2counter.end();
+}

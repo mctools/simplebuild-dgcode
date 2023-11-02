@@ -1,0 +1,7 @@
+package(USEPKG G4GriffGen)
+
+######################################################################
+
+Package with G4GriffGen tests.
+
+Primary authors: thomas.kittelmann@ess.eu

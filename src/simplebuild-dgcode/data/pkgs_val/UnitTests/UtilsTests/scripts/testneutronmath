@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+import sys
+import Utils.NeutronMath as nm
+from Units import units as u
+
+
+for l in [1.0,1.8,10]:
+    print('neutron_angstrom_to_meV(%g) = %g' %(l,nm.neutron_angstrom_to_meV(l)))
+    print('neutron_angstrom_to_eV(%g) = %g' %(l,nm.neutron_angstrom_to_eV(l)))
+    print('neutron_angstrom_to_meters_per_second(%g) = %g' %(l,nm.neutron_angstrom_to_meters_per_second(l)))
+
+for e in [0.818,25.24,81.8]:
+    print('neutron_meV_to_angstrom(%g) = %g' %(e,nm.neutron_meV_to_angstrom(e)))
+    print('neutron_eV_to_angstrom(%g) = %g' %(e,nm.neutron_eV_to_angstrom(e*1e-3)))
+
+for v in [395.6,2197.8,3956.0]:
+    print('neutron_meters_per_second_to_angstrom(%g) = %g' %(v,nm.neutron_meters_per_second_to_angstrom(v)))
+
+l=1.8*u.angstrom
+print('neutronWavelengthToEKin(%g) = %g' %(l,nm.neutronWavelengthToEKin(l)))
+e = 25.2482*u.meV
+print('neutronEKinToWavelength(%g) = %g' %(e,nm.neutronEKinToWavelength(e)))

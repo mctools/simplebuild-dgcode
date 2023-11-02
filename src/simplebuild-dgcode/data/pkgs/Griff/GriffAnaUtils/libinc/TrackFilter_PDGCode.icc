@@ -1,0 +1,15 @@
+inline GriffAnaUtils::TrackFilter_PDGCode * GriffAnaUtils::TrackFilter_PDGCode::setSigned() { m_unsigned = false; return this; }
+inline GriffAnaUtils::TrackFilter_PDGCode * GriffAnaUtils::TrackFilter_PDGCode::setUnsigned() { m_unsigned = true; return this; }
+inline bool GriffAnaUtils::TrackFilter_PDGCode::isSigned() { return !m_unsigned; }
+inline bool GriffAnaUtils::TrackFilter_PDGCode::isUnsigned() { return m_unsigned; }
+
+inline bool GriffAnaUtils::TrackFilter_PDGCode::filter(const GriffDataRead::Track*trk) const
+{
+  int32_t c = trk->pdgCode();
+  if (m_unsigned)
+    return m_allAbsCodes.count(c<0?-c:c);
+  if (c<0)
+    return m_negativeCodes.count(c);
+  else
+    return m_positiveCodes.count(c);
+}

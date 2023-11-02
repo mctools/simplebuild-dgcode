@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+
+import G4StdGeometries.GeoSlab as Geo
+geo=Geo.create()
+geo.material="G4_Al"
+geo.target_depth_cm=20
+
+import G4StdGenerators.SimpleGen as Gen
+gen = Gen.create()
+gen.particleName = 'neutron'
+gen.fixed_energy_eV = 0.025
+
+from G4MCPLPlugins.MCPLWriter import MCPLWriter
+mw = MCPLWriter("target.mcpl")
+mw.addVolume("Target")
+mw.setKillStrategy("FILTERED")#could also be "ALWAYS" or "NEVER"
+mw.setFilter("!trk.is_neutron && abs(step.pre.y) < 1cm && step.post.time > 50microsecond")#pretty silly filter
+
+
+if False:
+    mw.setWriteUserFlags(True)#pass through any mcpl flags found in input file...
+    mw.setUserFlags("trk.is_primary * 1000000 + step.volcopyno")#... or use funky custom user flags
+    mw.setWriteDoublePrecision(True)
+    mw.setWritePolarisation(True)
+    mw.setWriteUserFlags(True)
+    mw.setWriteOnVolExit(True)
+#Other options we could have enabled:
+
+#mw.setWriteDoublePrecision(True)
+#mw.setWritePolarisation(True)
+#mw.setWriteUserFlags(True)
+#mw.setWriteOnVolExit(True)
+
+#Multiple MCPLWriters can be enabled in the same job (for different volumes):
+
+mw2 = MCPLWriter("recordfwd.mcpl")
+mw2.addVolume("RecordFwd")
+mw2.setWriteOnVolExit(True)
+mw2.setUniversalWeight(1.0)
+
+import G4Launcher
+g4 = G4Launcher(geo,gen)
+#enable the MCPLWriter's configured above:
+g4.addPostInitHook(mw.inithook)
+g4.addPostInitHook(mw2.inithook)
+#disable Griff (although it is allowed to keep it enabled):
+g4.setOutput("none")
+g4.go()

@@ -1,0 +1,7 @@
+package(USEEXT Fortran)
+
+######################################################################
+
+This package contains a Fortran example.
+
+Primary author: thomas.kittelmann@ess.eu

@@ -1,0 +1,11 @@
+package(USEPKG G4Interfaces)
+
+
+
+######################################################################
+
+
+Package providing access to both custom and G4 reference physics lists.
+
+
+Primary authors: thomas.kittelmann@ess.eu julius.scherzinger@esss.se Xiao Xiao Cai <caixx@ihep.ac.cn>

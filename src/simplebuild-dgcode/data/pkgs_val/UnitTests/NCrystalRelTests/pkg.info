@@ -1,0 +1,7 @@
+package(USEPKG G4XSectDump G4Materials G4StdGenerators XSectParse PyAna USEEXT Numpy NCrystal)
+
+##########################################################
+
+Simple test of NCrystal functionality.
+
+Primary author: thomas.kittelmann@ess.eu

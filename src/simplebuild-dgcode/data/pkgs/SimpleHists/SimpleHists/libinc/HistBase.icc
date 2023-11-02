@@ -1,0 +1,19 @@
+
+inline SimpleHists::HistBase::HistBase()
+{
+}
+
+inline SimpleHists::HistBase::HistBase(const std::string& title)
+  : m_title(title)
+{
+}
+
+inline const std::string& SimpleHists::HistBase::getTitle() const { return m_title; }
+inline const std::string& SimpleHists::HistBase::getXLabel() const { return m_xLabel; }
+inline const std::string& SimpleHists::HistBase::getYLabel() const { return m_yLabel; }
+inline const std::string& SimpleHists::HistBase::getComment() const { return m_comment; }
+inline void SimpleHists::HistBase::setTitle(const std::string& t) { m_title = t; }
+inline void SimpleHists::HistBase::setXLabel(const std::string& l) { m_xLabel = l; }
+inline void SimpleHists::HistBase::setYLabel(const std::string& l) { m_yLabel = l; }
+inline void SimpleHists::HistBase::setComment(const std::string& c) { m_comment = c; }
+

@@ -1,0 +1,7 @@
+package(USEPKG G4MCPL G4Interfaces G4ExprParser MCPLExprParser)
+
+##########################################################
+
+Package implementing Geant4 hooks for the MCPL format.
+
+Primary author: thomas.kittelmann@ess.eu

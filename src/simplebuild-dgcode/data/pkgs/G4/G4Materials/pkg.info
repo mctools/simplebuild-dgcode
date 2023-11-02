@@ -1,0 +1,8 @@
+package(USEPKG Utils IdealGasBuilder G4NCrystalRel)
+
+######################################################################
+
+
+Package providing utilities related to Geant4 materials.
+
+Primary author: thomas.kittelmann@ess.eu

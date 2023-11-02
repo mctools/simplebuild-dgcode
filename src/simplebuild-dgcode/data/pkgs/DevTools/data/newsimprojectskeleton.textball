@@ -1,0 +1,313 @@
+@TEXTBALL_v1@
+
+
+#~~~textfile~~~>>> G4GeoSkeletonSP/pkg.info
+
+package(USEPKG G4Interfaces)
+
+######################################################################
+
+Package containing geometries for the SkeletonSP simulation project
+
+Primary author(s): PLEASE-PUT-RELEVANT-NAMES-AND-EMAILS-HERE
+
+--> <SKEL_MUST_MODIFY_FILE> <--
+
+
+
+#~~~textfile~~~>>> G4GeoSkeletonSP/pycpp_GeoSkeletonSP/geometry_module.cc
+
+//<SKEL_MUST_MODIFY_FILE>
+
+/////////////////////////////////////////
+// Declaration of our geometry module: //
+/////////////////////////////////////////
+
+#include "G4Interfaces/GeoConstructPyExport.hh"
+
+class GeoSkeletonSP : public G4Interfaces::GeoConstructBase
+{
+public:
+  GeoSkeletonSP();
+  virtual ~GeoSkeletonSP(){}
+  virtual G4VPhysicalVolume* Construct();
+  //(add more member functions and data here if needed)
+};
+
+PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoSkeletonSP>(mod, "GeoSkeletonSP"); }
+
+////////////////////////////////////////////
+// Implementation of our geometry module: //
+////////////////////////////////////////////
+
+#include "G4Box.hh"
+#include "G4Orb.hh"
+
+//As an example, we put a spherical sample in front of a box representing a
+//detector tube (using the Griff analysis to look for positions where neutrons
+//enter the detector).
+
+GeoSkeletonSP::GeoSkeletonSP()
+  : GeoConstructBase("G4GeoSkeletonSP/GeoSkeletonSP")
+{
+  //Free parameters, tunable from python and command-line, printed in log-files,
+  //stored in Griff-files. The values specified below will be the default
+  //values. Avoid the temptation to instead hard-code "interesting" parameters
+  //in the Construct() method:
+
+  addParameterDouble("sample_posz_mm",5.0);
+  addParameterDouble("sample_radius_mm",5.0);
+  addParameterDouble("detector_size_cm",50.0);
+  addParameterDouble("detector_sample_dist_cm",10.0);
+  addParameterString("material_sample","ESS_Al");
+  addParameterString("material_lab",
+                     "IdealGas:formula=0.7*Ar+0.3*CO2:temp_kelvin=293.15:pressure_atm=2.0");
+
+  //Note: It is possible and easy (but done done here to keep the example
+  //      simple) to impose constraints on parameter ranges, etc., making sure
+  //      the geometry will only be build with sensible parameters. For
+  //      instance, one should not put the sample radius larger than the
+  //      detector-sample distance.
+}
+
+G4VPhysicalVolume* GeoSkeletonSP::Construct()
+{
+  //Parameters (converting to G4 units immediately as is best practice):
+  const double sample_posz = getParameterDouble("sample_posz_mm")*Units::mm;
+  const double sample_radius = getParameterDouble("sample_radius_mm")*Units::mm;
+  const double det_size = getParameterDouble("detector_size_cm")*Units::cm;
+  const double det_depth = 1.0*Units::cm;//ok to hardcode non-interesting parameters
+  const double det_sample_dist = getParameterDouble("detector_sample_dist_cm")*Units::cm;
+  auto mat_sample = getParameterMaterial("material_sample");
+  auto mat_lab = getParameterMaterial("material_lab");
+  auto mat_det = getMaterial("Vacuum");
+
+  //Notice that materials are created above via the NamedMaterialProvider. Avoid
+  //the temptation to instead create your own G4Material instances in the code,
+  //since it invites bugs and reduces flexibility, reusability and readability!
+  //
+  //Find more info at: https://confluence.esss.lu.se/display/DG/NamedMaterials
+
+  //World volume (must be big enough for the sample and detector to fit inside):
+  const double dz_world = 1.001 * (std::abs<double>(sample_posz)+sample_radius+det_depth+det_sample_dist);
+  const double dxy_world = 1.001 * std::max<double>(0.5*det_size,sample_radius);
+  auto worldvols = place(new G4Box("World", dxy_world, dxy_world, dz_world),mat_lab,0);
+  auto lvWorld = worldvols.logvol;
+
+  //Sample:
+  place(new G4Orb("Sample",sample_radius), mat_sample,0,0,sample_posz,lvWorld,YELLOW);
+
+  //Detector:
+  place(new G4Box("Detector",0.5*det_size,0.5*det_size,0.5*det_depth),mat_det,
+        0,0,sample_posz+det_sample_dist+0.5*det_depth,lvWorld,RED);
+
+  //Note that we added visualisation colours for volumes above. Other colours
+  //include BLUE, GREEN, ORANGE, CYAN, PURPLE, SILVER, GOLD, WHITE, BROWN, ...
+
+  return worldvols.physvol;
+}
+
+
+#~~~textfile~~~>>> SkeletonSP/app_ana/analysis_program.cc
+
+#include "GriffAnaUtils/All.hh"
+#include "Units/Units.hh"
+#include "Utils/ArrayMath.hh"
+#include "SimpleHists/HistCollection.hh"
+
+//<SKEL_MUST_MODIFY_FILE>
+
+//Griff analysis. See https://confluence.esss.lu.se/display/DG/Griff for more info.
+
+int main(int argc,char**argv) {
+
+  //Open .griff file(s) specified on the command line:
+  GriffDataReader dr(argc,argv);
+
+  //Extract and dump meta-data:
+  dr.setup()->dump();
+
+  //Check (as an example) that the simulated geometry is of the correct type:
+  if (dr.setup()->geo().getName()!="G4GeoSkeletonSP/GeoSkeletonSP")
+    return 1;
+
+  //Book histograms (see https://confluence.esss.lu.se/display/DG/SimpleHists for more info):
+  SimpleHists::HistCollection hc;
+
+  double dxy_mm = 0.6*dr.setup()->geo().getParameterDouble("detector_size_cm")*10;
+  auto h2d_box_hitmap = hc.book2D("Hit position when entering detector",
+                                   40,-dxy_mm,dxy_mm,40,-dxy_mm,dxy_mm,"det_hitmap");
+  h2d_box_hitmap->setComment("This is the xy coordinates of primary particles as they enter the detector volume.");
+  h2d_box_hitmap->setXLabel("mm");
+  h2d_box_hitmap->setYLabel("mm");
+
+  auto h1d_box_hitradius = hc.book1D("Hit radial position when entering detector",
+                                     60, 0, dxy_mm, "det_hitradius");
+  h1d_box_hitradius->setComment("This is the radial coordinates of primary particles as they enter the detector volume.");
+  h1d_box_hitradius->setXLabel("mm");
+
+  //Loop over events and extract info via Griff interface:
+  while (dr.loopEvents()) {
+    for (auto trk = dr.primaryTrackBegin();trk!=dr.primaryTrackEnd();++trk) {
+      for (auto seg = trk->segmentBegin(); seg!=trk->segmentEnd(); ++seg) {
+        if (seg->volumeName()=="Detector" && seg->endAtVolumeBoundary()) {
+          auto s = seg->firstStep();
+          double x(s->preLocalX()/Units::mm),y(s->preLocalY()/Units::mm);
+          if (x*x+y*y>0.01) {
+            h2d_box_hitmap->fill(x,y);
+            h1d_box_hitradius->fill(sqrt(x*x+y*y));
+          }
+        }
+      }
+    }
+  }
+
+  //Save histograms to a file which can be browsed with sb_simplehists_browse:
+  hc.saveToFile("skeletonsp",true);
+
+  return 0;
+}
+
+
+
+
+#~~~textfile~~~>>> SkeletonSP/pkg.info
+
+package(USEPKG PyAna ScanUtils GriffAnaUtils SimpleHists)
+
+######################################################################
+
+Package containing launch scripts and Griff analysis code for the SkeletonSP simulation project.
+
+PLEASE-DESCRIBE-YOUR-PROJECT-HERE
+
+Primary author(s): PLEASE-PUT-RELEVANT-NAMES-AND-EMAILS-HERE
+
+--> <SKEL_MUST_MODIFY_FILE> <--
+
+
+#~~~textfile~~~>>> ~executable~ SkeletonSP/scripts/scan
+
+#!/usr/bin/env python3
+
+#<SKEL_MUST_MODIFY_FILE>
+
+#Here we setup parameter scans, in which a large number of jobs are configured
+#and launched locally or at a cluster. Both Geant4 simulation and Griff analysis
+#run at each step, and the sister script "scanana" script is subsequently used
+#to extract and plot info from the resulting histogram files.
+
+from ScanUtils.ScanLauncher import ScanLauncher,ParameterGroup
+from numpy import linspace
+
+#Global setup for all scan jobs:
+scan = ScanLauncher("sb_skeletonsp_simanachain",autoseed=True)
+scan.add_global_parameter("rundir")
+scan.add_global_parameter("--cleanup")
+scan.add_global_parameter("--nevts",100000)
+scan.add_global_parameter('--physlist','QGSP_BIC_HP_EMZ')
+scan.add_global_parameter('material_lab','IdealGas:formula=CO2:pressure_atm=2.0')
+
+#scan jobs to investigate sample size effect:
+plot1 = ParameterGroup()
+plot1.add('sample_radius_mm', linspace(1.0, 20.0, 5) )
+plot1.add('neutron_wavelength_aangstrom', 2.2)
+scan.add_job(plot1,'plot1')
+
+#scan jobs to investigate neutron wavelength effect:
+plot2 = ParameterGroup()
+plot2.add('sample_radius_mm', 5.0)
+plot2.add('neutron_wavelength_aangstrom', [1.8, 2.2, 2.5] )
+scan.add_job(plot2,'plot2')
+
+######################################################
+## Consume command line and potentially launch scan:
+scan.go()
+
+
+#~~~textfile~~~>>> ~executable~ SkeletonSP/scripts/scanana
+
+#!/usr/bin/env python3
+
+#<SKEL_MUST_MODIFY_FILE>
+
+#Here we analyse the output of parameter scans produced by the sister "scan"
+#script.
+
+import ScanUtils.ScanLoader
+import SimpleHistsUtils.cmphists
+from PyAna import *
+
+jobs=ScanUtils.ScanLoader.get_scan_jobs(sys.argv[1],dict_by_label=True)
+
+#### Plot 1:
+labelsandhists = [('%g mm sample'%j.setup().geo().sample_radius_mm,j.hist('det_hitradius')) for j in jobs['plot1']]
+SimpleHistsUtils.cmphists.cmphists(labelsandhists)
+
+#### Plot 2:
+labelsandhists = [('%g Aa neutron'%j.setup().gen().neutron_wavelength_aangstrom,j.hist('det_hitradius')) for j in jobs['plot2']]
+SimpleHistsUtils.cmphists.cmphists(labelsandhists)
+
+
+#~~~textfile~~~>>> ~executable~ SkeletonSP/scripts/sim
+
+#!/usr/bin/env python3
+
+#<SKEL_MUST_MODIFY_FILE>
+
+#Here we load a geometry module and a generator module, change the default
+#values of a few parameters a bit, and then use them with the G4Launcher to
+#build an actual application which can be controlled in great detail from the
+#command-line.
+
+#############################################################
+#Define geometry:
+import G4GeoSkeletonSP.GeoSkeletonSP as geomodule
+geo = geomodule.create()
+geo.sample_posz_mm = 5.0
+
+#############################################################
+#Define particle generation:
+import G4StdGenerators.SimpleGen as genmodule
+gen = genmodule.create()
+gen.particleName = 'neutron'
+gen.neutron_wavelength_aangstrom = 2.2
+
+# Hint: If you need a generator with more options you
+#       can replace "SimpleGen" with "FlexGen". Or perhaps,
+#       even better, write your custom python generator.
+#
+# More about particle generators at:
+#
+# https://confluence.esss.lu.se/display/DG/Particle+generators+for+Geant4
+
+#############################################################
+#Framework setup
+import G4Launcher
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('skeletonsp','REDUCED')#Griff output
+launcher.go()
+
+
+
+#~~~textfile~~~>>> ~executable~ SkeletonSP/scripts/simanachain
+
+#!/usr/bin/env python3
+import G4Utils.chain
+G4Utils.chain.chain('sb_skeletonsp_sim','sb_skeletonsp_ana','REDUCED')
+
+
+
+#~~~textfile~~~>>> ~executable~ SkeletonSP/scripts/test
+
+#!/usr/bin/env bash
+
+#Unit test which makes a very simple test of our geometry, simulation and
+#analysis (using an empty physics list for speed). To avoid false positives, it
+#silently doesn't do anything when the Geant4 framework is not present.
+
+if [ -d $SBLD_INSTALL_PREFIX/include/G4Launcher/ ]; then
+   sb_skeletonsp_sim -t -lESS_Empty && \
+   sb_skeletonsp_simanachain rundir --cleanup -n1 -lESS_Empty
+fi
+

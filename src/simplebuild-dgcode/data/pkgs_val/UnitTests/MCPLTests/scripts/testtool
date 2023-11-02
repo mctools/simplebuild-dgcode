@@ -1,0 +1,242 @@
+#!/usr/bin/env bash
+
+if [ "x$MCPLTESTS_TESTTOOL" == "x" ]; then
+    MCPLTESTS_TESTTOOL=sb_mcpl_tool
+fi
+if [ "x$MCPLTESTS_SKIPTRUNCGZ" != "x1" ]; then
+    MCPLTESTS_SKIPTRUNCGZ=0
+fi
+DD="$SBLD_DATA_DIR/MCPLTests"
+DDv2="$SBLD_DATA_DIR/MCPLTestsFMT2"
+F2="$DD/reffile_16.mcpl"
+F1=rf16cp.mcpl
+cp "$F2" $F1
+F1_HL=rf16cp_hl.mcpl
+ln "$F1" "$F1_HL"
+F1_SL=rf16cp_sl.mcpl
+ln -s "$F1" "$F1_SL"
+F2_SL=rf16_sl.mcpl
+ln -s "$F2" "$F2_SL"
+cp "$DD/reffile_5.mcpl" rf5cp.mcpl
+cp "$DD/reffile_5.mcpl.gz" rf5cp.mcpl.gz
+FC=rfcrash.mcpl
+FCGZ=rfcrash.mcpl.gz
+cp "$DD/reffile_crash.mcpl" $FC
+cp "$DD/reffile_crash.mcpl.gz" $FCGZ
+echo lasfsdfsfla > fake.mcpl
+cp fake.mcpl fake.mcpl.gz
+echo lala > fake2.mcpl
+gzip -f fake2.mcpl
+cp $DD/reffile_empty.mcpl rfempty.mcpl
+cp $DD/reffile_empty.mcpl.gz rfempty.mcpl.gz
+cp "$DD/miscphys.mcpl.gz" .
+FMISC="miscphys.mcpl.gz"
+cp miscphys.mcpl.gz miscphysnogz.mcpl.gz
+gunzip miscphysnogz.mcpl.gz
+FMISCNOGZ=miscphysnogz.mcpl
+#file in MCPL-2 format, for testing some commands mixing MCPL-2 and MCPL-3 files.
+F2v2=rf16cp_fmt2.mcpl
+cp "$DDv2/reffile_16.mcpl" $F2v2
+cp $DD/difficult_unitvector.mcpl.gz .
+gunzip difficult_unitvector.mcpl.gz
+
+function cmd()
+{
+    echo "----------------------------------------------"
+    echo "Running $MCPLTESTS_TESTTOOL ""$@" | sed "s#$SBLD_DATA_DIR/MCPLTests/#MCPLTests/data/#"
+    echo "----------------------------------------------"
+    $MCPLTESTS_TESTTOOL "$@"
+    if [ $? != 0 ]; then
+        echo "===> Command failed!"
+    fi
+}
+
+function check_same()
+{
+    CSF1="$1"
+    CSF2="$2"
+    if [ ! -f "$CSF1" -o ! -f "$CSF2" ]; then
+        #no files, no check
+        return
+    fi
+    echo "===> Checking that $CSF1 and $CSF2 have identical contents."
+    if [[ "$CSF1" == *.gz ]]; then
+        cat "$CSF1" | gunzip > tmp_check_f1.mcpl
+        CSF1="tmp_check_f1.mcpl"
+    fi
+    if [[ "$CSF2" == *.gz ]]; then
+        cat "$CSF2" | gunzip > tmp_check_f2.mcpl
+        CSF2="tmp_check_f2.mcpl"
+    fi
+    diff -q "$CSF1" "$CSF2" >& /dev/null
+    if [ $? != 0 ]; then
+        echo "===> Check failed!"
+        #exit 1
+    fi
+}
+#Test various options (also illegal ones):
+cmd -h
+cmd --help
+cmd --h
+cmd --version
+cmd --v
+cmd $F1 --justhead
+cmd $F1 --ju
+cmd $F1 -j
+cmd $F1 --nohead
+cmd $F1 --n
+cmd $F1 --n -m --inplace
+cmd $F1 --ju -l2
+cmd $F1 --ju -s1
+cmd $F1 -l2 -r
+cmd $F1 --v --h
+cmd $F1 --v --m --inplace
+cmd $F1 -l0 -s2
+cmd $F1 -l2 -s0
+cmd $F1 -m --inplace "$F2"
+cmd $F1 -l0
+#this gives warning on purpose:
+cmd $F1 --mer --inpl "$F1"
+cmd $F1 -l0
+#this gives warning on purpose:
+cmd $F1 --m --inplac "$F1"
+cmd $F1 -l0
+#this gives warning on purpose:
+cmd $F1 --merge --inplace "$F1"
+#lots of warnings:
+cmd -m dupmerge.mcpl "$F1" "./$F1" ../$(basename $PWD)"/$F1" "$F1_SL" "$F1_HL" "$F2_SL" "$F2_SL"
+cmd -m --inplace dupmerge.mcpl "./dupmerge.mcpl"
+cmd -m --inplace dupmerge.mcpl dupmerge.mcpl
+cmd $F1 -l0
+cmd -l0 -s2 "$DD/reffile_5.mcpl.gz"
+cmd -l0 -s2 "$DD/reffile_5.mcpl"
+cmd -l0 -s2 "$DD/reffile_empty.mcpl"
+cmd -l0 -s2 "$DD/reffile_empty.mcpl.gz"
+cmd -m --inplace rf5cp.mcpl "$DD/reffile_5.mcpl.gz"
+cmd -m --inpla   rf5cp.mcpl.gz "$DD/reffile_5.mcpl"
+cmd -m --inplac  rf5cp.mcpl.gz "$DD/reffile_5.mcpl.gz"
+cmd $FC
+cmd --repair $FC
+cmd $FC
+cmd --r $FC
+cmd $FC
+cmd -r $FCGZ
+cmd $FC
+cmd -r $F1
+cmd rfempty.mcpl
+cmd -r rfempty.mcpl
+cmd rfempty.mcpl
+cmd rfempty.mcpl.gz
+cmd -r rfempty.mcpl.gz
+cmd rfempty.mcpl.gz
+cp $DD/reffile_truncated.mcpl.gz rftrunc.mcpl.gz
+if [ $MCPLTESTS_SKIPTRUNCGZ != 1 ]; then
+    cmd -r rftrunc.mcpl.gz
+fi
+cp $DD/reffile_truncated.mcpl rftrunc.mcpl
+cmd -r rftrunc.mcpl
+cmd rftrunc.mcpl
+cmd fake.mcpl
+cmd fake.mcpl.gz
+cmd fake2.mcpl.gz
+cmd -e $FMISC extracted_1
+cmd --extract -p2112 $FMISC extracted_1
+cmd --extract -p-11 $FMISC extracted_2
+cmd -ep-1000020040 $FMISCNOGZ extracted_3
+cmd -e -p1000922350 $FMISC extracted_4
+cmd -e -p111 -l999999 -s150 $FMISCNOGZ extracted_5
+cmd -l0 extracted_1.mcpl.gz
+cmd -l0 extracted_2.mcpl.gz
+cmd -l0 extracted_3.mcpl.gz
+cmd -l0 extracted_4.mcpl.gz
+cmd -l0 extracted_5.mcpl.gz
+#this works because the embedded comment from extracting is (so far) identical:
+cmd --merge merged_new_file.mcpl extracted_1.mcpl.gz extracted_2.mcpl.gz
+cmd --merge merged_1to5_new_filea.mcpl extracted_1.mcpl.gz extracted_2.mcpl.gz extracted_3.mcpl.gz extracted_4.mcpl.gz extracted_5.mcpl.gz
+if [ -f extracted_1.mcpl.gz ]; then gunzip extracted_1.mcpl.gz; fi
+if [ -f extracted_2.mcpl.gz ]; then gunzip extracted_2.mcpl.gz; fi
+cmd --merge merged_1to5_new_fileb.mcpl extracted_1.mcpl extracted_2.mcpl extracted_3.mcpl.gz extracted_4.mcpl.gz extracted_5.mcpl.gz
+check_same merged_1to5_new_filea.mcpl merged_1to5_new_fileb.mcpl
+cmd --merge --inplace extracted_1.mcpl extracted_2.mcpl
+cmd extracted_1.mcpl
+check_same merged_new_file.mcpl extracted_1.mcpl
+check_same miscphys.mcpl.gz miscphysnogz.mcpl
+cmd --merge --inplace extracted_1.mcpl extracted_3.mcpl.gz extracted_4.mcpl.gz extracted_5.mcpl.gz
+check_same extracted_1.mcpl merged_1to5_new_fileb.mcpl
+if [ -f extracted_3.mcpl.gz ]; then gunzip extracted_3.mcpl.gz; fi
+if [ -f extracted_4.mcpl.gz ]; then gunzip extracted_4.mcpl.gz; fi
+if [ -f extracted_5.mcpl.gz ]; then gunzip extracted_5.mcpl.gz; fi
+cmd --extract -p2112 $FMISCNOGZ extracted_1_new.mcpl
+cmd --extract -p-11 $FMISCNOGZ extracted_2_new.mcpl
+cmd -e -p1000922350 $FMISCNOGZ extracted_4_new.mcpl
+if [ -f extracted_1_new.mcpl.gz ]; then gunzip extracted_1_new.mcpl.gz; fi
+if [ -f extracted_2_new.mcpl.gz ]; then gunzip extracted_2_new.mcpl.gz; fi
+if [ -f extracted_4_new.mcpl.gz ]; then gunzip extracted_4_new.mcpl.gz; fi
+cmd --merge merged_1to5_new_filec.mcpl extracted_1_new.mcpl extracted_2_new.mcpl extracted_3.mcpl extracted_4_new.mcpl extracted_5.mcpl
+
+#merge to gzipped output by specifying .mcpl.gz:
+#  -> but fail since .mcpl file exists:
+cmd --merge merged_1to5_new_filec.mcpl.gz extracted_1_new.mcpl extracted_2_new.mcpl extracted_3.mcpl extracted_4_new.mcpl extracted_5.mcpl
+#  -> but fail since wrong ending:
+cmd --merge merged_1to5_new_filec.gz extracted_1_new.mcpl extracted_2_new.mcpl extracted_3.mcpl extracted_4_new.mcpl extracted_5.mcpl
+#  -> ok (might fail if gzip support is absent!):
+cmd --merge merged_1to5_new_filec_unique.mcpl.gz extracted_1_new.mcpl extracted_2_new.mcpl extracted_3.mcpl extracted_4_new.mcpl extracted_5.mcpl
+check_same merged_1to5_new_filec.mcpl merged_1to5_new_filec_unique.mcpl.gz
+
+cmd --merge --inplace extracted_1_new.mcpl extracted_2_new.mcpl extracted_3.mcpl extracted_4_new.mcpl extracted_5.mcpl
+check_same merged_1to5_new_filec.mcpl extracted_1_new.mcpl
+check_same merged_1to5_new_filea.mcpl merged_1to5_new_filec.mcpl
+
+
+#mistakes with --merge but no --inplace should fail:
+cmd --merge extracted_1.mcpl extracted_2.mcpl
+#too few pars:
+cmd --merge --inplace extracted_1.mcpl
+cmd --merge newfile.mcpl
+#error - can't mix MCPL versions when merging inplace:
+cmd --merge --inplace "$F2v2" "$F2"
+cmd --merge --inplace "$F2" "$F2v2"
+#but ok when not inplace (does trigger warning though):
+cmd --merge mix.mcpl "$F2v2" "$F2"
+cmd -l0 mix.mcpl
+#test that extraction & merges do not change bytes in transferred particles (using hidden --preventcomment flag):
+cmd -e difficult_unitvector.mcpl extracted_all -l0 --preventcomment
+cmd -e difficult_unitvector.mcpl extracted_none -s999999999 --preventcomment
+if [ -f extracted_all.mcpl.gz ]; then gunzip extracted_all.mcpl.gz; fi
+if [ -f extracted_none.mcpl.gz ]; then gunzip extracted_none.mcpl.gz; fi
+cmd -m extracted_recombined extracted_none.mcpl extracted_all.mcpl
+cmd -m --inplace extracted_none.mcpl extracted_all.mcpl
+check_same difficult_unitvector.mcpl extracted_recombined.mcpl
+check_same difficult_unitvector.mcpl extracted_none.mcpl
+check_same extracted_recombined.mcpl extracted_none.mcpl
+
+#More bad files:
+cmd $DD/reffile_bad1.mcpl
+cmd $DD/reffile_bad2.mcpl
+cmd $DD/reffile_bad3.mcpl
+cmd $DD/reffile_bad4.mcpl
+cmd $DD/reffile_bad1.mcpl.gz
+cmd $DD/reffile_bad2.mcpl.gz
+cmd $DD/reffile_bad3.mcpl.gz
+cmd $DD/reffile_bad4.mcpl.gz
+#missing file (also tests whether or not we complain about the extension):
+cmd bla.txt
+echo "hello" > bla.txt
+#not missing but bad (also tests whether or not we complain about the extension):
+cmd bla.txt
+if [ $MCPLTESTS_SKIPTRUNCGZ != 1 ]; then
+    cmd $DD/reffile_truncated.mcpl.gz
+fi
+cmd $DD/reffile_truncated.mcpl
+#This next one opens nicely if mcpltool is build with zlib support, due to the
+#magic of gzopen being able to handle uncompressed files. A bit too magic perhaps...
+cmd $DD/reffile_notreallygz.mcpl.gz
+cmd $DD/reffile_uw.mcpl.gz
+cmd $DD/reffile_encodings.mcpl.gz
+for bk in asciidata asciidata_empty utf8data binarydata 'utf8bløbkey' `echo -ne "notutf8key_\xff\xfe_"`; do
+    echo "====> extracting and calculating md5sum of blob with key \"$bk\":"
+    $MCPLTESTS_TESTTOOL $DD/reffile_encodings.mcpl.gz -b"${bk}"|sb_utils_md5sum
+    if [ ${PIPESTATUS[0]} != 0 ]; then
+        echo "===> Command failed!"
+    fi
+done

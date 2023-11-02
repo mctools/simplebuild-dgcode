@@ -1,0 +1,74 @@
+inline SimpleHists::Hist1D::Hist1D(unsigned nbins, double xmin, double xmax)
+  : HistBase()
+{
+  init(nbins, xmin, xmax);
+}
+
+inline SimpleHists::Hist1D::Hist1D(const std::string& title,unsigned nbins, double xmin, double xmax)
+  : HistBase(title)
+{
+  init(nbins, xmin, xmax);
+}
+
+inline unsigned SimpleHists::Hist1D::getNBins() const { return m_data.nbins; }
+
+inline double SimpleHists::Hist1D::getBinContent(unsigned ibin) const
+{
+  assert(ibin<m_data.nbins);
+  return m_content[ibin];
+}
+
+inline double SimpleHists::Hist1D::getBinError(unsigned ibin) const
+{
+  assert(ibin<m_data.nbins);
+  return sqrt(m_errors ? m_errors[ibin] : m_content[ibin]);
+}
+
+
+inline double SimpleHists::Hist1D::getBinCenter(unsigned ibin) const
+{
+  assert(ibin<m_data.nbins);
+  return m_data.xmin + (ibin+0.5)*m_delta;
+}
+
+inline double SimpleHists::Hist1D::getBinLower(unsigned ibin) const
+{
+  assert(ibin<m_data.nbins);
+  return m_data.xmin + ibin*m_delta;
+}
+
+inline double SimpleHists::Hist1D::getBinUpper(unsigned ibin) const
+{
+  assert(ibin<m_data.nbins);
+  return ibin==m_data.nbins-1 ? m_data.xmax : m_data.xmin + (ibin+1)*m_delta;
+}
+
+inline double SimpleHists::Hist1D::getBinWidth() const { return m_delta; }
+inline double SimpleHists::Hist1D::getUnderflow() const { return m_data.underflow; }
+inline double SimpleHists::Hist1D::getOverflow() const { return m_data.overflow; }
+inline double SimpleHists::Hist1D::getXMin() const { return m_data.xmin; }
+inline double SimpleHists::Hist1D::getXMax() const { return m_data.xmax; }
+
+inline bool SimpleHists::Hist1D::empty() const
+{
+  return !m_data.sumW;
+}
+
+inline double SimpleHists::Hist1D::getIntegral() const
+{
+  return m_data.sumW;
+}
+
+inline int SimpleHists::Hist1D::valueToBin(double val) const
+{
+  //returns -1 for underflow, nbins for overflow
+  assert(!(val!=val)&&"Hist1D ERROR: NAN in input!");
+  if (val<m_data.xmin) return -1;
+  if (val>=m_data.xmax) return val==m_data.xmax ? m_data.nbins-1 : m_data.nbins;
+  return static_cast<int>(m_invDelta*(val-m_data.xmin));
+}
+
+inline bool SimpleHists::Hist1D::canRebin(unsigned new_nbins) const
+{
+  return new_nbins>0 && new_nbins<=m_data.nbins && m_data.nbins%new_nbins == 0;
+}

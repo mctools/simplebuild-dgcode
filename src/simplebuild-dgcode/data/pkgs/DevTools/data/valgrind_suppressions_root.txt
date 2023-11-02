@@ -1,0 +1,115 @@
+{
+   <root1>
+   Memcheck:Leak
+   ...
+   fun:*TClass*AddClass*
+   ...
+}
+
+{
+   <root2>
+   Memcheck:Leak
+   ...
+   fun:*TClassRef*Assign*
+   ...
+}
+
+{
+   <root3>
+   Memcheck:Leak
+   ...
+   fun:*TStreamerInfo*Build*
+   ...
+}
+{
+   <root4>
+   Memcheck:Leak
+   ...
+   fun:*TClass*BuildRealData*
+   ...
+}
+{
+   <root5>
+   Memcheck:Leak
+   ...
+   fun:*TObjectTable*AddObj*
+   ...
+}
+{
+   <root6>
+   Memcheck:Leak
+   ...
+   fun:*ROOT*GetROOT*
+   ...
+}
+{
+   <root7>
+   Memcheck:Leak
+   ...
+   fun:*TCint*UpdateListOfTypes*
+   ...
+}
+{
+   <root8>
+   Memcheck:Leak
+   ...
+   fun:*TCint*UpdateListOfGlobals*
+   ...
+}
+{
+   <root9>
+   Memcheck:Leak
+   ...
+   fun:*G__*
+}
+{
+   <root10>
+   Memcheck:Leak
+   ...
+   fun:*__static_initialization_and_destruction*
+   ...
+}
+{
+   <root11>
+   Memcheck:Leak
+   ...
+   obj:*root/lib*.so
+   ...
+   fun:_dl_init
+   ...
+}
+{
+   <root12>
+   Memcheck:Leak
+   ...
+   fun:*TROOT*InitSystem*
+   ...
+}
+{
+   <root13>
+   Memcheck:Leak
+   ...
+   fun:*TCint*Create*
+   ...
+}
+{
+   <root14>
+   Memcheck:Leak
+   ...
+   fun:*ROOT*Create*
+   ...
+}
+{
+   <root15>
+   Memcheck:Leak
+   ...
+   fun:*TUrl*Get*
+   ...
+}
+{
+   <root16>
+   Memcheck:Leak
+   ...
+   fun:*ROOT*Load*
+   ...
+}

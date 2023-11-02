@@ -1,0 +1,2333 @@
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title (0)
+  xLabel    : <none>
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 0
+  mean      : <n/a>
+  rms       : <n/a>
+  median    : <n/a>
+  minfilled : <n/a>
+  maxfilled : <n/a>
+  underflow : 0
+  overflow  : 0
+  content[ibin=0] : 0 +- 0
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 0 +- 0
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 0 +- 0
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title
+  xLabel    : some xlabel
+  yLabel    : some ylabel
+  comment    : some comment
+  integral  : 4.333
+  mean      : 4.04077
+  rms       : 7.8459
+  median    : 5 +- 1
+  minfilled : -15.001
+  maxfilled : 15.001
+  underflow : 0.333
+  overflow  : 1
+  content[ibin=0] : 1.5 +- 1.11803
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 1.5 +- 1.5
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 0 +- 0
+
+Serialised to buffer of length 199
+
+Deserialisation 1:
+
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title
+  xLabel    : some xlabel
+  yLabel    : some ylabel
+  comment    : some comment
+  integral  : 4.333
+  mean      : 4.04077
+  rms       : 7.8459
+  median    : 5 +- 1
+  minfilled : -15.001
+  maxfilled : 15.001
+  underflow : 0.333
+  overflow  : 1
+  content[ibin=0] : 1.5 +- 1.11803
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 1.5 +- 1.5
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 0 +- 0
+
+Deserialisation 2:
+
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title
+  xLabel    : some xlabel
+  yLabel    : some ylabel
+  comment    : some comment
+  integral  : 4.333
+  mean      : 4.04077
+  rms       : 7.8459
+  median    : 5 +- 1
+  minfilled : -15.001
+  maxfilled : 15.001
+  underflow : 0.333
+  overflow  : 1
+  content[ibin=0] : 1.5 +- 1.11803
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 1.5 +- 1.5
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 0 +- 0
+
+Python class name:
+
+  <class 'SimpleHists.Hist1D'>
+
+Test HistBase python properties with setters:
+
+  A title -> new title
+  some xlabel -> new xlabel -> another xlabel
+  some ylabel -> new ylabel -> another ylabel
+  some comment -> new comment -> another comment
+
+Test Hist1D python read-only properties:
+
+  nBins = 5
+  xMin = 0.0
+  xMax = 10.0
+  integral = 4.333
+  mean = 4.04077244403
+  rms = 7.84590007442
+  underflow = 0.333
+  overflow = 1.0
+
+Merge test premerge:
+
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title
+  xLabel    : some xlabel
+  yLabel    : some ylabel
+  comment    : some comment
+  integral  : 4.733
+  mean      : 3.91056
+  rms       : 7.51927
+  median    : 5 +- 1
+  minfilled : -15.001
+  maxfilled : 15.001
+  underflow : 0.333
+  overflow  : 1
+  content[ibin=0] : 1.5 +- 1.11803
+  content[ibin=1] : 0.4 +- 0.4
+  content[ibin=2] : 1.5 +- 1.5
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 0 +- 0
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title
+  xLabel    : some xlabel
+  yLabel    : some ylabel
+  comment    : some comment
+  integral  : 8.633
+  mean      : 6.41129
+  rms       : 6.04642
+  median    : 9 +- 1
+  minfilled : -15.001
+  maxfilled : 15.001
+  underflow : 0.333
+  overflow  : 1
+  content[ibin=0] : 1.5 +- 1.11803
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 1.5 +- 1.5
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 4.3 +- 4.3
+Hist2D(nbinsx=4,xmin=-10,xmax=10,nbinsy=3,ymin=-12,ymax=13):
+  title      : <none>
+  xLabel     : <none>
+  yLabel     : <none>
+  comment    : <none>
+  integral   : 21.7
+  meanx      : 2.40461
+  rmsx       : 4.01185
+  meany      : 2.19908
+  rmsy       : 3.26165
+  covxy      : -4.31244
+  corxy      : -0.329565
+  minfilledx : -9
+  maxfilledx : 20
+  minfilledy : -5
+  maxfilledy : 7
+  underflowx : 0
+  overflowx  : 1
+  underflowy : 0
+  overflowy  : 0
+  content[(ix,iy)=(0,0)] : 0
+  content[(ix,iy)=(0,1)] : 0.1
+  content[(ix,iy)=(0,2)] : 0
+  content[(ix,iy)=(1,0)] : 0
+  content[(ix,iy)=(1,1)] : 0
+  content[(ix,iy)=(1,2)] : 0
+  content[(ix,iy)=(2,0)] : 1
+  content[(ix,iy)=(2,1)] : 14.2
+  content[(ix,iy)=(2,2)] : 5.4
+  content[(ix,iy)=(3,0)] : 0
+  content[(ix,iy)=(3,1)] : 0
+  content[(ix,iy)=(3,2)] : 0
+
+Merge test postmerge:
+
+Hist1D(nbins=5,xmin=0,xmax=10):
+  title     : A title
+  xLabel    : some xlabel
+  yLabel    : some ylabel
+  comment    : some comment
+  integral  : 13.366
+  mean      : 5.52576
+  rms       : 6.71302
+  median    : 5 +- 1
+  minfilled : -15.001
+  maxfilled : 15.001
+  underflow : 0.666
+  overflow  : 2
+  content[ibin=0] : 3 +- 1.58114
+  content[ibin=1] : 0.4 +- 0.4
+  content[ibin=2] : 3 +- 2.12132
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 4.3 +- 4.3
+
+Test HistCollection:
+
+
+Some histogram before persistification:
+
+Hist1D(nbins=7,xmin=-5,xmax=5):
+  title     : <none>
+  xLabel    : A fine xlabel
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 1.01
+  mean      : 1.16436
+  rms       : 0.356436
+  median    : 1.42857 +- 0.714286
+  minfilled : -2.4
+  maxfilled : 1.2
+  underflow : 0
+  overflow  : 0
+  content[ibin=0] : 0 +- 0
+  content[ibin=1] : 0.01 +- 0.01
+  content[ibin=2] : 0 +- 0
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 1 +- 1
+  content[ibin=5] : 0 +- 0
+  content[ibin=6] : 0 +- 0
+
+Same histogram after persistification+loading:
+
+Hist1D(nbins=7,xmin=-5,xmax=5):
+  title     : <none>
+  xLabel    : A fine xlabel
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 1.01
+  mean      : 1.16436
+  rms       : 0.356436
+  median    : 1.42857 +- 0.714286
+  minfilled : -2.4
+  maxfilled : 1.2
+  underflow : 0
+  overflow  : 0
+  content[ibin=0] : 0 +- 0
+  content[ibin=1] : 0.01 +- 0.01
+  content[ibin=2] : 0 +- 0
+  content[ibin=3] : 0 +- 0
+  content[ibin=4] : 1 +- 1
+  content[ibin=5] : 0 +- 0
+  content[ibin=6] : 0 +- 0
+Test normalisation - original:
+  Hist1D(nbins=5,xmin=0,xmax=10):
+    title     : A title
+    xLabel    : some xlabel
+    yLabel    : some ylabel
+    comment    : some comment
+    integral  : 4.333
+    mean      : 4.04077
+    rms       : 7.8459
+    median    : 5 +- 1
+    minfilled : -15.001
+    maxfilled : 15.001
+    underflow : 0.333
+    overflow  : 1
+    content[ibin=0] : 1.5 +- 1.11803
+    content[ibin=1] : 0 +- 0
+    content[ibin=2] : 1.5 +- 1.5
+    content[ibin=3] : 0 +- 0
+    content[ibin=4] : 0 +- 0
+Test normalisation:
+  Hist1D(nbins=5,xmin=0,xmax=10):
+    title     : A title
+    xLabel    : some xlabel
+    yLabel    : some ylabel
+    comment    : some comment
+    integral  : 1
+    mean      : 4.04077
+    rms       : 7.8459
+    median    : 5 +- 1
+    minfilled : -15.001
+    maxfilled : 15.001
+    underflow : 0.0768521
+    overflow  : 0.230787
+    content[ibin=0] : 0.34618 +- 0.258028
+    content[ibin=1] : 0 +- 0
+    content[ibin=2] : 0.34618 +- 0.34618
+    content[ibin=3] : 0 +- 0
+    content[ibin=4] : 0 +- 0
+Hist2D(nbinsx=5,xmin=0,xmax=5,nbinsy=3,ymin=-2,ymax=2):
+  title      : A 2d hist
+  xLabel     : <none>
+  yLabel     : <none>
+  comment    : <none>
+  integral   : 0
+  meanx      : <n/a>
+  rmsy       : <n/a>
+  meanx      : <n/a>
+  rmsy       : <n/a>
+  covxy      : <n/a>
+  corxy      : <n/a>
+  minfilledx : <n/a>
+  maxfilledx : <n/a>
+  minfilledy : <n/a>
+  maxfilledy : <n/a>
+  underflowx : 0
+  overflowx  : 0
+  underflowy : 0
+  overflowy  : 0
+  content[(ix,iy)=(0,0)] : 0
+  content[(ix,iy)=(0,1)] : 0
+  content[(ix,iy)=(0,2)] : 0
+  content[(ix,iy)=(1,0)] : 0
+  content[(ix,iy)=(1,1)] : 0
+  content[(ix,iy)=(1,2)] : 0
+  content[(ix,iy)=(2,0)] : 0
+  content[(ix,iy)=(2,1)] : 0
+  content[(ix,iy)=(2,2)] : 0
+  content[(ix,iy)=(3,0)] : 0
+  content[(ix,iy)=(3,1)] : 0
+  content[(ix,iy)=(3,2)] : 0
+  content[(ix,iy)=(4,0)] : 0
+  content[(ix,iy)=(4,1)] : 0
+  content[(ix,iy)=(4,2)] : 0
+Hist2D(nbinsx=5,xmin=0,xmax=5,nbinsy=3,ymin=-2,ymax=2):
+  title      : A 2d hist
+  xLabel     : some xlabel
+  yLabel     : some ylabel
+  comment    : some comment
+  integral   : 13.2
+  meanx      : 0.0378788
+  rmsx       : 0.132305
+  meany      : 16.1894
+  rmsy       : 4.57775
+  covxy      : -0.605659
+  corxy      : -1
+  minfilledx : 0
+  maxfilledx : 0.5
+  minfilledy : 0.2
+  maxfilledy : 17.5
+  underflowx : 0
+  overflowx  : 0
+  underflowy : 0
+  overflowy  : 12.2
+  content[(ix,iy)=(0,0)] : 0
+  content[(ix,iy)=(0,1)] : 1
+  content[(ix,iy)=(0,2)] : 0
+  content[(ix,iy)=(1,0)] : 0
+  content[(ix,iy)=(1,1)] : 0
+  content[(ix,iy)=(1,2)] : 0
+  content[(ix,iy)=(2,0)] : 0
+  content[(ix,iy)=(2,1)] : 0
+  content[(ix,iy)=(2,2)] : 0
+  content[(ix,iy)=(3,0)] : 0
+  content[(ix,iy)=(3,1)] : 0
+  content[(ix,iy)=(3,2)] : 0
+  content[(ix,iy)=(4,0)] : 0
+  content[(ix,iy)=(4,1)] : 0
+  content[(ix,iy)=(4,2)] : 0
+s1: HistCounts():
+s1:   title     : Stats
+s1:   xLabel    : <none>
+s1:   yLabel    : <none>
+s1:   comment    : <none>
+s1:   integral  : 128.4
+s1:   counter[Counter 1] = 2 +- 1.41421
+s1:   counter[counter_2] = 12.2 +- 12.2
+s1:     => This is a comment about the second counter
+s1:   counter[<Counter 3>] = 100 +- 10
+s1:   counter[An unused counter] = 0 +- 0
+s1:   counter[A counter summing c1 and c2] = 14.2 +- 12.2817
+s2: HistCounts():
+s2:   title     : Stats
+s2:   xLabel    : <none>
+s2:   yLabel    : <none>
+s2:   comment    : <none>
+s2:   integral  : 128.4
+s2:   counter[Counter 1] = 2 +- 1.41421
+s2:   counter[counter_2] = 12.2 +- 12.2
+s2:     => This is a comment about the second counter
+s2:   counter[<Counter 3>] = 100 +- 10
+s2:   counter[An unused counter] = 0 +- 0
+s2:   counter[A counter summing c1 and c2] = 14.2 +- 12.2817
+Serialised to 302 bytes
+s3: HistCounts():
+s3:   title     : Stats
+s3:   xLabel    : <none>
+s3:   yLabel    : <none>
+s3:   comment    : <none>
+s3:   integral  : 128.4
+s3:   counter[Counter 1] = 2 +- 1.41421
+s3:   counter[counter_2] = 12.2 +- 12.2
+s3:     => This is a comment about the second counter
+s3:   counter[<Counter 3>] = 100 +- 10
+s3:   counter[An unused counter] = 0 +- 0
+s3:   counter[A counter summing c1 and c2] = 14.2 +- 12.2817
+Test browse script + reading of reference file
+Selected 5 out of 5 histograms:
+
+  => Now dumping histogram 1/5: hist2d_4 [hist2d_4]
+
+     Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
+       title      : hist2d_4
+       xLabel     : <none>
+       yLabel     : <none>
+       comment    : <none>
+       integral   : 6000
+       meanx      : 0.442841
+       rmsx       : 0.230346
+       meany      : 0.443578
+       rmsy       : 0.231165
+       covxy      : -0.000111644
+       corxy      : -0.00209669
+       minfilledx : -0.00329086
+       maxfilledx : 1.0023
+       minfilledy : -0.00393709
+       maxfilledy : 1.00429
+       underflowx : 1.7
+       overflowx  : 0.2
+       underflowy : 1.6
+       overflowy  : 0.4
+       content[(ix,iy)=(0,0)] : 2.8
+       content[(ix,iy)=(0,1)] : 3.8
+       content[(ix,iy)=(0,2)] : 6.3
+       content[(ix,iy)=(0,3)] : 6.4
+       content[(ix,iy)=(0,4)] : 8.7
+       content[(ix,iy)=(0,5)] : 8.2
+       content[(ix,iy)=(0,6)] : 7.8
+       content[(ix,iy)=(0,7)] : 8.2
+       content[(ix,iy)=(0,8)] : 8.2
+       content[(ix,iy)=(0,9)] : 7.4
+       content[(ix,iy)=(0,10)] : 7.6
+       content[(ix,iy)=(0,11)] : 7.3
+       content[(ix,iy)=(0,12)] : 8.5
+       content[(ix,iy)=(0,13)] : 5.9
+       content[(ix,iy)=(0,14)] : 4.9
+       content[(ix,iy)=(0,15)] : 4.2
+       content[(ix,iy)=(0,16)] : 3.6
+       content[(ix,iy)=(0,17)] : 2.2
+       content[(ix,iy)=(0,18)] : 2.1
+       content[(ix,iy)=(0,19)] : 0.4
+       content[(ix,iy)=(1,0)] : 3.8
+       content[(ix,iy)=(1,1)] : 9.1
+       content[(ix,iy)=(1,2)] : 13.5
+       content[(ix,iy)=(1,3)] : 14.1
+       content[(ix,iy)=(1,4)] : 14.4
+       content[(ix,iy)=(1,5)] : 15.6
+       content[(ix,iy)=(1,6)] : 16.1
+       content[(ix,iy)=(1,7)] : 16.9
+       content[(ix,iy)=(1,8)] : 16.4
+       content[(ix,iy)=(1,9)] : 18.1
+       content[(ix,iy)=(1,10)] : 16.9
+       content[(ix,iy)=(1,11)] : 16.3
+       content[(ix,iy)=(1,12)] : 13.2
+       content[(ix,iy)=(1,13)] : 13.9
+       content[(ix,iy)=(1,14)] : 11
+       content[(ix,iy)=(1,15)] : 7.9
+       content[(ix,iy)=(1,16)] : 5.8
+       content[(ix,iy)=(1,17)] : 4.8
+       content[(ix,iy)=(1,18)] : 3.3
+       content[(ix,iy)=(1,19)] : 1.3
+       content[(ix,iy)=(2,0)] : 6.5
+       content[(ix,iy)=(2,1)] : 12.7
+       content[(ix,iy)=(2,2)] : 16.4
+       content[(ix,iy)=(2,3)] : 19.5
+       content[(ix,iy)=(2,4)] : 18.9
+       content[(ix,iy)=(2,5)] : 22
+       content[(ix,iy)=(2,6)] : 25.8
+       content[(ix,iy)=(2,7)] : 24.7
+       content[(ix,iy)=(2,8)] : 23.7
+       content[(ix,iy)=(2,9)] : 20.5
+       content[(ix,iy)=(2,10)] : 21.6
+       content[(ix,iy)=(2,11)] : 21.7
+       content[(ix,iy)=(2,12)] : 17.7
+       content[(ix,iy)=(2,13)] : 15.6
+       content[(ix,iy)=(2,14)] : 13.9
+       content[(ix,iy)=(2,15)] : 11.5
+       content[(ix,iy)=(2,16)] : 10.7
+       content[(ix,iy)=(2,17)] : 6.9
+       content[(ix,iy)=(2,18)] : 4.3
+       content[(ix,iy)=(2,19)] : 1.5
+       content[(ix,iy)=(3,0)] : 9.6
+       content[(ix,iy)=(3,1)] : 15.1
+       content[(ix,iy)=(3,2)] : 16.7
+       content[(ix,iy)=(3,3)] : 22.9
+       content[(ix,iy)=(3,4)] : 24.6
+       content[(ix,iy)=(3,5)] : 27
+       content[(ix,iy)=(3,6)] : 27.6
+       content[(ix,iy)=(3,7)] : 25.5
+       content[(ix,iy)=(3,8)] : 25.1
+       content[(ix,iy)=(3,9)] : 25
+       content[(ix,iy)=(3,10)] : 23.9
+       content[(ix,iy)=(3,11)] : 22.2
+       content[(ix,iy)=(3,12)] : 22.6
+       content[(ix,iy)=(3,13)] : 21.3
+       content[(ix,iy)=(3,14)] : 15.8
+       content[(ix,iy)=(3,15)] : 14.9
+       content[(ix,iy)=(3,16)] : 12.8
+       content[(ix,iy)=(3,17)] : 9.5
+       content[(ix,iy)=(3,18)] : 5.8
+       content[(ix,iy)=(3,19)] : 2
+       content[(ix,iy)=(4,0)] : 7.6
+       content[(ix,iy)=(4,1)] : 15.9
+       content[(ix,iy)=(4,2)] : 21.9
+       content[(ix,iy)=(4,3)] : 23.1
+       content[(ix,iy)=(4,4)] : 23.8
+       content[(ix,iy)=(4,5)] : 27.8
+       content[(ix,iy)=(4,6)] : 30
+       content[(ix,iy)=(4,7)] : 27.9
+       content[(ix,iy)=(4,8)] : 26
+       content[(ix,iy)=(4,9)] : 28.7
+       content[(ix,iy)=(4,10)] : 26.5
+       content[(ix,iy)=(4,11)] : 25.8
+       content[(ix,iy)=(4,12)] : 22.7
+       content[(ix,iy)=(4,13)] : 20.3
+       content[(ix,iy)=(4,14)] : 18.2
+       content[(ix,iy)=(4,15)] : 14.9
+       content[(ix,iy)=(4,16)] : 14.6
+       content[(ix,iy)=(4,17)] : 9.3
+       content[(ix,iy)=(4,18)] : 6
+       content[(ix,iy)=(4,19)] : 1.7
+       content[(ix,iy)=(5,0)] : 8
+       content[(ix,iy)=(5,1)] : 16.8
+       content[(ix,iy)=(5,2)] : 21.3
+       content[(ix,iy)=(5,3)] : 28.1
+       content[(ix,iy)=(5,4)] : 30.1
+       content[(ix,iy)=(5,5)] : 29.8
+       content[(ix,iy)=(5,6)] : 30
+       content[(ix,iy)=(5,7)] : 31.5
+       content[(ix,iy)=(5,8)] : 29
+       content[(ix,iy)=(5,9)] : 30.1
+       content[(ix,iy)=(5,10)] : 29.5
+       content[(ix,iy)=(5,11)] : 26.4
+       content[(ix,iy)=(5,12)] : 27.9
+       content[(ix,iy)=(5,13)] : 21.3
+       content[(ix,iy)=(5,14)] : 21.8
+       content[(ix,iy)=(5,15)] : 18
+       content[(ix,iy)=(5,16)] : 12.9
+       content[(ix,iy)=(5,17)] : 9.5
+       content[(ix,iy)=(5,18)] : 6.9
+       content[(ix,iy)=(5,19)] : 3.5
+       content[(ix,iy)=(6,0)] : 7.7
+       content[(ix,iy)=(6,1)] : 17
+       content[(ix,iy)=(6,2)] : 24.5
+       content[(ix,iy)=(6,3)] : 25.6
+       content[(ix,iy)=(6,4)] : 31.6
+       content[(ix,iy)=(6,5)] : 32.5
+       content[(ix,iy)=(6,6)] : 29.3
+       content[(ix,iy)=(6,7)] : 32.6
+       content[(ix,iy)=(6,8)] : 31.5
+       content[(ix,iy)=(6,9)] : 30.8
+       content[(ix,iy)=(6,10)] : 32.6
+       content[(ix,iy)=(6,11)] : 26.6
+       content[(ix,iy)=(6,12)] : 25.6
+       content[(ix,iy)=(6,13)] : 23
+       content[(ix,iy)=(6,14)] : 20.3
+       content[(ix,iy)=(6,15)] : 16.9
+       content[(ix,iy)=(6,16)] : 14.3
+       content[(ix,iy)=(6,17)] : 10.1
+       content[(ix,iy)=(6,18)] : 5.5
+       content[(ix,iy)=(6,19)] : 2.3
+       content[(ix,iy)=(7,0)] : 8
+       content[(ix,iy)=(7,1)] : 16.6
+       content[(ix,iy)=(7,2)] : 24.4
+       content[(ix,iy)=(7,3)] : 28.8
+       content[(ix,iy)=(7,4)] : 25.8
+       content[(ix,iy)=(7,5)] : 30.1
+       content[(ix,iy)=(7,6)] : 36.4
+       content[(ix,iy)=(7,7)] : 32.6
+       content[(ix,iy)=(7,8)] : 33.1
+       content[(ix,iy)=(7,9)] : 32.5
+       content[(ix,iy)=(7,10)] : 29.9
+       content[(ix,iy)=(7,11)] : 25.8
+       content[(ix,iy)=(7,12)] : 24.8
+       content[(ix,iy)=(7,13)] : 24.3
+       content[(ix,iy)=(7,14)] : 22.3
+       content[(ix,iy)=(7,15)] : 16.8
+       content[(ix,iy)=(7,16)] : 12.7
+       content[(ix,iy)=(7,17)] : 9.7
+       content[(ix,iy)=(7,18)] : 8.1
+       content[(ix,iy)=(7,19)] : 2.5
+       content[(ix,iy)=(8,0)] : 8.9
+       content[(ix,iy)=(8,1)] : 20.3
+       content[(ix,iy)=(8,2)] : 23.8
+       content[(ix,iy)=(8,3)] : 24.4
+       content[(ix,iy)=(8,4)] : 29.1
+       content[(ix,iy)=(8,5)] : 27.7
+       content[(ix,iy)=(8,6)] : 32.5
+       content[(ix,iy)=(8,7)] : 34
+       content[(ix,iy)=(8,8)] : 31.5
+       content[(ix,iy)=(8,9)] : 26.9
+       content[(ix,iy)=(8,10)] : 28.5
+       content[(ix,iy)=(8,11)] : 28.6
+       content[(ix,iy)=(8,12)] : 25.9
+       content[(ix,iy)=(8,13)] : 23.8
+       content[(ix,iy)=(8,14)] : 19.6
+       content[(ix,iy)=(8,15)] : 18.7
+       content[(ix,iy)=(8,16)] : 12.4
+       content[(ix,iy)=(8,17)] : 10.7
+       content[(ix,iy)=(8,18)] : 5.8
+       content[(ix,iy)=(8,19)] : 3.2
+       content[(ix,iy)=(9,0)] : 7.2
+       content[(ix,iy)=(9,1)] : 15
+       content[(ix,iy)=(9,2)] : 20.9
+       content[(ix,iy)=(9,3)] : 25.4
+       content[(ix,iy)=(9,4)] : 25
+       content[(ix,iy)=(9,5)] : 28
+       content[(ix,iy)=(9,6)] : 30.8
+       content[(ix,iy)=(9,7)] : 30.6
+       content[(ix,iy)=(9,8)] : 30.9
+       content[(ix,iy)=(9,9)] : 30.2
+       content[(ix,iy)=(9,10)] : 28.6
+       content[(ix,iy)=(9,11)] : 24.2
+       content[(ix,iy)=(9,12)] : 27
+       content[(ix,iy)=(9,13)] : 21.3
+       content[(ix,iy)=(9,14)] : 19.6
+       content[(ix,iy)=(9,15)] : 16.7
+       content[(ix,iy)=(9,16)] : 13.8
+       content[(ix,iy)=(9,17)] : 11.4
+       content[(ix,iy)=(9,18)] : 7
+       content[(ix,iy)=(9,19)] : 3
+       content[(ix,iy)=(10,0)] : 8.6
+       content[(ix,iy)=(10,1)] : 17.9
+       content[(ix,iy)=(10,2)] : 21.4
+       content[(ix,iy)=(10,3)] : 23
+       content[(ix,iy)=(10,4)] : 24.5
+       content[(ix,iy)=(10,5)] : 28
+       content[(ix,iy)=(10,6)] : 28.9
+       content[(ix,iy)=(10,7)] : 30.1
+       content[(ix,iy)=(10,8)] : 29.4
+       content[(ix,iy)=(10,9)] : 30.3
+       content[(ix,iy)=(10,10)] : 26.8
+       content[(ix,iy)=(10,11)] : 23.3
+       content[(ix,iy)=(10,12)] : 20.7
+       content[(ix,iy)=(10,13)] : 21.7
+       content[(ix,iy)=(10,14)] : 18.6
+       content[(ix,iy)=(10,15)] : 15.9
+       content[(ix,iy)=(10,16)] : 13.2
+       content[(ix,iy)=(10,17)] : 7.7
+       content[(ix,iy)=(10,18)] : 5.8
+       content[(ix,iy)=(10,19)] : 3.3
+       content[(ix,iy)=(11,0)] : 8.5
+       content[(ix,iy)=(11,1)] : 14.9
+       content[(ix,iy)=(11,2)] : 17.1
+       content[(ix,iy)=(11,3)] : 23.3
+       content[(ix,iy)=(11,4)] : 25.9
+       content[(ix,iy)=(11,5)] : 28.2
+       content[(ix,iy)=(11,6)] : 27
+       content[(ix,iy)=(11,7)] : 27.7
+       content[(ix,iy)=(11,8)] : 30.9
+       content[(ix,iy)=(11,9)] : 25
+       content[(ix,iy)=(11,10)] : 22.5
+       content[(ix,iy)=(11,11)] : 23.8
+       content[(ix,iy)=(11,12)] : 23.9
+       content[(ix,iy)=(11,13)] : 18.8
+       content[(ix,iy)=(11,14)] : 17
+       content[(ix,iy)=(11,15)] : 15.2
+       content[(ix,iy)=(11,16)] : 10.9
+       content[(ix,iy)=(11,17)] : 10.8
+       content[(ix,iy)=(11,18)] : 5.3
+       content[(ix,iy)=(11,19)] : 1.4
+       content[(ix,iy)=(12,0)] : 8.7
+       content[(ix,iy)=(12,1)] : 13.8
+       content[(ix,iy)=(12,2)] : 15.2
+       content[(ix,iy)=(12,3)] : 20.4
+       content[(ix,iy)=(12,4)] : 23.4
+       content[(ix,iy)=(12,5)] : 23.6
+       content[(ix,iy)=(12,6)] : 24
+       content[(ix,iy)=(12,7)] : 26.3
+       content[(ix,iy)=(12,8)] : 24.9
+       content[(ix,iy)=(12,9)] : 22.2
+       content[(ix,iy)=(12,10)] : 23.1
+       content[(ix,iy)=(12,11)] : 21.7
+       content[(ix,iy)=(12,12)] : 19.4
+       content[(ix,iy)=(12,13)] : 19
+       content[(ix,iy)=(12,14)] : 15.6
+       content[(ix,iy)=(12,15)] : 12.8
+       content[(ix,iy)=(12,16)] : 11
+       content[(ix,iy)=(12,17)] : 7.8
+       content[(ix,iy)=(12,18)] : 4.3
+       content[(ix,iy)=(12,19)] : 2.2
+       content[(ix,iy)=(13,0)] : 6
+       content[(ix,iy)=(13,1)] : 11.9
+       content[(ix,iy)=(13,2)] : 17.8
+       content[(ix,iy)=(13,3)] : 16.6
+       content[(ix,iy)=(13,4)] : 20
+       content[(ix,iy)=(13,5)] : 20.9
+       content[(ix,iy)=(13,6)] : 24.1
+       content[(ix,iy)=(13,7)] : 25.6
+       content[(ix,iy)=(13,8)] : 24.1
+       content[(ix,iy)=(13,9)] : 24
+       content[(ix,iy)=(13,10)] : 21.5
+       content[(ix,iy)=(13,11)] : 18.9
+       content[(ix,iy)=(13,12)] : 20.1
+       content[(ix,iy)=(13,13)] : 17.5
+       content[(ix,iy)=(13,14)] : 15.2
+       content[(ix,iy)=(13,15)] : 11.7
+       content[(ix,iy)=(13,16)] : 11.3
+       content[(ix,iy)=(13,17)] : 7
+       content[(ix,iy)=(13,18)] : 4.9
+       content[(ix,iy)=(13,19)] : 1.6
+       content[(ix,iy)=(14,0)] : 5.1
+       content[(ix,iy)=(14,1)] : 14
+       content[(ix,iy)=(14,2)] : 15.4
+       content[(ix,iy)=(14,3)] : 18.5
+       content[(ix,iy)=(14,4)] : 19.8
+       content[(ix,iy)=(14,5)] : 18.7
+       content[(ix,iy)=(14,6)] : 20.4
+       content[(ix,iy)=(14,7)] : 17.9
+       content[(ix,iy)=(14,8)] : 19.5
+       content[(ix,iy)=(14,9)] : 19.6
+       content[(ix,iy)=(14,10)] : 16
+       content[(ix,iy)=(14,11)] : 15.6
+       content[(ix,iy)=(14,12)] : 16
+       content[(ix,iy)=(14,13)] : 15.4
+       content[(ix,iy)=(14,14)] : 12.5
+       content[(ix,iy)=(14,15)] : 10.6
+       content[(ix,iy)=(14,16)] : 9.8
+       content[(ix,iy)=(14,17)] : 7.8
+       content[(ix,iy)=(14,18)] : 4.5
+       content[(ix,iy)=(14,19)] : 1.4
+       content[(ix,iy)=(15,0)] : 4.4
+       content[(ix,iy)=(15,1)] : 7.8
+       content[(ix,iy)=(15,2)] : 12.5
+       content[(ix,iy)=(15,3)] : 14.2
+       content[(ix,iy)=(15,4)] : 15.6
+       content[(ix,iy)=(15,5)] : 18.7
+       content[(ix,iy)=(15,6)] : 15.2
+       content[(ix,iy)=(15,7)] : 18.4
+       content[(ix,iy)=(15,8)] : 18.8
+       content[(ix,iy)=(15,9)] : 16.9
+       content[(ix,iy)=(15,10)] : 16.1
+       content[(ix,iy)=(15,11)] : 15.2
+       content[(ix,iy)=(15,12)] : 15.3
+       content[(ix,iy)=(15,13)] : 11.2
+       content[(ix,iy)=(15,14)] : 13.9
+       content[(ix,iy)=(15,15)] : 8.6
+       content[(ix,iy)=(15,16)] : 7.5
+       content[(ix,iy)=(15,17)] : 4.9
+       content[(ix,iy)=(15,18)] : 4.2
+       content[(ix,iy)=(15,19)] : 1.2
+       content[(ix,iy)=(16,0)] : 4.2
+       content[(ix,iy)=(16,1)] : 7.3
+       content[(ix,iy)=(16,2)] : 9
+       content[(ix,iy)=(16,3)] : 10.7
+       content[(ix,iy)=(16,4)] : 11.5
+       content[(ix,iy)=(16,5)] : 14
+       content[(ix,iy)=(16,6)] : 12.7
+       content[(ix,iy)=(16,7)] : 13.9
+       content[(ix,iy)=(16,8)] : 12.2
+       content[(ix,iy)=(16,9)] : 11.9
+       content[(ix,iy)=(16,10)] : 12.2
+       content[(ix,iy)=(16,11)] : 12.3
+       content[(ix,iy)=(16,12)] : 7.5
+       content[(ix,iy)=(16,13)] : 9.7
+       content[(ix,iy)=(16,14)] : 9.1
+       content[(ix,iy)=(16,15)] : 7.2
+       content[(ix,iy)=(16,16)] : 6.4
+       content[(ix,iy)=(16,17)] : 4.5
+       content[(ix,iy)=(16,18)] : 3.2
+       content[(ix,iy)=(16,19)] : 1.1
+       content[(ix,iy)=(17,0)] : 2.6
+       content[(ix,iy)=(17,1)] : 5.1
+       content[(ix,iy)=(17,2)] : 7.9
+       content[(ix,iy)=(17,3)] : 8.7
+       content[(ix,iy)=(17,4)] : 10
+       content[(ix,iy)=(17,5)] : 11
+       content[(ix,iy)=(17,6)] : 10.5
+       content[(ix,iy)=(17,7)] : 10.1
+       content[(ix,iy)=(17,8)] : 9.9
+       content[(ix,iy)=(17,9)] : 10.8
+       content[(ix,iy)=(17,10)] : 9.5
+       content[(ix,iy)=(17,11)] : 7.7
+       content[(ix,iy)=(17,12)] : 5.5
+       content[(ix,iy)=(17,13)] : 6.2
+       content[(ix,iy)=(17,14)] : 5.4
+       content[(ix,iy)=(17,15)] : 4.7
+       content[(ix,iy)=(17,16)] : 4.6
+       content[(ix,iy)=(17,17)] : 2.9
+       content[(ix,iy)=(17,18)] : 1.8
+       content[(ix,iy)=(17,19)] : 0.9
+       content[(ix,iy)=(18,0)] : 2
+       content[(ix,iy)=(18,1)] : 2.3
+       content[(ix,iy)=(18,2)] : 5
+       content[(ix,iy)=(18,3)] : 6.1
+       content[(ix,iy)=(18,4)] : 6.5
+       content[(ix,iy)=(18,5)] : 7.6
+       content[(ix,iy)=(18,6)] : 5.7
+       content[(ix,iy)=(18,7)] : 6.9
+       content[(ix,iy)=(18,8)] : 7.8
+       content[(ix,iy)=(18,9)] : 7
+       content[(ix,iy)=(18,10)] : 7.3
+       content[(ix,iy)=(18,11)] : 5.3
+       content[(ix,iy)=(18,12)] : 6.5
+       content[(ix,iy)=(18,13)] : 3.7
+       content[(ix,iy)=(18,14)] : 3
+       content[(ix,iy)=(18,15)] : 3.4
+       content[(ix,iy)=(18,16)] : 2.4
+       content[(ix,iy)=(18,17)] : 2.2
+       content[(ix,iy)=(18,18)] : 1.3
+       content[(ix,iy)=(18,19)] : 1.1
+       content[(ix,iy)=(19,0)] : 0.6
+       content[(ix,iy)=(19,1)] : 2.2
+       content[(ix,iy)=(19,2)] : 1.6
+       content[(ix,iy)=(19,3)] : 2.4
+       content[(ix,iy)=(19,4)] : 2.1
+       content[(ix,iy)=(19,5)] : 2
+       content[(ix,iy)=(19,6)] : 2.9
+       content[(ix,iy)=(19,7)] : 2.3
+       content[(ix,iy)=(19,8)] : 2.8
+       content[(ix,iy)=(19,9)] : 2.2
+       content[(ix,iy)=(19,10)] : 2.1
+       content[(ix,iy)=(19,11)] : 1.8
+       content[(ix,iy)=(19,12)] : 2.1
+       content[(ix,iy)=(19,13)] : 1.5
+       content[(ix,iy)=(19,14)] : 1.3
+       content[(ix,iy)=(19,15)] : 1.4
+       content[(ix,iy)=(19,16)] : 1.3
+       content[(ix,iy)=(19,17)] : 0.7
+       content[(ix,iy)=(19,18)] : 0.3
+       content[(ix,iy)=(19,19)] : 0.2
+
+
+  => Now dumping histogram 2/5: hist2d_5 [hist2d_5]
+
+     Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
+       title      : hist2d_5
+       xLabel     : <none>
+       yLabel     : <none>
+       comment    : <none>
+       integral   : 0
+       meanx      : <n/a>
+       rmsy       : <n/a>
+       meanx      : <n/a>
+       rmsy       : <n/a>
+       covxy      : <n/a>
+       corxy      : <n/a>
+       minfilledx : <n/a>
+       maxfilledx : <n/a>
+       minfilledy : <n/a>
+       maxfilledy : <n/a>
+       underflowx : 0
+       overflowx  : 0
+       underflowy : 0
+       overflowy  : 0
+       content[(ix,iy)=(0,0)] : 0
+       content[(ix,iy)=(0,1)] : 0
+       content[(ix,iy)=(0,2)] : 0
+       content[(ix,iy)=(0,3)] : 0
+       content[(ix,iy)=(0,4)] : 0
+       content[(ix,iy)=(0,5)] : 0
+       content[(ix,iy)=(0,6)] : 0
+       content[(ix,iy)=(0,7)] : 0
+       content[(ix,iy)=(0,8)] : 0
+       content[(ix,iy)=(0,9)] : 0
+       content[(ix,iy)=(0,10)] : 0
+       content[(ix,iy)=(0,11)] : 0
+       content[(ix,iy)=(0,12)] : 0
+       content[(ix,iy)=(0,13)] : 0
+       content[(ix,iy)=(0,14)] : 0
+       content[(ix,iy)=(0,15)] : 0
+       content[(ix,iy)=(0,16)] : 0
+       content[(ix,iy)=(0,17)] : 0
+       content[(ix,iy)=(0,18)] : 0
+       content[(ix,iy)=(0,19)] : 0
+       content[(ix,iy)=(1,0)] : 0
+       content[(ix,iy)=(1,1)] : 0
+       content[(ix,iy)=(1,2)] : 0
+       content[(ix,iy)=(1,3)] : 0
+       content[(ix,iy)=(1,4)] : 0
+       content[(ix,iy)=(1,5)] : 0
+       content[(ix,iy)=(1,6)] : 0
+       content[(ix,iy)=(1,7)] : 0
+       content[(ix,iy)=(1,8)] : 0
+       content[(ix,iy)=(1,9)] : 0
+       content[(ix,iy)=(1,10)] : 0
+       content[(ix,iy)=(1,11)] : 0
+       content[(ix,iy)=(1,12)] : 0
+       content[(ix,iy)=(1,13)] : 0
+       content[(ix,iy)=(1,14)] : 0
+       content[(ix,iy)=(1,15)] : 0
+       content[(ix,iy)=(1,16)] : 0
+       content[(ix,iy)=(1,17)] : 0
+       content[(ix,iy)=(1,18)] : 0
+       content[(ix,iy)=(1,19)] : 0
+       content[(ix,iy)=(2,0)] : 0
+       content[(ix,iy)=(2,1)] : 0
+       content[(ix,iy)=(2,2)] : 0
+       content[(ix,iy)=(2,3)] : 0
+       content[(ix,iy)=(2,4)] : 0
+       content[(ix,iy)=(2,5)] : 0
+       content[(ix,iy)=(2,6)] : 0
+       content[(ix,iy)=(2,7)] : 0
+       content[(ix,iy)=(2,8)] : 0
+       content[(ix,iy)=(2,9)] : 0
+       content[(ix,iy)=(2,10)] : 0
+       content[(ix,iy)=(2,11)] : 0
+       content[(ix,iy)=(2,12)] : 0
+       content[(ix,iy)=(2,13)] : 0
+       content[(ix,iy)=(2,14)] : 0
+       content[(ix,iy)=(2,15)] : 0
+       content[(ix,iy)=(2,16)] : 0
+       content[(ix,iy)=(2,17)] : 0
+       content[(ix,iy)=(2,18)] : 0
+       content[(ix,iy)=(2,19)] : 0
+       content[(ix,iy)=(3,0)] : 0
+       content[(ix,iy)=(3,1)] : 0
+       content[(ix,iy)=(3,2)] : 0
+       content[(ix,iy)=(3,3)] : 0
+       content[(ix,iy)=(3,4)] : 0
+       content[(ix,iy)=(3,5)] : 0
+       content[(ix,iy)=(3,6)] : 0
+       content[(ix,iy)=(3,7)] : 0
+       content[(ix,iy)=(3,8)] : 0
+       content[(ix,iy)=(3,9)] : 0
+       content[(ix,iy)=(3,10)] : 0
+       content[(ix,iy)=(3,11)] : 0
+       content[(ix,iy)=(3,12)] : 0
+       content[(ix,iy)=(3,13)] : 0
+       content[(ix,iy)=(3,14)] : 0
+       content[(ix,iy)=(3,15)] : 0
+       content[(ix,iy)=(3,16)] : 0
+       content[(ix,iy)=(3,17)] : 0
+       content[(ix,iy)=(3,18)] : 0
+       content[(ix,iy)=(3,19)] : 0
+       content[(ix,iy)=(4,0)] : 0
+       content[(ix,iy)=(4,1)] : 0
+       content[(ix,iy)=(4,2)] : 0
+       content[(ix,iy)=(4,3)] : 0
+       content[(ix,iy)=(4,4)] : 0
+       content[(ix,iy)=(4,5)] : 0
+       content[(ix,iy)=(4,6)] : 0
+       content[(ix,iy)=(4,7)] : 0
+       content[(ix,iy)=(4,8)] : 0
+       content[(ix,iy)=(4,9)] : 0
+       content[(ix,iy)=(4,10)] : 0
+       content[(ix,iy)=(4,11)] : 0
+       content[(ix,iy)=(4,12)] : 0
+       content[(ix,iy)=(4,13)] : 0
+       content[(ix,iy)=(4,14)] : 0
+       content[(ix,iy)=(4,15)] : 0
+       content[(ix,iy)=(4,16)] : 0
+       content[(ix,iy)=(4,17)] : 0
+       content[(ix,iy)=(4,18)] : 0
+       content[(ix,iy)=(4,19)] : 0
+       content[(ix,iy)=(5,0)] : 0
+       content[(ix,iy)=(5,1)] : 0
+       content[(ix,iy)=(5,2)] : 0
+       content[(ix,iy)=(5,3)] : 0
+       content[(ix,iy)=(5,4)] : 0
+       content[(ix,iy)=(5,5)] : 0
+       content[(ix,iy)=(5,6)] : 0
+       content[(ix,iy)=(5,7)] : 0
+       content[(ix,iy)=(5,8)] : 0
+       content[(ix,iy)=(5,9)] : 0
+       content[(ix,iy)=(5,10)] : 0
+       content[(ix,iy)=(5,11)] : 0
+       content[(ix,iy)=(5,12)] : 0
+       content[(ix,iy)=(5,13)] : 0
+       content[(ix,iy)=(5,14)] : 0
+       content[(ix,iy)=(5,15)] : 0
+       content[(ix,iy)=(5,16)] : 0
+       content[(ix,iy)=(5,17)] : 0
+       content[(ix,iy)=(5,18)] : 0
+       content[(ix,iy)=(5,19)] : 0
+       content[(ix,iy)=(6,0)] : 0
+       content[(ix,iy)=(6,1)] : 0
+       content[(ix,iy)=(6,2)] : 0
+       content[(ix,iy)=(6,3)] : 0
+       content[(ix,iy)=(6,4)] : 0
+       content[(ix,iy)=(6,5)] : 0
+       content[(ix,iy)=(6,6)] : 0
+       content[(ix,iy)=(6,7)] : 0
+       content[(ix,iy)=(6,8)] : 0
+       content[(ix,iy)=(6,9)] : 0
+       content[(ix,iy)=(6,10)] : 0
+       content[(ix,iy)=(6,11)] : 0
+       content[(ix,iy)=(6,12)] : 0
+       content[(ix,iy)=(6,13)] : 0
+       content[(ix,iy)=(6,14)] : 0
+       content[(ix,iy)=(6,15)] : 0
+       content[(ix,iy)=(6,16)] : 0
+       content[(ix,iy)=(6,17)] : 0
+       content[(ix,iy)=(6,18)] : 0
+       content[(ix,iy)=(6,19)] : 0
+       content[(ix,iy)=(7,0)] : 0
+       content[(ix,iy)=(7,1)] : 0
+       content[(ix,iy)=(7,2)] : 0
+       content[(ix,iy)=(7,3)] : 0
+       content[(ix,iy)=(7,4)] : 0
+       content[(ix,iy)=(7,5)] : 0
+       content[(ix,iy)=(7,6)] : 0
+       content[(ix,iy)=(7,7)] : 0
+       content[(ix,iy)=(7,8)] : 0
+       content[(ix,iy)=(7,9)] : 0
+       content[(ix,iy)=(7,10)] : 0
+       content[(ix,iy)=(7,11)] : 0
+       content[(ix,iy)=(7,12)] : 0
+       content[(ix,iy)=(7,13)] : 0
+       content[(ix,iy)=(7,14)] : 0
+       content[(ix,iy)=(7,15)] : 0
+       content[(ix,iy)=(7,16)] : 0
+       content[(ix,iy)=(7,17)] : 0
+       content[(ix,iy)=(7,18)] : 0
+       content[(ix,iy)=(7,19)] : 0
+       content[(ix,iy)=(8,0)] : 0
+       content[(ix,iy)=(8,1)] : 0
+       content[(ix,iy)=(8,2)] : 0
+       content[(ix,iy)=(8,3)] : 0
+       content[(ix,iy)=(8,4)] : 0
+       content[(ix,iy)=(8,5)] : 0
+       content[(ix,iy)=(8,6)] : 0
+       content[(ix,iy)=(8,7)] : 0
+       content[(ix,iy)=(8,8)] : 0
+       content[(ix,iy)=(8,9)] : 0
+       content[(ix,iy)=(8,10)] : 0
+       content[(ix,iy)=(8,11)] : 0
+       content[(ix,iy)=(8,12)] : 0
+       content[(ix,iy)=(8,13)] : 0
+       content[(ix,iy)=(8,14)] : 0
+       content[(ix,iy)=(8,15)] : 0
+       content[(ix,iy)=(8,16)] : 0
+       content[(ix,iy)=(8,17)] : 0
+       content[(ix,iy)=(8,18)] : 0
+       content[(ix,iy)=(8,19)] : 0
+       content[(ix,iy)=(9,0)] : 0
+       content[(ix,iy)=(9,1)] : 0
+       content[(ix,iy)=(9,2)] : 0
+       content[(ix,iy)=(9,3)] : 0
+       content[(ix,iy)=(9,4)] : 0
+       content[(ix,iy)=(9,5)] : 0
+       content[(ix,iy)=(9,6)] : 0
+       content[(ix,iy)=(9,7)] : 0
+       content[(ix,iy)=(9,8)] : 0
+       content[(ix,iy)=(9,9)] : 0
+       content[(ix,iy)=(9,10)] : 0
+       content[(ix,iy)=(9,11)] : 0
+       content[(ix,iy)=(9,12)] : 0
+       content[(ix,iy)=(9,13)] : 0
+       content[(ix,iy)=(9,14)] : 0
+       content[(ix,iy)=(9,15)] : 0
+       content[(ix,iy)=(9,16)] : 0
+       content[(ix,iy)=(9,17)] : 0
+       content[(ix,iy)=(9,18)] : 0
+       content[(ix,iy)=(9,19)] : 0
+       content[(ix,iy)=(10,0)] : 0
+       content[(ix,iy)=(10,1)] : 0
+       content[(ix,iy)=(10,2)] : 0
+       content[(ix,iy)=(10,3)] : 0
+       content[(ix,iy)=(10,4)] : 0
+       content[(ix,iy)=(10,5)] : 0
+       content[(ix,iy)=(10,6)] : 0
+       content[(ix,iy)=(10,7)] : 0
+       content[(ix,iy)=(10,8)] : 0
+       content[(ix,iy)=(10,9)] : 0
+       content[(ix,iy)=(10,10)] : 0
+       content[(ix,iy)=(10,11)] : 0
+       content[(ix,iy)=(10,12)] : 0
+       content[(ix,iy)=(10,13)] : 0
+       content[(ix,iy)=(10,14)] : 0
+       content[(ix,iy)=(10,15)] : 0
+       content[(ix,iy)=(10,16)] : 0
+       content[(ix,iy)=(10,17)] : 0
+       content[(ix,iy)=(10,18)] : 0
+       content[(ix,iy)=(10,19)] : 0
+       content[(ix,iy)=(11,0)] : 0
+       content[(ix,iy)=(11,1)] : 0
+       content[(ix,iy)=(11,2)] : 0
+       content[(ix,iy)=(11,3)] : 0
+       content[(ix,iy)=(11,4)] : 0
+       content[(ix,iy)=(11,5)] : 0
+       content[(ix,iy)=(11,6)] : 0
+       content[(ix,iy)=(11,7)] : 0
+       content[(ix,iy)=(11,8)] : 0
+       content[(ix,iy)=(11,9)] : 0
+       content[(ix,iy)=(11,10)] : 0
+       content[(ix,iy)=(11,11)] : 0
+       content[(ix,iy)=(11,12)] : 0
+       content[(ix,iy)=(11,13)] : 0
+       content[(ix,iy)=(11,14)] : 0
+       content[(ix,iy)=(11,15)] : 0
+       content[(ix,iy)=(11,16)] : 0
+       content[(ix,iy)=(11,17)] : 0
+       content[(ix,iy)=(11,18)] : 0
+       content[(ix,iy)=(11,19)] : 0
+       content[(ix,iy)=(12,0)] : 0
+       content[(ix,iy)=(12,1)] : 0
+       content[(ix,iy)=(12,2)] : 0
+       content[(ix,iy)=(12,3)] : 0
+       content[(ix,iy)=(12,4)] : 0
+       content[(ix,iy)=(12,5)] : 0
+       content[(ix,iy)=(12,6)] : 0
+       content[(ix,iy)=(12,7)] : 0
+       content[(ix,iy)=(12,8)] : 0
+       content[(ix,iy)=(12,9)] : 0
+       content[(ix,iy)=(12,10)] : 0
+       content[(ix,iy)=(12,11)] : 0
+       content[(ix,iy)=(12,12)] : 0
+       content[(ix,iy)=(12,13)] : 0
+       content[(ix,iy)=(12,14)] : 0
+       content[(ix,iy)=(12,15)] : 0
+       content[(ix,iy)=(12,16)] : 0
+       content[(ix,iy)=(12,17)] : 0
+       content[(ix,iy)=(12,18)] : 0
+       content[(ix,iy)=(12,19)] : 0
+       content[(ix,iy)=(13,0)] : 0
+       content[(ix,iy)=(13,1)] : 0
+       content[(ix,iy)=(13,2)] : 0
+       content[(ix,iy)=(13,3)] : 0
+       content[(ix,iy)=(13,4)] : 0
+       content[(ix,iy)=(13,5)] : 0
+       content[(ix,iy)=(13,6)] : 0
+       content[(ix,iy)=(13,7)] : 0
+       content[(ix,iy)=(13,8)] : 0
+       content[(ix,iy)=(13,9)] : 0
+       content[(ix,iy)=(13,10)] : 0
+       content[(ix,iy)=(13,11)] : 0
+       content[(ix,iy)=(13,12)] : 0
+       content[(ix,iy)=(13,13)] : 0
+       content[(ix,iy)=(13,14)] : 0
+       content[(ix,iy)=(13,15)] : 0
+       content[(ix,iy)=(13,16)] : 0
+       content[(ix,iy)=(13,17)] : 0
+       content[(ix,iy)=(13,18)] : 0
+       content[(ix,iy)=(13,19)] : 0
+       content[(ix,iy)=(14,0)] : 0
+       content[(ix,iy)=(14,1)] : 0
+       content[(ix,iy)=(14,2)] : 0
+       content[(ix,iy)=(14,3)] : 0
+       content[(ix,iy)=(14,4)] : 0
+       content[(ix,iy)=(14,5)] : 0
+       content[(ix,iy)=(14,6)] : 0
+       content[(ix,iy)=(14,7)] : 0
+       content[(ix,iy)=(14,8)] : 0
+       content[(ix,iy)=(14,9)] : 0
+       content[(ix,iy)=(14,10)] : 0
+       content[(ix,iy)=(14,11)] : 0
+       content[(ix,iy)=(14,12)] : 0
+       content[(ix,iy)=(14,13)] : 0
+       content[(ix,iy)=(14,14)] : 0
+       content[(ix,iy)=(14,15)] : 0
+       content[(ix,iy)=(14,16)] : 0
+       content[(ix,iy)=(14,17)] : 0
+       content[(ix,iy)=(14,18)] : 0
+       content[(ix,iy)=(14,19)] : 0
+       content[(ix,iy)=(15,0)] : 0
+       content[(ix,iy)=(15,1)] : 0
+       content[(ix,iy)=(15,2)] : 0
+       content[(ix,iy)=(15,3)] : 0
+       content[(ix,iy)=(15,4)] : 0
+       content[(ix,iy)=(15,5)] : 0
+       content[(ix,iy)=(15,6)] : 0
+       content[(ix,iy)=(15,7)] : 0
+       content[(ix,iy)=(15,8)] : 0
+       content[(ix,iy)=(15,9)] : 0
+       content[(ix,iy)=(15,10)] : 0
+       content[(ix,iy)=(15,11)] : 0
+       content[(ix,iy)=(15,12)] : 0
+       content[(ix,iy)=(15,13)] : 0
+       content[(ix,iy)=(15,14)] : 0
+       content[(ix,iy)=(15,15)] : 0
+       content[(ix,iy)=(15,16)] : 0
+       content[(ix,iy)=(15,17)] : 0
+       content[(ix,iy)=(15,18)] : 0
+       content[(ix,iy)=(15,19)] : 0
+       content[(ix,iy)=(16,0)] : 0
+       content[(ix,iy)=(16,1)] : 0
+       content[(ix,iy)=(16,2)] : 0
+       content[(ix,iy)=(16,3)] : 0
+       content[(ix,iy)=(16,4)] : 0
+       content[(ix,iy)=(16,5)] : 0
+       content[(ix,iy)=(16,6)] : 0
+       content[(ix,iy)=(16,7)] : 0
+       content[(ix,iy)=(16,8)] : 0
+       content[(ix,iy)=(16,9)] : 0
+       content[(ix,iy)=(16,10)] : 0
+       content[(ix,iy)=(16,11)] : 0
+       content[(ix,iy)=(16,12)] : 0
+       content[(ix,iy)=(16,13)] : 0
+       content[(ix,iy)=(16,14)] : 0
+       content[(ix,iy)=(16,15)] : 0
+       content[(ix,iy)=(16,16)] : 0
+       content[(ix,iy)=(16,17)] : 0
+       content[(ix,iy)=(16,18)] : 0
+       content[(ix,iy)=(16,19)] : 0
+       content[(ix,iy)=(17,0)] : 0
+       content[(ix,iy)=(17,1)] : 0
+       content[(ix,iy)=(17,2)] : 0
+       content[(ix,iy)=(17,3)] : 0
+       content[(ix,iy)=(17,4)] : 0
+       content[(ix,iy)=(17,5)] : 0
+       content[(ix,iy)=(17,6)] : 0
+       content[(ix,iy)=(17,7)] : 0
+       content[(ix,iy)=(17,8)] : 0
+       content[(ix,iy)=(17,9)] : 0
+       content[(ix,iy)=(17,10)] : 0
+       content[(ix,iy)=(17,11)] : 0
+       content[(ix,iy)=(17,12)] : 0
+       content[(ix,iy)=(17,13)] : 0
+       content[(ix,iy)=(17,14)] : 0
+       content[(ix,iy)=(17,15)] : 0
+       content[(ix,iy)=(17,16)] : 0
+       content[(ix,iy)=(17,17)] : 0
+       content[(ix,iy)=(17,18)] : 0
+       content[(ix,iy)=(17,19)] : 0
+       content[(ix,iy)=(18,0)] : 0
+       content[(ix,iy)=(18,1)] : 0
+       content[(ix,iy)=(18,2)] : 0
+       content[(ix,iy)=(18,3)] : 0
+       content[(ix,iy)=(18,4)] : 0
+       content[(ix,iy)=(18,5)] : 0
+       content[(ix,iy)=(18,6)] : 0
+       content[(ix,iy)=(18,7)] : 0
+       content[(ix,iy)=(18,8)] : 0
+       content[(ix,iy)=(18,9)] : 0
+       content[(ix,iy)=(18,10)] : 0
+       content[(ix,iy)=(18,11)] : 0
+       content[(ix,iy)=(18,12)] : 0
+       content[(ix,iy)=(18,13)] : 0
+       content[(ix,iy)=(18,14)] : 0
+       content[(ix,iy)=(18,15)] : 0
+       content[(ix,iy)=(18,16)] : 0
+       content[(ix,iy)=(18,17)] : 0
+       content[(ix,iy)=(18,18)] : 0
+       content[(ix,iy)=(18,19)] : 0
+       content[(ix,iy)=(19,0)] : 0
+       content[(ix,iy)=(19,1)] : 0
+       content[(ix,iy)=(19,2)] : 0
+       content[(ix,iy)=(19,3)] : 0
+       content[(ix,iy)=(19,4)] : 0
+       content[(ix,iy)=(19,5)] : 0
+       content[(ix,iy)=(19,6)] : 0
+       content[(ix,iy)=(19,7)] : 0
+       content[(ix,iy)=(19,8)] : 0
+       content[(ix,iy)=(19,9)] : 0
+       content[(ix,iy)=(19,10)] : 0
+       content[(ix,iy)=(19,11)] : 0
+       content[(ix,iy)=(19,12)] : 0
+       content[(ix,iy)=(19,13)] : 0
+       content[(ix,iy)=(19,14)] : 0
+       content[(ix,iy)=(19,15)] : 0
+       content[(ix,iy)=(19,16)] : 0
+       content[(ix,iy)=(19,17)] : 0
+       content[(ix,iy)=(19,18)] : 0
+       content[(ix,iy)=(19,19)] : 0
+
+
+  => Now dumping histogram 3/5: hist_29 [hist_29]
+
+     Hist1D(nbins=20,xmin=0,xmax=1):
+       title     : hist_29
+       xLabel    : <none>
+       yLabel    : <none>
+       comment    : <none>
+       integral  : 6000
+       mean      : 0.444332
+       rms       : 0.230894
+       median    : 0.425 +- 0.025
+       minfilled : -0.00444128
+       maxfilled : 1.00312
+       underflow : 2
+       overflow  : 0.4
+       content[ibin=0] : 122.2 +- 3.49571
+       content[ibin=1] : 227.6 +- 4.77074
+       content[ibin=2] : 310.6 +- 5.57315
+       content[ibin=3] : 359.5 +- 5.99583
+       content[ibin=4] : 400.8 +- 6.33088
+       content[ibin=5] : 417.2 +- 6.4591
+       content[ibin=6] : 445.7 +- 6.67608
+       content[ibin=7] : 441.5 +- 6.64455
+       content[ibin=8] : 429.2 +- 6.55134
+       content[ibin=9] : 424.4 +- 6.5146
+       content[ibin=10] : 400.6 +- 6.3293
+       content[ibin=11] : 381 +- 6.17252
+       content[ibin=12] : 351.9 +- 5.93212
+       content[ibin=13] : 310.4 +- 5.57136
+       content[ibin=14] : 272 +- 5.21536
+       content[ibin=15] : 248.1 +- 4.98096
+       content[ibin=16] : 189.4 +- 4.35201
+       content[ibin=17] : 144.2 +- 3.79737
+       content[ibin=18] : 89.2 +- 2.98664
+       content[ibin=19] : 32.1 +- 1.79165
+
+
+  => Now dumping histogram 4/5: hist_5 [hist_5]
+
+     Hist1D(nbins=20,xmin=0,xmax=1):
+       title     : hist_5
+       xLabel    : <none>
+       yLabel    : <none>
+       comment    : <none>
+       integral  : 0
+       mean      : <n/a>
+       rms       : <n/a>
+       median    : <n/a>
+       minfilled : <n/a>
+       maxfilled : <n/a>
+       underflow : 0
+       overflow  : 0
+       content[ibin=0] : 0 +- 0
+       content[ibin=1] : 0 +- 0
+       content[ibin=2] : 0 +- 0
+       content[ibin=3] : 0 +- 0
+       content[ibin=4] : 0 +- 0
+       content[ibin=5] : 0 +- 0
+       content[ibin=6] : 0 +- 0
+       content[ibin=7] : 0 +- 0
+       content[ibin=8] : 0 +- 0
+       content[ibin=9] : 0 +- 0
+       content[ibin=10] : 0 +- 0
+       content[ibin=11] : 0 +- 0
+       content[ibin=12] : 0 +- 0
+       content[ibin=13] : 0 +- 0
+       content[ibin=14] : 0 +- 0
+       content[ibin=15] : 0 +- 0
+       content[ibin=16] : 0 +- 0
+       content[ibin=17] : 0 +- 0
+       content[ibin=18] : 0 +- 0
+       content[ibin=19] : 0 +- 0
+
+
+  => Now dumping histogram 5/5: histcounts_4 [histcounts_4]
+
+     HistCounts():
+       title     : histcounts_4
+       xLabel    : <none>
+       yLabel    : <none>
+       comment    : <none>
+       integral  : 53185.2
+       counter[counter x] = 26570.5 +- 122.27
+       counter[counter y] = 26614.7 +- 122.523
+         => Some explanation about counter y goes here.
+
+Test browse script + reading of reference file in version 0x01
+Selected 5 out of 5 histograms:
+
+  => Now dumping histogram 1/5: hist2d_4 [hist2d_4]
+
+     Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
+       title      : hist2d_4
+       xLabel     : <none>
+       yLabel     : <none>
+       comment    : <none>
+       integral   : 6000
+       meanx      : 0.442841
+       rmsx       : 0.230346
+       meany      : 0.443578
+       rmsy       : 0.231165
+       covxy      : -0.000111644
+       corxy      : -0.00209669
+       minfilledx : -0.00329086
+       maxfilledx : 1.0023
+       minfilledy : -0.00393709
+       maxfilledy : 1.00429
+       underflowx : 1.7
+       overflowx  : 0.2
+       underflowy : 1.6
+       overflowy  : 0.4
+       content[(ix,iy)=(0,0)] : 2.8
+       content[(ix,iy)=(0,1)] : 3.8
+       content[(ix,iy)=(0,2)] : 6.3
+       content[(ix,iy)=(0,3)] : 6.4
+       content[(ix,iy)=(0,4)] : 8.7
+       content[(ix,iy)=(0,5)] : 8.2
+       content[(ix,iy)=(0,6)] : 7.8
+       content[(ix,iy)=(0,7)] : 8.2
+       content[(ix,iy)=(0,8)] : 8.2
+       content[(ix,iy)=(0,9)] : 7.4
+       content[(ix,iy)=(0,10)] : 7.6
+       content[(ix,iy)=(0,11)] : 7.3
+       content[(ix,iy)=(0,12)] : 8.5
+       content[(ix,iy)=(0,13)] : 5.9
+       content[(ix,iy)=(0,14)] : 4.9
+       content[(ix,iy)=(0,15)] : 4.2
+       content[(ix,iy)=(0,16)] : 3.6
+       content[(ix,iy)=(0,17)] : 2.2
+       content[(ix,iy)=(0,18)] : 2.1
+       content[(ix,iy)=(0,19)] : 0.4
+       content[(ix,iy)=(1,0)] : 3.8
+       content[(ix,iy)=(1,1)] : 9.1
+       content[(ix,iy)=(1,2)] : 13.5
+       content[(ix,iy)=(1,3)] : 14.1
+       content[(ix,iy)=(1,4)] : 14.4
+       content[(ix,iy)=(1,5)] : 15.6
+       content[(ix,iy)=(1,6)] : 16.1
+       content[(ix,iy)=(1,7)] : 16.9
+       content[(ix,iy)=(1,8)] : 16.4
+       content[(ix,iy)=(1,9)] : 18.1
+       content[(ix,iy)=(1,10)] : 16.9
+       content[(ix,iy)=(1,11)] : 16.3
+       content[(ix,iy)=(1,12)] : 13.2
+       content[(ix,iy)=(1,13)] : 13.9
+       content[(ix,iy)=(1,14)] : 11
+       content[(ix,iy)=(1,15)] : 7.9
+       content[(ix,iy)=(1,16)] : 5.8
+       content[(ix,iy)=(1,17)] : 4.8
+       content[(ix,iy)=(1,18)] : 3.3
+       content[(ix,iy)=(1,19)] : 1.3
+       content[(ix,iy)=(2,0)] : 6.5
+       content[(ix,iy)=(2,1)] : 12.7
+       content[(ix,iy)=(2,2)] : 16.4
+       content[(ix,iy)=(2,3)] : 19.5
+       content[(ix,iy)=(2,4)] : 18.9
+       content[(ix,iy)=(2,5)] : 22
+       content[(ix,iy)=(2,6)] : 25.8
+       content[(ix,iy)=(2,7)] : 24.7
+       content[(ix,iy)=(2,8)] : 23.7
+       content[(ix,iy)=(2,9)] : 20.5
+       content[(ix,iy)=(2,10)] : 21.6
+       content[(ix,iy)=(2,11)] : 21.7
+       content[(ix,iy)=(2,12)] : 17.7
+       content[(ix,iy)=(2,13)] : 15.6
+       content[(ix,iy)=(2,14)] : 13.9
+       content[(ix,iy)=(2,15)] : 11.5
+       content[(ix,iy)=(2,16)] : 10.7
+       content[(ix,iy)=(2,17)] : 6.9
+       content[(ix,iy)=(2,18)] : 4.3
+       content[(ix,iy)=(2,19)] : 1.5
+       content[(ix,iy)=(3,0)] : 9.6
+       content[(ix,iy)=(3,1)] : 15.1
+       content[(ix,iy)=(3,2)] : 16.7
+       content[(ix,iy)=(3,3)] : 22.9
+       content[(ix,iy)=(3,4)] : 24.6
+       content[(ix,iy)=(3,5)] : 27
+       content[(ix,iy)=(3,6)] : 27.6
+       content[(ix,iy)=(3,7)] : 25.5
+       content[(ix,iy)=(3,8)] : 25.1
+       content[(ix,iy)=(3,9)] : 25
+       content[(ix,iy)=(3,10)] : 23.9
+       content[(ix,iy)=(3,11)] : 22.2
+       content[(ix,iy)=(3,12)] : 22.6
+       content[(ix,iy)=(3,13)] : 21.3
+       content[(ix,iy)=(3,14)] : 15.8
+       content[(ix,iy)=(3,15)] : 14.9
+       content[(ix,iy)=(3,16)] : 12.8
+       content[(ix,iy)=(3,17)] : 9.5
+       content[(ix,iy)=(3,18)] : 5.8
+       content[(ix,iy)=(3,19)] : 2
+       content[(ix,iy)=(4,0)] : 7.6
+       content[(ix,iy)=(4,1)] : 15.9
+       content[(ix,iy)=(4,2)] : 21.9
+       content[(ix,iy)=(4,3)] : 23.1
+       content[(ix,iy)=(4,4)] : 23.8
+       content[(ix,iy)=(4,5)] : 27.8
+       content[(ix,iy)=(4,6)] : 30
+       content[(ix,iy)=(4,7)] : 27.9
+       content[(ix,iy)=(4,8)] : 26
+       content[(ix,iy)=(4,9)] : 28.7
+       content[(ix,iy)=(4,10)] : 26.5
+       content[(ix,iy)=(4,11)] : 25.8
+       content[(ix,iy)=(4,12)] : 22.7
+       content[(ix,iy)=(4,13)] : 20.3
+       content[(ix,iy)=(4,14)] : 18.2
+       content[(ix,iy)=(4,15)] : 14.9
+       content[(ix,iy)=(4,16)] : 14.6
+       content[(ix,iy)=(4,17)] : 9.3
+       content[(ix,iy)=(4,18)] : 6
+       content[(ix,iy)=(4,19)] : 1.7
+       content[(ix,iy)=(5,0)] : 8
+       content[(ix,iy)=(5,1)] : 16.8
+       content[(ix,iy)=(5,2)] : 21.3
+       content[(ix,iy)=(5,3)] : 28.1
+       content[(ix,iy)=(5,4)] : 30.1
+       content[(ix,iy)=(5,5)] : 29.8
+       content[(ix,iy)=(5,6)] : 30
+       content[(ix,iy)=(5,7)] : 31.5
+       content[(ix,iy)=(5,8)] : 29
+       content[(ix,iy)=(5,9)] : 30.1
+       content[(ix,iy)=(5,10)] : 29.5
+       content[(ix,iy)=(5,11)] : 26.4
+       content[(ix,iy)=(5,12)] : 27.9
+       content[(ix,iy)=(5,13)] : 21.3
+       content[(ix,iy)=(5,14)] : 21.8
+       content[(ix,iy)=(5,15)] : 18
+       content[(ix,iy)=(5,16)] : 12.9
+       content[(ix,iy)=(5,17)] : 9.5
+       content[(ix,iy)=(5,18)] : 6.9
+       content[(ix,iy)=(5,19)] : 3.5
+       content[(ix,iy)=(6,0)] : 7.7
+       content[(ix,iy)=(6,1)] : 17
+       content[(ix,iy)=(6,2)] : 24.5
+       content[(ix,iy)=(6,3)] : 25.6
+       content[(ix,iy)=(6,4)] : 31.6
+       content[(ix,iy)=(6,5)] : 32.5
+       content[(ix,iy)=(6,6)] : 29.3
+       content[(ix,iy)=(6,7)] : 32.6
+       content[(ix,iy)=(6,8)] : 31.5
+       content[(ix,iy)=(6,9)] : 30.8
+       content[(ix,iy)=(6,10)] : 32.6
+       content[(ix,iy)=(6,11)] : 26.6
+       content[(ix,iy)=(6,12)] : 25.6
+       content[(ix,iy)=(6,13)] : 23
+       content[(ix,iy)=(6,14)] : 20.3
+       content[(ix,iy)=(6,15)] : 16.9
+       content[(ix,iy)=(6,16)] : 14.3
+       content[(ix,iy)=(6,17)] : 10.1
+       content[(ix,iy)=(6,18)] : 5.5
+       content[(ix,iy)=(6,19)] : 2.3
+       content[(ix,iy)=(7,0)] : 8
+       content[(ix,iy)=(7,1)] : 16.6
+       content[(ix,iy)=(7,2)] : 24.4
+       content[(ix,iy)=(7,3)] : 28.8
+       content[(ix,iy)=(7,4)] : 25.8
+       content[(ix,iy)=(7,5)] : 30.1
+       content[(ix,iy)=(7,6)] : 36.4
+       content[(ix,iy)=(7,7)] : 32.6
+       content[(ix,iy)=(7,8)] : 33.1
+       content[(ix,iy)=(7,9)] : 32.5
+       content[(ix,iy)=(7,10)] : 29.9
+       content[(ix,iy)=(7,11)] : 25.8
+       content[(ix,iy)=(7,12)] : 24.8
+       content[(ix,iy)=(7,13)] : 24.3
+       content[(ix,iy)=(7,14)] : 22.3
+       content[(ix,iy)=(7,15)] : 16.8
+       content[(ix,iy)=(7,16)] : 12.7
+       content[(ix,iy)=(7,17)] : 9.7
+       content[(ix,iy)=(7,18)] : 8.1
+       content[(ix,iy)=(7,19)] : 2.5
+       content[(ix,iy)=(8,0)] : 8.9
+       content[(ix,iy)=(8,1)] : 20.3
+       content[(ix,iy)=(8,2)] : 23.8
+       content[(ix,iy)=(8,3)] : 24.4
+       content[(ix,iy)=(8,4)] : 29.1
+       content[(ix,iy)=(8,5)] : 27.7
+       content[(ix,iy)=(8,6)] : 32.5
+       content[(ix,iy)=(8,7)] : 34
+       content[(ix,iy)=(8,8)] : 31.5
+       content[(ix,iy)=(8,9)] : 26.9
+       content[(ix,iy)=(8,10)] : 28.5
+       content[(ix,iy)=(8,11)] : 28.6
+       content[(ix,iy)=(8,12)] : 25.9
+       content[(ix,iy)=(8,13)] : 23.8
+       content[(ix,iy)=(8,14)] : 19.6
+       content[(ix,iy)=(8,15)] : 18.7
+       content[(ix,iy)=(8,16)] : 12.4
+       content[(ix,iy)=(8,17)] : 10.7
+       content[(ix,iy)=(8,18)] : 5.8
+       content[(ix,iy)=(8,19)] : 3.2
+       content[(ix,iy)=(9,0)] : 7.2
+       content[(ix,iy)=(9,1)] : 15
+       content[(ix,iy)=(9,2)] : 20.9
+       content[(ix,iy)=(9,3)] : 25.4
+       content[(ix,iy)=(9,4)] : 25
+       content[(ix,iy)=(9,5)] : 28
+       content[(ix,iy)=(9,6)] : 30.8
+       content[(ix,iy)=(9,7)] : 30.6
+       content[(ix,iy)=(9,8)] : 30.9
+       content[(ix,iy)=(9,9)] : 30.2
+       content[(ix,iy)=(9,10)] : 28.6
+       content[(ix,iy)=(9,11)] : 24.2
+       content[(ix,iy)=(9,12)] : 27
+       content[(ix,iy)=(9,13)] : 21.3
+       content[(ix,iy)=(9,14)] : 19.6
+       content[(ix,iy)=(9,15)] : 16.7
+       content[(ix,iy)=(9,16)] : 13.8
+       content[(ix,iy)=(9,17)] : 11.4
+       content[(ix,iy)=(9,18)] : 7
+       content[(ix,iy)=(9,19)] : 3
+       content[(ix,iy)=(10,0)] : 8.6
+       content[(ix,iy)=(10,1)] : 17.9
+       content[(ix,iy)=(10,2)] : 21.4
+       content[(ix,iy)=(10,3)] : 23
+       content[(ix,iy)=(10,4)] : 24.5
+       content[(ix,iy)=(10,5)] : 28
+       content[(ix,iy)=(10,6)] : 28.9
+       content[(ix,iy)=(10,7)] : 30.1
+       content[(ix,iy)=(10,8)] : 29.4
+       content[(ix,iy)=(10,9)] : 30.3
+       content[(ix,iy)=(10,10)] : 26.8
+       content[(ix,iy)=(10,11)] : 23.3
+       content[(ix,iy)=(10,12)] : 20.7
+       content[(ix,iy)=(10,13)] : 21.7
+       content[(ix,iy)=(10,14)] : 18.6
+       content[(ix,iy)=(10,15)] : 15.9
+       content[(ix,iy)=(10,16)] : 13.2
+       content[(ix,iy)=(10,17)] : 7.7
+       content[(ix,iy)=(10,18)] : 5.8
+       content[(ix,iy)=(10,19)] : 3.3
+       content[(ix,iy)=(11,0)] : 8.5
+       content[(ix,iy)=(11,1)] : 14.9
+       content[(ix,iy)=(11,2)] : 17.1
+       content[(ix,iy)=(11,3)] : 23.3
+       content[(ix,iy)=(11,4)] : 25.9
+       content[(ix,iy)=(11,5)] : 28.2
+       content[(ix,iy)=(11,6)] : 27
+       content[(ix,iy)=(11,7)] : 27.7
+       content[(ix,iy)=(11,8)] : 30.9
+       content[(ix,iy)=(11,9)] : 25
+       content[(ix,iy)=(11,10)] : 22.5
+       content[(ix,iy)=(11,11)] : 23.8
+       content[(ix,iy)=(11,12)] : 23.9
+       content[(ix,iy)=(11,13)] : 18.8
+       content[(ix,iy)=(11,14)] : 17
+       content[(ix,iy)=(11,15)] : 15.2
+       content[(ix,iy)=(11,16)] : 10.9
+       content[(ix,iy)=(11,17)] : 10.8
+       content[(ix,iy)=(11,18)] : 5.3
+       content[(ix,iy)=(11,19)] : 1.4
+       content[(ix,iy)=(12,0)] : 8.7
+       content[(ix,iy)=(12,1)] : 13.8
+       content[(ix,iy)=(12,2)] : 15.2
+       content[(ix,iy)=(12,3)] : 20.4
+       content[(ix,iy)=(12,4)] : 23.4
+       content[(ix,iy)=(12,5)] : 23.6
+       content[(ix,iy)=(12,6)] : 24
+       content[(ix,iy)=(12,7)] : 26.3
+       content[(ix,iy)=(12,8)] : 24.9
+       content[(ix,iy)=(12,9)] : 22.2
+       content[(ix,iy)=(12,10)] : 23.1
+       content[(ix,iy)=(12,11)] : 21.7
+       content[(ix,iy)=(12,12)] : 19.4
+       content[(ix,iy)=(12,13)] : 19
+       content[(ix,iy)=(12,14)] : 15.6
+       content[(ix,iy)=(12,15)] : 12.8
+       content[(ix,iy)=(12,16)] : 11
+       content[(ix,iy)=(12,17)] : 7.8
+       content[(ix,iy)=(12,18)] : 4.3
+       content[(ix,iy)=(12,19)] : 2.2
+       content[(ix,iy)=(13,0)] : 6
+       content[(ix,iy)=(13,1)] : 11.9
+       content[(ix,iy)=(13,2)] : 17.8
+       content[(ix,iy)=(13,3)] : 16.6
+       content[(ix,iy)=(13,4)] : 20
+       content[(ix,iy)=(13,5)] : 20.9
+       content[(ix,iy)=(13,6)] : 24.1
+       content[(ix,iy)=(13,7)] : 25.6
+       content[(ix,iy)=(13,8)] : 24.1
+       content[(ix,iy)=(13,9)] : 24
+       content[(ix,iy)=(13,10)] : 21.5
+       content[(ix,iy)=(13,11)] : 18.9
+       content[(ix,iy)=(13,12)] : 20.1
+       content[(ix,iy)=(13,13)] : 17.5
+       content[(ix,iy)=(13,14)] : 15.2
+       content[(ix,iy)=(13,15)] : 11.7
+       content[(ix,iy)=(13,16)] : 11.3
+       content[(ix,iy)=(13,17)] : 7
+       content[(ix,iy)=(13,18)] : 4.9
+       content[(ix,iy)=(13,19)] : 1.6
+       content[(ix,iy)=(14,0)] : 5.1
+       content[(ix,iy)=(14,1)] : 14
+       content[(ix,iy)=(14,2)] : 15.4
+       content[(ix,iy)=(14,3)] : 18.5
+       content[(ix,iy)=(14,4)] : 19.8
+       content[(ix,iy)=(14,5)] : 18.7
+       content[(ix,iy)=(14,6)] : 20.4
+       content[(ix,iy)=(14,7)] : 17.9
+       content[(ix,iy)=(14,8)] : 19.5
+       content[(ix,iy)=(14,9)] : 19.6
+       content[(ix,iy)=(14,10)] : 16
+       content[(ix,iy)=(14,11)] : 15.6
+       content[(ix,iy)=(14,12)] : 16
+       content[(ix,iy)=(14,13)] : 15.4
+       content[(ix,iy)=(14,14)] : 12.5
+       content[(ix,iy)=(14,15)] : 10.6
+       content[(ix,iy)=(14,16)] : 9.8
+       content[(ix,iy)=(14,17)] : 7.8
+       content[(ix,iy)=(14,18)] : 4.5
+       content[(ix,iy)=(14,19)] : 1.4
+       content[(ix,iy)=(15,0)] : 4.4
+       content[(ix,iy)=(15,1)] : 7.8
+       content[(ix,iy)=(15,2)] : 12.5
+       content[(ix,iy)=(15,3)] : 14.2
+       content[(ix,iy)=(15,4)] : 15.6
+       content[(ix,iy)=(15,5)] : 18.7
+       content[(ix,iy)=(15,6)] : 15.2
+       content[(ix,iy)=(15,7)] : 18.4
+       content[(ix,iy)=(15,8)] : 18.8
+       content[(ix,iy)=(15,9)] : 16.9
+       content[(ix,iy)=(15,10)] : 16.1
+       content[(ix,iy)=(15,11)] : 15.2
+       content[(ix,iy)=(15,12)] : 15.3
+       content[(ix,iy)=(15,13)] : 11.2
+       content[(ix,iy)=(15,14)] : 13.9
+       content[(ix,iy)=(15,15)] : 8.6
+       content[(ix,iy)=(15,16)] : 7.5
+       content[(ix,iy)=(15,17)] : 4.9
+       content[(ix,iy)=(15,18)] : 4.2
+       content[(ix,iy)=(15,19)] : 1.2
+       content[(ix,iy)=(16,0)] : 4.2
+       content[(ix,iy)=(16,1)] : 7.3
+       content[(ix,iy)=(16,2)] : 9
+       content[(ix,iy)=(16,3)] : 10.7
+       content[(ix,iy)=(16,4)] : 11.5
+       content[(ix,iy)=(16,5)] : 14
+       content[(ix,iy)=(16,6)] : 12.7
+       content[(ix,iy)=(16,7)] : 13.9
+       content[(ix,iy)=(16,8)] : 12.2
+       content[(ix,iy)=(16,9)] : 11.9
+       content[(ix,iy)=(16,10)] : 12.2
+       content[(ix,iy)=(16,11)] : 12.3
+       content[(ix,iy)=(16,12)] : 7.5
+       content[(ix,iy)=(16,13)] : 9.7
+       content[(ix,iy)=(16,14)] : 9.1
+       content[(ix,iy)=(16,15)] : 7.2
+       content[(ix,iy)=(16,16)] : 6.4
+       content[(ix,iy)=(16,17)] : 4.5
+       content[(ix,iy)=(16,18)] : 3.2
+       content[(ix,iy)=(16,19)] : 1.1
+       content[(ix,iy)=(17,0)] : 2.6
+       content[(ix,iy)=(17,1)] : 5.1
+       content[(ix,iy)=(17,2)] : 7.9
+       content[(ix,iy)=(17,3)] : 8.7
+       content[(ix,iy)=(17,4)] : 10
+       content[(ix,iy)=(17,5)] : 11
+       content[(ix,iy)=(17,6)] : 10.5
+       content[(ix,iy)=(17,7)] : 10.1
+       content[(ix,iy)=(17,8)] : 9.9
+       content[(ix,iy)=(17,9)] : 10.8
+       content[(ix,iy)=(17,10)] : 9.5
+       content[(ix,iy)=(17,11)] : 7.7
+       content[(ix,iy)=(17,12)] : 5.5
+       content[(ix,iy)=(17,13)] : 6.2
+       content[(ix,iy)=(17,14)] : 5.4
+       content[(ix,iy)=(17,15)] : 4.7
+       content[(ix,iy)=(17,16)] : 4.6
+       content[(ix,iy)=(17,17)] : 2.9
+       content[(ix,iy)=(17,18)] : 1.8
+       content[(ix,iy)=(17,19)] : 0.9
+       content[(ix,iy)=(18,0)] : 2
+       content[(ix,iy)=(18,1)] : 2.3
+       content[(ix,iy)=(18,2)] : 5
+       content[(ix,iy)=(18,3)] : 6.1
+       content[(ix,iy)=(18,4)] : 6.5
+       content[(ix,iy)=(18,5)] : 7.6
+       content[(ix,iy)=(18,6)] : 5.7
+       content[(ix,iy)=(18,7)] : 6.9
+       content[(ix,iy)=(18,8)] : 7.8
+       content[(ix,iy)=(18,9)] : 7
+       content[(ix,iy)=(18,10)] : 7.3
+       content[(ix,iy)=(18,11)] : 5.3
+       content[(ix,iy)=(18,12)] : 6.5
+       content[(ix,iy)=(18,13)] : 3.7
+       content[(ix,iy)=(18,14)] : 3
+       content[(ix,iy)=(18,15)] : 3.4
+       content[(ix,iy)=(18,16)] : 2.4
+       content[(ix,iy)=(18,17)] : 2.2
+       content[(ix,iy)=(18,18)] : 1.3
+       content[(ix,iy)=(18,19)] : 1.1
+       content[(ix,iy)=(19,0)] : 0.6
+       content[(ix,iy)=(19,1)] : 2.2
+       content[(ix,iy)=(19,2)] : 1.6
+       content[(ix,iy)=(19,3)] : 2.4
+       content[(ix,iy)=(19,4)] : 2.1
+       content[(ix,iy)=(19,5)] : 2
+       content[(ix,iy)=(19,6)] : 2.9
+       content[(ix,iy)=(19,7)] : 2.3
+       content[(ix,iy)=(19,8)] : 2.8
+       content[(ix,iy)=(19,9)] : 2.2
+       content[(ix,iy)=(19,10)] : 2.1
+       content[(ix,iy)=(19,11)] : 1.8
+       content[(ix,iy)=(19,12)] : 2.1
+       content[(ix,iy)=(19,13)] : 1.5
+       content[(ix,iy)=(19,14)] : 1.3
+       content[(ix,iy)=(19,15)] : 1.4
+       content[(ix,iy)=(19,16)] : 1.3
+       content[(ix,iy)=(19,17)] : 0.7
+       content[(ix,iy)=(19,18)] : 0.3
+       content[(ix,iy)=(19,19)] : 0.2
+
+
+  => Now dumping histogram 2/5: hist2d_5 [hist2d_5]
+
+     Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
+       title      : hist2d_5
+       xLabel     : <none>
+       yLabel     : <none>
+       comment    : <none>
+       integral   : 0
+       meanx      : <n/a>
+       rmsy       : <n/a>
+       meanx      : <n/a>
+       rmsy       : <n/a>
+       covxy      : <n/a>
+       corxy      : <n/a>
+       minfilledx : <n/a>
+       maxfilledx : <n/a>
+       minfilledy : <n/a>
+       maxfilledy : <n/a>
+       underflowx : 0
+       overflowx  : 0
+       underflowy : 0
+       overflowy  : 0
+       content[(ix,iy)=(0,0)] : 0
+       content[(ix,iy)=(0,1)] : 0
+       content[(ix,iy)=(0,2)] : 0
+       content[(ix,iy)=(0,3)] : 0
+       content[(ix,iy)=(0,4)] : 0
+       content[(ix,iy)=(0,5)] : 0
+       content[(ix,iy)=(0,6)] : 0
+       content[(ix,iy)=(0,7)] : 0
+       content[(ix,iy)=(0,8)] : 0
+       content[(ix,iy)=(0,9)] : 0
+       content[(ix,iy)=(0,10)] : 0
+       content[(ix,iy)=(0,11)] : 0
+       content[(ix,iy)=(0,12)] : 0
+       content[(ix,iy)=(0,13)] : 0
+       content[(ix,iy)=(0,14)] : 0
+       content[(ix,iy)=(0,15)] : 0
+       content[(ix,iy)=(0,16)] : 0
+       content[(ix,iy)=(0,17)] : 0
+       content[(ix,iy)=(0,18)] : 0
+       content[(ix,iy)=(0,19)] : 0
+       content[(ix,iy)=(1,0)] : 0
+       content[(ix,iy)=(1,1)] : 0
+       content[(ix,iy)=(1,2)] : 0
+       content[(ix,iy)=(1,3)] : 0
+       content[(ix,iy)=(1,4)] : 0
+       content[(ix,iy)=(1,5)] : 0
+       content[(ix,iy)=(1,6)] : 0
+       content[(ix,iy)=(1,7)] : 0
+       content[(ix,iy)=(1,8)] : 0
+       content[(ix,iy)=(1,9)] : 0
+       content[(ix,iy)=(1,10)] : 0
+       content[(ix,iy)=(1,11)] : 0
+       content[(ix,iy)=(1,12)] : 0
+       content[(ix,iy)=(1,13)] : 0
+       content[(ix,iy)=(1,14)] : 0
+       content[(ix,iy)=(1,15)] : 0
+       content[(ix,iy)=(1,16)] : 0
+       content[(ix,iy)=(1,17)] : 0
+       content[(ix,iy)=(1,18)] : 0
+       content[(ix,iy)=(1,19)] : 0
+       content[(ix,iy)=(2,0)] : 0
+       content[(ix,iy)=(2,1)] : 0
+       content[(ix,iy)=(2,2)] : 0
+       content[(ix,iy)=(2,3)] : 0
+       content[(ix,iy)=(2,4)] : 0
+       content[(ix,iy)=(2,5)] : 0
+       content[(ix,iy)=(2,6)] : 0
+       content[(ix,iy)=(2,7)] : 0
+       content[(ix,iy)=(2,8)] : 0
+       content[(ix,iy)=(2,9)] : 0
+       content[(ix,iy)=(2,10)] : 0
+       content[(ix,iy)=(2,11)] : 0
+       content[(ix,iy)=(2,12)] : 0
+       content[(ix,iy)=(2,13)] : 0
+       content[(ix,iy)=(2,14)] : 0
+       content[(ix,iy)=(2,15)] : 0
+       content[(ix,iy)=(2,16)] : 0
+       content[(ix,iy)=(2,17)] : 0
+       content[(ix,iy)=(2,18)] : 0
+       content[(ix,iy)=(2,19)] : 0
+       content[(ix,iy)=(3,0)] : 0
+       content[(ix,iy)=(3,1)] : 0
+       content[(ix,iy)=(3,2)] : 0
+       content[(ix,iy)=(3,3)] : 0
+       content[(ix,iy)=(3,4)] : 0
+       content[(ix,iy)=(3,5)] : 0
+       content[(ix,iy)=(3,6)] : 0
+       content[(ix,iy)=(3,7)] : 0
+       content[(ix,iy)=(3,8)] : 0
+       content[(ix,iy)=(3,9)] : 0
+       content[(ix,iy)=(3,10)] : 0
+       content[(ix,iy)=(3,11)] : 0
+       content[(ix,iy)=(3,12)] : 0
+       content[(ix,iy)=(3,13)] : 0
+       content[(ix,iy)=(3,14)] : 0
+       content[(ix,iy)=(3,15)] : 0
+       content[(ix,iy)=(3,16)] : 0
+       content[(ix,iy)=(3,17)] : 0
+       content[(ix,iy)=(3,18)] : 0
+       content[(ix,iy)=(3,19)] : 0
+       content[(ix,iy)=(4,0)] : 0
+       content[(ix,iy)=(4,1)] : 0
+       content[(ix,iy)=(4,2)] : 0
+       content[(ix,iy)=(4,3)] : 0
+       content[(ix,iy)=(4,4)] : 0
+       content[(ix,iy)=(4,5)] : 0
+       content[(ix,iy)=(4,6)] : 0
+       content[(ix,iy)=(4,7)] : 0
+       content[(ix,iy)=(4,8)] : 0
+       content[(ix,iy)=(4,9)] : 0
+       content[(ix,iy)=(4,10)] : 0
+       content[(ix,iy)=(4,11)] : 0
+       content[(ix,iy)=(4,12)] : 0
+       content[(ix,iy)=(4,13)] : 0
+       content[(ix,iy)=(4,14)] : 0
+       content[(ix,iy)=(4,15)] : 0
+       content[(ix,iy)=(4,16)] : 0
+       content[(ix,iy)=(4,17)] : 0
+       content[(ix,iy)=(4,18)] : 0
+       content[(ix,iy)=(4,19)] : 0
+       content[(ix,iy)=(5,0)] : 0
+       content[(ix,iy)=(5,1)] : 0
+       content[(ix,iy)=(5,2)] : 0
+       content[(ix,iy)=(5,3)] : 0
+       content[(ix,iy)=(5,4)] : 0
+       content[(ix,iy)=(5,5)] : 0
+       content[(ix,iy)=(5,6)] : 0
+       content[(ix,iy)=(5,7)] : 0
+       content[(ix,iy)=(5,8)] : 0
+       content[(ix,iy)=(5,9)] : 0
+       content[(ix,iy)=(5,10)] : 0
+       content[(ix,iy)=(5,11)] : 0
+       content[(ix,iy)=(5,12)] : 0
+       content[(ix,iy)=(5,13)] : 0
+       content[(ix,iy)=(5,14)] : 0
+       content[(ix,iy)=(5,15)] : 0
+       content[(ix,iy)=(5,16)] : 0
+       content[(ix,iy)=(5,17)] : 0
+       content[(ix,iy)=(5,18)] : 0
+       content[(ix,iy)=(5,19)] : 0
+       content[(ix,iy)=(6,0)] : 0
+       content[(ix,iy)=(6,1)] : 0
+       content[(ix,iy)=(6,2)] : 0
+       content[(ix,iy)=(6,3)] : 0
+       content[(ix,iy)=(6,4)] : 0
+       content[(ix,iy)=(6,5)] : 0
+       content[(ix,iy)=(6,6)] : 0
+       content[(ix,iy)=(6,7)] : 0
+       content[(ix,iy)=(6,8)] : 0
+       content[(ix,iy)=(6,9)] : 0
+       content[(ix,iy)=(6,10)] : 0
+       content[(ix,iy)=(6,11)] : 0
+       content[(ix,iy)=(6,12)] : 0
+       content[(ix,iy)=(6,13)] : 0
+       content[(ix,iy)=(6,14)] : 0
+       content[(ix,iy)=(6,15)] : 0
+       content[(ix,iy)=(6,16)] : 0
+       content[(ix,iy)=(6,17)] : 0
+       content[(ix,iy)=(6,18)] : 0
+       content[(ix,iy)=(6,19)] : 0
+       content[(ix,iy)=(7,0)] : 0
+       content[(ix,iy)=(7,1)] : 0
+       content[(ix,iy)=(7,2)] : 0
+       content[(ix,iy)=(7,3)] : 0
+       content[(ix,iy)=(7,4)] : 0
+       content[(ix,iy)=(7,5)] : 0
+       content[(ix,iy)=(7,6)] : 0
+       content[(ix,iy)=(7,7)] : 0
+       content[(ix,iy)=(7,8)] : 0
+       content[(ix,iy)=(7,9)] : 0
+       content[(ix,iy)=(7,10)] : 0
+       content[(ix,iy)=(7,11)] : 0
+       content[(ix,iy)=(7,12)] : 0
+       content[(ix,iy)=(7,13)] : 0
+       content[(ix,iy)=(7,14)] : 0
+       content[(ix,iy)=(7,15)] : 0
+       content[(ix,iy)=(7,16)] : 0
+       content[(ix,iy)=(7,17)] : 0
+       content[(ix,iy)=(7,18)] : 0
+       content[(ix,iy)=(7,19)] : 0
+       content[(ix,iy)=(8,0)] : 0
+       content[(ix,iy)=(8,1)] : 0
+       content[(ix,iy)=(8,2)] : 0
+       content[(ix,iy)=(8,3)] : 0
+       content[(ix,iy)=(8,4)] : 0
+       content[(ix,iy)=(8,5)] : 0
+       content[(ix,iy)=(8,6)] : 0
+       content[(ix,iy)=(8,7)] : 0
+       content[(ix,iy)=(8,8)] : 0
+       content[(ix,iy)=(8,9)] : 0
+       content[(ix,iy)=(8,10)] : 0
+       content[(ix,iy)=(8,11)] : 0
+       content[(ix,iy)=(8,12)] : 0
+       content[(ix,iy)=(8,13)] : 0
+       content[(ix,iy)=(8,14)] : 0
+       content[(ix,iy)=(8,15)] : 0
+       content[(ix,iy)=(8,16)] : 0
+       content[(ix,iy)=(8,17)] : 0
+       content[(ix,iy)=(8,18)] : 0
+       content[(ix,iy)=(8,19)] : 0
+       content[(ix,iy)=(9,0)] : 0
+       content[(ix,iy)=(9,1)] : 0
+       content[(ix,iy)=(9,2)] : 0
+       content[(ix,iy)=(9,3)] : 0
+       content[(ix,iy)=(9,4)] : 0
+       content[(ix,iy)=(9,5)] : 0
+       content[(ix,iy)=(9,6)] : 0
+       content[(ix,iy)=(9,7)] : 0
+       content[(ix,iy)=(9,8)] : 0
+       content[(ix,iy)=(9,9)] : 0
+       content[(ix,iy)=(9,10)] : 0
+       content[(ix,iy)=(9,11)] : 0
+       content[(ix,iy)=(9,12)] : 0
+       content[(ix,iy)=(9,13)] : 0
+       content[(ix,iy)=(9,14)] : 0
+       content[(ix,iy)=(9,15)] : 0
+       content[(ix,iy)=(9,16)] : 0
+       content[(ix,iy)=(9,17)] : 0
+       content[(ix,iy)=(9,18)] : 0
+       content[(ix,iy)=(9,19)] : 0
+       content[(ix,iy)=(10,0)] : 0
+       content[(ix,iy)=(10,1)] : 0
+       content[(ix,iy)=(10,2)] : 0
+       content[(ix,iy)=(10,3)] : 0
+       content[(ix,iy)=(10,4)] : 0
+       content[(ix,iy)=(10,5)] : 0
+       content[(ix,iy)=(10,6)] : 0
+       content[(ix,iy)=(10,7)] : 0
+       content[(ix,iy)=(10,8)] : 0
+       content[(ix,iy)=(10,9)] : 0
+       content[(ix,iy)=(10,10)] : 0
+       content[(ix,iy)=(10,11)] : 0
+       content[(ix,iy)=(10,12)] : 0
+       content[(ix,iy)=(10,13)] : 0
+       content[(ix,iy)=(10,14)] : 0
+       content[(ix,iy)=(10,15)] : 0
+       content[(ix,iy)=(10,16)] : 0
+       content[(ix,iy)=(10,17)] : 0
+       content[(ix,iy)=(10,18)] : 0
+       content[(ix,iy)=(10,19)] : 0
+       content[(ix,iy)=(11,0)] : 0
+       content[(ix,iy)=(11,1)] : 0
+       content[(ix,iy)=(11,2)] : 0
+       content[(ix,iy)=(11,3)] : 0
+       content[(ix,iy)=(11,4)] : 0
+       content[(ix,iy)=(11,5)] : 0
+       content[(ix,iy)=(11,6)] : 0
+       content[(ix,iy)=(11,7)] : 0
+       content[(ix,iy)=(11,8)] : 0
+       content[(ix,iy)=(11,9)] : 0
+       content[(ix,iy)=(11,10)] : 0
+       content[(ix,iy)=(11,11)] : 0
+       content[(ix,iy)=(11,12)] : 0
+       content[(ix,iy)=(11,13)] : 0
+       content[(ix,iy)=(11,14)] : 0
+       content[(ix,iy)=(11,15)] : 0
+       content[(ix,iy)=(11,16)] : 0
+       content[(ix,iy)=(11,17)] : 0
+       content[(ix,iy)=(11,18)] : 0
+       content[(ix,iy)=(11,19)] : 0
+       content[(ix,iy)=(12,0)] : 0
+       content[(ix,iy)=(12,1)] : 0
+       content[(ix,iy)=(12,2)] : 0
+       content[(ix,iy)=(12,3)] : 0
+       content[(ix,iy)=(12,4)] : 0
+       content[(ix,iy)=(12,5)] : 0
+       content[(ix,iy)=(12,6)] : 0
+       content[(ix,iy)=(12,7)] : 0
+       content[(ix,iy)=(12,8)] : 0
+       content[(ix,iy)=(12,9)] : 0
+       content[(ix,iy)=(12,10)] : 0
+       content[(ix,iy)=(12,11)] : 0
+       content[(ix,iy)=(12,12)] : 0
+       content[(ix,iy)=(12,13)] : 0
+       content[(ix,iy)=(12,14)] : 0
+       content[(ix,iy)=(12,15)] : 0
+       content[(ix,iy)=(12,16)] : 0
+       content[(ix,iy)=(12,17)] : 0
+       content[(ix,iy)=(12,18)] : 0
+       content[(ix,iy)=(12,19)] : 0
+       content[(ix,iy)=(13,0)] : 0
+       content[(ix,iy)=(13,1)] : 0
+       content[(ix,iy)=(13,2)] : 0
+       content[(ix,iy)=(13,3)] : 0
+       content[(ix,iy)=(13,4)] : 0
+       content[(ix,iy)=(13,5)] : 0
+       content[(ix,iy)=(13,6)] : 0
+       content[(ix,iy)=(13,7)] : 0
+       content[(ix,iy)=(13,8)] : 0
+       content[(ix,iy)=(13,9)] : 0
+       content[(ix,iy)=(13,10)] : 0
+       content[(ix,iy)=(13,11)] : 0
+       content[(ix,iy)=(13,12)] : 0
+       content[(ix,iy)=(13,13)] : 0
+       content[(ix,iy)=(13,14)] : 0
+       content[(ix,iy)=(13,15)] : 0
+       content[(ix,iy)=(13,16)] : 0
+       content[(ix,iy)=(13,17)] : 0
+       content[(ix,iy)=(13,18)] : 0
+       content[(ix,iy)=(13,19)] : 0
+       content[(ix,iy)=(14,0)] : 0
+       content[(ix,iy)=(14,1)] : 0
+       content[(ix,iy)=(14,2)] : 0
+       content[(ix,iy)=(14,3)] : 0
+       content[(ix,iy)=(14,4)] : 0
+       content[(ix,iy)=(14,5)] : 0
+       content[(ix,iy)=(14,6)] : 0
+       content[(ix,iy)=(14,7)] : 0
+       content[(ix,iy)=(14,8)] : 0
+       content[(ix,iy)=(14,9)] : 0
+       content[(ix,iy)=(14,10)] : 0
+       content[(ix,iy)=(14,11)] : 0
+       content[(ix,iy)=(14,12)] : 0
+       content[(ix,iy)=(14,13)] : 0
+       content[(ix,iy)=(14,14)] : 0
+       content[(ix,iy)=(14,15)] : 0
+       content[(ix,iy)=(14,16)] : 0
+       content[(ix,iy)=(14,17)] : 0
+       content[(ix,iy)=(14,18)] : 0
+       content[(ix,iy)=(14,19)] : 0
+       content[(ix,iy)=(15,0)] : 0
+       content[(ix,iy)=(15,1)] : 0
+       content[(ix,iy)=(15,2)] : 0
+       content[(ix,iy)=(15,3)] : 0
+       content[(ix,iy)=(15,4)] : 0
+       content[(ix,iy)=(15,5)] : 0
+       content[(ix,iy)=(15,6)] : 0
+       content[(ix,iy)=(15,7)] : 0
+       content[(ix,iy)=(15,8)] : 0
+       content[(ix,iy)=(15,9)] : 0
+       content[(ix,iy)=(15,10)] : 0
+       content[(ix,iy)=(15,11)] : 0
+       content[(ix,iy)=(15,12)] : 0
+       content[(ix,iy)=(15,13)] : 0
+       content[(ix,iy)=(15,14)] : 0
+       content[(ix,iy)=(15,15)] : 0
+       content[(ix,iy)=(15,16)] : 0
+       content[(ix,iy)=(15,17)] : 0
+       content[(ix,iy)=(15,18)] : 0
+       content[(ix,iy)=(15,19)] : 0
+       content[(ix,iy)=(16,0)] : 0
+       content[(ix,iy)=(16,1)] : 0
+       content[(ix,iy)=(16,2)] : 0
+       content[(ix,iy)=(16,3)] : 0
+       content[(ix,iy)=(16,4)] : 0
+       content[(ix,iy)=(16,5)] : 0
+       content[(ix,iy)=(16,6)] : 0
+       content[(ix,iy)=(16,7)] : 0
+       content[(ix,iy)=(16,8)] : 0
+       content[(ix,iy)=(16,9)] : 0
+       content[(ix,iy)=(16,10)] : 0
+       content[(ix,iy)=(16,11)] : 0
+       content[(ix,iy)=(16,12)] : 0
+       content[(ix,iy)=(16,13)] : 0
+       content[(ix,iy)=(16,14)] : 0
+       content[(ix,iy)=(16,15)] : 0
+       content[(ix,iy)=(16,16)] : 0
+       content[(ix,iy)=(16,17)] : 0
+       content[(ix,iy)=(16,18)] : 0
+       content[(ix,iy)=(16,19)] : 0
+       content[(ix,iy)=(17,0)] : 0
+       content[(ix,iy)=(17,1)] : 0
+       content[(ix,iy)=(17,2)] : 0
+       content[(ix,iy)=(17,3)] : 0
+       content[(ix,iy)=(17,4)] : 0
+       content[(ix,iy)=(17,5)] : 0
+       content[(ix,iy)=(17,6)] : 0
+       content[(ix,iy)=(17,7)] : 0
+       content[(ix,iy)=(17,8)] : 0
+       content[(ix,iy)=(17,9)] : 0
+       content[(ix,iy)=(17,10)] : 0
+       content[(ix,iy)=(17,11)] : 0
+       content[(ix,iy)=(17,12)] : 0
+       content[(ix,iy)=(17,13)] : 0
+       content[(ix,iy)=(17,14)] : 0
+       content[(ix,iy)=(17,15)] : 0
+       content[(ix,iy)=(17,16)] : 0
+       content[(ix,iy)=(17,17)] : 0
+       content[(ix,iy)=(17,18)] : 0
+       content[(ix,iy)=(17,19)] : 0
+       content[(ix,iy)=(18,0)] : 0
+       content[(ix,iy)=(18,1)] : 0
+       content[(ix,iy)=(18,2)] : 0
+       content[(ix,iy)=(18,3)] : 0
+       content[(ix,iy)=(18,4)] : 0
+       content[(ix,iy)=(18,5)] : 0
+       content[(ix,iy)=(18,6)] : 0
+       content[(ix,iy)=(18,7)] : 0
+       content[(ix,iy)=(18,8)] : 0
+       content[(ix,iy)=(18,9)] : 0
+       content[(ix,iy)=(18,10)] : 0
+       content[(ix,iy)=(18,11)] : 0
+       content[(ix,iy)=(18,12)] : 0
+       content[(ix,iy)=(18,13)] : 0
+       content[(ix,iy)=(18,14)] : 0
+       content[(ix,iy)=(18,15)] : 0
+       content[(ix,iy)=(18,16)] : 0
+       content[(ix,iy)=(18,17)] : 0
+       content[(ix,iy)=(18,18)] : 0
+       content[(ix,iy)=(18,19)] : 0
+       content[(ix,iy)=(19,0)] : 0
+       content[(ix,iy)=(19,1)] : 0
+       content[(ix,iy)=(19,2)] : 0
+       content[(ix,iy)=(19,3)] : 0
+       content[(ix,iy)=(19,4)] : 0
+       content[(ix,iy)=(19,5)] : 0
+       content[(ix,iy)=(19,6)] : 0
+       content[(ix,iy)=(19,7)] : 0
+       content[(ix,iy)=(19,8)] : 0
+       content[(ix,iy)=(19,9)] : 0
+       content[(ix,iy)=(19,10)] : 0
+       content[(ix,iy)=(19,11)] : 0
+       content[(ix,iy)=(19,12)] : 0
+       content[(ix,iy)=(19,13)] : 0
+       content[(ix,iy)=(19,14)] : 0
+       content[(ix,iy)=(19,15)] : 0
+       content[(ix,iy)=(19,16)] : 0
+       content[(ix,iy)=(19,17)] : 0
+       content[(ix,iy)=(19,18)] : 0
+       content[(ix,iy)=(19,19)] : 0
+
+
+  => Now dumping histogram 3/5: hist_29 [hist_29]
+
+     Hist1D(nbins=20,xmin=0,xmax=1):
+       title     : hist_29
+       xLabel    : <none>
+       yLabel    : <none>
+       comment    : <none>
+       integral  : 6000
+       mean      : 0.444332
+       rms       : 0.230894
+       median    : 0.425 +- 0.025
+       minfilled : -0.00444128
+       maxfilled : 1.00312
+       underflow : 2
+       overflow  : 0.4
+       content[ibin=0] : 122.2 +- 3.49571
+       content[ibin=1] : 227.6 +- 4.77074
+       content[ibin=2] : 310.6 +- 5.57315
+       content[ibin=3] : 359.5 +- 5.99583
+       content[ibin=4] : 400.8 +- 6.33088
+       content[ibin=5] : 417.2 +- 6.4591
+       content[ibin=6] : 445.7 +- 6.67608
+       content[ibin=7] : 441.5 +- 6.64455
+       content[ibin=8] : 429.2 +- 6.55134
+       content[ibin=9] : 424.4 +- 6.5146
+       content[ibin=10] : 400.6 +- 6.3293
+       content[ibin=11] : 381 +- 6.17252
+       content[ibin=12] : 351.9 +- 5.93212
+       content[ibin=13] : 310.4 +- 5.57136
+       content[ibin=14] : 272 +- 5.21536
+       content[ibin=15] : 248.1 +- 4.98096
+       content[ibin=16] : 189.4 +- 4.35201
+       content[ibin=17] : 144.2 +- 3.79737
+       content[ibin=18] : 89.2 +- 2.98664
+       content[ibin=19] : 32.1 +- 1.79165
+
+
+  => Now dumping histogram 4/5: hist_5 [hist_5]
+
+     Hist1D(nbins=20,xmin=0,xmax=1):
+       title     : hist_5
+       xLabel    : <none>
+       yLabel    : <none>
+       comment    : <none>
+       integral  : 0
+       mean      : <n/a>
+       rms       : <n/a>
+       median    : <n/a>
+       minfilled : <n/a>
+       maxfilled : <n/a>
+       underflow : 0
+       overflow  : 0
+       content[ibin=0] : 0 +- 0
+       content[ibin=1] : 0 +- 0
+       content[ibin=2] : 0 +- 0
+       content[ibin=3] : 0 +- 0
+       content[ibin=4] : 0 +- 0
+       content[ibin=5] : 0 +- 0
+       content[ibin=6] : 0 +- 0
+       content[ibin=7] : 0 +- 0
+       content[ibin=8] : 0 +- 0
+       content[ibin=9] : 0 +- 0
+       content[ibin=10] : 0 +- 0
+       content[ibin=11] : 0 +- 0
+       content[ibin=12] : 0 +- 0
+       content[ibin=13] : 0 +- 0
+       content[ibin=14] : 0 +- 0
+       content[ibin=15] : 0 +- 0
+       content[ibin=16] : 0 +- 0
+       content[ibin=17] : 0 +- 0
+       content[ibin=18] : 0 +- 0
+       content[ibin=19] : 0 +- 0
+
+
+  => Now dumping histogram 5/5: histcounts_4 [histcounts_4]
+
+     HistCounts():
+       title     : histcounts_4
+       xLabel    : <none>
+       yLabel    : <none>
+       comment    : <none>
+       integral  : 53185.2
+       counter[counter x] = 26570.5 +- 122.27
+       counter[counter y] = 26614.7 +- 122.523
+         => Some explanation about counter y goes here.
+
+Test pickling/unpickling
+HistCounts():
+  title     : Some test counts
+  xLabel    : <none>
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 10.4
+  counter[Some stuff!] = 10.4 +- 10.4
+Hist1D(nbins=7,xmin=0,xmax=7):
+  title     : Some test counts
+  xLabel    : a label
+  yLabel    : <none>
+  comment    : <none>
+  integral  : 1.2
+  mean      : 3
+  rms       : 0
+  median    : 3.5 +- 0.5
+  minfilled : 3
+  maxfilled : 3
+  underflow : 0
+  overflow  : 0
+  content[ibin=0] : 0 +- 0
+  content[ibin=1] : 0 +- 0
+  content[ibin=2] : 0 +- 0
+  content[ibin=3] : 1.2 +- 1.2
+  content[ibin=4] : 0 +- 0
+  content[ibin=5] : 0 +- 0
+  content[ibin=6] : 0 +- 0
+Hist2D(nbinsx=7,xmin=0,xmax=7,nbinsy=3,ymin=-1,ymax=2):
+  title      : Some test counts
+  xLabel     : a label
+  yLabel     : <none>
+  comment    : <none>
+  integral   : 10.2
+  meanx      : 3
+  rmsx       : 0
+  meany      : -0.5
+  rmsy       : 0
+  covxy      : 0
+  corxy      : 0
+  minfilledx : 3
+  maxfilledx : 3
+  minfilledy : -0.5
+  maxfilledy : -0.5
+  underflowx : 0
+  overflowx  : 0
+  underflowy : 0
+  overflowy  : 0
+  content[(ix,iy)=(0,0)] : 0
+  content[(ix,iy)=(0,1)] : 0
+  content[(ix,iy)=(0,2)] : 0
+  content[(ix,iy)=(1,0)] : 0
+  content[(ix,iy)=(1,1)] : 0
+  content[(ix,iy)=(1,2)] : 0
+  content[(ix,iy)=(2,0)] : 0
+  content[(ix,iy)=(2,1)] : 0
+  content[(ix,iy)=(2,2)] : 0
+  content[(ix,iy)=(3,0)] : 10.2
+  content[(ix,iy)=(3,1)] : 0
+  content[(ix,iy)=(3,2)] : 0
+  content[(ix,iy)=(4,0)] : 0
+  content[(ix,iy)=(4,1)] : 0
+  content[(ix,iy)=(4,2)] : 0
+  content[(ix,iy)=(5,0)] : 0
+  content[(ix,iy)=(5,1)] : 0
+  content[(ix,iy)=(5,2)] : 0
+  content[(ix,iy)=(6,0)] : 0
+  content[(ix,iy)=(6,1)] : 0
+  content[(ix,iy)=(6,2)] : 0
+
+(not showing gui since --gui was not supplied as argument)

@@ -1,0 +1,9 @@
+package(USEPKG Utils USEEXT ZLib)
+
+#############################################################
+
+Helper class for collecting info distributed over an line segment in
+n-dimensions into a cartesian mesh. This could for instance be used to project
+energy depositions from G4Step's into a 3D grid of cells.
+
+primary author: thomas.kittelmann@ess.eu

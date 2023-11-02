@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import SimpleHists as sh
+import sys
+from SimpleHists._util import selected_keys
+
+def parse_cmd_line():
+    import argparse as AP
+    import os #, sys
+    parser = AP.ArgumentParser(description='Browse an .shist file saved from a SimpleHists::HistCollection.'
+                               +' Unless overridden by -p, -d or -i this launches an interactive browser.'
+                               +' Supply histogram indices or keys to narrow the selection to a subset of all'
+                               +' histograms.')
+    parser.add_argument('infile', metavar='infile', type=str, help='file to browse')
+    parser.add_argument('selection', metavar='selection', type=str, nargs='*',
+                        help='hist keys (wildcards allowed) or indices (ranges allowed)')
+    parser.add_argument('-i','--inspect',dest='do_inspect', action='store_true', default=False,
+                        help='inspect contents of file')
+    parser.add_argument('-p','--plot',dest='do_plot', action='store_true', default=False,
+                        help='plot selected histograms')
+    parser.add_argument('-d','--dump',dest='do_dump', action='count',
+                        help='dump selected histograms (supply twice for bin contents)')
+    parser.add_argument('-q',dest='quiet', action='store_true', default=False,
+                        help='Silence output unless dump requested')
+    dpi_default=0
+    parser.add_argument('--dpi', default=-1,type=int,
+                        help="""Change plot resolution. Set to 0 to leave matplotlib defaults alone.
+                        (default value is %i, or whatever the SIMPLEHISTS_DPI env var is set to)."""%dpi_default)
+    args=parser.parse_args()
+
+    if args.dpi>3000:
+        parser.error('Too high DPI value requested.')
+
+    if args.dpi==-1:
+        _=os.environ.get('SIMPLEHISTS_DPI',None)
+        if _:
+            try:
+                _=int(_)
+                if _<0:
+                    raise ValueError
+            except ValueError:
+                print("ERROR: SIMPLEHISTS_DPI environment variable must be set to integer >=0")
+                raise SystemExit
+            if _>3000:
+                parser.error('Too high DPI value requested via SIMPLEHISTS_DPI environment variable.')
+            args.dpi=_
+        else:
+            args.dpi=dpi_default
+
+    ##### Make sure that the .shist file does not have to be the first positional argument
+    all_pos = [args.infile]+args.selection
+    all_shist=[a for a in all_pos if a.endswith('.shist')]
+    all_sel=[a for a in all_pos if not a.endswith('.shist')]
+    assert len(all_shist)+len(all_sel)==len(all_pos)
+    if not all_shist:
+        parser.error('Please specify an .shist file')
+    elif not len(all_shist)==1:
+        parser.error('Please only specify a single .shist file')
+    args.selection=all_sel
+    args.infile=all_shist[0]
+
+    if not os.path.exists(args.infile):
+        parser.error('File not found: %s'%args.infile)
+    if args.do_plot and not args.quiet:
+        args.do_inspect=True#-p without -q implies -i
+    if args.do_inspect:
+        args.quiet=False#-i overrules quiet
+    if args.do_dump:#-i implies -i and overrules quiet
+        args.do_inspect=True
+        args.quiet=False
+    return args
+
+args=parse_cmd_line()
+
+#TODO: Any selection not picking a histogram should give an error...
+
+hc = sh.HistCollection(args.infile)
+args.selection = selected_keys(hc.keys,args.selection) if args.selection else list(enumerate(hc.keys))
+if not args.selection:
+    print('ERROR: No histograms in file!')
+    sys.exit(1)
+
+def title(h):
+    t=h.title
+    return t if t else '<no title>'
+
+#TODO: This is really "poor mans" browsing. Needs improving.
+
+if args.do_inspect or args.do_plot or args.do_dump:
+    if args.do_plot and args.dpi:
+        import matplotlib
+        matplotlib.rcParams['figure.dpi']=args.dpi
+    if not args.quiet:
+        print("Selected %i out of %i histograms:"%(len(args.selection),len(hc.keys)))
+    for i,k,h in ((i,k,hc.hist(k)) for i,k in args.selection):
+        if not args.do_dump and not args.do_plot:
+            print("  %i: %s [%s]"%(i+1,k,title(h)))
+            continue
+        if not args.quiet:
+            print("\n  => Now %s histogram %i/%i: %s [%s]\n"%(('plotting' if args.do_plot else 'dumping'),i+1,len(hc.keys),k,title(h)))
+        if args.do_dump:
+            h.dump(args.do_dump>1,'     ')
+            if not args.quiet:
+                print()
+        if args.do_plot:
+            h.plot()
+else:
+    assert not args.do_inspect
+    assert not args.do_plot
+    assert not args.do_dump
+    import SimpleHists.browser as b
+    b.interactive_browser(args.infile,args.selection,dpi=args.dpi)

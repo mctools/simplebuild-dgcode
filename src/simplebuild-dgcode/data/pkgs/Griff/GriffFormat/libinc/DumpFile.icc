@@ -1,0 +1,19 @@
+inline bool GriffFormat::dumpFileInfo(const char* filename, bool brief, bool show_uncompressed_sizes )
+{
+  return EvtFile::dumpFileInfo(GriffFormat::Format::getFormat(), filename, brief, show_uncompressed_sizes );
+}
+
+inline bool GriffFormat::dumpFileEventDBSection(const char* filename, unsigned evtIndex  )
+{
+  return EvtFile::dumpFileEventDBSection(GriffFormat::Format::getFormat(),filename,evtIndex);
+}
+
+inline bool GriffFormat::dumpFileEventBriefDataSection(const char* filename, unsigned evtIndex )
+{
+  return EvtFile::dumpFileEventBriefDataSection(GriffFormat::Format::getFormat(),filename,evtIndex);
+}
+
+inline bool GriffFormat::dumpFileEventFullDataSection(const char* filename, unsigned evtIndex )
+{
+  return EvtFile::dumpFileEventFullDataSection(GriffFormat::Format::getFormat(),filename,evtIndex);
+}

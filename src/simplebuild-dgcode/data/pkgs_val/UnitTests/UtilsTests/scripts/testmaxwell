@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+
+import sys
+import Utils.MaxwellDist as m
+from Units import units as u
+
+
+for a in [0.1,1,10]:
+  for x in [0.1,1,10]:
+    print('maxwellDist(a=%g,x=%g) = %g'%(a,x,m.maxwellDist(a,x)))
+
+for mean in [0.1,1,10]:
+  a=m.maxwellParFromMean(mean)
+  print('maxwellParFromMean(%g) = %g'%(mean,a))
+
+for mv in [0.1,1,10]:
+  a=m.maxwellParFromPeak(mv)
+  print('maxwellParFromPeak(%g) = %g'%(mv,a))
+
+n=30
+
+for a in [0.1,1,10]:
+  for rand in (i/float(n) for i in range(n+1)):
+    print('maxwellShoot(a=%g,rand=%g) = %g'%(a,rand,m.maxwellShoot(a,rand)))
+
+temp = 273.15*u.kelvin
+rand=0.5
+print('sample neutron speed      for %g K = %g m/s'%(temp/u.kelvin,m.shootThermalNeutronSpeed(temp,rand)/(u.meter/u.second)))
+print('sample neutron EKin       for %g K = %g meV'%(temp/u.kelvin,m.shootThermalNeutronEKin(temp,rand)/(u.meV)))
+print('sample neutron wavelength for %g K = %g Aangstrom'%(temp/u.kelvin,m.shootThermalNeutronWavelength(temp,rand)/(u.angstrom)))
+
+for t in [20,273.15,293.15]:
+  for e in [1,25,100]:
+    print("thermalEnergyDistPeak(%gK) = %g meV"%(t,m.thermalEnergyDistPeak(t*u.kelvin)/u.meV))
+    print("thermalEnergyDistMean(%gK) = %g meV"%(t,m.thermalEnergyDistMean(t*u.kelvin)/u.meV))
+    print("thermalEnergyDistMedian(%gK) = %g meV"%(t,m.thermalEnergyDistMedian(t*u.kelvin)/u.meV))
+    print("thermalEnergyDist(%gK,%gmeV) = %g"%(t,e,m.thermalEnergyDist(t*u.kelvin,e*u.meV)))
+    print("thermalEnergyDistCommulative(%gK,%gmeV) = %g"%(t,e,m.thermalEnergyDistCommulative(t*u.kelvin,e*u.meV)))
+
+#optionally create some root histograms
+
+assert len(sys.argv) in [1,2]
+if len(sys.argv)>1:
+  n=int(sys.argv[1])
+  assert n>=1000
+
+  a=m.maxwellParFromPeak(2)
+  mean=m.maxwellMean(a)
+  peak=m.maxwellPeak(a)
+  rms=m.maxwellRMS(a)
+
+  import ROOT
+  import math
+  title="Maxwell distribution with a=%g, mean=%g, peak=%g, rms=%g"%(a,mean,peak,rms)
+  nbins=int(5*math.sqrt(n)+10)
+  upper=20.0
+  h_rand=ROOT.TH1D("maxwell_randomgen", "%s (true random generator)"%title,nbins,-1.0,upper)
+  h_nofluct=ROOT.TH1D("maxwell_nofluctuations", "%s (no fluctuations)"%title,nbins,-1.0,upper)
+
+  r=ROOT.TRandom3()
+  for rand in (i/float(n) for i in range(n)):
+    h_nofluct.Fill(m.maxwellShoot(a,rand))
+    h_rand.Fill(m.maxwellShoot(a,r.Uniform()))
+
+
+  f=ROOT.TFile("hist_maxwell.root","RECREATE")
+  h_rand.Write()
+  h_nofluct.Write()
+  f.Close()

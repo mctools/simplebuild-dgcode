@@ -1,0 +1,8 @@
+package()
+
+######################################################################
+
+This package contains a few toy examples of various components which could be in
+a real package. It should not depend on any external dependencies.
+
+Primary author: thomas.kittelmann@ess.eu

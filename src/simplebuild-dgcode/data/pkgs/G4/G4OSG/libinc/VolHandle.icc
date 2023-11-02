@@ -1,0 +1,99 @@
+inline G4OSG::VolHandle::VolHandle(VHCommon* common,
+                                   const G4VPhysicalVolume * pv,
+                                   VolHandle * themother)
+  : m_common(common),
+    m_physVol(pv),
+    m_motherHandle(themother),
+    m_displayed(false),
+    m_zapped(false),
+    m_highlighted(false),
+    m_displayStyle(NORMAL),
+    m_daughterInit(false)
+{
+  assert(m_physVol);
+}
+
+inline const G4VPhysicalVolume * G4OSG::VolHandle::g4PhysVol() const
+{
+  return m_physVol;
+}
+
+inline const G4LogicalVolume * G4OSG::VolHandle::g4LogVol() const
+{
+  return m_physVol->GetLogicalVolume();
+}
+
+inline const G4VSolid * G4OSG::VolHandle::g4Solid() const
+{
+  return m_physVol->GetLogicalVolume()->GetSolid();
+}
+
+inline G4OSG::VolHandle * G4OSG::VolHandle::mother() const
+{
+  return m_motherHandle;
+}
+
+inline unsigned G4OSG::VolHandle::nDaughters() const
+{
+  return g4LogVol()->GetNoDaughters();
+}
+
+inline G4OSG::VolHandle * G4OSG::VolHandle::daughter(unsigned i)
+{
+  if (!m_daughterInit)
+    initDaughters();
+  return m_daughterHandles.at(i);
+}
+
+inline G4OSG::VolHandle * * G4OSG::VolHandle::daughtersBegin()
+{
+  if (!m_daughterInit)
+    initDaughters();
+  return m_daughterHandles.empty() ? 0 : &(m_daughterHandles[0]);
+}
+
+inline G4OSG::VolHandle * * G4OSG::VolHandle::daughtersEnd()
+{
+  return daughtersBegin() + m_daughterHandles.size();
+}
+
+inline const osg::ref_ptr<osg::MatrixTransform> G4OSG::VolHandle::osgTrf() const
+{
+  if (!m_osgTrf.valid())
+    setupTrf();
+  return m_osgTrf;
+}
+
+inline const osg::ref_ptr<osg::Geode> G4OSG::VolHandle::osgGeode() const
+{
+  if (!m_osgGeode.valid())
+    setupGeode();
+  return m_osgGeode;
+}
+
+inline bool G4OSG::VolHandle::isDisplayed() const
+{
+  return m_displayed;
+}
+
+inline bool G4OSG::VolHandle::g4MarkedInvisible() const
+{
+  auto va = g4LogVol()->GetVisAttributes();
+  return va && !va->IsVisible();//TODO: Use the IsDaughtersInvisible field to support auto-expand as well.
+}
+
+inline void G4OSG::VolHandle::setDisplayed(bool t)
+{
+  if(t!=m_displayed) {
+    if(t) {
+      display();
+    } else {
+      hide();
+    }
+  }
+}
+
+inline bool G4OSG::VolHandle::isHighlighted() const
+{
+  return m_highlighted;
+}

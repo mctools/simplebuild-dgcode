@@ -1,0 +1,8 @@
+package(USEPKG Mesh G4Interfaces G4Utils RandUtils G4ExprParser)
+
+##########################################################
+
+Package implementing Geant4 hooks to extract 3D maps of quantities such as
+energy depositions into .mesh3d files.
+
+Primary author: thomas.kittelmann@ess.eu

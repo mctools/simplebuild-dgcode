@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import os,sys
+import GriffFormat.dumpfile
+
+def usage(reason=None):
+    n=os.path.basename(sys.argv[0])
+    if reason:
+        print("Error: %s"%reason)
+    print()
+    print('Usage:')
+    print()
+    print('  %s [-h|--help]'%n)
+    print('       Show usage instructions.')
+    print()
+    print('  %s [-b] [-u] FILE1.griff [FILE2.griff [FILE3.griff [..]]]'%n)
+    print('        Provide size/section overview of file. It also verifies data integrity.')
+    print('        -b : to avoid printing info of single events unless integrity fails.')
+    print('        -u : to display uncompressed in-memory sizes rather than on-disk.')
+    print()
+    print('  %s --dumpdata [shared|brief|full] IDX FILE.griff'%n)
+    print('       Dump raw data from a given section to stdout.')
+    print('       IDX : The position of an event in the file.')
+    print()
+    sys.exit(1 if reason!=None else 0)
+
+args=sys.argv[1:]
+if '-h' in args or '--help' in args:
+    usage()
+
+brief=False
+if '-b' in args:
+    args.remove('-b')
+    brief=True
+
+uncompress=False
+if '-u' in args:
+    args.remove('-u')
+    uncompress=True
+
+if not args:
+    usage("")
+
+if args[0]=='--dumpdata':
+    if len(args)!=4 or not args[1] in ['shared','brief','full']:
+        usage("Unknown data section: %s (must be shared, brief or full)"%args[1])
+    if not args[2].isdigit():
+        usage("Invalid event idx: %s (must be number > 0)"%args[2])
+    try:
+        idx=int(args[2])
+    except:
+        usage("Could not interpret event idx: %s"%args[2])
+        raise
+    if idx<0:
+        usage("Specified event index is negative: %i"%idx)
+    if not os.path.exists(args[3]):
+        usage('Unknown file: %s'%args[3])
+    if args[1]=='shared': ok=GriffFormat.dumpfile.dumpFileEventDBSection(args[3],idx)
+    elif args[1]=='brief': ok=GriffFormat.dumpfile.dumpFileEventBriefDataSection(args[3],idx)
+    else: ok=GriffFormat.dumpfile.dumpFileEventFullDataSection(args[3],idx)
+    sys.exit(0 if ok else 1)
+
+files=[]
+for a in args:
+    f=os.path.expanduser(a)
+    if not os.path.exists(f):
+        usage('Unknown file: %s'%f)
+    files+=[f]
+
+bad=False
+for f in files:
+    ok=GriffFormat.dumpfile.dumpFileInfo(f,brief,uncompress)
+    if not ok:
+        bad=True
+if bad:
+    sys.exit(1)

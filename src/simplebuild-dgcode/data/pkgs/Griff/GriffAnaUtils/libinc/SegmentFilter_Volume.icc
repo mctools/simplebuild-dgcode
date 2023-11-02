@@ -1,0 +1,42 @@
+
+inline bool GriffAnaUtils::SegmentFilter_Volume::filter(const GriffDataRead::Segment*segment) const
+{
+  if (m_volname[0]!=(m_logical?segment->volumeName(0):segment->physicalVolumeName(0)))
+    return false;
+  if (m_depth==1)
+    return true;//optimise for most typical use-case
+  unsigned vd(segment->volumeDepthStored());
+  if (m_depth>vd)
+    return false;
+  if (m_depth>1) {
+    if (m_volname[1]!=(m_logical?segment->volumeName(1):segment->physicalVolumeName(1)))
+      return false;
+    if (m_depth>2) {
+      if (m_volname[2]!=(m_logical?segment->volumeName(2):segment->physicalVolumeName(2)))
+        return false;
+    }
+  }
+  return true;
+}
+
+inline GriffAnaUtils::SegmentFilter_Volume * GriffAnaUtils::SegmentFilter_Volume::setPhysical()
+{
+  m_logical = false;
+  return this;
+}
+
+inline GriffAnaUtils::SegmentFilter_Volume * GriffAnaUtils::SegmentFilter_Volume::setLogical()
+{
+  m_logical = true;
+  return this;
+}
+
+inline bool GriffAnaUtils::SegmentFilter_Volume::isPhysical() const
+{
+  return !m_logical;
+}
+
+inline bool GriffAnaUtils::SegmentFilter_Volume::isLogical() const
+{
+  return m_logical;
+}

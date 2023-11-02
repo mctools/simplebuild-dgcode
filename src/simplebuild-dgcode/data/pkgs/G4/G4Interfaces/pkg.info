@@ -1,0 +1,8 @@
+package(USEPKG G4Utils G4Materials)
+
+######################################################################
+
+
+Package providing interfaces for the Geant4 framework.
+
+Primary author: thomas.kittelmann@ess.eu

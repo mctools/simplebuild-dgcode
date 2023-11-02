@@ -1,0 +1,25 @@
+template<class Tentry>
+inline void EvtFile::DBEntryReader<Tentry>::load(const char*& data)
+{
+  std::uint16_t version;
+  ByteStream::read(data,version);
+  assert(version==0);
+
+  std::uint32_t nobjs;
+  ByteStream::read(data,nobjs);
+
+  unsigned n=nobjs;
+  m_db.reserve(m_db.size()+n);
+  for (unsigned i=0;i<n;++i)
+    m_db.push_back(new Tentry(data));
+}
+
+template<class Tentry>
+inline void EvtFile::DBEntryReader<Tentry>::clearInfo()
+{
+  auto itE=m_db.end();
+  for (auto it=m_db.begin();it!=itE;++it)
+    delete *it;
+  m_db.clear();
+}
+

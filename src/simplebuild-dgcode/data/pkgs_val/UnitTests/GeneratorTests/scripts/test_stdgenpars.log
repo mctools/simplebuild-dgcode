@@ -1,0 +1,3091 @@
+
+--------------------------------------------------
+Test 0 : SimpleGen <-- 
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 1 : SimpleGen <-- particleName=neutron
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 2 : SimpleGen <-- particleName=e+
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "e+"
+
+--------------------------------------------------
+Test 3 : SimpleGen <-- neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 4 : SimpleGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 5 : SimpleGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 6 : SimpleGen <-- fixed_energy_eV=100
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 7 : SimpleGen <-- fixed_energy_eV=100 particleName=neutron
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 8 : SimpleGen <-- fixed_energy_eV=100 particleName=e+
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "e+"
+
+--------------------------------------------------
+Test 9 : SimpleGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 10 : SimpleGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 11 : SimpleGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 12 : SimpleGen <-- fixed_energy_eV=0.025
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 13 : SimpleGen <-- fixed_energy_eV=0.025 particleName=neutron
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "neutron"
+
+--------------------------------------------------
+Test 14 : SimpleGen <-- fixed_energy_eV=0.025 particleName=e+
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+  [dbl] fixed_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] fixed_xdir = 0
+  [dbl] fixed_ydir = 0
+  [dbl] fixed_zdir = 1
+  [str] particleName = "e+"
+
+--------------------------------------------------
+Test 15 : SimpleGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 16 : SimpleGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 17 : SimpleGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/SimpleGen]:
+SimpleGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 18 : FlexGen <-- 
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 19 : FlexGen <-- pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 20 : FlexGen <-- pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 11
+
+--------------------------------------------------
+Test 21 : FlexGen <-- particleName=neutron
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 22 : FlexGen <-- particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 23 : FlexGen <-- particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 24 : FlexGen <-- particleName=e+
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "e+"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 25 : FlexGen <-- particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 26 : FlexGen <-- particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 27 : FlexGen <-- neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025248213087527
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 28 : FlexGen <-- neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025248213087527
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 29 : FlexGen <-- neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 30 : FlexGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025248213087527
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 31 : FlexGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 32 : FlexGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 33 : FlexGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 34 : FlexGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 35 : FlexGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 36 : FlexGen <-- fixed_energy_eV=100
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 37 : FlexGen <-- fixed_energy_eV=100 pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 38 : FlexGen <-- fixed_energy_eV=100 pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 11
+
+--------------------------------------------------
+Test 39 : FlexGen <-- fixed_energy_eV=100 particleName=neutron
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 40 : FlexGen <-- fixed_energy_eV=100 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 41 : FlexGen <-- fixed_energy_eV=100 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 42 : FlexGen <-- fixed_energy_eV=100 particleName=e+
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 100
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "e+"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 43 : FlexGen <-- fixed_energy_eV=100 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 44 : FlexGen <-- fixed_energy_eV=100 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 45 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 46 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 47 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 48 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 49 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 50 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 51 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 52 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 53 : FlexGen <-- fixed_energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 54 : FlexGen <-- fixed_energy_eV=0.025
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 55 : FlexGen <-- fixed_energy_eV=0.025 pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 56 : FlexGen <-- fixed_energy_eV=0.025 pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 11
+
+--------------------------------------------------
+Test 57 : FlexGen <-- fixed_energy_eV=0.025 particleName=neutron
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 58 : FlexGen <-- fixed_energy_eV=0.025 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 59 : FlexGen <-- fixed_energy_eV=0.025 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 60 : FlexGen <-- fixed_energy_eV=0.025 particleName=e+
+ParticleGenerator[G4StdGenerators/FlexGen]:
+  [dbl] fixed_x_meters = 0
+  [flg] randomize_x = no
+  [dbl] random_min_x_meters = 0
+  [dbl] random_max_x_meters = 0
+  [dbl] fixed_y_meters = 0
+  [flg] randomize_y = no
+  [dbl] random_min_y_meters = 0
+  [dbl] random_max_y_meters = 0
+  [dbl] fixed_z_meters = 0
+  [flg] randomize_z = no
+  [dbl] random_min_z_meters = 0
+  [dbl] random_max_z_meters = 0
+  [dbl] fixed_energy_eV = 0.025
+  [flg] randomize_energy = no
+  [dbl] random_min_energy_eV = 0
+  [dbl] random_max_energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [flg] momdir_spherical = no
+  [dbl] fixed_polarangle_deg = 0
+  [flg] randomize_polarangle = no
+  [dbl] random_min_polarangle_deg = 0
+  [dbl] random_max_polarangle_deg = 180
+  [dbl] fixed_azimuthalangle_deg = 0
+  [flg] randomize_azimuthalangle = no
+  [dbl] random_min_azimuthalangle_deg = 0
+  [dbl] random_max_azimuthalangle_deg = 360
+  [dbl] fixed_xdir = 0
+  [flg] randomize_xdir = no
+  [dbl] random_min_xdir = 0
+  [dbl] random_max_xdir = 0
+  [dbl] fixed_ydir = 0
+  [flg] randomize_ydir = no
+  [dbl] random_min_ydir = 0
+  [dbl] random_max_ydir = 0
+  [dbl] fixed_zdir = 1
+  [flg] randomize_zdir = no
+  [dbl] random_min_zdir = 0
+  [dbl] random_max_zdir = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "e+"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 61 : FlexGen <-- fixed_energy_eV=0.025 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 62 : FlexGen <-- fixed_energy_eV=0.025 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 63 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 64 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 65 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 66 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Don't set both neutron_wavelength_aangstrom and fixed_energy_eV
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 67 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 68 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 69 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set neutron_wavelength_aangstrom when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 70 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 71 : FlexGen <-- fixed_energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/FlexGen]:
+FlexGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 72 : ProfiledBeamGen <-- 
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 73 : ProfiledBeamGen <-- pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 74 : ProfiledBeamGen <-- pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 11
+
+--------------------------------------------------
+Test 75 : ProfiledBeamGen <-- particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 76 : ProfiledBeamGen <-- particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 77 : ProfiledBeamGen <-- particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 78 : ProfiledBeamGen <-- particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "e+"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 79 : ProfiledBeamGen <-- particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 80 : ProfiledBeamGen <-- particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 81 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 82 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 83 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 84 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 85 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 86 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 87 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 88 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 89 : ProfiledBeamGen <-- neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 90 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 91 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 92 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 93 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 94 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 95 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 96 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 97 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 98 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 99 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] neutron_wavelength_spread_aangstrom = 0.1
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 100 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] neutron_wavelength_spread_aangstrom = 0.1
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 101 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 102 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025248213087527
+  [dbl] neutron_wavelength_aangstrom = 1.8
+  [dbl] neutron_wavelength_spread_aangstrom = 0.1
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 103 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 104 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 105 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 106 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 107 : ProfiledBeamGen <-- neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 108 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 300
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 109 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 300
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 110 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 111 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 300
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 112 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 113 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 114 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 115 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 116 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 117 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 118 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 119 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 120 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 121 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 122 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 123 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 124 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 125 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 126 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 127 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 128 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 129 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 130 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 131 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 132 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 133 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 134 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 135 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 136 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 137 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 138 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 139 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 140 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 141 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 142 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 143 : ProfiledBeamGen <-- neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 144 : ProfiledBeamGen <-- energy_eV=100
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 145 : ProfiledBeamGen <-- energy_eV=100 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 146 : ProfiledBeamGen <-- energy_eV=100 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 11
+
+--------------------------------------------------
+Test 147 : ProfiledBeamGen <-- energy_eV=100 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0.028601435349225
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 148 : ProfiledBeamGen <-- energy_eV=100 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 149 : ProfiledBeamGen <-- energy_eV=100 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 150 : ProfiledBeamGen <-- energy_eV=100 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 100
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "e+"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 151 : ProfiledBeamGen <-- energy_eV=100 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 152 : ProfiledBeamGen <-- energy_eV=100 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 153 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 154 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 155 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 156 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 157 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 158 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 159 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 160 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 161 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 162 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 163 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 164 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 165 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 166 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 167 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 168 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 169 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 170 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 171 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 172 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 173 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 174 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 175 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 176 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 177 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 178 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 179 : ProfiledBeamGen <-- energy_eV=100 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 180 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 181 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 182 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 183 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 184 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 185 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 186 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 187 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 188 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 189 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 190 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 191 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 192 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 193 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 194 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 195 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 196 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 197 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 198 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 199 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 200 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 201 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 202 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 203 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 204 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 205 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 206 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 207 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 208 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 209 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 210 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 211 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 212 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 213 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 214 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 215 : ProfiledBeamGen <-- energy_eV=100 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 216 : ProfiledBeamGen <-- energy_eV=0.025
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 217 : ProfiledBeamGen <-- energy_eV=0.025 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 2112
+
+--------------------------------------------------
+Test 218 : ProfiledBeamGen <-- energy_eV=0.025 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = ""
+  [int] pdgCode = 11
+
+--------------------------------------------------
+Test 219 : ProfiledBeamGen <-- energy_eV=0.025 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 1.8089136010721
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "neutron"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 220 : ProfiledBeamGen <-- energy_eV=0.025 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 221 : ProfiledBeamGen <-- energy_eV=0.025 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 222 : ProfiledBeamGen <-- energy_eV=0.025 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+  [dbl] spread_x_mm = 0
+  [dbl] spread_y_mm = 0
+  [str] spread_mode = "GAUSSIAN"
+  [dbl] offset_x_mm = 0
+  [dbl] offset_y_mm = 0
+  [dbl] offset_z_mm = 0
+  [dbl] energy_eV = 0.025
+  [dbl] neutron_wavelength_aangstrom = 0
+  [dbl] neutron_wavelength_spread_aangstrom = 0
+  [dbl] neutron_thermal_spectrum_kelvin = 0
+  [int] fixed_nparticles = 1
+  [flg] randomize_nparticles = no
+  [dbl] random_nparticles_poissonmean = 1
+  [str] particleName = "e+"
+  [int] pdgCode = 0
+
+--------------------------------------------------
+Test 223 : ProfiledBeamGen <-- energy_eV=0.025 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 224 : ProfiledBeamGen <-- energy_eV=0.025 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 225 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 226 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 227 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 228 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 229 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 230 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 231 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 232 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 233 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 234 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 235 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 236 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 237 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 238 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 239 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 240 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 241 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 242 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 243 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 244 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 245 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 246 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 247 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 248 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 249 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 250 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 251 : ProfiledBeamGen <-- energy_eV=0.025 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 252 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 253 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 254 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 255 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 256 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 257 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 258 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 259 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 260 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 261 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 262 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 263 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 264 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_wavelength_spread_aangstrom without setting neutron_wavelength_aangstrom
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 265 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 266 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 267 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 268 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 269 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 270 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 271 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 272 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 273 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 274 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 275 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 276 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 277 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 278 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 279 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 280 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 281 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 282 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Don't set more than one of neutron_wavelength_aangstrom, energy_eV and neutron_thermal_spectrum_kelvin
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 283 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 284 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=neutron pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 285 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set neutron_... parameters when not generating neutrons
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 286 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=2112
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+
+--------------------------------------------------
+Test 287 : ProfiledBeamGen <-- energy_eV=0.025 neutron_thermal_spectrum_kelvin=300.0 neutron_wavelength_aangstrom=1.8 neutron_wavelength_spread_aangstrom=0.1 particleName=e+ pdgCode=11
+ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
+ProfiledBeamGen ERROR: Please do not set both particleName and pdgCode
+
+Parameters ERROR: Parameter validation failed!
+Done. Performed 288 tests

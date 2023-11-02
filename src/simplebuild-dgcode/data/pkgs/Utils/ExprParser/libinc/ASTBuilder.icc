@@ -1,0 +1,18 @@
+namespace ExprParser {
+
+  template<class TValue, void func_tokenCreator(const str_type&, TokenList&)>
+  inline Evaluator<TValue> ASTBuilder::createEvaluator(const str_type& expr, bool do_optimise ) const
+  {
+    TokenList tokens;
+    func_tokenCreator(expr, tokens);
+    auto root = buildTree(tokens);
+    Evaluator<TValue> evaluator(root);
+    if (do_optimise) {
+      auto p = evaluator.arg();
+      optimise(p);
+      evaluator.setArg(p);
+    }
+    return evaluator;
+  }
+
+}

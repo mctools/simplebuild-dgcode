@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+def parse():
+    import os,glob
+    import argparse as AP
+
+    descr="""Fix install_names in libraries on OSX by changing library names
+    to also include absolute paths. This will allow derived libs and
+    applications to load them without DYLD_LIBRARY_PATH being set (which it
+    sometimes can't be from OSX 10.11 [El Capitan] and presumable later). Note
+    that running this might break applications already linked against the
+    affected libraries, so it is best to do right after installation."""
+    parser = AP.ArgumentParser(description=descr)
+    parser.add_argument('libdir',metavar='DIR', help='Directory with libraries to modify.')
+    parser.add_argument('-v','--verbose',action='store_true', help='Increase verbosity')
+    a=parser.parse_args()
+    if not os.path.isdir(a.libdir):
+        parser.error('No such directory: %s'%a.libdir)
+    if not glob.glob(os.path.join(a.libdir,'*.dylib')) and not glob.glob(os.path.join(a.libdir,'*.so')):
+        parser.error('No libraries found in target directory: %s'%a.libdir)
+    return a.libdir,a.verbose
+
+libdir,verbose=parse()
+
+from DevTools.FixOSXLibInstallNames import set_install_names_to_abs_path as fix
+fix(libdir,verbose=verbose)

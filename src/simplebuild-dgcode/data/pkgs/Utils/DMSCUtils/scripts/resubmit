@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+import os
+import Core.System
+import DMSCUtils.query
+
+def resubmit_jobdir(d,onlynonsuccessful=True,quiet=False,prefix='',excludenodes=''):
+    def pr(s):
+        if not quiet:
+            print(prefix+s)
+    d=os.path.realpath(d)
+    bn=os.path.basename(d)
+    ecf=os.path.join(d,'exitcode.txt')
+    runf=os.path.join(d,'run.sh')
+    # commentf=os.path.join(d,'comment.txt')
+    if not os.path.exists(runf):
+        pr("Ignoring what does not look like a jobdir: %s"%bn)
+        return
+    ic=DMSCUtils.query.iscurrent(d)
+    if ic==True:
+        pr("Ignoring job still in the batch system: %s"%bn)
+        return
+    if ic==None:
+        pr("Ignoring job for which queue status could not be determined: %s"%bn)
+        return
+    ec=int(open(ecf).read().strip()) if os.path.exists(ecf) else 999
+    if ec==0 and onlynonsuccessful:
+        pr("Ignoring successful job: %s"%bn)
+        return
+    pr("Will clean out and resubmit job: %s"%bn)
+    d=os.path.realpath(d)
+    for f in os.listdir(d):
+        if f in ['comment.txt','run.sh']:
+            continue#should be kept
+        f=os.path.join(d,f)
+        f=os.path.realpath(f)
+        if not f.startswith(d):
+            pr("ERROR: suspicious sym links out of jobdir: %s"%bn)
+            return
+        Core.System.rm_rf(f)
+    pr("Resubmitting jobdir: %s"%bn)
+    if excludenodes:
+        excludenodes = ' --exclude=%s'%Core.System.quote(excludenodes)
+    else:
+        excludenodes = ''
+    subcmd='sbatch%s run.sh'%excludenodes
+    pr("Submission command: %s"%subcmd)
+    ec=Core.System.system('cd %s && touch state.submit && %s > slurm_submitstdout.txt'%(Core.System.quote(d),
+                                                                                        subcmd))
+    if ec!=0:
+        fh=open(os.path.join(d,'exitcode.txt'),'w')
+        fh.write('999')
+        fh.close()
+        pr("Problems encountered while submitting in jobdir: %s"%bn)
+
+def parse():
+    from optparse import OptionParser,OptionGroup#NOTE: The optparse module is deprecated - we should stop using it at some point
+    parser = OptionParser(usage='%prog JOBDIR [JOBDIR2] [...]',description='Use to resubmit a DMSC job residing in the specified JOBDIR\'s.'
+                          +' The job should have at least a run.sh, state.submit and slurm_submitstdout.txt left'
+                          +' and jobs still in the batch system will be ignored.')
+    parser.add_option("-q", "--quiet",action="store_true",dest="quiet", default=False, help="Disable printouts.")
+    parser.add_option("-s",action="store_true",dest="alsosuccessful", default=False, help="Resubmit even if job previously ended successfully.")
+    parser.add_option("-e", "--exclude_node",metavar='NODELIST',type="string", dest="excludenodes", default='',
+                      help='Explicitly exclude nodes from the resources granted to the job')
+    (opt, args) = parser.parse_args()
+    for a in args:
+        if not os.path.isdir(a):
+            parser.error("Unknown directory: %s"%a)
+    opt.jobdirs = args
+    return opt
+
+opt = parse()
+for j in sorted(opt.jobdirs):
+    resubmit_jobdir(j,onlynonsuccessful=not opt.alsosuccessful,quiet=opt.quiet,prefix='::: ',excludenodes=opt.excludenodes)

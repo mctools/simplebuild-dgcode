@@ -1,0 +1,86 @@
+package(USEPKG G4Interfaces GriffFormat)
+
+######################################################################
+
+
+Package providing functionality for writing out Geant4 simulation steps. It is
+activated by simple calls in your main Geant4 program. For instance like this
+from python (the C++ interface can be used instead of course:
+
+    #Ask to collect step data in custom output file (other options instead
+    #of "FULL" are "REDUCED" or "MINIMAL"):
+    G4DataCollect.installHooks("test_output.griff","FULL")
+
+    #after simulation is done, close output file, de-install hooks:
+    G4DataCollect.finish()
+
+The written datafile can be read with utilities from the GriffDataRead package
+which does not itself depend on Geant4.
+
+Primary author: thomas.kittelmann@ess.eu
+
+TODO:
+
+* G4DataCollect.ignoreCurrentEvent() / G4DataCollect::ignoreCurrentEvent()
+  interface, allowing for custom filters at generation level.
+* Properly document the file format.
+
+== Details of file format ==
+
+The users should never have to know this, but for reference the file format is
+described here:
+
+First one magic 32bit word specifying the file type. We choose 0xE5506EA4 (with
+a heavy dose of imagination it could kind of vaguely resemble ESS_GEA4).
+
+Next follows one 32bit word with the file format version (allowing for potential
+evolution of the format).
+
+After this follows a number of event blocks. One block for each event in the
+file, each block having variable length.
+
+Each event block starts with a few words identifying the event and giving the
+length of internal subsections:
+
+  32bit word: event number
+  32bit word: run number
+  32bit word: length database section [bytes]
+  32bit word: length trackdata section [bytes]
+  32bit word: length stepdata section [bytes]
+
+After this block follows the three sections: database, trackdata and stepdata.
+
+The database section must always be read, but the other two can be ignored if
+the reader is skipping forward through the file. This is because event number N
+in a file might point to information from all first 1..N database sections (to
+avoid redundancy).
+
+The trackdata section will contain information about tracks: trackID's,
+mother/daughter relationships and energy+energy deposits along each track
+segment. A track segment is defined as the series of consecutive steps which
+are contained in the same volume.
+
+Finally the stepdata section will contain the detailed step info for each
+segment.
+
+The reason for the segment concept and the split in trackdata/stepdata sections
+is of course computing efficiency: Most analysis will be easily done at the
+segment level, with only a small part (if any) of the stepdata needing to be
+retrieved. For certain applications one can even imagine not needing the
+stepdata at all, allowing much higher statistics simulations for a given amount
+of data storage.
+
+== The database section ==
+
+Detailed information about particles, volumes and processes are listed in these
+sections and referred to in the trackdata/stepdata sections merely by cheap
+integer indices. For instance in the first event where a particle of a given
+pdgcode is encountered entries will be added in the database section of that
+event with name, mass, charge, etc. for that pdgcode. Each entry will have the form:
+
+ 4bits: info type [ 0=particle info, 1=volume info, 2=process info, 3=evt description, ...]
+ 28bits: info length [=n]
+ 64bits: info index
+ n bytes: data
+
+[to be continued...]

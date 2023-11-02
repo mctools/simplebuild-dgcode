@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+
+import G4StdGeometries.GeoEmptyWorld as Geo
+geo = Geo.create()
+
+import G4CustomPyGen
+class IsotropicNeutronGen(G4CustomPyGen.GenBase):
+    """Generator which produces isotropic 1.8Aa neutrons at (0,0,0)"""
+    def init_generator(self,gun):
+        gun.set_type('neutron')
+        gun.set_wavelength_angstrom(1.8)
+    def generate_event(self,gun):
+        gun.set_random_direction()
+
+gen = IsotropicNeutronGen()
+
+import G4Launcher
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('none')
+launcher.setPhysicsList('ESS_Empty')
+
+launcher.setRndEvtMsgMode('ALWAYS')
+launcher.cmd_postinit("/tracking/verbose 1")
+
+import G4GeantinoInserter
+G4GeantinoInserter.install()
+launcher.go()

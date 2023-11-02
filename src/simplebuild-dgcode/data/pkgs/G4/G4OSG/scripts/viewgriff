@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import sys,os
+import Core.System
+
+def usage(ec=0):
+    print("Usage:")
+    print()
+    print("  %s [options] <Griff-file>"%os.path.basename(sys.argv[0]))
+    print()
+    print("Display the simulated data (tracks) in the provided Griff file.")
+    print()
+    print("Options:")
+    print()
+    print("  -g, --loadgeo: Construct and display the geometry according to the meta-data")
+    print("                 of the Griff file. WARNING: If the code changed since the griff")
+    print("                 file was produced, the displayed geometry might different from")
+    print("                 the one used while producing the Griff file!!!")
+    print()
+    print("  -e EVENTS: Only visualise certain events from the file, by specifying event")
+    print("             indicies (i.e. positions in file: 0 is the first event, 99 is the")
+    print("             100th event). The numbers can be provided either directly on the")
+    print("             command line, or by specifying names of text files containing the")
+    print("             numbers. Use commas to separate multiple entries.")
+    print()
+    sys.exit(ec)
+
+args=sys.argv[1:]
+if '-h' in args or '--help' in args:
+    usage(0)
+opt_loadgeo = False
+if '--loadgeo' in args:
+    args.remove('--loadgeo')
+    opt_loadgeo = True
+if '-g' in args:
+    args.remove('-g')
+    opt_loadgeo = True
+opt_selectevents = []
+if '-e' in args:
+    i=args.index('-e')
+    if i+1<len(args):
+        opt_selectevents = args[i+1].split(',')
+        del args[i]
+        del args[i]
+    if not opt_selectevents:
+        print("ERROR: Missing argument for -e")
+        sys.exit(1)
+
+if opt_selectevents:
+    l=set()
+    for e in opt_selectevents:
+        if e.isdigit():
+            l.add(int(e))
+        elif os.path.exists(e):
+            for ee in open(e):
+                ee=ee.strip().split('#')[0]
+                for v in ee.split():
+                    if v.isdigit():
+                        l.add(int(v))
+                    else:
+                        print("ERROR: Invalid entry in file '%s': '%v'"%(e,v))
+                        sys.exit(1)
+        else:
+            print("ERROR: file not found: '%s'"%e)
+            sys.exit(1)
+    opt_selectevents = list(l)
+
+if len(args)!=1:
+    usage(1)
+fn=os.path.expanduser(args[0])
+if not fn.endswith('.griff'):
+    print("ERROR: Input file does not have .griff extension")
+    sys.exit(1)
+if not os.path.exists(fn):
+    print("File not found:",fn)
+    sys.exit(1)
+
+import G4OSG.Viewer
+
+def create_geo_like_in_griff(griff_file):
+    #todo: Option for generator instead of geo!!
+    import importlib
+    import GriffDataRead
+    GriffDataRead.GriffDataReader.openMsg()
+    GriffDataRead.GriffDataReader.setOpenMsg(False)
+    dr=GriffDataRead.GriffDataReader(griff_file)
+    griff_geo = dr.setup().geo()
+    #griff_geo.dump()
+    GriffDataRead.GriffDataReader.setOpenMsg(True)
+    name=griff_geo.getName()
+    module_guess = name.replace('/','.')
+    print('Viewer: Geometry in file is named "%s".'%name)
+    print('Viewer: Guessing it comes from a module named "%s"'%module_guess)
+
+    try:
+        dyngeomod=importlib.import_module(module_guess)
+    except ImportError:
+        print("Viewer: ERROR - Could not import python module %s"%module_guess)
+        print("Viewer:         Either the module name was guessed wrongly, or the")
+        print("Viewer:         package was removed, or it is currently disabled.")
+        sys.exit(1)
+    geo = dyngeomod.create()#todo, work with custom python generators as well,
+                            #so we can simulate more events like those in a given griff file.
+    if geo.getName()!=griff_geo.getName():
+        print('Viewer: WARNING - Geometry name changed from "%s" in the Griff file '%griff_geo.getName())
+        print('Viewer:           to "%s" in the current implementation.'%geo.getName())
+    print('Viewer: Succesfully created geometry instance, proceeding to check parameters.')
+
+    oldpars=set(griff_geo.getParameterList())
+    newpars=set(geo.getParameterList())
+    for p_oldnotnew in oldpars.difference(newpars):
+        print('Viewer: WARNING - Geometry parameter "%s" in Griff file is no longer available'%p_oldnotnew)
+    for p_newnotold in newpars.difference(oldpars):
+        print('Viewer: WARNING - Currently available geometry parameter "%s" was not present in the Griff file'%p_newnotold)
+
+    #ok, need to check that the types are matching!
+    pars=oldpars.intersection(newpars)
+    pars_to_transfer = set()
+    old_types = dict((p,t) for p,t in griff_geo.getParameterTypes().items() if p in pars)
+    new_types = dict((p,t) for p,t in geo.getParameterTypes().items() if p in pars)
+    assert set(old_types.keys())==set(new_types.keys())
+    for p in pars:
+        if old_types[p] != new_types[p]:
+            print('Viewer: WARNING - Geometry parameter "%s" was type "%s" in Griff file and is now "%s"'%(p,old_types[p],
+                                                                                                           new_types[p]))
+        else:
+            pars_to_transfer.add(p)
+    for p in pars_to_transfer:
+        v=getattr(griff_geo,p)
+        print('Viewer: Setting geo parameter to value from Griff file: %s=%s'%(p,Core.System.quote(str(v))))
+        setattr(geo,p,v)
+    del griff_geo,dr
+    return geo
+
+fn = os.path.abspath(os.path.realpath(fn))
+if not opt_loadgeo:
+    G4OSG.Viewer.run_nogeom(fn,opt_selectevents)
+else:
+    print('Viewer: Will attempt to re-create geometry used when the Griff file was generated')
+    print('Viewer:')
+    geo = create_geo_like_in_griff(fn)
+    print('Viewer: Geometry recreated! WARNING: If the software changed, this might not be')
+    print('Viewer:                              consistent with the actual geometry used')
+    print('Viewer:                              for the simulation generating the file')
+    import G4Launcher
+    import G4CustomPyGen
+    class DummyGen(G4CustomPyGen.GenBase):
+        """Generator which does absolutely nothing"""
+        def init_generator(self,gun):
+            gun.allow_empty_events()
+        def generate_event(self,gun):
+            pass
+    launcher = G4Launcher(geo,DummyGen())
+    launcher.setOutput('none')#no Griff
+    launcher.setPhysicsList('ESS_Empty')
+    launcher.init()
+    def launch_viewer_with_data():
+        #fixme: once again we replicate this function..
+        ##self.closeOutput()#ensure Griff file is closed properly!
+        #if hasattr(self,'_previewer_callback'):
+        #    self._previewer_callback(self)
+        print('='*80)
+        print("==  Launching viewer!")
+        print('='*80)
+        G4OSG.Viewer.run(fn,opt_selectevents)
+        print('='*80)
+        print("==  Viewer done! Hope you enjoyed the experimental event data visualisation :-)")
+        print('='*80)
+    launch_viewer_with_data()
+    sys.exit(0)
+

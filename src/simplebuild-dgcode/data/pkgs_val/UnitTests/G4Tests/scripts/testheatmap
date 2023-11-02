@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+set -u
+sb_g4examples_heatmapexample -lQGSP_BERT
+sb_g4examples_heatmapexample -lQGSP_BERT --heatmap='step.steplength * 0.5 * (step.pre.ekin+step.post.ekin) where step.pre.ekin>1000 keV'
+sb_mesh3d_browse -d heatmap.mesh3d --nographical
+python3 -c 'import Mesh3D;f=Mesh3D.Mesh3D("./heatmap.mesh3d");assert f.stats["nevts"]==10;assert 3500 < f.stats["wsteps"] < 4500'

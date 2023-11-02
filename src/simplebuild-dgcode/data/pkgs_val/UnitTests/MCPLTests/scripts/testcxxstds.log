@@ -1,0 +1,40 @@
+==========================================================================
+=== Testing flags: 
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_NO_EXT_GZIP
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_NO_CUSTOM_GZIP
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_NO_CUSTOM_GZIP -DMCPL_NO_EXT_GZIP
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_HASZLIB
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_HASZLIB -DMCPL_NO_EXT_GZIP
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_HASZLIB -DMCPL_NO_CUSTOM_GZIP
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03
+==========================================================================
+=== Testing flags:  -DMCPL_HASZLIB -DMCPL_NO_CUSTOM_GZIP -DMCPL_NO_EXT_GZIP
+=== -> mcpl.h & mcpl.c with --std=c++98
+=== -> mcpl.h & mcpl.c with --std=c++11
+=== -> mcpl.h with --std=c++03

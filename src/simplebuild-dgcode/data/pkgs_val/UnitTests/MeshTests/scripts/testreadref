@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import Core.FindData
+import Mesh3D
+import os
+
+def dump(fn):
+    mesh=Mesh3D.Mesh3D(fn)
+    mesh.print_summary()
+    mesh.dump_cells(False)
+    del mesh
+
+reffile=Core.FindData('MeshTests','mesh_debug_1.mesh3d')
+newfile='mesh_debug_1.mesh3d'
+mergefile='testmerge.mesh3d'
+print("*** Load and dump reference file")
+dump(reffile)
+print("*** Create new file")
+assert not os.path.exists(newfile), "file already exists"
+ec=os.system('sb_meshtests_createstd')
+assert ec==0
+assert os.path.exists(newfile)
+print("*** Dump it")
+dump(newfile)
+print("*** Merge with (identical) reference file")
+Mesh3D.merge_files(mergefile,[reffile,newfile])
+print("*** Dump result")
+dump(mergefile)

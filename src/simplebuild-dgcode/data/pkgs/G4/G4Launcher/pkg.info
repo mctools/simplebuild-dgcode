@@ -1,0 +1,8 @@
+package(USEPKG G4Random G4DataCollect G4PhysicsLists)
+
+######################################################################
+
+
+Package providing utilities for setting up Geant4 jobs.
+
+Primary author: thomas.kittelmann@ess.eu

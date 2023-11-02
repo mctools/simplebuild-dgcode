@@ -1,0 +1,75 @@
+==========================================================================
+=== Testing flags: 
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+=== Again with broken gzip:
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL ERROR: Problems encountered while attempting to invoke gzip
+out.mcpl
+  ==> Exit code non-zero (failure).
+==========================================================================
+=== Testing flags:  -DMCPL_NO_EXT_GZIP
+MCPL WARNING: Requested compression of out.mcpl to out.mcpl.gz is not supported in this build.
+out.mcpl
+=== Again with broken gzip:
+MCPL WARNING: Requested compression of out.mcpl to out.mcpl.gz is not supported in this build.
+out.mcpl
+  ==> Exit code 0.
+==========================================================================
+=== Testing flags:  -DMCPL_NO_CUSTOM_GZIP
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+=== Again with broken gzip:
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL ERROR: Problems encountered while attempting to invoke gzip
+out.mcpl
+  ==> Exit code non-zero (failure).
+==========================================================================
+=== Testing flags:  -DMCPL_NO_CUSTOM_GZIP -DMCPL_NO_EXT_GZIP
+MCPL WARNING: Requested compression of out.mcpl to out.mcpl.gz is not supported in this build.
+out.mcpl
+=== Again with broken gzip:
+MCPL WARNING: Requested compression of out.mcpl to out.mcpl.gz is not supported in this build.
+out.mcpl
+  ==> Exit code 0.
+==========================================================================
+=== Testing flags: -DMCPL_HASZLIB  ${ZLIBFLAGS}
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+=== Again with broken gzip:
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL WARNING: Problems invoking gzip - will revert to a custom zlib based compression
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+  ==> Exit code 0.
+==========================================================================
+=== Testing flags: -DMCPL_HASZLIB  ${ZLIBFLAGS} -DMCPL_NO_EXT_GZIP
+MCPL: Attempting to compress file out.mcpl with zlib
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+=== Again with broken gzip:
+MCPL: Attempting to compress file out.mcpl with zlib
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+  ==> Exit code 0.
+==========================================================================
+=== Testing flags: -DMCPL_HASZLIB  ${ZLIBFLAGS} -DMCPL_NO_CUSTOM_GZIP
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL: Succesfully compressed file into out.mcpl.gz
+out.mcpl.gz
+=== Again with broken gzip:
+MCPL: Attempting to compress file out.mcpl with gzip
+MCPL ERROR: Problems encountered while attempting to invoke gzip
+out.mcpl
+  ==> Exit code non-zero (failure).
+==========================================================================
+=== Testing flags: -DMCPL_HASZLIB  ${ZLIBFLAGS} -DMCPL_NO_CUSTOM_GZIP -DMCPL_NO_EXT_GZIP
+MCPL WARNING: Requested compression of out.mcpl to out.mcpl.gz is not supported in this build.
+out.mcpl
+=== Again with broken gzip:
+MCPL WARNING: Requested compression of out.mcpl to out.mcpl.gz is not supported in this build.
+out.mcpl
+  ==> Exit code 0.

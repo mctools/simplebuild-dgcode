@@ -1,0 +1,116 @@
+inline const std::string& GriffDataRead::GeoParams::getName() const
+{
+  return m_name;
+}
+
+inline const std::string& GriffDataRead::GenParams::getName() const
+{
+  return m_name;
+}
+
+inline const std::string& GriffDataRead::FilterParams::getName() const
+{
+  return m_name;
+}
+
+inline GriffDataRead::Setup::Setup(const StrMap& ad)
+  : m_allData(ad),
+    m_geo(0),
+    m_gen(0),
+    m_filter(0),
+    m_killFilter(0),
+    m_userDataInit(false),
+    m_metaDataInit(false),
+    m_binaryDataInit(false),
+    m_geoInit(false),
+    m_genInit(false),
+    m_filterInit(false),
+    m_killFilterInit(false),
+    m_cmdsInit(false)
+{
+}
+
+inline const GriffDataRead::StrMap& GriffDataRead::Setup::userData() const
+{
+  if (!m_userDataInit)
+    initUserData();
+  return m_userData;
+}
+
+inline const GriffDataRead::StrMap& GriffDataRead::Setup::metaData() const
+{
+  if (!m_metaDataInit)
+    initMetaData();
+  return m_metaData;
+}
+
+inline const GriffDataRead::StrVect& GriffDataRead::Setup::cmds() const
+{
+  if (!m_cmdsInit)
+    initCmds();
+  return m_cmds;
+}
+
+inline const GriffDataRead::GeoParams& GriffDataRead::Setup::geo() const
+{
+  if (!m_geoInit)
+    initGeo();
+  assert(m_geo);
+  return *m_geo;
+}
+
+inline const GriffDataRead::GenParams& GriffDataRead::Setup::gen() const
+{
+  if (!m_genInit)
+    initGen();
+  assert(m_gen);
+  return *m_gen;
+}
+
+inline bool GriffDataRead::Setup::hasFilter() const
+{
+  if (!m_filterInit)
+    initFilter();
+  return m_filter!=0;
+}
+
+inline bool GriffDataRead::Setup::hasKillFilter() const
+{
+  if (!m_killFilterInit)
+    initKillFilter();
+  return m_killFilter!=0;
+}
+
+inline const GriffDataRead::FilterParams& GriffDataRead::Setup::filter() const
+{
+  if (!hasFilter()) {
+    printf("\nGriffDataRead ERROR: Setup::filter() method called but there was no filter (check hasFilter() before calling)\n\n");
+    exit(1);
+    assert(false);
+  }
+  assert(m_filter);
+  return *m_filter;
+}
+
+inline const GriffDataRead::FilterParams& GriffDataRead::Setup::killFilter() const
+{
+  if (!hasKillFilter()) {
+    printf("\nGriffDataRead ERROR: Setup::killFilter() method called but there was no kill-filter (check hasKillFilter() before calling)\n\n");
+    exit(1);
+    assert(false);
+  }
+  assert(m_killFilter);
+  return *m_killFilter;
+}
+
+inline const GriffDataRead::StrMap& GriffDataRead::Setup::binaryData() const
+{
+  if (!m_binaryDataInit)
+    initBinaryData();
+  return m_binaryData;
+}
+
+inline const GriffDataRead::StrMap& GriffDataRead::Setup::allData() const
+{
+  return m_allData;
+}

@@ -1,0 +1,7 @@
+package(USEPKG G4StdGenerators G4StdGeometries G4CustomPyGen GeneratorExamples G4Launcher)
+
+#############################################################
+
+Test of the various generators provided in Framework/
+
+primary author: thomas.kittelmann@ess.eu

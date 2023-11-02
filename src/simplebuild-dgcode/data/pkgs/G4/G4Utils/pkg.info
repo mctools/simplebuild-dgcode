@@ -1,0 +1,8 @@
+package(USEPKG Utils USEEXT Geant4)
+
+######################################################################
+
+
+Package providing utilities related to Geant4.
+
+Primary author: thomas.kittelmann@ess.eu
