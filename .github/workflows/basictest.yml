@@ -66,7 +66,9 @@ jobs:
           python3 -m pip install numpy ncrystal matplotlib &&
           nctool --test &&
           python3 -c 'import numpy' &&
-          python3 -c 'import matplotlib'
+          python3 -c 'import matplotlib' &&
+          python3 -c 'import matplotlib.pyplot'
+          #NB: import matplotlib.pyplot is also to ensure the font cache is triggered.
 
       - name: Build-and-test-2
         run: |
