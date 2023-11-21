@@ -119,7 +119,7 @@ jobs:
 
     - name: Build and test Core only
       id: build-and-test-core-only
-      working-directory: ./resources/example_project_core_only
+      working-directory: ./devel/example_project_core_only
       run: |
         IFS=' ' read -ra SIMPLEBUILD_OPTIONS_ARRAY <<< "$SIMPLEBUILD_OPTIONS"
         simplebuild ${SIMPLEBUILD_OPTIONS_ARRAY[@]}
@@ -129,7 +129,7 @@ jobs:
     
     - name: Build and test release mode
       id: build-and-test-release-mode
-      working-directory: ./resources/example_project_release_mode
+      working-directory: ./devel/example_project_release_mode
       run: |
         IFS=' ' read -ra SIMPLEBUILD_OPTIONS_ARRAY <<< "$SIMPLEBUILD_OPTIONS"
         simplebuild ${SIMPLEBUILD_OPTIONS_ARRAY[@]}
@@ -140,7 +140,7 @@ jobs:
 
     - name: Build-and-test-debug-mode
       id: build-and-test-debug-mode
-      working-directory: ./resources/example_project_debug_mode
+      working-directory: ./devel/example_project_debug_mode
       run: |
         IFS=' ' read -ra SIMPLEBUILD_OPTIONS_ARRAY <<< "$SIMPLEBUILD_OPTIONS"
         sb ${SIMPLEBUILD_OPTIONS_ARRAY[@]}
