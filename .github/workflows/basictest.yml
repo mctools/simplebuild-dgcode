@@ -53,7 +53,7 @@ jobs:
 
       - name: Build-and-test-1
         run: |
-          cd ./src_co/resources/example_project_core_only &&
+          cd ./src_co/devel/example_project_core_only &&
           simplebuild -t --testexcerpts=100 &&
           sbenv sb_core_queryenv system langs c &&
           cd ../example_project_release_mode &&
@@ -70,7 +70,7 @@ jobs:
 
       - name: Build-and-test-2
         run: |
-          cd ./src_co/resources/example_project_release_mode &&
+          cd ./src_co/devel/example_project_release_mode &&
           simplebuild -et --testexcerpts=100 &&
           sbenv sb_core_extdeps --require-disabled Geant4 &&
           sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
