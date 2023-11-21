@@ -1,12 +1,6 @@
 
-
-          ################################
-          !!! G4Backtrace is activated !!!
-          ################################
-
-
 **************************************************************
- Geant4 version Name: geant4-11-00-patch-03 [MT]   (16-September-2022)
+ Geant4 version Name: geant4-11-01-patch-03 [MT]   (10-November-2023)
                        Copyright : Geant4 Collaboration
                       References : NIM A 506 (2003), 250-303
                                  : IEEE-TNS 53 (2006), 270-278
@@ -4544,7 +4538,9 @@ Decay Table is not defined !!
  AntiQuark contents               : 2, 1, 0, 0, 0, 0
  Lepton number : 0 Baryon number : -1
  Particle type : baryon [nucleon]
- Stable : stable
+G4DecayTable:  anti_neutron
+0:  BR:  1  [Neutron Decay]   :   e+ nu_e anti_proton
+
 
 --- G4ParticleDefinition ---
  Particle Name : anti_nu_e
@@ -4640,7 +4636,7 @@ Decay Table is not defined !!
  Particle Name : anti_omega_c0
  PDG particle code : -4332 [PDG anti-particle code: 4332]
  Mass [GeV/c2] : 2.6952     Width : 9.6e-12
- Lifetime [nsec] : 6.9e-05
+ Lifetime [nsec] : 0.000268
  Charge [e]: 0
  Spin : 1/2
  Parity : 1
@@ -5585,7 +5581,7 @@ G4DecayTable:  anti_sigma_c0
  Particle Name : anti_triton
  PDG particle code : -1000010030 [PDG anti-particle code: 1000010030]
  Mass [GeV/c2] : 2.80892     Width : 0
- Lifetime [nsec] : -1
+ Lifetime [nsec] : 5.60521e+17
  Charge [e]: -1
  Spin : 1/2
  Parity : 1
@@ -6003,7 +5999,7 @@ Decay Table is not defined !!
  Particle Name : anti_xi_c0
  PDG particle code : -4132 [PDG anti-particle code: 4132]
  Mass [GeV/c2] : 2.47085     Width : 5.9e-12
- Lifetime [nsec] : 0.000112
+ Lifetime [nsec] : 0.0001519
  Charge [e]: 0
  Spin : 1/2
  Parity : 1
@@ -9709,7 +9705,7 @@ Decay Table is not defined !!
  Particle Name : omega_c0
  PDG particle code : 4332 [PDG anti-particle code: -4332]
  Mass [GeV/c2] : 2.6952     Width : 9.6e-12
- Lifetime [nsec] : 6.9e-05
+ Lifetime [nsec] : 0.000268
  Charge [e]: 0
  Spin : 1/2
  Parity : 1
@@ -11275,7 +11271,7 @@ G4DecayTable:  tau-
  Particle Name : triton
  PDG particle code : 1000010030 [PDG anti-particle code: -1000010030]
  Mass [GeV/c2] : 2.80892     Width : 0
- Lifetime [nsec] : 3.88524e+17
+ Lifetime [nsec] : 5.60521e+17
  Charge [e]: 1
  Spin : 1/2
  Parity : 1
@@ -11693,7 +11689,7 @@ Decay Table is not defined !!
  Particle Name : xi_c0
  PDG particle code : 4132 [PDG anti-particle code: -4132]
  Mass [GeV/c2] : 2.47085     Width : 5.9e-12
- Lifetime [nsec] : 0.000112
+ Lifetime [nsec] : 0.0001519
  Charge [e]: 0
  Spin : 1/2
  Parity : 1
@@ -11765,8 +11761,8 @@ physicsList->Construct() start.
     1) between BERT  and FTF/P over the interval 3 to 6 GeV. 
     2) between FTF/P and QGS/P over the interval 12 to 25 GeV. 
   -- quasiElastic: 1 for QGS  and 0 for FTF
-<<G4DATADIR>>/G4NDL4.6
-@@@ G4ParticleHPInelastic instantiated for particle neutron data directory variable is G4NEUTRONHPDATA pointing to <<G4DATADIR>>/G4NDL4.6/Inelastic
-@@@ G4ParticleHPInelasticData instantiated for particle neutron data directory variable is G4NEUTRONHPDATA pointing to <<G4DATADIR>>/G4NDL4.6
+<<G4DATADIR>>/G4NDL4.7
+@@@ G4ParticleHPInelastic instantiated for particle neutron data directory variable is G4NEUTRONHPDATA pointing to <<G4DATADIR>>/G4NDL4.7/Inelastic
+@@@ G4ParticleHPInelasticData instantiated for particle neutron data directory variable is G4NEUTRONHPDATA pointing to <<G4DATADIR>>/G4NDL4.7
 physicsList->CheckParticleList() start.
 physicsList->setCut() start.
