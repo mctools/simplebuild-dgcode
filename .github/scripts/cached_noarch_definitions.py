@@ -1,9 +1,9 @@
 cached_noarch_pkgs_def = """
 geant4-data-abla=3.1
-geant4-data-emlow=8.0
+geant4-data-emlow=8.2
 geant4-data-ensdfstate=2.3
 geant4-data-incl=1.0
-geant4-data-ndl=4.6
+geant4-data-ndl=4.7
 geant4-data-particlexs=4.0
 geant4-data-photonevaporation=5.7
 geant4-data-pii=1.3
