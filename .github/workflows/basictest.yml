@@ -45,19 +45,15 @@ jobs:
           #For dev work: python3 -m pip install git+https://github.com/mctools/simplebuild@tk_throwaway_branch_initial_dev &&
           #For dev work: python3 -m pip install --no-deps ./src_co &&
           python3 -m pip install ./src_co &&
-          echo "simplebuild --version: "$(sb --version)
+          echo "sb --version: "$(sb --version)
 
-      - name: Install-without-deps
+      - name: Build-and-test-minimal
         run: |
-          python3 -m pip install --no-deps ./src_co
-
-      - name: Build-and-test-1
-        run: |
-          cd ./src_co/devel/example_project_core_only &&
-          simplebuild -t --testexcerpts=100 &&
-          sbenv sb_core_queryenv system langs c &&
-          cd ../example_project_release_mode &&
-          simplebuild -t --testexcerpts=100 &&
+          set -x
+          mkdir test1 &&
+          cd test1 &&
+          sb --init dgcode_val &&
+          sb -t --testexcerpts=100 &&
           sbenv sb_core_extdeps --require-disabled NCrystal Numpy matplotlib Geant4 &&
           sbenv sb_core_extdeps --require ZLib
 
@@ -68,11 +64,26 @@ jobs:
           python3 -c 'import numpy' &&
           python3 -c 'import matplotlib' &&
           python3 -c 'import matplotlib.pyplot'
-          #NB: import matplotlib.pyplot is also to ensure the font cache is triggered.
+          #NB: import matplotlib.pyplot is also to ensure the font cache is
+          #triggered, so we don't get output in the middle of our unit tests
+          #later..
 
-      - name: Build-and-test-2
+      - name: Build-and-test-release
         run: |
-          cd ./src_co/devel/example_project_release_mode &&
-          simplebuild -et --testexcerpts=100 &&
+          set -x
+          mkdir test2 &&
+          cd test2 &&
+          sb --init dgcode_val COMPACT &&
+          sb -t --testexcerpts=100 &&
+          sbenv sb_core_extdeps --require-disabled Geant4 &&
+          sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
+
+      - name: Build-and-test-debug
+        run: |
+          set -x
+          mkdir test3 &&
+          cd test3 &&
+          sb --init dgcode_val DEBUG &&
+          sb -t --testexcerpts=100 &&
           sbenv sb_core_extdeps --require-disabled Geant4 &&
           sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib

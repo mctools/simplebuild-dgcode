@@ -21,7 +21,7 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-    'simple-build-system >= 0.0.12'
+    'simple-build-system >= 0.0.16'
 ]
 
 [project.urls]
