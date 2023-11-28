@@ -1,9 +1,10 @@
-name: dgcodeenviron
+name: dgcode
 channels:
   - nodefaults
   - conda-forge
 dependencies:
   - python
+###The preceding line will be edited for python version in .github/workflows/condatest.yml
   - tomli
   - pybind11 >= 2.10.4
   - cmake >=3.24.2
@@ -11,17 +12,21 @@ dependencies:
   - numpy
   - bash
   - pip
-  # - git
+  #- git
   - ncrystal
   - matplotlib
   - zlib
   - geant4
   - expat
   - openscenegraph
-  - ase
-  - pymatgen
-  # - gemmi
-  - spglib
   - scipy
-  - pandas
   - hdf5
+  #- ase
+  #- pymatgen
+  #- gemmi
+  #- spglib
+  #- pandas
+  - pysimplegui
+  - pip
+  - pip:
+    - simple-build-dgcode

@@ -5,6 +5,14 @@ inputs:
     description: Python version to set up
     type: string
     default: '3.9'
+  CACHED_NOARCH_DEF_PY_FILE:
+    description: Path to cached_noarch_definitions.py
+    type: string
+    required: true
+  CONDA_ENV_FILE:
+    description: Path to conda .yml file
+    type: string
+    required: true
   USE_MAMBA:
     description: Use mamba instead of conda
     type: boolean
@@ -30,7 +38,7 @@ runs:
     - name: Install Geant4 data packages
       if: steps.cache-geant4-data-packages.outputs.cache-hit != 'true'
       run: |
-        python3 .github/scripts/cached_noarch_definitions.py --yml > ~/cached_noarch_definitions.yml
+        python3 ${NOARCHDEFPYFILE} --yml > ~/cached_noarch_definitions.yml
         if [[ "${{ inputs.USE_MAMBA }}" == "true" ]]; then
           mamba env create -n geant4data -f ~/cached_noarch_definitions.yml
         else
@@ -40,6 +48,7 @@ runs:
       shell: bash -l {0}
       env:
         CONDA_SOLVER: libmamba
+        NOARCHDEFPYFILE: ${{ inputs.CACHED_NOARCH_DEF_PY_FILE }}
 
     - name: DEBUG list dir content
       run: ls -l ~/my-geant4-data-cache/noarch
@@ -59,28 +68,36 @@ runs:
 
     - name: Update conda-setup.yml with python version
       run: |
-        if [[ "${{ runner.os }}" == "Linux" ]]; then
-          sed -i "s/python/python=${{ inputs.PYTHON_VERSION }}/g" .github/scripts/conda-setup.yml
-        else
-          sed -i '' "s/python/python=${{ inputs.PYTHON_VERSION }}/g" .github/scripts/conda-setup.yml
-        fi
+        #TESTING:
+        set -eux
+        test -f ${CONDA_ENV_FILE}
+        cat ${CONDA_ENV_FILE} | sed "s/python/python=${{ inputs.PYTHON_VERSION }}/g" > actualenv.yml
+        cat actualenv.yml
+        #if [[ "${{ runner.os }}" == "Linux" ]]; then
+        #  cat ${CONDA_ENV_FILE} | sed "s/python/python=${{ inputs.PYTHON_VERSION }}/g" > actualenv.yml
+        #else
+        #  cat ${CONDA_ENV_FILE} | sed '' "s/python/python=${{ inputs.PYTHON_VERSION }}/g" > actualenv.yml
+        #fi
       shell: bash
+      env:
+        CONDA_ENV_FILE: ${{ inputs.CONDA_ENV_FILE }}
 
     - name: Setup simplebuild_dgcode environment
       run: |
         if [[ "${{ inputs.USE_MAMBA }}" == "true" ]]; then
-          mamba env update -n simplebuild_dgcode -f .github/scripts/conda-setup.yml
+          mamba env update -n simplebuild_dgcode -f actualenv.yml
         else
           conda config --show pkgs_dirs
-          conda env update -n simplebuild_dgcode -f .github/scripts/conda-setup.yml
+          conda env update -n simplebuild_dgcode -f actualenv.yml
         fi
       shell: bash -el {0}
 
     - name: Verify that Geant4 data packages match the cached versions
-      run: python3 .github/scripts/cached_noarch_definitions.py --verify-usage
+      run: python3 ${NOARCHDEFPYFILE} --verify-usage
       shell: bash -el {0}
       env:
         CONDA_SOLVER: libmamba
+        NOARCHDEFPYFILE: ${{ inputs.CACHED_NOARCH_DEF_PY_FILE }}
 
     - name: Conda list
       run: |
