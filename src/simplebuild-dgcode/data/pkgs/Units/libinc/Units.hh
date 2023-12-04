@@ -22,7 +22,9 @@ namespace Constants {
 
   // Source of Avogadro's constant is NIST/CODATA 2018. This value is the same
   // as in Geant4 since G4v10.7, but has a slight O(1e-7) difference
-  // w.r.t. NCrystal-v3.7.1 (cf. https://github.com/mctools/ncrystal/issues/149):
+  // w.r.t. NCrystal-v3.7.1
+  // (cf. https://github.com/mctools/ncrystal/issues/149). This is fixed in
+  // NCrystal-v3.8.0:
   constexpr double avogadro = 6.02214076e23;
 
   // NIST/CODATA 2018 definition of h_Planck is 6.62607015e-34*joule*second. The
