@@ -1,10 +1,10 @@
 
-recursive-include src/simplebuild-dgcode/data/pkgs LICENSE pkg.info *.cc *.hh *.icc *.c *.h *.f *.py
-recursive-include src/simplebuild-dgcode/data/pkgs/**/data *
-recursive-include src/simplebuild-dgcode/data/pkgs/**/scripts *
-recursive-include src/simplebuild-dgcode/data/pkgs_val LICENSE pkg.info *.cc *.hh *.icc *.c *.h *.f *.py
-recursive-include src/simplebuild-dgcode/data/pkgs_val/**/data *
-recursive-include src/simplebuild-dgcode/data/pkgs_val/**/scripts *
+recursive-include src/simplebuild_dgcode/data/pkgs LICENSE pkg.info *.cc *.hh *.icc *.c *.h *.f *.py
+recursive-include src/simplebuild_dgcode/data/pkgs/**/data *
+recursive-include src/simplebuild_dgcode/data/pkgs/**/scripts *
+recursive-include src/simplebuild_dgcode/data/pkgs_val LICENSE pkg.info *.cc *.hh *.icc *.c *.h *.f *.py
+recursive-include src/simplebuild_dgcode/data/pkgs_val/**/data *
+recursive-include src/simplebuild_dgcode/data/pkgs_val/**/scripts *
 recursive-include src simplebuild.cfg
 
 global-exclude *~* *\#* .*
