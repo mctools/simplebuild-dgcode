@@ -21,18 +21,18 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-    'simple-build-system >= 0.0.16'
+    'simple-build-system >= 0.0.36'
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/mctools/simplebuild-dgcode"
+"Homepage" = "https://mctools.github.io/simplebuild-dgcode"
 "Bug Tracker" = "https://github.com/mctools/simplebuild-dgcode/issues"
 
 [project.optional-dependencies]
 recommended = [
     'numpy',
     'ncrystal',
-    'matplotlib',
+    'matplotlib'
 ]
 all = [
     'numpy',
