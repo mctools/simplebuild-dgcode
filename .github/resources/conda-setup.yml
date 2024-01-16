@@ -5,14 +5,9 @@ channels:
 dependencies:
   - python
 ###The preceding line will be edited for python version in .github/workflows/condatest.yml
-  - tomli
-  - pybind11 >= 2.10.4
-  - cmake >=3.24.2
   - compilers
-  - numpy
   - bash
-  - pip
-  #- git
+  - simple-build-system
   - ncrystal
   - matplotlib
   - zlib
@@ -21,12 +16,10 @@ dependencies:
   - openscenegraph
   - scipy
   - hdf5
-  #- ase
-  #- pymatgen
-  #- gemmi
-  #- spglib
-  #- pandas
   - pysimplegui
   - pip
-  - pip:
-    - simple-build-dgcode
+  # Do not install ourselves, since we will be testing the current source code,
+  # not a prebuilt package:
+  #  - pip:
+  #    - simple-build-dgcode
+  #
