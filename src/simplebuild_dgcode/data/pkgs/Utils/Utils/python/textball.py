@@ -229,7 +229,7 @@ def textball_unpack( textball,
 #        if _.exists():
 #            raise SystemExit(f'ERROR: Please remove and rerun: {_}')
 #    print("====>>> TEST: Creating text ball")
-#    tbstr=textball_create(pathlib.Path(os.environ['DGCODE_DIR']) / 'packages/Examples/Skeletons/SkeletonSP' )
+#    tbstr=textball_create(pathlib.Path(/some/where/todo) / 'packages/Examples/Skeletons/SkeletonSP' )
 #    print(f"====>>> TEST: Writing {fn_textball.name}")
 #    _write_file_preserve_newlines(fn_textball,tbstr)
 #    print(f"====>>> TEST: Unpacking to {fn_unpackdir.name}")

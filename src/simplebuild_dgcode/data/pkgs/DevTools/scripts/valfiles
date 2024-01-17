@@ -13,7 +13,9 @@ normpath = lambda p : pathlib.Path(p).resolve().absolute()
 all_pkgdirs = set(normpath(p['dirname']) for _,p in pkgs.items())
 
 
-ignore_dirs = [cfg.dirs.blddir, cfg.dirs.installdir, *[d / '.git' for d in topdirs], normpath(pathlib.Path(os.environ['DGCODE_DIR'])/'packages'/'Projects'/'FmwkAttic'/'Validation'/'DynPkgs')]
+ignore_dirs = [ cfg.dirs.blddir,
+                cfg.dirs.installdir,
+                *[d / '.git' for d in topdirs] ]
 
 
 def is_valid_pkg_subdir(name):
@@ -63,5 +65,8 @@ for f in all_files():
         if f.parent in all_pkgdirs:
             raise SystemExit(f'ERROR: File should not be in the root of a package directory (only pkg.info file should be here): {f}')
         if f.parent.parent in all_pkgdirs and is_valid_pkg_subdir(f.parent.name):
+            continue
+        if f.name=='simplebuild.cfg':
+            #For simplicity, just ignore these wherever they are.
             continue
         raise SystemExit(f'ERROR: File outside valid directory: {f}')

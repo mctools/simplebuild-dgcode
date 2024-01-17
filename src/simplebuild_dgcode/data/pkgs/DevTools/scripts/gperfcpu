@@ -46,6 +46,6 @@ echo "::: $PPROFCMD --dot \`which $proggiven\` cpu.prof|dot -Tpdf > callgraph.pd
 echo "::: $PPROFCMD --text \`which $proggiven\` cpu.prof"
 echo ":::"
 echo "::: Hints for getting good profiling results:"
-echo "::: 1) Build with: dgbuild -r SBLD_EXTRA_CFLAGS=-g"
+echo "::: 1) Build with: mode='relwithdebug' (TODO: simplebuild should support this!!)"
 echo "::: 2) Make sure your app runs the critical code again and again for a long time."
 echo "::: 3) Sampling frequency (hz) is set with CPUPROFILE_FREQUENCY (default is 100)."

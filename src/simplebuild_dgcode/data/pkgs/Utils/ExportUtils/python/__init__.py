@@ -6,7 +6,6 @@ import Core.System as Sys
 import Utils.GitUtils
 import os,sys,shutil,datetime
 import simplebuild.cfg as cfg
-legacy_mode = not hasattr(cfg.dirs,'projdir')
 
 import pathlib
 AbsPath = lambda p : pathlib.Path(p).expanduser().resolve().absolute()
@@ -47,7 +46,7 @@ class ExportMgr:
             args.remove('--skiptar')
             self.skip_tar=True
         if len(args)==0:
-            dgdir = os.getenv('DGCODE_DIR') if legacy_mode else cfg.dirs.projdir
+            dgdir = cfg.dirs.projdir
             self.outdir = self._normalisepath(dgdir,'%s_exported'%projectname)
         elif len(args)==1:
             self.outdir = self._normalisepath(args[0])

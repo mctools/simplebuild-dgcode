@@ -19,7 +19,7 @@ def _parse(appname):
                           +' Note that the feature preventing future developments from interfering with running jobs'
                           +' is in maintenance, therefore you are not supposed to alter the application while the scan'
                           +' script is running, in order to ensure the consistency of the results!')
-                          #+' Note that it will invoke \"dgbuild --install\" before launching jobs, in order to ensure'
+                          #+' Note that it will invoke \"sb --somethingnotimplemented-install\" before launching jobs, in order to ensure'
                           #+' build consistency and to prevent future developments from interfering with running jobs')
 
     group_main = OptionGroup(parser, "Main options")
@@ -154,12 +154,12 @@ class ScanLauncher:
                     print("Continuing submission in existing directory: %s"%opt.basedir)
             instdir=os.path.join(opt.basedir,'dgcode_install')
             if not opt.resubmit:
-                #print("Invoking dgbuild and installing to %s"%instdir)
-                #ec=Core.System.system("DGCODE_BOOTSTRAP_QUIET=1 . $DGCODE_DIR/bootstrap.sh && dgbuild -q --install=%s"%quote(instdir))
+                #print("Invoking simplebuild and installing to %s"%instdir)
+                #ec=Core.System.system("whatever command here to create a dedicated simplebuild cache-dir in instdir and use it")
                 ec=0
                 print('WARNING: The feature preventing future developments from interfering with running jobs is in maintenance,'
-                   +'\n         therefore you are not supposed to alter the application while the scan script is running!')
-                print("SKIPPED: Invoking dgbuild and installing to %s"%instdir)
+                      '\n         therefore you are not supposed to alter the application while the scan script is running!')
+                #print("SKIPPED: Invoking simplebuild and installing to %s"%instdir)
                 instdir=os.environ.get('SBLD_INSTALL_PREFIX', None)
                 setupsh=os.path.join(instdir,'setup.sh')
                 if not ec==0:
