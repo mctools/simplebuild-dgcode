@@ -22,68 +22,90 @@ jobs:
           - { os: ubuntu-latest, CC: gcc-12,   CXX: g++-12,     python: '3.11' }
           - { os: macos-11,      CC: clang,    CXX: clang++,    python: "3.10" }
           - { os: macos-12,      CC: clang,    CXX: clang++,    python: "3.11" }
-         #- { os: macos-13,      CC: clang,    CXX: clang++,    python: "3.11" }
+          - { os: macos-13,      CC: clang,    CXX: clang++,    python: "3.12" }
     name: ${{ matrix.os }}.${{ matrix.CC }}.python-${{ matrix.python }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -eux {0}
     env:
       CC: ${{ matrix.CC }}
       CXX: ${{ matrix.CXX }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: src_co
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        path: src
 
-      - name: Setup python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
+    - name: Setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
 
-      - name: Install
-        run: |
-          #For dev work: python3 -m pip install git+https://github.com/mctools/simplebuild@tk_throwaway_branch_initial_dev &&
-          #For dev work: python3 -m pip install --no-deps ./src_co &&
-          python3 -m pip install ./src_co &&
-          echo "sb --version: "$(sb --version)
+    - name: Lint python
+      run: |
+           python3 -m pip install ruff
+           ruff ./src/doc/source/conf.py
+           ruff ./src/src/simplebuild_dgcode/*py
+           #TODO: MORE!!!!
 
-      - name: Build-and-test-minimal
-        run: |
-          set -x
-          mkdir test1 &&
-          cd test1 &&
-          sb --init dgcode_val &&
-          sb -t --testexcerpts=100 &&
-          sbenv sb_core_extdeps --require-disabled NCrystal Numpy matplotlib Geant4 &&
-          sbenv sb_core_extdeps --require ZLib
+    - name: Pip install cmake and pybind11
+      run: |
+           python3 -m pip install pybind11
+           python3 -m pip install cmake
+           which python3
+           python3 --version
+           python3 -mpybind11 --version
+           which cmake
+           cmake --version
 
-      - name: Install-more-deps
-        run: |
-          python3 -m pip install numpy ncrystal matplotlib &&
-          nctool --test &&
-          python3 -c 'import numpy' &&
-          python3 -c 'import matplotlib' &&
-          python3 -c 'import matplotlib.pyplot'
-          #NB: import matplotlib.pyplot is also to ensure the font cache is
-          #triggered, so we don't get output in the middle of our unit tests
-          #later..
+    - name: Install
+      run: |
+           #For dev work do these two lines instead:
+           #  python3 -m pip install git+https://github.com/mctools/simplebuild@tk_volatile
+           #  python3 -m pip install --no-deps ./src
+           python3 -m pip install ./src
+           echo "sb --version:"
+           sb --version
 
-      - name: Build-and-test-release
-        run: |
-          set -x
-          mkdir test2 &&
-          cd test2 &&
-          sb --init dgcode_val COMPACT &&
-          sb -t --testexcerpts=100 &&
-          sbenv sb_core_extdeps --require-disabled Geant4 &&
-          sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
+    - name: Build-and-test-minimal
+      run: |
+        set -x
+        mkdir test1
+        cd test1
+        sb --init dgcode_val
+        sb -t --testexcerpts=100
+        sbenv sb_core_extdeps --require-disabled NCrystal Numpy matplotlib Geant4
+        sbenv sb_core_extdeps --require ZLib
 
-      - name: Build-and-test-debug
-        run: |
-          set -x
-          mkdir test3 &&
-          cd test3 &&
-          sb --init dgcode_val DEBUG &&
-          sb -t --testexcerpts=100 &&
-          sbenv sb_core_extdeps --require-disabled Geant4 &&
-          sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
+    - name: Install-more-deps
+      run: |
+        python3 -m pip install numpy ncrystal matplotlib
+        nctool --test
+        python3 -c 'import numpy'
+        python3 -c 'import matplotlib'
+        python3 -c 'import matplotlib.pyplot'
+        #NB: import matplotlib.pyplot is also to ensure the font cache is
+        #triggered, so we don't get output in the middle of our unit tests
+        #later..
+
+    - name: Build-and-test-release
+      run: |
+        set -x
+        mkdir test2
+        cd test2
+        sb --init dgcode_val COMPACT
+        sb -t --testexcerpts=100
+        sbenv sb_core_extdeps --require-disabled Geant4
+        sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
+
+    - name: Build-and-test-debug
+      run: |
+        set -x
+        mkdir test3
+        cd test3
+        sb --init dgcode_val DEBUG
+        sb -t --testexcerpts=100
+        sbenv sb_core_extdeps --require-disabled Geant4
+        sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
