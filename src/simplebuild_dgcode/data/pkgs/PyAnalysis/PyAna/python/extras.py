@@ -18,7 +18,7 @@ def axisFormat(axis=None,fmt=None,*,locator=None,locator_minor=None,fmt_minor=No
     If axis is not supplied, plt.gca().xaxis is used.
 
     If fmt is supplied, it is is used as in: axis.set_major_formatter(FormatStrFormatter(fmt))
-    Fmt=="deg" or "degree" or "degrees" are special values, meaning fmt=r'$%d^\circ$'
+    Fmt=="deg" or "degree" or "degrees" are special values, meaning fmt=r'$%d^BACKSLASHcirc$'
 
     The locator is used as in: axis.set_major_locator(MultipleLocator(locator))
 
@@ -47,7 +47,7 @@ def axisFormat(axis=None,fmt=None,*,locator=None,locator_minor=None,fmt_minor=No
 
 def floatToScientificLatex(x):
     """
-    Converts number to tex-code, with scientific notation when appropiate (e.g. 1.23e7 becomes "1.23\cdot10^{7}")
+    Converts number to tex-code, with scientific notation when appropiate (e.g. 1.23e7 becomes "1.23BACKSLASHcdot10^{7}")
     """
     mantissa,exponent=(float(_) for _ in f'{x:e}'.lower().split('e'))
     if mantissa==1.0:
@@ -55,7 +55,7 @@ def floatToScientificLatex(x):
     if not exponent:
         return '%g'%mantissa
     else:
-        return '%g\cdot10^{%g}'%(mantissa,exponent)
+        return '%g%s10^{%g}'%(mantissa,r'\cdot',exponent)
 
 def enable_tex_fonts():
     import matplotlib
@@ -124,10 +124,10 @@ def tnsStyle(pdf='ask'):
         if 'notouchframelw' in kwargs:
             notouchframelw = True
             del kwargs['notouchframelw']
-        l = _plt_legend_orig(*args,**kwargs)
+        ll = _plt_legend_orig(*args,**kwargs)
         if not notouchframelw:
-            l.get_frame().set_linewidth(0.0)
-        return l
+            ll.get_frame().set_linewidth(0.0)
+        return ll
     plt.legend=_plt_legend
 
 def show(filename=None,tight=True,dpi=1200,automode=True):
