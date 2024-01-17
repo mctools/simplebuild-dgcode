@@ -16,7 +16,8 @@ scan.add_global_parameter("rundir")
 scan.add_global_parameter("--cleanup")
 scan.add_global_parameter("--nevts",100000)
 scan.add_global_parameter('--physlist','QGSP_BIC_HP_EMZ')
-scan.add_global_parameter('material_lab','IdealGas:formula=CO2:pressure_atm=2.0')
+scan.add_global_parameter( 'material_lab',
+                           'IdealGas:formula=CO2:pressure_atm=2.0' )
 
 #scan jobs to investigate sample size effect:
 plot1 = ParameterGroup()

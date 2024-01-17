@@ -15,7 +15,10 @@ public:
   //(add more member functions and data here if needed)
 };
 
-PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoSkeletonSP>(mod, "GeoSkeletonSP"); }
+PYTHON_MODULE( mod )
+{
+  GeoConstructPyExport::exportGeo<GeoSkeletonSP>(mod, "GeoSkeletonSP");
+}
 
 ////////////////////////////////////////////
 // Implementation of our geometry module: //
@@ -42,13 +45,13 @@ GeoSkeletonSP::GeoSkeletonSP()
   addParameterDouble("detector_sample_dist_cm",10.0);
   addParameterString("material_sample","ESS_Al");
   addParameterString("material_lab",
-                     "IdealGas:formula=0.7*Ar+0.3*CO2:temp_kelvin=293.15:pressure_atm=2.0");
+                     "NCrystal:cfg=[gasmix::0.7xAr+0.3xCO2/2.0atm/293.15K]");
 
-  //Note: It is possible and easy (but done done here to keep the example
-  //      simple) to impose constraints on parameter ranges, etc., making sure
-  //      the geometry will only be build with sensible parameters. For
-  //      instance, one should not put the sample radius larger than the
-  //      detector-sample distance.
+  //Note: It is possible and easy (but not done here to keep the example simple)
+  //      to impose constraints on parameter ranges, etc., making sure the
+  //      geometry will only be build with sensible parameters. For instance,
+  //      one should not put the sample radius larger than the detector-sample
+  //      distance.
 }
 
 G4VPhysicalVolume* GeoSkeletonSP::Construct()
@@ -70,13 +73,16 @@ G4VPhysicalVolume* GeoSkeletonSP::Construct()
   //Find more info at: https://confluence.esss.lu.se/display/DG/NamedMaterials
 
   //World volume (must be big enough for the sample and detector to fit inside):
-  const double dz_world = 1.001 * (std::abs<double>(sample_posz)+sample_radius+det_depth+det_sample_dist);
+  const double dz_world = 1.001 * ( std::abs<double>(sample_posz)
+                                    + sample_radius+det_depth+det_sample_dist );
   const double dxy_world = 1.001 * std::max<double>(0.5*det_size,sample_radius);
-  auto worldvols = place(new G4Box("World", dxy_world, dxy_world, dz_world),mat_lab,0);
+  auto worldvols = place( new G4Box("World", dxy_world, dxy_world, dz_world),
+                          mat_lab, 0 );
   auto lvWorld = worldvols.logvol;
 
   //Sample:
-  place(new G4Orb("Sample",sample_radius), mat_sample,0,0,sample_posz,lvWorld,YELLOW);
+  place( new G4Orb("Sample",sample_radius),
+         mat_sample,0,0,sample_posz,lvWorld,YELLOW );
 
   //Detector:
   place(new G4Box("Detector",0.5*det_size,0.5*det_size,0.5*det_depth),mat_det,

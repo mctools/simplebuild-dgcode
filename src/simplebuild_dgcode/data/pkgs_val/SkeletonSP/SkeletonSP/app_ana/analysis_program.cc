@@ -25,13 +25,15 @@ int main(int argc,char**argv) {
   double dxy_mm = 0.6*dr.setup()->geo().getParameterDouble("detector_size_cm")*10;
   auto h2d_box_hitmap = hc.book2D("Hit position when entering detector",
                                    40,-dxy_mm,dxy_mm,40,-dxy_mm,dxy_mm,"det_hitmap");
-  h2d_box_hitmap->setComment("This is the xy coordinates of primary particles as they enter the detector volume.");
+  h2d_box_hitmap->setComment("This is the xy coordinates of primary particles "
+                             "as they enter the detector volume.");
   h2d_box_hitmap->setXLabel("mm");
   h2d_box_hitmap->setYLabel("mm");
 
   auto h1d_box_hitradius = hc.book1D("Hit radial position when entering detector",
                                      60, 0, dxy_mm, "det_hitradius");
-  h1d_box_hitradius->setComment("This is the radial coordinates of primary particles as they enter the detector volume.");
+  h1d_box_hitradius->setComment("This is the radial coordinates of primary "
+                                "particles as they enter the detector volume.");
   h1d_box_hitradius->setXLabel("mm");
 
   //Loop over events and extract info via Griff interface:
