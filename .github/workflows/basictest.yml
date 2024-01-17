@@ -46,9 +46,7 @@ jobs:
     - name: Lint python
       run: |
            python3 -m pip install ruff
-           ruff ./src/doc/source/conf.py
-           ruff ./src/src/simplebuild_dgcode/*py
-           #TODO: MORE!!!!
+           ./src/devel/ruff.x
 
     - name: Pip install cmake and pybind11
       run: |
