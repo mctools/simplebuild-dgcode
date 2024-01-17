@@ -16,11 +16,11 @@ def resubmit_jobdir(d,onlynonsuccessful=True,quiet=False,prefix='',excludenodes=
         pr("Ignoring what does not look like a jobdir: %s"%bn)
         return
     ic=DMSCUtils.query.iscurrent(d)
-    if ic==True:
-        pr("Ignoring job still in the batch system: %s"%bn)
-        return
-    if ic==None:
+    if ic is None:
         pr("Ignoring job for which queue status could not be determined: %s"%bn)
+        return
+    if ic:
+        pr("Ignoring job still in the batch system: %s"%bn)
         return
     ec=int(open(ecf).read().strip()) if os.path.exists(ecf) else 999
     if ec==0 and onlynonsuccessful:

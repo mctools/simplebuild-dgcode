@@ -943,7 +943,7 @@ def _mpl_get_cmap( arg ):
             #Recommended since matplotlib 3.7:
             return matplotlib.colormaps.get_cmap( arg )
     #Deprecated in matplotlib 3.7:
-    return matplotlib.cm.get_cmap(cm)
+    return matplotlib.cm.get_cmap(arg)
 
 def _has_cmap(cm):
     if cm in plt.cm.datad:
@@ -1176,9 +1176,9 @@ def overlay(hists,labels,colors=None,
     else:
         fig,ax=figure,axes
 
-    if title!=False: ax.set_title(title)#not making dragable (center seems to be always the right choice)
-    if xlabel!=False: ax.set_xlabel(xlabel,picker=True)#todo: should snap to center/right ...
-    if ylabel!=False: ax.set_ylabel(ylabel,picker=True)#todo: ... or have a shortcut key
+    if title is False: ax.set_title(title)#not making dragable (center seems to be always the right choice)
+    if xlabel is False: ax.set_xlabel(xlabel,picker=True)#todo: should snap to center/right ...
+    if ylabel is False: ax.set_ylabel(ylabel,picker=True)#todo: ... or have a shortcut key
 
     lines=[]
     proxy_artists=[]

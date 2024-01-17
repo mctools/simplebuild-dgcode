@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from __future__ import print_function
+
 import sys,os
 import Core.System
 
@@ -58,7 +58,7 @@ if opt_selectevents:
                     if v.isdigit():
                         l.add(int(v))
                     else:
-                        print("ERROR: Invalid entry in file '%s': '%v'"%(e,v))
+                        print("ERROR: Invalid entry in file '%s': '%s'"%(e,v))
                         sys.exit(1)
         else:
             print("ERROR: file not found: '%s'"%e)

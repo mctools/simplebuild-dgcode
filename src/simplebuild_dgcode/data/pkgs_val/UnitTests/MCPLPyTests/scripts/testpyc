@@ -189,7 +189,7 @@ def tostr(a):
     #and py3 is rather wild...
     if isinstance(a,str): return a#bytes in py2, unicode in py3
     elif isinstance(a,bytes): return a.decode('ascii')#got bytes in py3
-    elif str==bytes and isinstance(a,unicode): return a.encode('ascii')#got unicode in py2
+    elif str==bytes and isinstance(a,unicode): return a.encode('ascii')#got unicode in py2 # noqa f821
     else: return str(a)#neither str/bytes/unicode
 
 def test_stats(*args,**kwargs):
