@@ -32,19 +32,18 @@ int main(int,char**) {
 
   init_dummy_geant4();
 
-  assert(CommonMaterials::getNISTMaterial("B")==CommonMaterials::getNISTMaterial("B"));
-  assert(CommonMaterials::getNISTMaterial("G4_B")==CommonMaterials::getNISTMaterial("B"));
+  assert(CommonMaterials::getNISTMaterial("G4_B")==CommonMaterials::getNISTMaterial("G4_B"));
 
-  print("getNISTMaterial(\"H\")",CommonMaterials::getNISTMaterial("H"));
-  print("getNISTMaterial(\"He\")",CommonMaterials::getNISTMaterial("He"));
-  print("getNISTMaterial(\"Li\")",CommonMaterials::getNISTMaterial("Li"));
-  print("getNISTMaterial(\"Be\")",CommonMaterials::getNISTMaterial("Be"));
-  print("getNISTMaterial(\"B\")",CommonMaterials::getNISTMaterial("B"));
-  print("getNISTMaterial(\"C\")",CommonMaterials::getNISTMaterial("C"));
-  print("getNISTMaterial(\"O\")",CommonMaterials::getNISTMaterial("O"));
-  print("getNISTMaterial(\"Al\")",CommonMaterials::getNISTMaterial("Al"));
-  print("getNISTMaterial(\"Gd\")",CommonMaterials::getNISTMaterial("Gd"));
-  print("getNISTMaterial(\"Fe\")",CommonMaterials::getNISTMaterial("Fe"));
+  print("getNISTMaterial(\"G4_H\")",CommonMaterials::getNISTMaterial("G4_H"));
+  print("getNISTMaterial(\"G4_He\")",CommonMaterials::getNISTMaterial("G4_He"));
+  print("getNISTMaterial(\"G4_Li\")",CommonMaterials::getNISTMaterial("G4_Li"));
+  print("getNISTMaterial(\"G4_Be\")",CommonMaterials::getNISTMaterial("G4_Be"));
+  print("getNISTMaterial(\"G4_B\")",CommonMaterials::getNISTMaterial("G4_B"));
+  print("getNISTMaterial(\"G4_C\")",CommonMaterials::getNISTMaterial("G4_C"));
+  print("getNISTMaterial(\"G4_O\")",CommonMaterials::getNISTMaterial("G4_O"));
+  print("getNISTMaterial(\"G4_Al\")",CommonMaterials::getNISTMaterial("G4_Al"));
+  print("getNISTMaterial(\"G4_Gd\")",CommonMaterials::getNISTMaterial("G4_Gd"));
+  print("getNISTMaterial(\"G4_Fe\")",CommonMaterials::getNISTMaterial("G4_Fe"));
 
   print("getNISTElement(\"H\")",CommonMaterials::getNISTElement("H"));
   print("getNISTElement(\"He\")",CommonMaterials::getNISTElement("He"));

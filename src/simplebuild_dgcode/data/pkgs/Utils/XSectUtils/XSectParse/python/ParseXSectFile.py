@@ -14,14 +14,15 @@ def parse(fh):
         fh=fh.open('rt')
         assert fh
 
-    storagetrf = lambda x : np.asarray(x)
+    def storagetrf(x):
+        return np.asarray(x)
 
     currentproc=None
     currentprocdata=[]
-    for l in fh:
-        l=l.strip()
-        if l.startswith('#'):
-            key,val = [e.strip() for e in l[1:].split(':',1)]
+    for ll in fh:
+        ll=ll.strip()
+        if ll.startswith('#'):
+            key,val = [e.strip() for e in ll[1:].split(':',1)]
             if not metadata:
                 assert [key,val]==['FileType','Geant4 XSECTSPY DATA']
             if key.startswith('Process '):
@@ -34,13 +35,15 @@ def parse(fh):
                 currentproc=val
                 currentprocdata=[]
                 xsect2mfp = float(metadata['ConvertXSectBarnToMeanFreePathMilliMeter'])
+                xsect2mfp *= ( Units.units.mm * Units.units.barn )
             else:
                 metadata[key]=val
         else:
-            assert currentproc!=None
-            vals=[float(e) for e in l.split()]
+            assert currentproc is not None
+            vals=[float(e) for e in ll.split()]
             assert len(vals)==2
-            currentprocdata+=[(vals[0]*unit_energy,vals[1]*unit_xsect,xsect2mfp*Units.units.mm/(vals[1]*unit_xsect/Units.units.barn))]
+            _xs = vals[1]*unit_xsect
+            currentprocdata+=[( vals[0]*unit_energy, _xs, xsect2mfp/_xs )]
     if currentproc:
         procs[currentproc] = storagetrf(currentprocdata)
 
@@ -48,8 +51,8 @@ def parse(fh):
 
 
 def extract_neutron_xs(xsectfile,collapse_g4procs=True):
-    """Process the parsed data, with the ability to collapse neutron cross sections into "scatter" (hadElastic) and "absorption" (the rest)"""
-    #collapse_g4procs maps G4 physics processes to just "scatter" (hadElastic) and "absorption" (the rest)
+    """Process the parsed data, with the ability to collapse neutron cross
+    sections into "scatter" (hadElastic) and "absorption" (the rest)"""
     if not isinstance(xsectfile,dict):
         xsectfile = parse(xsectfile)
     md,procs=xsectfile['metadata'],xsectfile['procs']
@@ -57,10 +60,14 @@ def extract_neutron_xs(xsectfile,collapse_g4procs=True):
     assert md['EnergyUnit']=='eV'
     assert md['XSectUnit']=='barn'
     #check all energy grids are the same:
-    pdata_Total = procs['Total']
+    #pdata_Total = procs['Total']
     procs = sorted([ (pkey,pdata) for (pkey,pdata) in procs.items() if pkey!='Total'])
-    getE = lambda _pdata : _pdata[:,0]
-    getXS = lambda _pdata : _pdata[:,1]
+
+    def getE(_pdata):
+        return _pdata[:,0]
+
+    def getXS(_pdata):
+        return _pdata[:,1]
 
     d = {}
     if collapse_g4procs:
@@ -96,8 +103,11 @@ def extract_neutron_xs(xsectfile,collapse_g4procs=True):
 
 
 
-def create_tgraphs(datafile,unitx=None,unity=None,show_mfp=False,emin=None,emax=None,produce_TotalWoHadElastic=False):
+def create_tgraphs(datafile,unitx=None,unity=None,show_mfp=False,
+                   emin=None,emax=None,produce_TotalWoHadElastic=False):
     """Obsolete function, not recommended or supported."""
+    import warnings
+    warnings.warn('The create_tgraphs function is deprecated')
     import ROOT
     import RootUtils.HistFile
 
@@ -111,10 +121,13 @@ def create_tgraphs(datafile,unitx=None,unity=None,show_mfp=False,emin=None,emax=
         tgr.SetLineColor(col)
         tgr.SetFillColor(ROOT.kWhite)
 
-    if unitx==None: unitx=Units.units.eV
-    if unity==None:
-        if show_mfp: unity=Units.units.cm
-        else: unity=Units.units.barn
+    if unitx is None:
+        unitx=Units.units.eV
+    if unity is None:
+        if show_mfp:
+            unity=Units.units.cm
+        else:
+            unity=Units.units.barn
 
     xsectdata = parse(datafile)
     md=xsectdata['metadata']
@@ -127,15 +140,15 @@ def create_tgraphs(datafile,unitx=None,unity=None,show_mfp=False,emin=None,emax=
     xvals_all=set()
     nxvals_max=0
     pts_total=None
-    tgr_hadElastic=None
+    #tgr_hadElastic=None
     tgs_nonHadElastic=[]
     for procname,points in procs.items():
         xvals=[]
         yvals=[]
         for i,(energy,xsect,mfp) in enumerate(points):
-            if emax!=None and energy>emax:
+            if emax is not None and energy>emax:
                 continue
-            if emin!=None and energy<emin:
+            if emin is not None and energy<emin:
                 continue
             xvals+=[energy/unitx]
             yvals+= [(mfp if show_mfp else xsect)/unity]
@@ -155,16 +168,19 @@ def create_tgraphs(datafile,unitx=None,unity=None,show_mfp=False,emin=None,emax=
         apply_style(ge,col,title,procname)
         ges+=[ge]
         if produce_TotalWoHadElastic:
-            if procname=='Total': pts_total=(xvals,yvals)
-            elif procname=='hadElastic': tgr_hadElastic=ge
+            if procname=='Total':
+                pts_total=(xvals,yvals)
+            elif procname=='hadElastic':
+                pass#tgr_hadElastic=ge
             else:
                 tgs_nonHadElastic+=[(xvals,ge)]
 
     if produce_TotalWoHadElastic:
         yvals=[]
         for i in range(len(pts_total[0])):
-            x,y=pts_total[0][i],pts_total[1][i]
-            y_hadElastic = tgr_hadElastic.Eval(x)
+            x=pts_total[0][i]
+            #x,y=pts_total[0][i],pts_total[1][i]
+            #y_hadElastic = tgr_hadElastic.Eval(x)
             ysum=0
             for xvals,tgr in tgs_nonHadElastic:
                 if not (x<min(xvals) or x>max(xvals)):

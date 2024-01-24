@@ -15,9 +15,7 @@ def rung4_extract_xs(element_or_isotope,physlist='QGSP_BIC_HP_EMZ',particle='neu
         raise RuntimeError(f'Invalid element specification: "{element_or_isotope}"'
                            +' (examples of valid ones are "H", "Fe", Fe56", "B10", ...)')
     element,A = parts[0],int(parts[1])
-    # pretty_name = element if not A else ( element + str(A) )
-    idealgas_formula = element if not A else '%s{%i|1.0}'%(element,A)
-    matname = f'IdealGas:formula={idealgas_formula}'
+    matname = f'gasmix::{element}{A or ""}'
     g4cmd=['sb_g4xsectdump_query',f'-p{particle}',f'-l{physlist}',f'-m{matname}','--noshow']
     g4cmd = Sys.quote_cmd(g4cmd)
     with Sys.work_in_tmpdir():

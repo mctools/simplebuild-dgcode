@@ -7,7 +7,7 @@ GeoB10Base::GeoB10Base(const char* name)
   addParameterString("material_substrate", "ESS_Al");
   addParameterString("material_detectorbox", "ESS_Al");
   addParameterString("material_converter","ESS_B4C:b10_enrichment=0.98");
-  addParameterString("material_world","AIR");//Another common option would be "Vacuum"
+  addParameterString("material_world","G4_AIR");//Another common option would be "Vacuum"
   addParameterDouble("vis_transparency", 0.0, 0.0, 1.0);//transparency of all colours
 }
 

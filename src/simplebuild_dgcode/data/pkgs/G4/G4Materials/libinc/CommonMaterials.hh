@@ -25,7 +25,7 @@ namespace CommonMaterials {
   //Access NIST materials and elements with standard densities and natural isotope abundances (using the G4NistManager):
   //
   //Example names of commonly used NIST materials are:
-  //  "B", "C", "Al", "AIR", "Ar", "CARBON_DIOXIDE", "METHANE" (CH4)
+  //  "G4_STAINLESS-STEEL", "G4_AIR", "G4_Xe", "G4_CARBON_DIOXIDE", "G4_METHANE"
   G4Material * getNISTMaterial(const char* name, const char * print_prefix="");
   G4Element * getNISTElement(const char* name, const char * print_prefix="");
 

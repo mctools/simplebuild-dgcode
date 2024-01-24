@@ -5,7 +5,8 @@
 
 //<SKEL_MUST_MODIFY_FILE>
 
-//Griff analysis. See https://confluence.esss.lu.se/display/DG/Griff for more info.
+//Griff analysis. See https://mctools.github.io/simplebuild-dgcode/griff.html
+//for more info.
 
 int main(int argc,char**argv) {
 
@@ -19,7 +20,9 @@ int main(int argc,char**argv) {
   if (dr.setup()->geo().getName()!="G4GeoSkeletonSP/GeoSkeletonSP")
     return 1;
 
-  //Book histograms (see https://confluence.esss.lu.se/display/DG/SimpleHists for more info):
+  //Book histograms (find more info at
+  //https://mctools.github.io/simplebuild-dgcode/simplehists.html):
+
   SimpleHists::HistCollection hc;
 
   double dxy_mm = 0.6*dr.setup()->geo().getParameterDouble("detector_size_cm")*10;

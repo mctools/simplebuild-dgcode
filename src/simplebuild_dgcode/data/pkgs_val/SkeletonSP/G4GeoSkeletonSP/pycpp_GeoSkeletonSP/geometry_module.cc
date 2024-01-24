@@ -43,9 +43,9 @@ GeoSkeletonSP::GeoSkeletonSP()
   addParameterDouble("sample_radius_mm",5.0);
   addParameterDouble("detector_size_cm",50.0);
   addParameterDouble("detector_sample_dist_cm",10.0);
-  addParameterString("material_sample","ESS_Al");
+  addParameterString("material_sample","stdlib::Al_sg225.ncmat");
   addParameterString("material_lab",
-                     "NCrystal:cfg=[gasmix::0.7xAr+0.3xCO2/2.0atm/293.15K]");
+                     "gasmix::0.7xAr+0.3xCO2/2.0atm/293.15K");
 
   //Note: It is possible and easy (but not done here to keep the example simple)
   //      to impose constraints on parameter ranges, etc., making sure the
@@ -62,15 +62,14 @@ G4VPhysicalVolume* GeoSkeletonSP::Construct()
   const double det_size = getParameterDouble("detector_size_cm")*Units::cm;
   const double det_depth = 1.0*Units::cm;//ok to hardcode non-interesting parameters
   const double det_sample_dist = getParameterDouble("detector_sample_dist_cm")*Units::cm;
+
+  //Materials are set up in the following via simple strings (in the case of
+  //mat_det, it is hardcoded to always be a vacuum). This has many advantages.
+  //Find more info at: https://mctools.github.io/simplebuild-dgcode/matdef.html
+
   auto mat_sample = getParameterMaterial("material_sample");
   auto mat_lab = getParameterMaterial("material_lab");
   auto mat_det = getMaterial("Vacuum");
-
-  //Notice that materials are created above via the NamedMaterialProvider. Avoid
-  //the temptation to instead create your own G4Material instances in the code,
-  //since it invites bugs and reduces flexibility, reusability and readability!
-  //
-  //Find more info at: https://confluence.esss.lu.se/display/DG/NamedMaterials
 
   //World volume (must be big enough for the sample and detector to fit inside):
   const double dz_world = 1.001 * ( std::abs<double>(sample_posz)

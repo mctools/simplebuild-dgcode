@@ -178,53 +178,81 @@ NamedMaterialProvider::MatInfo::MatInfo(const std::string& ss)
   }
 }
 
+//FIXME: return const materials
 G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
 {
   constexpr double stp_temp = 273.15 * Units::kelvin;
   constexpr double stp_pressure = 1.0 * Units::atm;
 
-  std::string ss = sss;
-
-  //check cache:
-  static std::map<std::string,G4Material*> cache;
-  auto itCache = cache.find(ss);
-  if (itCache!=cache.end()) {
-    return itCache->second;
-  }
+  std::string ss = NC::trim2( sss );
 
   auto validate = []( const G4Material * mat)
   {
     if ( !mat )
-      throw std::runtime_error("NamedMaterialProvider ERROR: Would return nullptr");
+      throw std::runtime_error("NamedMaterialProvider ERROR: Would"
+                               " return nullptr");
     //Guard against: https://bugzilla-geant4.kek.jp/show_bug.cgi?id=2520:
     if ( mat->GetBaseMaterial() && mat->GetBaseMaterial()->GetBaseMaterial() )
-      throw std::runtime_error("NamedMaterialProvider ERROR: Would return double-based material which is not supported");
+      throw std::runtime_error("NamedMaterialProvider ERROR: Would return"
+                               " double-based material which is not supported");
     return const_cast<G4Material*>(mat); //FIXME!
-
-    //FIXME: We should return const g4materials!!!
   };
 
+  //Map aliases (only on exact string contents, no other parameters allowed to
+  //keep support trivial):
 
+  if ( ss.size() < 12 && ( ( ss.back() == 'm'
+                             && NC::isOneOf( ss, "Vacuum", "G4_Vacuum" ) )
+                           || ss == "G4_Galactic" ) )
+    return CommonMaterials::getMaterial_Vacuum();
 
+  if ( ss.size() < 8 && ( NC::startswith(ss,'E') || NC::startswith(ss,'M') ) ) {
+    if (NC::isOneOf(ss,"ESS_Al","MAT_Al"))
+      return validate( G4NC::createMaterial("stdlib::Al_sg225.ncmat") );
+    if (NC::isOneOf(ss,"ESS_Cu","MAT_Cu"))
+      return validate( G4NC::createMaterial("stdlib::Cu_sg225.ncmat") );
+    if (NC::isOneOf(ss,"ESS_Ti","MAT_Ti"))
+      return validate( G4NC::createMaterial("stdlib::Ti_sg194.ncmat") );
+    if (NC::isOneOf(ss,"ESS_V","mat_V"))
+      return validate( G4NC::createMaterial("stdlib::V_sg229.ncmat") );
+  }
 
-  //Map aliases (only on exact string contents, no other parameters allowed to keep support trivial):
-  if (ss=="ESS_Al") ss = "NCrystal:cfg=[stdlib::Al_sg225.ncmat]";
-  else if (ss=="ESS_Cu") ss = "NCrystal:cfg=[stdlib::Cu_sg225.ncmat]";
-  else if (ss=="ESS_Ti") ss = "NCrystal:cfg=[stdlib::Ti_sg194.ncmat]";
-  else if (ss=="ESS_V") ss = "NCrystal:cfg=[stdlib::V_sg229.ncmat]";
-
-#if 0
   //Support pure NCrystal cfg strings:
   {
     auto ncrystal_matcfg = [&ss]() -> NC::Optional<NC::MatCfg>
       {
-        if ( NC::StrView(ss).contains_any(NC::Cfg::forbidden_chars_multiphase ) )
+        auto sv = NC::StrView(ss);
+        if ( sv.contains_any(NC::Cfg::forbidden_chars_multiphase ) )
           return NC::NullOpt;
-        if ( !NC::StrView(ss).contains_any(".;:" ) )
+        if ( !sv.contains_any(".;:</" ) )
           return NC::NullOpt;
-        auto parts = NC::StrView(ss).splitTrimmedNoEmpty(':');
-        if ( parts.empty()
-             || NC::isOneOf(parts.at(0),"IdealGas","NCrystal","NCrystalDev","MIX","ESS_B4C","ESS_POLYETHYLENE") )
+        const static std::vector<std::string> reserved_words = {
+          "IdealGas","NCrystal","NCrystalDev", "MIX",
+          "MAT_B4C","MAT_POLYETHYLENE",
+          "ESS_B4C","ESS_POLYETHYLENE"
+        };
+        for ( auto& rw : reserved_words ) {
+          if ( !NC::startswith(ss,rw) )
+            continue;
+          auto svtrail = NC::StrView(ss).substr( rw.size() ).ltrimmed();
+          if ( svtrail.empty() || NC::isOneOf( svtrail[0], ';', ':' ) )
+            return NC::NullOpt;
+        }
+
+        auto parts = sv.splitTrimmedNoEmpty(':');
+        if ( parts.empty() )
+          return NC::NullOpt;
+        auto& p0 = parts.at(0);
+        // for (const auto& reserved_word : { "IdealGas","NCrystal","NCrystalDev", "MIX",
+        //                  "MAT_B4C","MAT_POLYETHYLENE",
+        //                  "ESS_B4C","ESS_POLYETHYLENE" }
+        // if ( NC::isOneOf(p0,
+        //                  "IdealGas","NCrystal","NCrystalDev", "MIX",
+        //                  "MAT_B4C","MAT_POLYETHYLENE",
+        //                  "ESS_B4C","ESS_POLYETHYLENE" ) )
+        //   return NC::NullOpt;
+        if ( !p0.contains_any(".</")
+             && ( p0.startswith( "G4_" ) || p0.startswith( "SHIELDING_" ) ) )
           return NC::NullOpt;
         NC::Optional<NC::MatCfg> res;
         try {
@@ -240,7 +268,13 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
       return validate( G4NC::createMaterial( ncrystal_matcfg.value() ) );
     }
   }
-#endif
+
+  //check cache:
+  static std::map<std::string,G4Material*> cache;
+  auto itCache = cache.find(ss);
+  if (itCache!=cache.end()) {
+    return itCache->second;
+  }
 
   //Decode:
   MatInfo matinfo(ss);
@@ -258,7 +292,7 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
     allowedproperties.insert("pressure_bar");
     allowedproperties.insert("pressure_atm");
     allowedproperties.insert("formula");
-  } else if (matinfo.name=="ESS_POLYETHYLENE") {
+  } else if (NC::isOneOf(matinfo.name,"MAT_POLYETHYLENE","ESS_POLYETHYLENE")) {
     //nothing special (should anyway end up as TS_POLYETHYLENE (and we should have option to create TS mats from G4 nist mats
   } else if (matinfo.name=="NCrystalDev") {
     allowedproperties.insert("cfg");
@@ -275,7 +309,7 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
     allowedproperties.insert("f3");
     allowedproperties.insert("f4");
     allowedproperties.insert("allowstatemix");
-  } else if (matinfo.name=="ESS_B4C") {
+  } else if (NC::isOneOf(matinfo.name,"MAT_B4C","ESS_B4C")) {
     allowedproperties.insert("b10_enrichment");
   }
   for (auto itP=matinfo.properties.begin();itP!=matinfo.properties.end();++itP) {
@@ -366,7 +400,7 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
       assert(fixedPressure&&fixedDensity);
       mat = IdealGas::createMaterialCalcT(formula.c_str(), density, pressure);
     }
-  } else if (matinfo.name=="ESS_POLYETHYLENE") {
+  } else if (NC::isOneOf(matinfo.name,"MAT_POLYETHYLENE","ESS_POLYETHYLENE")) {
     G4Material * mat_g4pe = CommonMaterials::getNISTMaterial("G4_POLYETHYLENE",s_prefix.c_str());
     const double temperature = matinfo.propertyAsDouble("temp_kelvin",stp_temp/Units::kelvin)*Units::kelvin;
     const double density = matinfo.getDensity(mat_g4pe->GetDensity());
@@ -472,15 +506,20 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
                            mat->GetPressure());
       G4NC::Manager::getInstance()->addScatterProperty(mat,std::move(ncsc));
     }
-  } else if (matinfo.name=="ESS_B4C") {
+  } else if (NC::isOneOf(matinfo.name,"MAT_B4C","ESS_B4C")) {
 
     //////////////////////////////////////////////////////////////////////////
     ////// Boron Carbide - possibly changed density/temp and enrichment //////
     //////////////////////////////////////////////////////////////////////////
 
-    double fraction_b10 = matinfo.propertyAsDouble("b10_enrichment",-1.0);
-    if (fraction_b10<0.0) fraction_b10 = CommonMaterials::getNaturalB10IsotopeFraction();
-    if (fraction_b10>1.0) matinfo.bad("b10_enrichment must be <= 1.0");
+    double fraction_b10;
+    if (!matinfo.hasProperty("b10_enrichment")) {
+      fraction_b10 = CommonMaterials::getNaturalB10IsotopeFraction();
+    } else {
+      fraction_b10 = matinfo.propertyAsDouble("b10_enrichment",-1.0);
+      if ( ! (fraction_b10>=0.0 && fraction_b10<=1.0) )
+        matinfo.bad("b10_enrichment must be between 0.0 and1.0");
+    }
 
     const double density = matinfo.getDensity(CommonMaterials::getDensity_BoronCarbide(fraction_b10));
     const double temperature = matinfo.propertyAsDouble("temp_kelvin",stp_temp)*Units::kelvin;
@@ -556,6 +595,18 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////// NIST materials, NCrystal or Shielding MATERIALS - POSSIBLY WITH CHANGED DENSITY AND TEMPERATURE //////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if ( NC::contains(matinfo.name, ';') ) {
+      printf("%sERROR: Invalid request (did you use \";\" instead of \":\" ?): \"%s\".\n",
+             s_prefix.c_str(),matinfo.name.c_str());
+      exit(1);
+    }
+
+    if ( NC::contains_any(matinfo.name, ";:<>/[]\\" ) ) {
+      printf("%sERROR: Unexpected special character in requested material name \"%s\"\n",
+             s_prefix.c_str(),matinfo.name.c_str());
+      exit(1);
+    }
 
     if (Core::starts_with(matinfo.name,"SHIELDING_")) {
       //Shielding material

@@ -1,6 +1,10 @@
 import XSectParse.ParseXSectFile
 from Utils.NeutronMath import neutron_eV_to_angstrom
-from PyAna import *
+import PyAna
+np = PyAna.np
+numpy = PyAna.numpy
+Units = PyAna.Units
+plt = PyAna.plt
 
 def _find_nearest(array,value):
     idx = (np.abs(array-value)).argmin()
@@ -28,16 +32,16 @@ def _extract_vals(npa,wl,mfp):
         return energy_ev,yvals
 
 def _plot_begin():
-    from Core.System import which
-    if which('latex'):
-        plt.enable_tex_fonts()
+    #from Core.System import which
+    #if which('latex'):
+    #    plt.enable_tex_fonts()
     plt.cla()
     plt.clf()
 
 def _plot_end(show,save_fig,wl,mfp,logx,logy,extra=None,mfpunit='cm',softbrackets=False):
     if extra:
         extra()
-    xl = r'Neutron wavelength [\AA]' if wl else r'Energy [eV]'
+    xl = 'Neutron wavelength [Å]' if wl else 'Energy [eV]'
     yl = ('Mean free path [%s]'%mfpunit) if mfp else r'$\sigma$ [barn]'
     if softbrackets:
         xl = xl.replace('[','(').replace(']',')')
@@ -68,29 +72,41 @@ def _plot_end(show,save_fig,wl,mfp,logx,logy,extra=None,mfpunit='cm',softbracket
         plt.subplots_adjust(bottom=0.15, right=0.9, top=0.9, left = 0.15)
     if save_fig:
         plt.savefig(save_fig)
-    if (show==None and not save_fig) or show:
+    if (show is None and not save_fig) or show:
         plt.show()
 
-def plot_file(filename,mfp=False,save_fig=None,show=None,versus_wavelength=False,logx='auto',logy='auto',softbrackets=False):
-    """Plots cross-sections found in file. Set mfp=True to plot mean free path
-    rather than cross-sections and set save_fig to save output. The parameter
+def plot_file( filename,
+               mfp=False,
+               save_fig=None,
+               show=None,
+               versus_wavelength=False,
+               logx='auto',
+               logy='auto',
+               softbrackets=False,
+               title_fontsize = 8 ):
+    """Plots cross sections found in file. Set mfp=True to plot mean free path
+    rather than cross sections and set save_fig to save output. The parameter
     'show' controls display of interactive window (default is to show when no
     saving a figure)"""
 
     _plot_begin()
     showMFP=mfp
-
     colors_nored = ['c', 'm', 'y','k','g','b']
     p=XSectParse.ParseXSectFile.parse(filename)
     md=p['metadata']
     procs=p['procs']
     physlist = md.get('PhysicsList',None)#not present in older files
-    title=r'%s %s in \texttt{%s} (%s g/cm$^{3}$, %s K, %s bar)'%(md['ParticleName'].capitalize(),
-                                                            ('MFP' if showMFP else 'X-sections'),
-                                                            md['Material'].replace('_',r'\_'),
-                                                            md['MaterialDensity [g/cm3]'],
-                                                            md['MaterialTemperature [K]'],
-                                                            md['MaterialPressure [bar]'])
+    matname = md['Material']
+    is_ncrystal = False
+    if matname.startswith('NCrystal::'):
+        is_ncrystal = True
+        matname = matname[len('NCrystal::'):]
+    title=r'%s %s in "$\mathtt{%s}$" (%s g/cm$^{3}$, %s K, %s bar)'%(md['ParticleName'].capitalize(),
+                                                                     ('MFP' if showMFP else 'X-sections'),
+                                                                     matname.replace('_',r'\_'),
+                                                                     md['MaterialDensity [g/cm3]'],
+                                                                     md['MaterialTemperature [K]'],
+                                                                     md['MaterialPressure [bar]'])
     #move Total to the end:
     procnames=list(procs.keys())
     if 'Total' in procnames:
@@ -108,10 +124,13 @@ def plot_file(filename,mfp=False,save_fig=None,show=None,versus_wavelength=False
         plt.plot(xvals,yvals,
                  label=procname,color=col)
 
-    plt.title(title)
+    plt.title(title,fontsize=title_fontsize)
 
     if physlist:
-        plt.suptitle(r'\texttt{Geant4} with physics list \texttt{%s}'%physlist.replace('_','\_'))
+        _=r'$\mathtt{Geant4}$ with physics list $\mathtt{%s}$'%physlist.replace('_','\_')
+        if is_ncrystal:
+            _ += r' + $\mathrm{NCrystal}$'
+        plt.suptitle(_)
 
     _plot_end(show,save_fig,versus_wavelength,showMFP,logx,logy,softbrackets=softbrackets)
 
@@ -119,8 +138,8 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
                   xsectname='Total',labelstyle_gen=None,
                   title=None,versus_wavelength=False,logx='auto',
                   logy='auto',extra=None,mfpunit='cm',softbrackets=False):
-    """Plots a given cross-sections (default 'Total') found in given files. Set
-    mfp=True to plot mean free path rather than cross-sections and set save_fig
+    """Plots a given cross sections (default 'Total') found in given files. Set
+    mfp=True to plot mean free path rather than cross sections and set save_fig
     to save output. The parameter 'show' controls display of interactive window
     (default is to show when no saving a figure). label_gen(ifile,metadata) can
     be used to customise the label generator. Set extra to a function object to
@@ -129,8 +148,11 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
     _plot_begin()
     showMFP=mfp
 
+    def default_labelstyle_gen( ifile,metadata):
+        return ('file %i'%ifile,None,None,None)
+
     if not labelstyle_gen:
-        labelstyle_gen = lambda ifile,metadata : ('file %i'%ifile,None,None,None)
+        labelstyle_gen = default_labelstyle_gen
 
     colors = ['r','c', 'm', 'y','k','g','b','orange','yellow']
     pp=[XSectParse.ParseXSectFile.parse(filename) for filename in filenames]
@@ -144,8 +166,10 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
             yvals *= (Units.units.cm/getattr(Units.units,mfpunit))
 
         label,linestyle,linewidth,col = labelstyle_gen(ifile,p['metadata'])
-        if col==None: col=colors[ifile%len(colors)]
-        if linestyle==None: linestyle='-'
+        if col is None:
+            col=colors[ifile%len(colors)]
+        if linestyle is None:
+            linestyle='-'
         plt.plot(xvals,yvals,
                  label=label,color=col,linestyle=linestyle,linewidth=linewidth)
 
@@ -154,18 +178,18 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
 
     proctxt=' of the process %s'%xsectname if xsectname!='Total' else ''
     if title is not False:
-        plt.suptitle(r'Comparison of \texttt{Geant4} %s%s'%('Mean Free Path' if showMFP else 'Cross-sections',proctxt))
+        plt.suptitle('Comparison of $\mathtt{Geant4}$ %s%s'%('Mean Free Path' if showMFP else 'Cross sections',proctxt))
 
     _plot_end(show,save_fig,versus_wavelength,showMFP,logx,logy,extra,mfpunit=mfpunit,softbrackets=softbrackets)
 
 def xsectfile(mat,physlist,particle='neutron',force=False):
     """Get name of xsect file with automatic creation of said file if missing"""
     from Core.System import system
-    import os,sys
+    import os
     fn='xsects_discreteprocs_%s__%s__%s.txt'%(particle,mat,physlist)
     if force or not os.path.exists(fn):
         ec=system('sb_g4xsectdump_query -m"%s" -p%s  -l"%s" -s -f'%(mat,particle,physlist))
         if ec!=0 or not os.path.exists(fn):
             print("ERROR: Could not generate x-sections for %s / %s / %s"%(mat,particle,physlist))
-            sys.exit(0)
+            raise SystemExit(1)
     return fn

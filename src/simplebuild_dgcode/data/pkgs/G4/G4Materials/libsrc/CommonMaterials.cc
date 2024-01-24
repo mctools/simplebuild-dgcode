@@ -14,36 +14,29 @@
 G4Material* CommonMaterials::getNISTMaterial(const char* name, const char * print_prefix)
 {
   static std::map<std::string,G4Material*,Utils::fast_str_cmp> cache;
-  static std::string sname;
+  std::string sname;
   sname.clear();
   if (Core::starts_with(name,"G4_")) {
     sname += name;
   } else {
-    sname += "G4_";
-    sname += name;
+    printf("%sERROR: all G4 NIST DB material names should "
+           "start with \"G4_\". Problematic request is \"%s\".\n",
+           print_prefix,
+           name);
+    exit(1);
   }
   auto it = cache.find(sname);
   if (it==cache.end()) {
-    //A few mappings
+    //A few custom mappings
     if (sname=="G4_Vacuum") { sname="G4_Galactic"; }
-    else if (sname=="G4_CO2") { sname="G4_CARBON_DIOXIDE"; }
-    else if (sname=="G4_CH4") { sname="G4_METHANE"; }
-    else if (sname=="G4_NYLON-12") { return CommonMaterials::getMaterial_Nylon12(); }
+    // else if (sname=="G4_CO2") { sname="G4_CARBON_DIOXIDE"; }
+    // else if (sname=="G4_CH4") { sname="G4_METHANE"; }
+    //else if (sname=="G4_NYLON-12") { return CommonMaterials::getMaterial_Nylon12(); }
     else if (sname=="G4_Gd2O3") { return CommonMaterials::getMaterial_Gd2O3(); }
-
-    // if (sname=="G4_Aluminium_TS"||sname=="G4_Al_TS") {
-    //   //Al metal, thermal scattering [TS example from Xiao Xiao]
-    //   G4Isotope *isoAl=new G4Isotope("isoAl", 13, 27, 26.9815386 *Units::g/Units::mole);
-    //   G4Element* elTSAl = new G4Element("TS_Aluminium_Metal", "H_ALUMINIUM",1);
-    //   elTSAl->AddIsotope(isoAl,1.);
-    //   G4Material* matAl_TS = new G4Material("Aluminium_TS", 2.73*Units::g/Units::cm3, kStateSolid);
-    //   matAl_TS -> AddElement(elTSAl,1);
-    //   cache[sname] = matAl_TS;
-    //   return matAl_TS;
-    // }
     G4Material * mat = G4NistManager::Instance()->FindOrBuildMaterial(sname,true);
     if (!mat) {
-      printf("%sERROR: did not find material \"%s\" in G4 NIST DB\n",print_prefix,name);
+      printf("%sERROR: did not find material \"%s\" in G4 NIST DB\n",
+             print_prefix,name);
       exit(1);
     }
     cache[sname] = mat;
@@ -205,7 +198,7 @@ G4Material * CommonMaterials::getMaterial_Boron(double b10_isotope_fraction,doub
   if (b10_isotope_fraction<0.0&&density<0.0) {
     static G4Material * mat = 0;
     if (!mat)
-      mat = getNISTMaterial("B");
+      mat = getNISTMaterial("G4_B");
     return mat;
   }
   if (b10_isotope_fraction<0.0)
@@ -238,7 +231,7 @@ G4Material * CommonMaterials::getMaterial_BoronCarbide(double b10_isotope_fracti
   if (b10_isotope_fraction<0.0&&density<0.0&&temperature<0.0) {
     static G4Material * mat = 0;
     if (!mat)
-      mat = getNISTMaterial("BORON_CARBIDE");
+      mat = getNISTMaterial("G4_BORON_CARBIDE");
     return mat;
   }
 
@@ -293,7 +286,7 @@ G4Material * CommonMaterials::getMaterial_Vacuum()
 {
   static G4Material * mat = 0;
   if (!mat)
-    mat = getNISTMaterial("Galactic");
+    mat = getNISTMaterial("G4_Galactic");
   assert(mat);
   return mat;
 }
@@ -302,7 +295,7 @@ G4Material * CommonMaterials::getMaterial_Air()
 {
   static G4Material * mat = 0;
   if (!mat)
-    mat = getNISTMaterial("AIR");
+    mat = getNISTMaterial("G4_AIR");
   assert(mat);
   return mat;
 }

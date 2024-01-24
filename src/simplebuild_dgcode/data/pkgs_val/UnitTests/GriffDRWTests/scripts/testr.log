@@ -65,7 +65,7 @@ G4Launcher:: Simulation done
 Dumping grifftests.griff:
   File format version: 2
   Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
-         0      0      0        24      1401           96         160     1681 [success]
+         0      0      0        24      1406           96         160     1686 [success]
          1      0      1        24         0           96         160      280 [success]
          2      0      2        24         0           96         160      280 [success]
          3      0      3        24         0           96         160      280 [success]
@@ -965,7 +965,7 @@ Dumping grifftests.griff:
        897      0    897        24         0           96         160      280 [success]
        898      0    898        24         0           96         160      280 [success]
        899      0    899        24         0           96         160      280 [success]
-  Total [nevts=900]:         21600      2049       121856      321280   466785 [success]
+  Total [nevts=900]:         21600      2054       121856      321280   466790 [success]
       1 GriffDataReader opened file grifftests.griff
       1 ===========================  GRIFF SETUP  ===========================
       1   UserData:
