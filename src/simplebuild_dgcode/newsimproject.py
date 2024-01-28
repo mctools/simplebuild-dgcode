@@ -21,11 +21,11 @@ def parse_cmdline():
     parser.add_argument('project_name', metavar='PROJECTNAME', type=str,
                         help=('Project name. Should be short and'
                               ' descriptive CamelCased string with no spaces'))
-    defproj=determine_default_project_dir()
     parser.add_argument("-d", "--target_dir",metavar='DIR',
                         type = normpath_or_none, default=None,
-                        help=('Target directory (defaults to'
-                              f' {defproj}/<PROJECTNAME>/).'))
+                        help=('Target directory. Defaults to <root>/PROJECTNAME'
+                              ' where <root> is the pkg-root associated with '
+                              'your master simplebuild.cfg file.'))
     args=parser.parse_args()
     if not args.project_name:
         parser.error('Must supply project name')
@@ -118,10 +118,6 @@ Make sure that you have edited all files, and that everything is tested with at
 least "sb --tests" before committing anything to a shared repository!
 """.rstrip()+'\n'
     print(text)
-
-
-
-
 
 if __name__ == '__main__':
     import sys

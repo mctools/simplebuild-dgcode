@@ -304,9 +304,10 @@ bool G4OSG::EventHandler::handle(const osgGA::GUIEventAdapter& ea,
         //fixme: should also change box/text colours
         m_bgdColor = (m_bgdColor+1)%6;
         switch(m_bgdColor) {
-        case 0: cam->setClearColor(osg::Vec4(0.2,0.2,0.4,1)); break;
-        case 1: cam->setClearColor(osg::Vec4(0.0,0.0,0.0,1)); break;
-        case 2: cam->setClearColor(osg::Vec4(0.4,0.4,0.4,1)); break;
+          //NOTE: Keep the case=0 value in synch with initial value in Viewer.cc!!!!:
+        case 0: cam->setClearColor(osg::Vec4(0.4,0.4,0.4,1)); break;
+        case 1: cam->setClearColor(osg::Vec4(0.2,0.2,0.4,1)); break;
+        case 2: cam->setClearColor(osg::Vec4(0.0,0.0,0.0,1)); break;
         case 3: cam->setClearColor(osg::Vec4(0.7,0.7,0.7,1)); break;
         case 4: cam->setClearColor(osg::Vec4(0.85,0.85,0.85,1)); break;
         case 5: cam->setClearColor(osg::Vec4(1.0,1.0,1.0,1)); break;
@@ -579,44 +580,6 @@ bool G4OSG::EventHandler::handle(const osgGA::GUIEventAdapter& ea,
       return false;
     }
 }
-
-//TMP //inspired by code in osgViewer/View.cpp
-//TMP bool findRay(double x,double y, osgViewer::View* view,
-//TMP              osg::Vec3d& startVertex,
-//TMP              osg::Vec3d& endVertex)
-//TMP {
-//TMP   //if (!_camera.valid()) return false;
-//TMP
-//TMP     double local_x, local_y = 0.0;
-//TMP     const osg::Camera* camera = view->getCameraContainingPosition(x, y, local_x, local_y);
-//TMP     assert(camera);//if (!camera) camera = _camera.get();
-//TMP
-//TMP     osg::Matrixd matrix;
-//TMP     // if (nodePath.size()>1)
-//TMP     // {
-//TMP     //     osg::NodePath prunedNodePath(nodePath.begin(),nodePath.end()-1);
-//TMP     //     matrix = osg::computeLocalToWorld(prunedNodePath);
-//TMP     // }
-//TMP
-//TMP     matrix.postMult(camera->getViewMatrix());
-//TMP     matrix.postMult(camera->getProjectionMatrix());
-//TMP
-//TMP     double zNear = -1.0;
-//TMP     double zFar = 1.0;
-//TMP     if (camera->getViewport())
-//TMP     {
-//TMP         matrix.postMult(camera->getViewport()->computeWindowMatrix());
-//TMP         zNear = 0.0;
-//TMP         zFar = 1.0;
-//TMP     }
-//TMP
-//TMP     osg::Matrixd inverse;
-//TMP     inverse.invert(matrix);
-//TMP
-//TMP     startVertex = osg::Vec3d(local_x,local_y,zNear) * inverse;
-//TMP     endVertex = osg::Vec3d(local_x,local_y,zFar) * inverse;
-//TMP     return true;
-//TMP }
 
 G4OSG::VolHandle* G4OSG::EventHandler::pick(osgViewer::View* view,
                                             const osgGA::GUIEventAdapter& ea,

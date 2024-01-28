@@ -19,6 +19,7 @@ import G4StdGenerators.SimpleGen as genmodule
 gen = genmodule.create()
 gen.particleName = 'neutron'
 gen.neutron_wavelength_aangstrom = 2.2
+gen.fixed_z_meters = -0.1
 
 # Hint: If you need a generator with more options you
 #       can replace "SimpleGen" with "FlexGen". Or perhaps,
@@ -26,7 +27,7 @@ gen.neutron_wavelength_aangstrom = 2.2
 #
 # More about particle generators at:
 #
-# https://confluence.esss.lu.se/display/DG/Particle+generators+for+Geant4
+# https://mctools.github.io/simplebuild-dgcode/particlegenerators.html
 
 #############################################################
 #Framework setup

@@ -215,6 +215,10 @@ void G4OSG::Viewer::init()
   m_view->getCamera()->setClearMask(clearMask | GL_STENCIL_BUFFER_BIT);
   m_view->getCamera()->setClearStencil(0);
 
+  //NOTE: Keep this next value in synch with m_bgdColor=0  value in EventHandler.cc!!!!:
+  m_view->getCamera()->setClearColor(osg::Vec4(0.4,0.4,0.4,1));
+
+
   if (Viewer::envOption("G4OSG_BGWHITE")) {
     //like this for now, should actually change m_bgdColor state in evt handler...
     m_view->getCamera()->setClearColor(osg::Vec4(1.0,1.0,1.0,1));
