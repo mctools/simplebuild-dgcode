@@ -163,7 +163,8 @@ def invoke( *args, **kwargs ):
 def invoke_in_pkgroot( cmd, pkgroot, outfile ):
     cmdstr = ' '.join( shlex.quote(e) for e in cmd )
     print(f' ---> Launching command {cmdstr}')
-    cmd = ['sbenv']+cmd
+    if cmd[0].startswith('sb_'):
+        cmd = ['sbenv']+cmd
     p = invoke( cmd,
                 cwd = pkgroot,
                 check = True )
