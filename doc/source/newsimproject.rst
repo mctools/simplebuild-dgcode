@@ -14,7 +14,7 @@ simplebuild packages containing a little trivial example of how to setup and
 analyse a Geant4 simulation. The user can then get started quickly, simply by
 modifying the example.
 
-The command to use is ``python3 -m simplebuild_dgcode.newsimproject``:
+The command to use is ``dgcode_newsimproject``:
 
 .. include:: ../build/autogen_tricorder_newsimproj_help.txt
   :literal:

@@ -24,10 +24,6 @@ dependencies = [
     'simple-build-system >= 0.0.36'
 ]
 
-[project.urls]
-"Homepage" = "https://mctools.github.io/simplebuild-dgcode"
-"Bug Tracker" = "https://github.com/mctools/simplebuild-dgcode/issues"
-
 [project.optional-dependencies]
 recommended = [
     'numpy',
@@ -46,3 +42,10 @@ all = [
     'pandas',
     'PySimpleGUI'
 ]
+
+[project.urls]
+"Homepage" = "https://mctools.github.io/simplebuild-dgcode/"
+"Bug Tracker" = "https://github.com/mctools/simplebuild-dgcode/issues"
+
+[project.scripts]
+dgcode_newsimproject = "simplebuild_dgcode._cli:newsimproject"

@@ -167,12 +167,10 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['sb'],
                            pkgroot,
                            c1 )
-        invoke_in_pkgroot( ['python3','-m',
-                            'simplebuild_dgcode.newsimproject','-h'],
+        invoke_in_pkgroot( ['dgcode_newsimproject','-h'],
                            pkgroot,
                            bd / 'autogen_tricorder_newsimproj_help.txt' )
-        invoke_in_pkgroot( ['python3','-m',
-                            'simplebuild_dgcode.newsimproject','TriCorder'],
+        invoke_in_pkgroot( ['dgcode_newsimproject','TriCorder'],
                            pkgroot,
                            bd / 'autogen_tricorder_newsimproj_TriCorder.txt' )
         invoke_in_pkgroot( ['sb','--tests'],
