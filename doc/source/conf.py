@@ -137,14 +137,36 @@ def prepare_tricorderproj_dir():
     d.already_done = already_done
     return d
 
+def invoke( *args, **kwargs ):
+    assert len(args)>0
+    cmd = args[0]
+    cmdstr = shlex.join( cmd )
+    orig_check = kwargs.get('check')
+    if 'check' in kwargs:
+        del kwargs['check']
+    cwd = kwargs.get('cwd')
+    assert cwd
+    orig_capture_output = kwargs.get('capture_output')
+    kwargs['capture_output'] = True
+    p = subprocess.run( *args, **kwargs )
+    if orig_check:
+        if p.returncode != 0 or p.stderr:
+            print(p.stderr.decode())
+            print(p.stdout.decode())
+            raise RuntimeError(f'Command in dir {cwd} failed!: {cmdstr}')
+    if p.stderr and (orig_check or orig_capture_output ):
+            print(p.stderr.decode())
+            print(p.stdout.decode())
+            raise RuntimeError(f'Command in dir {cwd} had stderr output!: {cmdstr}')
+    return p
+
 def invoke_in_pkgroot( cmd, pkgroot, outfile ):
     cmdstr = ' '.join( shlex.quote(e) for e in cmd )
     print(f' ---> Launching command {cmdstr}')
     cmd = ['sbenv']+cmd
-    p = subprocess.run( cmd,
-                        cwd = pkgroot,
-                        check = True,
-                        capture_output = True )
+    p = invoke( cmd,
+                cwd = pkgroot,
+                check = True )
     assert not p.stderr
     txt = p.stdout.decode()
     from _simple_build_system._sphinxutils import fixuptext
