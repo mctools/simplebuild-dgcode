@@ -99,9 +99,10 @@ difference:
    analysis histograms. It can be opened for additional analysis, or simply
    browsed with the ``sb_simplehists_browse`` command.
 
-:sbpkg:`TriCorder/TriCorder/pkg.info<SkeletonSP/pkg.info>` and :sbpkg:`TriCorder/G4TriCorder/pkg.info<G4SkeletonSP/pkg.info>` :
-   lala
-
+:sbpkg:`TriCorder/TriCorder/pkg.info<SkeletonSP/pkg.info>` and :sbpkg:`TriCorder/G4GeoTriCorder/pkg.info<G4GeoSkeletonSP/pkg.info>` :
+   The ``pkg.info`` files should contain a bit of general information about what
+   your simulation project is about, which people are involved with it,
+   etc.
 
 Of course, you should only git commit some or all of these files once you have
 actually edited them somewhat as suits your project. After all, you are most
