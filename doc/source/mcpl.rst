@@ -1,7 +1,13 @@
+.. _sbmcpl:
+
 MCPL
 ====
 
 .. include:: wipwarning.rst
+
+FIXME: Make sure we include sb_tricorder_sim --mcpl=help
+
+.. literalinclude:: ../build/autogen_tricorder_simmcplhelp.txt
 
 FIXME: next two images should be links:
 
@@ -82,11 +88,6 @@ Finally, it is of course also possible to configure MCPL writing using python co
 
 If you for instance need to get neutrons from a McStas simulation of an ESS instrument and into your Geant4 simulation of a detector, all you have to do is usually to ask your instrument scientist (or whoever it is running the McStas simulation of the instrument) to add 2 lines to their instrument file (usually just before or after the sample component) and rerun. This works out of the box from McStas 2.4.1, or as far back as McStas 2.3 with a few fixes. Find more information at https://mctools.github.io/mcpl/hooks_mcstas/.
 
-.. rubric:: Use MCPL files as input to McStas instrument simulations
-    :name: MCPL-UseMCPLfilesasinputtoMcStasinstrumentsimulations
-
-This is somewhat outside the scope of the present page which deals with the dgcode framework, but find more information a https://mctools.github.io/mcpl/hooks_mcstas/ and at `Using MCPL as source term in McStas <https://confluence.esss.lu.se/display/MCSTAS/Using+MCPL+as+source+term+in+McStas>`__.
-
 .. rubric:: Modify MCPL files
     :name: MCPL-ModifyMCPLfiles
 
@@ -117,6 +118,9 @@ Or, getting the first 1000 particles from a file (perhaps to get a smaller file 
   sb_mcplextra_filterfile infile.mcpl outfile.mcpl -l1000
 
 Run ``sb_mcplextra_filterfile --help`` for full usage instructions.
+
+
+.. _sbmcplfilterexpressions:
 
 .. rubric:: Reference info: Filter expressions
   :name: MCPL-Referenceinfo:Filterexpressions

@@ -23,7 +23,7 @@ normalisations. Collection of one-pass statistics such as unbinned mean and
 variance. Association of metadata (title, axis labels). Utilities for on-disk
 storage and quick plotting.
 
-Histogram classes are for instance found in the `ROOT <http://root.cern.ch/>`__
+Histogram classes are for instance found in the `ROOT <http://root.cern/>`__
 framework which is common in high energy physics, but for python-centric
 analyses based on e.g. "PyLab" (taken here to mean Numpy+SciPy+Matplotlib),
 having a dependency on ROOT is a bit too cumbersome. However, one runs into the

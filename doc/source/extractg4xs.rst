@@ -1,24 +1,25 @@
-Extract and investigate cross sections from Geant4
-***************************************************
+.. _sbxsect:
+
+Investigate cross sections
+**************************
 
 .. include:: wipwarning.rst
 
 While possible, it is is not in general straight-forward to extract information
 about applied cross sections and associated mean free path lengths from
-Geant4. Therefore, a custom hook was created in dgcode the FIXME `G4XSectDump
-<https://github.com/mctools/dgcode/tree/main/packages/Framework/Utils/XSectUtils/G4XSectDump>`__
-simplebuild package , which can be used to perform said extraction. It works by
-intercepting particles as they are being simulated inside an actual Geant4 job,
-thus resulting in a higher degree of certainty than if one would attempt to
-interpret the various Geant4 data files and C++ code directly.
+Geant4. Therefore, a custom hook was created in dgcode in the
+:sbpkg:`G4XSectDump` package, which can be used to perform said extraction. It
+works by intercepting particles as they are being simulated inside an actual
+Geant4 job, thus resulting in a higher degree of certainty than if one would
+attempt to interpret the various Geant4 data files and C++ code directly.
 
 .. note::
 
    If your material is defined by an :ref:`NCrystal cfg-string
-   <sbmatdef_ncrystalcfgstrings>`, you can additionally use the ``nctool``
+   <sbmatgeneral>`, you can additionally use the ``nctool``
    command to investigate the material, to get more detailed information about
    the thermal (<5eV) neutron scattering cross sections (for more information
-   see :ref:`here <sbmatdef_ncrystalcfgstrings>`).
+   see :ref:`here <sbmatgeneral>` FIXME-betterlink?).
 
    However, non-neutron, non-scattering, or non-thermal cross sections of the
    material in the Geant4 simulations are not provided by ``nctool``, and must
@@ -40,8 +41,7 @@ The extraction can be invoked in two ways:
 
 The results are extracted in the form of custom data files, each file containing
 cross section information for one particular combination of particle type,
-Geant4 material and Geant4 physics list. In the FIXME `XSectParse
-<https://github.com/mctools/dgcode/tree/main/packages/Framework/Utils/XSectUtils/XSectParse>`__
+Geant4 material and Geant4 physics list. In the :sbpkg:`XSectParse`
 package are utilities which can be used to parse and analyse those files, namely
 the ``sb_xsectparse_plotfile`` command and the two Python modules
 ``XSectParse.ParseXSectFile`` and ``XSectParse.PlotXSectFile``.
@@ -51,33 +51,8 @@ the ``sb_xsectparse_plotfile`` command and the two Python modules
 The query script is used to conveniently handle both the launch of Geant4 and
 the creation and analysis of x-section files, all via a simple interface:
 
-FIXME: dynamic:
-
-.. code-block::
-
-  $> sb_g4xsectdump_query -h
-  Usage: sb_g4xsectdump_query [options]
-
-  This script allows you to extract cross sections from Geant4, for given
-  specified combinations of material, physics list and particle type. Note that
-  power users might want to fine-tune the granularity of the extraction by
-  setting environment variables G4XSECTSPY_LOGDELTAE (default value 0.005) and
-  G4XSECTSPY_NSAMPLE (default value 50).
-
-  Options:
-    -h, --help            show this help message and exit
-    -p PARTICLE, --particle=PARTICLE
-                          Name or PDG code of particle
-    -l PHYSLIST, --physlist=PHYSLIST
-                          Name of physics list (default QGSP_BIC_HP_EMZ)
-    -m MATNAME, --material=MATNAME
-                          Material given by NamedMaterialProvider syntax
-    -s, --noshow          Don't show extracted cross sections in interactive
-                          plots
-    -f, --nofile          Don't save plots of extracted cross sections in PDF
-                          files
-    -w, --wavelengths     Show plots versus neutron wavelength rather than
-                          energy
+.. include:: ../build/autogen_tricorder_g4xsectdump_query_help.txt
+  :literal:
 
 .. rubric:: Examples
 
@@ -146,26 +121,15 @@ granularity can modify these via environment variables, for instance like this:
 .. rubric:: Parsing utilities
 
 In addition to the query script mentioned above, there are also a few utilities
-in the FIXME `XSectParse
-<https://github.com/mctools/dgcode/tree/main/packages/Framework/Utils/XSectUtils/XSectParse>`__
-package for parsing and plotting the contents of x-section files:
+in the :sbpkg:`XSectParse` package for parsing and plotting the contents of
+x-section files:
 
 #. The command ``sb_xsectparse_plotfile`` which can be run on a x-section file
    to produce plots of the contents:
 
-   .. code-block::
+   .. include:: ../build/autogen_tricorder_xsectparse_plotfile_help.txt
+     :literal:
 
-     $> sb_xsectparse_plotfile -h
-     Usage:
-
-       sb_xsectparse_plotfile [-h|--help] [-l] [xsectfile1] [xsectfile2] [...]
-
-
-      Script for quickly plotting the contents of xsectfiles dumped by the
-      G4XSectDump.XSectSpy module (usually through the -x option to a simulation script)
-
-      -h/--help : Show usage information
-      -l        : Display mean free path length rather than cross sections
 #. Python modules for parsing or plotting the contents of the x-section files:
 
    .. code-block:: python
@@ -180,9 +144,8 @@ sense that they might or might not take place (according to a mean-free-path
 length based randomisation). These are the only kinds of cross sections
 extracted by the mechanism discussed on the present page. Other non-discrete
 processes such as decay and steady energy loss due to ionisation are
-ignored. For the details, refer to the implementation in FIXME
-`XSectSpySteppingAction.hh
-<https://github.com/mctools/dgcode/blob/main/packages/Framework/Utils/XSectUtils/G4XSectDump/pycpp_XSectSpy/XSectSpySteppingAction.hh>`__.
+ignored. For the details, refer to the implementation in
+:sbpkg:`XSectSpySteppingAction.hh<G4XSectDump/pycpp_XSectSpy/XSectSpySteppingAction.hh>`.
 
 
 .. |image1| image:: images/xsects_discreteprocs_neutron__NCrystal::stdlib::Al_sg225.ncmat__QGSP_BIC_HP_EMZ.xsect.png

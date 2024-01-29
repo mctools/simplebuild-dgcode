@@ -19,7 +19,15 @@ and analysis, material configurability, etc.
 .. rubric:: Prerequisites
   :name: Geant4SimulationFramework-Prerequisites
 
-To use the Geant4 simulation framework, you must install the base prerequisites of the `CodingFramework <CodingFramework.html>`__ and possibly also Geant4 (for simulating) and zlib (for reading/writing `Griff <Griff.html>`__ files). Make sure you have consulted `HowToInstallComputingPrereqs <https://confluence.esss.lu.se/display/DGCODE/HowToInstallComputingPrereqs>`__ for installation instructions as well as the instructions of the `CodingFramework <CodingFramework.html>`__ so you know the framework in which we work before proceeding. In particular, the following discussion assumes you know what is meant by a "package".
+To use the Geant4 simulation framework, you must install the base prerequisites
+of the `CodingFramework <CodingFramework.html>`__ and possibly also Geant4 (for
+simulating) and zlib (for reading/writing `Griff <Griff.html>`__ files). Make
+sure you have consulted `HowToInstallComputingPrereqs
+<https://confluence.esss.lu.se/display/DGCODE/HowToInstallComputingPrereqs>`__
+for installation instructions as well as the instructions of the
+`CodingFramework <CodingFramework.html>`__ so you know the framework in which we
+work before proceeding. In particular, the following discussion assumes you know
+what is meant by a "package".
 
 .. rubric:: What does the framework provide
   :name: Geant4SimulationFramework-Whatdoestheframeworkprovide

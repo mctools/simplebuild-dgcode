@@ -50,7 +50,6 @@ version = _get_gitversion( _reporoot() )
 # for :sbpkg:`MyPkg` links
 extensions += '_simple_build_system._sphinxext',
 def _sbbundles():
-    #For now, just linking to main branch on github. This could be improved!
     sbdgversion='main'
     if re.match(r"^v[0-9]+\.[0-9]+\.[0-9]+$", version ):
         sbdgversion = version
@@ -58,8 +57,8 @@ def _sbbundles():
     sbdgdata = _reporoot() / 'src' / 'simplebuild_dgcode' / 'data'
     import _simple_build_system as _
     sbdata = pathlib.Path(_.__file__).parent / 'data'
-    sbdgdata_online = f'https://github.com/mctools/simplebuild-dgcode/tree/{sbdgversion}/src/simplebuild-dgcode/data'#FIXME FIXME url "-" to "_"!!!
-    sbdata_online = f'https://github.com/mctools/simplebuild/tree/{sbversion}/src/_simple_build_system/data'
+    sbdgdata_online = f'https://github.com/mctools/simplebuild-dgcode/[blob|tree]/{sbdgversion}/src/simplebuild-dgcode/data'#FIXME FIXME url "-" to "_"!!!
+    sbdata_online = f'https://github.com/mctools/simplebuild/[blob|tree]/{sbversion}/src/_simple_build_system/data'
 
     bundles = { 'dgcode' : ( sbdgdata / 'pkgs', sbdgdata_online + '/pkgs' ),
                 'dgcode_val' : ( sbdgdata / 'pkgs_val', sbdgdata_online + '/pkgs_val' ),
@@ -68,6 +67,11 @@ def _sbbundles():
                }
     return bundles
 simplebuild_pkgbundles = _sbbundles()
+
+def setup(app):
+    #Avoid horizontal scroll-bars in tables (see
+    #https://stackoverflow.com/a/40650120):
+    app.add_css_file('custom.css')
 
 #https://img.shields.io/github/issues/mctools/simplebuild
 #https://img.shields.io/github/issues/mctools/simplebuild/bug
@@ -93,14 +97,15 @@ html_static_path = ['_static']
 html_favicon = 'icon/favicon-32x32.png'
 #html_sidebars = { '**': ['globaltoc.html', 'searchbox.html'] }
 
+github_url = 'https://github.com/mctools/simplebuild-dgcode'
+
 html_theme_options = {
     'logo_only': False,
-#    'collapse_navigation' : False,
+    'collapse_navigation' : False,
     'sticky_navigation': True, #sidebar stays in place while contents scrolls
     'navigation_with_keys': True, #navigate with left/right arrow keys
-    #'github_url' : 'https://github.com/mctools/simplebuild',
+    'navigation_depth': 4,
 }
-
 #html_theme_options = {
 #    'logo': 'icon/android-chrome-192x192.png',
 #    # etc.
@@ -175,6 +180,26 @@ def invoke_in_pkgroot( cmd, pkgroot, outfile ):
     txt = f'$> {cmdstr}\n' + txt
     outfile.write_text(txt)
 
+def read_text_remove_comments( fpath, cmtchar = '#' ):
+    out = []
+    for line in fpath.read_text().splitlines():
+        if line.strip().startswith(cmtchar):
+            continue
+        if ( not line.strip()
+             and out
+             and not out[-1] ):
+            continue#no duplicate empty lines
+        out.append( line.rstrip() )
+    while out and not out[0]:
+        out = out[1:]
+    while out and not out[-1]:
+        out = out[:-1]
+    if not out:
+        return '\n'
+    if out[-1]:
+        out.append('')
+    return '\n'.join(out)
+
 def run_tricorder_cmds():
     tricorder_dirs = prepare_tricorderproj_dir()
     pkgroot = tricorder_dirs.root
@@ -199,6 +224,62 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['sb','--tests'],
                            pkgroot,
                            bd / 'autogen_tricorder_newsimproj_sbtests.txt' )
+        invoke_in_pkgroot( ['sb_g4xsectdump_query','-h'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_g4xsectdump_query_help.txt' )
+        invoke_in_pkgroot( ['sb_xsectparse_plotfile','-h'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_xsectparse_plotfile_help.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim','--heatmap=help'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_simheatmaphelp.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim','-h'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_sim_help.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_sim_noargs.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim','--heatmap=help'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_simheatmaphelp.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim','--mcpl=help'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_simmcplhelp.txt' )
+
+
+
+    tc_simscript = pkgroot/'TriCorder'/'TriCorder'/'scripts'/'sim'
+    tc_simscript_txt = read_text_remove_comments( tc_simscript )
+    assert 'launcher.go()' in tc_simscript_txt
+    assert 'launcher.setOutput' in tc_simscript_txt
+    assert 'geo=' in tc_simscript_txt.replace(' ','')
+    assert 'gen=' in tc_simscript_txt.replace(' ','')
+    assert 'G4Launcher(geo,gen)' in tc_simscript_txt.replace(' ','')
+    ( bd / 'autogen_tricorder_simscript_wocomments.py'
+     ).write_text( tc_simscript_txt )
+
+
+    tc_geomod = ( pkgroot/'TriCorder'/'G4GeoTriCorder'/
+                  'pycpp_GeoTriCorder'/'geometry_module.cc')
+    tc_geomod_txt = read_text_remove_comments( tc_geomod, '//' )
+    for e in ('getParameterMaterial','getMaterial','place',
+              '"material_lab"','"material_sample"',
+              '"sample_posz_mm"','Units::mm'):
+        assert e in tc_geomod_txt
+    #assert 'launcher.go()' in tc_geomod_txt
+    #assert 'launcher.setOutput' in tc_geomod_txt
+    #assert 'geo=' in tc_geomod_txt.replace(' ','')
+    #assert 'gen=' in tc_geomod_txt.replace(' ','')
+    #assert 'G4Launcher(geo,gen)' in tc_geomod_txt.replace(' ','')
+    ( bd / 'autogen_tricorder_geomod_wocomments.cc'
+     ).write_text( tc_geomod_txt )
+
+
+#Snip between:
+#G4Launcher:: Calling G4RunManager::Initialize()
+#G4Launcher:: Begin simulation of event 1 [seed 123456789]
+
+
     edit = c0.read_text()
     ll = c1.read_text().splitlines()
     while ll[0].startswith('$>'):

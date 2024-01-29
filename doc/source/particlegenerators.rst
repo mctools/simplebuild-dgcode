@@ -1,6 +1,8 @@
 Particle generators for Geant
 ******************************
 
+.. include:: wipwarning.rst
+
 As important for a Geant4 simulation as geometry, materials and physics list, is
 the initial set of particles to be "let loose" in the simulation each event:
 these source particles are called *primary* particles in Geant4 terminology, and

@@ -112,7 +112,7 @@ be done with a call:
   launcher.setOutput("mystuff","REDUCED")
 
 Which changes the default to be to write Griff output in **REDUCED** mode to a
-file named *mystuff.griff*.
+file named ``mystuff.griff``.
 
 No matter what default is specified in the simulation script, it is always
 changeable from the command line using the ``-o`` and ``-m`` flags:
@@ -156,9 +156,11 @@ A simple example of such an analysis is provided in
 .. tip::
 
    Multiple input files can be chained together by specifying them with a
-   wildcard, e.g. "mysim.\*.griff". By default, Griff will abort if the
-   simulation setup in all files are not identical, but this behaviour can be
-   changed to instead letting the analysis know when a new setup is encountered.
+   wildcard, e.g. ``mysim.*.griff`` (but use quotes ``'`` to avoid the shell
+   expanding the ``*`` character for you, so actually type
+   ``'mysim.*.griff'``). By default, Griff will abort if the simulation setup in
+   all files are not identical, but this behaviour can be changed to instead
+   letting the analysis know when a new setup is encountered.
 
 .. rubric:: Advanced approach
 

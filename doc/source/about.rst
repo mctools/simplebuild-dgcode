@@ -4,17 +4,12 @@ About
 
 .. include:: wipwarning.rst
 
-.. admonition:: Recommended publications for citing
-  :class: tip
-
-  | T Kittelmann et al 2014 J. Phys.: Conf. Ser. 513 022017
-  | `DOI 10.1088/1742-6596/513/2/022017 <https://doi.org/10.1088/1742-6596/513/2/022017>`_
-  | K Kanaki, T Kittelmann, et al 2018 Physica B, Condens. Matter 551 386–389
-  | `DOI 10.1016/j.physb.2018.03.025 <https://doi.org/10.1016/j.physb.2018.03.025>`_
-
+.. include:: cite.rst
 
 Please report any bugs, problems or feature requests related to simplebuild in
 the issue tracker at https://github.com/mctools/simplebuild-dgcode/issues.
+
+.. _sbhistory:
 
 History
 =======
@@ -34,9 +29,12 @@ Geant4-based simulation framework implemented as a set of simplebuild packages
 The main active developers are currently:
 
 * Thomas Kittelmann (DMSC, European Spallation Source ERIC). Main developer.
-* Milan Klausz (Centre for Energy Research, MTA EK). Developer and CI expert.
+* Milan Klausz (HUN-REN Centre for Energy Research). Developer and CI expert.
 
 Historically several other people also contributed to the development of the
 code. Of particular note is the work and support by Kalliopi Kanaki (former ESS
 ERIC, now IAEA), Xiao Xiao Cai (former DTU, now CSNS) and Richard Hall-Wilton
-(former ESS ERIC, now FDK-SD).
+(former ESS ERIC, now FDK-SD). Although a lot of the technical details and names
+changed in the meantime, this `old tutorial from 2015
+<https://indico.esss.lu.se/event/335/attachments/2549/3795/dgcode_tutorial_june2015.pdf>`__
+might still be interesting for those interested in the history of dgcode.

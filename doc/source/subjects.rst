@@ -8,6 +8,10 @@ Bla bla bla.
 
 .. toctree::
 
+   matdef.rst
+   matcookbook.rst
+   simscript.rst
+   geo.rst
    griff.rst
    g4vis.rst
    physicslists.rst
@@ -15,7 +19,6 @@ Bla bla bla.
    mcpl.rst
    gravity.rst
    simplehists.rst
-   matdef.rst
    extractg4xs.rst
    particlegenerators.rst
 

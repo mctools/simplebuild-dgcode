@@ -1,8 +1,12 @@
+.. _sbinstall:
+
 ************
 Installation
 ************
 
 .. include:: wipwarning.rst
+
+FIXME (add mcpl as well, to future-proof installations?)
 
 TODO::
 

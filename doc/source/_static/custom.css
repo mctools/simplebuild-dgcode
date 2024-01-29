@@ -1,0 +1,13 @@
+/*
+Did not work:
+.sbtighttable table td {
+  white-space: normal !important;
+}
+This did, but affects all tables:
+*/
+
+/*
+.wy-table-responsive table td {
+  white-space: normal !important;
+}
+*/

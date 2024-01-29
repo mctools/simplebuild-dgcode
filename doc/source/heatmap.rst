@@ -1,3 +1,5 @@
+.. _sbheatmap:
+
 Heat Maps
 =========
 
@@ -10,8 +12,15 @@ Heat Maps
 "Heat-map" (really 3D histograms) information of any quantity can be easily
 extracted from any sim-script. Either by adding lines inside the sim-script
 itself, or simply by using the ``--heatmap`` command-line flag of the
-sim-script. It's usage is as follows (can be found from the terminal via
-``sb_mysimscript_sim --heatmap=help`` FIXME interactive):
+sim-script. Assuming your simulation project was created as discussed :ref:`here
+<sbnewsimproject>` and that it was named ``TriCorder``, the sim-script will be
+named ``sb_tricorder_sim`` and you can get help concerning how to extract a
+heatmap interactively:
+
+.. include:: ../build/autogen_tricorder_simheatmaphelp.txt
+  :literal:
+
+FIXME
 
 .. code-block:: sh
 
@@ -44,9 +53,8 @@ sim-script. It's usage is as follows (can be found from the terminal via
 
     --heatmap="0.5*(step.pre.ekin+step.post.ekin)*step.steplength"
 
-Refer to FIXME `filter expressions <MCPL.html#MCPL-FilterExpressions>`__ for a
-full list of available parameters in the ``QUANTITY`` and ``CONDITION``
-expressions.
+Refer to :ref:`filter expressions <sbmcplfilterexpressions>` for a full list of
+available parameters in the ``QUANTITY`` and ``CONDITION`` expressions.
 
 Resulting heatmap files have extension ``.mesh3d`` and can be inspected
 interactively via the ``sb_mesh3d_browse command``, leading to an interactive
