@@ -1,5 +1,9 @@
 name: basictest
-on: push
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '30 22 * * 0'  # 22:30 every Sunday
 
 # Workflow which pip installs the source code and checks that both bundles build
 # and runs tests in both release and debug mode. For simplicity, a lot of
