@@ -40,7 +40,7 @@ changes the default value of one or more of the parameters available for the
 given generator module. Of course, those values can again be overwritten from
 the command line should the user of the simulation script so desire). In the
 example below, the author of the simulation script in question has decided to
-use the SimpleGen generator module from the FIXME G4StdGenerators package:
+use the SimpleGen generator module from the :sbpkg:`G4StdGenerators` package:
 
 .. code-block:: python
 
@@ -66,7 +66,7 @@ project <sbnewsimproject>`). One can see the available parameters by running the
 command with ``-p`` (if you forget that the flag is ``-p`` you can always run with
 ``-h`` first for usage instructions):
 
-FIXME dynamic:
+FIXME dynamic autogen_tricorder_sim_p.txt:
 
 .. code-block::
 
@@ -85,8 +85,8 @@ FIXME dynamic:
 To understand what the different parameters are for, one can:
 
 - Read on further down this page where all the generators from the
-  FIXME G4StdGenerators package are mentioned (or on some other wiki page dedicated
-  to the generator module in question).
+  :sbpkg:`G4StdGenerators` package are mentioned (or on some other wiki page
+  dedicated to the generator module in question).
 - Guess based on the hopefully very descriptive names of the parameters
 - Supply the ``--dataviewer`` or ``--aimdataviewer`` flag to generate and visualise few
   or many events in a 3D viewer, and see how the tracks are generated in the
@@ -114,6 +114,8 @@ module directly)! Get full usage instructions by:
 Examples of how to select generators and display their parameters (note, in the
 example below the ``fixed_y_meters`` parameter was already changed via an
 argument):
+
+FIXME dynamic
 
 .. code-block::
 

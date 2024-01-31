@@ -233,6 +233,12 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['sb_tricorder_sim','-h'],
                            pkgroot,
                            bd / 'autogen_tricorder_sim_help.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim','-p'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_sim_p.txt' )
+        invoke_in_pkgroot( ['sb_tricorder_sim','-g'],
+                           pkgroot,
+                           bd / 'autogen_tricorder_sim_g.txt' )
         invoke_in_pkgroot( ['sb_tricorder_sim'],
                            pkgroot,
                            bd / 'autogen_tricorder_sim_noargs.txt' )

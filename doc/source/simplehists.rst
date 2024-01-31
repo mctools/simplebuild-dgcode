@@ -75,7 +75,7 @@ retaining correct statistical metadata.
 Imagine for instance the following to be part of some big event loop running on
 the cluster (FIXME dynamic injection of the following example):
 
-.. code-block:: C++
+.. code-block:: c++
 
   SimpleHists::HistCollection hc;
   auto h_edep = hc.book1D("Energy deposited in counting gas",100,0.0,2000,"edep");

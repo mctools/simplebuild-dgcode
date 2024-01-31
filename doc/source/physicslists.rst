@@ -47,7 +47,7 @@ examples of how such commands might look:
   launcher.cmd_preinit('/process/eLoss/StepFunctionMuHad 0.1 0.001 um')
   launcher.cmd_preinit('/process/eLoss/minKinEnergy 10 eV')
 
-Note the as the name implies, the above commands will be invoked just *before*
+Note that as the name implies, the above commands will be invoked just *before*
 the Geant4 run-manager object is initialised. If for some reason, you need to
 ensure that they are instead invoked *after* the run-manager is initialised, you
 must instead use ``launcher..cmd_postinit("...")``

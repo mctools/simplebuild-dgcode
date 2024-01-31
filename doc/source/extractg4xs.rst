@@ -15,11 +15,10 @@ attempt to interpret the various Geant4 data files and C++ code directly.
 
 .. note::
 
-   If your material is defined by an :ref:`NCrystal cfg-string
-   <sbmatgeneral>`, you can additionally use the ``nctool``
-   command to investigate the material, to get more detailed information about
-   the thermal (<5eV) neutron scattering cross sections (for more information
-   see :ref:`here <sbmatgeneral>` FIXME-betterlink?).
+   If your material is defined by an :ref:`NCrystal cfg-string <sbmatgeneral>`,
+   you can additionally use the ``nctool`` command to investigate the material,
+   to get more detailed information about the thermal (<5eV) neutron scattering
+   cross sections (for more information see :ref:`here <sbmatgeneral>`).
 
    However, non-neutron, non-scattering, or non-thermal cross sections of the
    material in the Geant4 simulations are not provided by ``nctool``, and must
