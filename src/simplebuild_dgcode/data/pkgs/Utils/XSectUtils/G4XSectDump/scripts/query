@@ -32,7 +32,7 @@ if args:
 if not opt.particle:
     parser.error('Particle type must be specified. Example "-p neutron"')
 if not opt.matname:
-    parser.error('Material name must be specified. Example "-m ESS_Al"')
+    parser.error('Material name must be specified. Example "-m MAT_Al"')
 if not opt.physlist:
     parser.error('Physics list must be specified. Example "-l %s"'%defphyslist)
 if opt.wavelength and opt.particle not in ['2112','neutron']:
