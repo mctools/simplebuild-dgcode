@@ -16,12 +16,29 @@ jobs:
     - name: Checkout main repository
       uses: actions/checkout@v3
 
+#Old version from when we didn't need geant4 for the docs:
+#    - name: Setup conda environment
+#      uses: conda-incubator/setup-miniconda@v2
+#      with:
+#        activate-environment: publish-doc-condaenv
+#        environment-file: .github/resources/publish-doc-condaenv.yml
+#        #use-mamba: no
+#
+
+     #Since we need geant4 for the docs, we use the smart method from
+     #condatest.yml, and then update afterwards:
     - name: Setup conda environment
-      uses: conda-incubator/setup-miniconda@v2
+      uses: ./.github/actions/setup
       with:
-        activate-environment: publish-doc-condaenv
-        environment-file: .github/resources/publish-doc-condaenv.yml
-        #use-mamba: no
+        PYTHON_VERSION: 3.11
+        USE_MAMBA: true
+        CACHED_NOARCH_DEF_PY_FILE: ./.github/resources/cached_noarch_definitions.py
+        CONDA_ENV_FILE : ./.github/resources/conda-setup.yml
+
+    - name: Update conda env for docs
+      #NB: We do NOT add --prune in the next link, since
+      #conda-setup_extra_for_docs.yml only contains the extra dependencies
+      run: conda env update --name simplebuild_dgcode --file ./.github/resources/conda-setup_extra_for_docs.yml
 
     - name: Install self
       run: python3 -mpip install .
