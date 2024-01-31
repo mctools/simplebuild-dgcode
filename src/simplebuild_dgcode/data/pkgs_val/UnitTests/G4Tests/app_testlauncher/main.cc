@@ -12,7 +12,7 @@
 //More work to do this from the C++ side:
 class Empty_Provider : public G4Interfaces::PhysListProviderBase {
 public:
-  Empty_Provider() : G4Interfaces::PhysListProviderBase("ESS_Empty") {}
+  Empty_Provider() : G4Interfaces::PhysListProviderBase("PL_Empty") {}
   virtual ~Empty_Provider(){}
   virtual G4VUserPhysicsList * construct() { return new PhysicsListEmpty; }
 };

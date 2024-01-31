@@ -152,7 +152,7 @@ else:
             pass
     launcher = G4Launcher(geo,DummyGen())
     launcher.setOutput('none')#no Griff
-    launcher.setPhysicsList('ESS_Empty')
+    launcher.setPhysicsList('PL_Empty')
     launcher.init()
     def launch_viewer_with_data():
         #fixme: once again we replicate this function..

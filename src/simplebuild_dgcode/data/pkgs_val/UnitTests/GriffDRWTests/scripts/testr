@@ -2,7 +2,7 @@
 #set language vars to not get uniq -c to barf on osx:
 export LC_CTYPE=C
 export LANG=C
-sb_griffdrwtests_sim npoints=900 -lESS_Empty -mREDUCED
+sb_griffdrwtests_sim npoints=900 -lPL_Empty -mREDUCED
 if [ $? != 0 ]; then
     exit 1
 fi

@@ -716,7 +716,7 @@ void G4Launcher::Launcher::init()
   }
 
   //Install NCrystal if needed:
-  if (m_imp->m_physicsListName!="ESS_Empty")
+  if (m_imp->m_physicsListName!="PL_Empty")
     G4NCrystalRel::installOnDemand();
 
   for (auto& e : m_imp->m_postinithooks )
@@ -878,8 +878,8 @@ void G4Launcher::Launcher::cmd_postinit(const char* cmdstr)
 void G4Launcher::Launcher::cmd(const char* cmdstr)
 {
   G4Utils::flush();
-  if (strncmp(getPhysicsList(),"ESS_Empty",8)==0&&strncmp(cmdstr,"/process/",9)==0) {
-    printf("%sIgnoring command due to ESS_Empty physics list: %s\n",m_imp->prefix(),cmdstr);
+  if (strncmp(getPhysicsList(),"PL_Empty",8)==0&&strncmp(cmdstr,"/process/",9)==0) {
+    printf("%sIgnoring command due to PL_Empty physics list: %s\n",m_imp->prefix(),cmdstr);
     return;
   }
   printf("%sApplying command: %s\n",m_imp->prefix(),cmdstr);

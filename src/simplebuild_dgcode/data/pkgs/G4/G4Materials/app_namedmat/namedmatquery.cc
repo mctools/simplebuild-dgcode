@@ -1,5 +1,6 @@
 #include "G4Materials/NamedMaterialProvider.hh"
 #include "G4Material.hh"
+#include "G4NCrystalRel/G4NCManager.hh"
 #include <iostream>
 
 int main(int argc,char**argv) {
@@ -14,6 +15,14 @@ int main(int argc,char**argv) {
     std::cout<<std::endl;
     std::cout<<*mat<<std::endl;
     std::cout<<"==================================================================================="<<std::endl;
+    const NCrystal::ProcImpl::Process* ncscatprop = G4NCrystalRel::Manager::getInstance()->getScatterProperty(mat);
+    if ( ncscatprop ) {
+      std::cout<<"Material had NCrystal scatter property:"<<std::endl;
+      std::cout << ncscatprop->jsonDescription() << std::endl;
+      std::cout<<"==================================================================================="<<std::endl;
+    }
+
+
   }
   return 0;
 }

@@ -17,7 +17,7 @@ gen = IsotropicNeutronGen()
 import G4Launcher
 launcher = G4Launcher(geo,gen)
 launcher.setOutput('none')
-launcher.setPhysicsList('ESS_Empty')
+launcher.setPhysicsList('PL_Empty')
 
 launcher.setRndEvtMsgMode('ALWAYS')
 launcher.cmd_postinit("/tracking/verbose 1")

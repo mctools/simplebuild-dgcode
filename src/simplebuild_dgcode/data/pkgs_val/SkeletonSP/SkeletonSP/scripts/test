@@ -11,8 +11,8 @@ if [ -d $SBLD_INSTALL_PREFIX/include/G4Launcher/ ]; then
     mkdir ./simtests_skeletonsp
     cd ./simtests_skeletonsp
     #Test geometry:
-    sb_skeletonsp_sim -t -lESS_Empty
+    sb_skeletonsp_sim -t -lPL_Empty
     #Simulate a single event:
-    sb_skeletonsp_simanachain rundir --cleanup -n1 -lESS_Empty
+    sb_skeletonsp_simanachain rundir --cleanup -n1 -lPL_Empty
 fi
 

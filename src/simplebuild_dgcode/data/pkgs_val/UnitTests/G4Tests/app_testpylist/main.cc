@@ -41,7 +41,7 @@ int main(int,char**) {
   launcher.setParticleGun(2112, 0.025*Units::eV, G4ThreeVector(0,0,0), G4ThreeVector(0,0,1));
   launcher.setOutput("none");
   launcher.setSeed(117);
-  launcher.setPhysicsList("ESS_Empty");//ESS_Empty is provided via a python module, making this non-trivial in case of py-from-c++ binding issues.
+  launcher.setPhysicsList("PL_Empty");//PL_Empty is provided via a python module, making this non-trivial in case of py-from-c++ binding issues.
   launcher.startSimulation(10);
   return 0;
 }

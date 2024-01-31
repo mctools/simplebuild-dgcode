@@ -81,7 +81,7 @@ int main(int,char**) {
   launcher.setGeo(geo);
   launcher.setParticleGun(2112, 0.025*Units::eV, G4ThreeVector(0,0,-5*Units::meter), G4ThreeVector(0,0,1));
   launcher.setOutput("none");
-  launcher.setPhysicsList("ESS_Empty");
+  launcher.setPhysicsList("PL_Empty");
   launcher.cmd_postinit("/tracking/verbose 1");
   launcher.init();
   launcher.setUserSteppingAction(new CustomStepAct("trk.trkid==1 && step.stepnbr > 2",

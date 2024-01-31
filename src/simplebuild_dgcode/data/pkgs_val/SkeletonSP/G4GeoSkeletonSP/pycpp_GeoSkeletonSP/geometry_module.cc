@@ -76,7 +76,7 @@ G4VPhysicalVolume* GeoSkeletonSP::Construct()
                                     + sample_radius+det_depth+det_sample_dist );
   const double dxy_world = 1.001 * std::max<double>(0.5*det_size,sample_radius);
   auto worldvols = place( new G4Box("World", dxy_world, dxy_world, dz_world),
-                          mat_lab, 0 );
+                          mat_lab );
   auto lvWorld = worldvols.logvol;
 
   //Sample:

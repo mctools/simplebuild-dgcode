@@ -434,9 +434,9 @@ def _swallowCmdLineAndLaunch(self):
     if opt.dump or opt.dumpgen or opt.dumpgeo or (flt and opt.dumpflt) or (extraparlist and opt.dumpep) or opt.showphyslist:
         return self._shutdown()#shutdown: Make sure run-manager deletion happens now and not when garbage collection runs
 
-    if opt.osgviewer and opt.physicslist!='ESS_Empty':
-        print('%s Geometry visualisation requested => Will use ESS_Empty physics list'%self.getPrintPrefix())
-        opt.physicslist='ESS_Empty'
+    if opt.osgviewer and opt.physicslist!='PL_Empty':
+        print('%s Geometry visualisation requested => Will use PL_Empty physics list'%self.getPrintPrefix())
+        opt.physicslist='PL_Empty'
 
     self.setPhysicsList(opt.physicslist)
 
@@ -461,7 +461,7 @@ def _swallowCmdLineAndLaunch(self):
         self.postinit_hook(spy.install)
 
     from G4Utils import flush as G4Utils_flush
-    if opt.physicslist!='ESS_Empty':
+    if opt.physicslist!='PL_Empty':
         #install G4NCrystal on demand (devel version from Projects/NCrystal - framework version is in Launcher.cc)
         try:
             import NCrystalPreview

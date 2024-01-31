@@ -2,7 +2,7 @@ G4Launcher:: Pre-init started
 G4Launcher:: Installing FPE detection
 G4Launcher:: setSeed() not called, picking standard seed.
 G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
-G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up physics list PL_Empty
 G4Launcher:: Setting up geometry:
 G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 0.01
@@ -23,7 +23,7 @@ G4Launcher:: Pre-init started
 G4Launcher:: Installing FPE detection
 G4Launcher:: setSeed() not called, picking standard seed.
 G4Launcher:: Installing xoroshiro128+ random generator (via NCrystal)
-G4Launcher:: Setting up physics list ESS_Empty
+G4Launcher:: Setting up physics list PL_Empty
 G4Launcher:: Setting up geometry:
 G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 0.01

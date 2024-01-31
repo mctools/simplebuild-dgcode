@@ -49,7 +49,7 @@ if opt.allowfpe:
     launcher.allowFPE()
 
 if opt.test:
-    launcher.setPhysicsList("ESS_Empty")
+    launcher.setPhysicsList("PL_Empty")
     launcher.cmd_postinit("/geometry/test/tolerance 0.000001 mm")
     launcher.cmd_postinit("/geometry/test/run")
     launcher.init()
@@ -61,7 +61,7 @@ else:
         except ImportError:
             print("WARNING: Failed to import G4OSG.Viewer module (perhaps you do not have OpenSceneGraph installed!\n\n")
             raise
-        launcher.setPhysicsList("ESS_Empty")
+        launcher.setPhysicsList("PL_Empty")
         def launch_viewer_then_exit():
             print('='*80)
             print("== Launching viewer!")

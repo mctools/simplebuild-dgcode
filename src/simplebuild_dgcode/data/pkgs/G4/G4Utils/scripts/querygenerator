@@ -114,7 +114,7 @@ if opt.vis:
     launcher.setOutput('vis','FULL')
 else:
     launcher.setOutput('none')
-launcher.setPhysicsList('QGSP_BIC')#not 'ESS_Empty' since it does not have a full set of particles
+launcher.setPhysicsList('QGSP_BIC')#not 'PL_Empty' since it does not have a full set of particles
 sys.argv = [sys.argv[0]]
 if opt.nevts!=-1:
     sys.argv += ['--nevts=%i'%opt.nevts]

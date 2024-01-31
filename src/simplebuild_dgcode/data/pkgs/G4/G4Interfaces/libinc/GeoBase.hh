@@ -55,23 +55,23 @@ namespace G4Interfaces {
 
     //Directly from shape to physical volume (translating with [x,y,z] and optionally rotating with rot):
     PlacedVols place(G4VSolid* shape,G4Material*mat,double x=0.0,double y=0.0,double z=0.0,
-                     G4LogicalVolume*mother=0,const G4Colour&col = WHITE,
+                     G4LogicalVolume*mother=nullptr,const G4Colour&col = WHITE,
                      G4int copyNum=0, const char * name = 0,
                      G4RotationMatrix* rot = 0);
 
     //Same, but accepting a transformation object:
     PlacedVols place(G4VSolid* shape,G4Material*mat,const G4Transform3D&,
-                     G4LogicalVolume*mother,const G4Colour&col = WHITE,
+                     G4LogicalVolume*mother=nullptr,const G4Colour&col = WHITE,
                      G4int copyNum=0, const char * name = 0);
 
     //From logical volume (will override the logical volume colour as a side-effect):
     PlacedVols place(G4LogicalVolume* lv,double x=0.0,double y=0.0,double z=0.0,
-                     G4LogicalVolume*mother=0,const G4Colour&col = WHITE,
+                     G4LogicalVolume*mother=nullptr,const G4Colour&col = WHITE,
                      G4int copyNum=0, const char * name = 0,
                      G4RotationMatrix* rot = 0);
 
     PlacedVols place(G4LogicalVolume* l,const G4Transform3D&,
-                     G4LogicalVolume*mother,const G4Colour&col = WHITE,
+                     G4LogicalVolume*mother=nullptr,const G4Colour&col = WHITE,
                      G4int copyNum=0, const char * name = 0);
 
     //Some pre-defined colours:

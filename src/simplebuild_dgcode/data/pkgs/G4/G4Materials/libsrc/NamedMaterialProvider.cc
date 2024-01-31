@@ -299,6 +299,7 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
   } else if (matinfo.name=="NCrystal") {
     allowedproperties.insert("cfg");
     allowedproperties.insert("overridebaseg4mat");//can specify G4 NIST material to combine with NC::Scatter
+    allowedproperties.insert("g4physicsonly");//No actual physics from NCrystal
   } else if (matinfo.name=="MIX") {//
     allowedproperties.insert("comp1");
     allowedproperties.insert("comp2");
@@ -483,7 +484,10 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
     throw std::runtime_error("NamedMaterialProvider was compiled without support for NCrystalDev materials");
 #endif
   } else if (matinfo.name=="NCrystal") {
+    const bool opt_g4physicsonly = matinfo.propertyAsBool("g4physicsonly",false);
     const std::string& overridebaseg4mat = matinfo.propertyAsString("overridebaseg4mat","");
+    if ( opt_g4physicsonly && !overridebaseg4mat.empty() )
+      throw std::runtime_error("Do not specify both \"g4physicsonly\" and \"overridebaseg4mat\"");
     std::string cfgstr = matinfo.propertyAsString("cfg","");
     //Absorp density/temp parameters into cfgstr (this also avoids nesting G4
     //base-materials which is apparently not supported).
@@ -492,6 +496,19 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
     auto ncrystal_matcfg = NC::MatCfg( cfgstr );
     if (overridebaseg4mat.empty()) {
       mat = G4NC::createMaterial( ncrystal_matcfg );
+      if ( opt_g4physicsonly ) {
+        const G4Material * matbase = mat->GetBaseMaterial();
+        if ( !matbase )
+          throw std::runtime_error("NCrystal material does not have base material.");
+        std::string new_name = mat->GetName();
+        new_name += "_NoNCrystalPhysics";
+        mat = new G4Material( new_name,
+                              mat->GetDensity(),
+                              matbase,
+                              mat->GetState(),
+                              mat->GetTemperature(),
+                              mat->GetPressure() );
+      }
     } else {
       mat = CommonMaterials::getNISTMaterial(overridebaseg4mat.c_str(),s_prefix.c_str());//base material selected directly by user
       auto ncsc = NC::FactImpl::createScatter( ncrystal_matcfg );
