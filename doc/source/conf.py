@@ -230,9 +230,6 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['sb_xsectparse_plotfile','-h'],
                            pkgroot,
                            bd / 'autogen_tricorder_xsectparse_plotfile_help.txt' )
-        invoke_in_pkgroot( ['sb_tricorder_sim','--heatmap=help'],
-                           pkgroot,
-                           bd / 'autogen_tricorder_simheatmaphelp.txt' )
         invoke_in_pkgroot( ['sb_tricorder_sim','-h'],
                            pkgroot,
                            bd / 'autogen_tricorder_sim_help.txt' )

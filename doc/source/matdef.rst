@@ -123,6 +123,7 @@ them in a simulation. Here are a few recommended options for doing that in dgcod
    characters inside it):
 
    .. code-block::
+
      $> nctool 'stdlib::Al_sg225.ncmat;temp=250K'
 
    Add a flag ``-a`` if you want absorption cross sections included as well, but
@@ -135,6 +136,7 @@ them in a simulation. Here are a few recommended options for doing that in dgcod
    temperature affects the cross sections:
 
    .. code-block::
+
      $> nctool 'stdlib::Al_sg225.ncmat;temp=250K' 'stdlib::Al_sg225.ncmat;temp=500K'
 
    If you wish to read about how the material inside ``Al_sg225.ncmat`` was
@@ -144,11 +146,13 @@ them in a simulation. Here are a few recommended options for doing that in dgcod
    first remove parameters like ``;temp=250K``):
 
    .. code-block::
+
      $> nctool --extract 'stdlib::Al_sg225.ncmat'
 
    Many more options exists, to see them all run:
 
    .. code-block::
+
      $> nctool --help
 
 * Investigate the material via the NCrystal python API

@@ -41,6 +41,7 @@ you can add the commands in your :ref:`sim-script<sbsimscript>`. Here are some
 examples of how such commands might look:
 
 .. code-block:: python
+
   launcher.cmd_preinit('/run/setCut 0.01 mm')
   launcher.cmd_preinit('/process/eLoss/StepFunction 0.1 0.001 um')
   launcher.cmd_preinit('/process/eLoss/StepFunctionMuHad 0.1 0.001 um')
