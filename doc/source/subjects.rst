@@ -13,7 +13,7 @@ Bla bla bla.
    simscript.rst
    geo.rst
    griff.rst
-   g4vis.rst
+   vis.rst
    physicslists.rst
    heatmap.rst
    mcpl.rst

@@ -1,3 +1,6 @@
+.. _sbparticlegen:
+
+
 Particle generators for Geant
 ******************************
 
