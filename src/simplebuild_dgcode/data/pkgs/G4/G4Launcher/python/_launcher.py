@@ -380,6 +380,15 @@ def _swallowCmdLineAndLaunch(self):
     (opt, args) = parser.parse_known_args([a for a in sys.argv[1:] if not a in args_custom])
     args += list(args_custom)
 
+    #Handle aliases:
+    if opt.physicslist == 'empty':
+        opt.physicslist = 'PL_Empty'
+    if opt.physicslist.startswith('ESS_'):
+        plnametry = 'PL_' + opt.physicslist[len('ESS_'):]
+        print('G4Launcher:: WARNING Trying to map deprecated physics list'
+              f' name {opt.physicslist} to {plnametry}')
+        opt.physicslist = plnametry
+
     if opt.osgviewer_data_aim:
         opt.osgviewer_data=True
     if opt.osgviewer_data:

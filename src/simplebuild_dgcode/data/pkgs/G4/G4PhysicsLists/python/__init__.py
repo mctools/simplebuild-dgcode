@@ -49,7 +49,7 @@ def listIsCustom(plname):
     return plname in _get_custom()
 
 def extractProvider(plname):
-    if plname.lower() in ('empty','none'):
+    if plname == 'empty':
         #Accepted alias:
         plname='PL_Empty'
     _ = _get_custom().get(plname,None)

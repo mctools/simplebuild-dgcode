@@ -40,6 +40,7 @@
 #include <stdexcept>
 #include "launcher_impl_ts.hh"
 
+#include "NCrystal/internal/NCString.hh"
 
 struct G4Launcher::Launcher::Imp {
   static Launcher *& singleTonLauncherPtr()
@@ -833,10 +834,25 @@ void G4Launcher::Launcher::setPhysicsList(const char * plc)
     m_imp->error("setPhysicsList called too late");
   if (!m_imp->m_physicsListName.empty()&&!m_imp->m_allowMultipleSettings)
     m_imp->error("attempt to call setPhysicsList twice");
-  m_imp->m_physicsListName = (plc?plc:"");
+  std::string s_plc = (plc?plc:"");
+  //Handle aliases for "PL_Empty":
+  if ( s_plc == "empty" )
+    s_plc = "PL_Empty";
+  //Handle deprecated ESS_ prefix:
+  if ( NCrystal::startswith( s_plc, "ESS_" ) ) {
+    std::string s_plcnew("PL_");
+    s_plcnew += s_plc.substr(4);
+    std::ostringstream ss;
+    ss << "WARNING: Trying to map deprecated physics list name "<<s_plc
+       <<" to " << s_plcnew;
+    m_imp->print( ss.str().c_str() );
+    s_plc = s_plcnew;
+  }
+  m_imp->m_physicsListName = s_plc;
   if (m_imp->m_physicsListName.empty()&&!m_imp->m_allowMultipleSettings)
     m_imp->error("empty physics list name provided to setPhysicsList");
-  if (m_imp->m_physicsListProvider && m_imp->m_physicsListProvider->getName() != m_imp->m_physicsListName) {
+  if (m_imp->m_physicsListProvider
+      && m_imp->m_physicsListProvider->getName() != m_imp->m_physicsListName) {
     delete m_imp->m_physicsListProvider;
     m_imp->m_physicsListProvider = 0;
   }

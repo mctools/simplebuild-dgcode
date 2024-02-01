@@ -16,8 +16,7 @@ which particles simply travel around without having any interactions. This might
 for instance be useful for debugging purposes, or in case of wanting to avoid a
 long initialisation time (e.g. when testing or debugging the geometry). For that
 reason, dgcode provides a physics list ``PL_Empty`` which just that (for
-convenience it can also be chosen under the case insensitive aliases ``empty``
-and ``none``).
+convenience it can also be chosen under the alias ``empty``).
 
 Note that you can always run the command ``sb_g4physicslists_showall`` to see a
 list of all available lists (or alternatively supply the argument
