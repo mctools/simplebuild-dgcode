@@ -74,7 +74,7 @@ jobs:
           geant4-config  --version
           cd src_testproject
           sb -t --testexcerpts=100
-          sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4
+          sb_core_extdeps --require ZLib NCrystal Geant4
 
       - name: Setup tmate session for manual debugging
         uses: mxschmitt/action-tmate@v3
