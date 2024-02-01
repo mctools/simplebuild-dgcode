@@ -15,8 +15,6 @@
 //materials, names and colours in order to avoid work duplication and achieve a
 //higher level of consistency in each specific detector geometry description as
 //well as a consistent interface.
-//
-//https://confluence.esss.lu.se/display/DG/NamedMaterials
 
 class GeoB10Base : public G4Interfaces::GeoConstructBase
 {
