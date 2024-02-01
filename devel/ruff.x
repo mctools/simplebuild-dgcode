@@ -11,8 +11,6 @@ find ./pkgs/ -name '*.py' -exec ruff --ignore $IGNORE {} \;
 find ./pkgs_val/ -name '*.py' -exec ruff {} \;
 IGNORE=E501,E713,F401,E741,E722,E711,E402,F841,F541,E701,F405,E731,E401,E703,F403,E702,E721,E712
 
-
-
 for pkginfo in $(find . -name pkg.info); do
     sd="$(dirname "${pkginfo}")/scripts"
     if [ ! -d "${sd}" ]; then
@@ -27,7 +25,3 @@ for pkginfo in $(find . -name pkg.info); do
         ruff --ignore $IGNORE "$fn"
     done
 done
-
-
-#wholename '*/scripts/*' -exec ruff --ignore $IGNORE {} \;
-#TODO ruff the scripts as well!!
