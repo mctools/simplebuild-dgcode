@@ -57,7 +57,7 @@ def _sbbundles():
     sbdgdata = _reporoot() / 'src' / 'simplebuild_dgcode' / 'data'
     import _simple_build_system as _
     sbdata = pathlib.Path(_.__file__).parent / 'data'
-    sbdgdata_online = f'https://github.com/mctools/simplebuild-dgcode/[blob|tree]/{sbdgversion}/src/simplebuild-dgcode/data'#FIXME FIXME url "-" to "_"!!!
+    sbdgdata_online = f'https://github.com/mctools/simplebuild-dgcode/[blob|tree]/{sbdgversion}/src/simplebuild_dgcode/data'
     sbdata_online = f'https://github.com/mctools/simplebuild/[blob|tree]/{sbversion}/src/_simple_build_system/data'
 
     bundles = { 'dgcode' : ( sbdgdata / 'pkgs', sbdgdata_online + '/pkgs' ),
