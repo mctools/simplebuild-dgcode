@@ -1,4 +1,3 @@
-
 ************************************************
 Welcome to the simplebuild-dgcode documentation!
 ************************************************
@@ -24,14 +23,26 @@ relevant parts of the documentation.
   | K Kanaki, T Kittelmann, et al 2018 Physica B, Condens. Matter 551 386–389
   | `DOI 10.1016/j.physb.2018.03.025 <https://doi.org/10.1016/j.physb.2018.03.025>`_
 
+FIXME: argparse stuff for sb_myproj_sim scripts?
+
 .. toctree::
    :hidden:
    :maxdepth: 3
 
    intro.rst
+   newsimproject.rst
+   Geant4SimulationFramework.rst
    install.rst
+   subjects.rst
    about.rst
    contact.rst
+
+..
+
+   SANSTubeSimulations.rst
+   McStas-to-Geant4-interface-LoKI-usecase.rst
+   ESSBoronTestCell.rst
+
 
 .. toctree::
    :hidden:
