@@ -4,11 +4,14 @@ channels:
   - conda-forge
 dependencies:
   - python
-###The preceding line will be edited for python version in .github/workflows/condatest.yml
+#The preceding line will be edited for python version in .github/workflows/condatest.yml
+#The rest should match <reporoot>/resources/conda_dgcode.yml except that
+#simple-build-dgcode itself should be left out.
   - compilers
   - bash
   - simple-build-system
   - ncrystal
+  - mcpl
   - matplotlib
   - zlib
   - geant4
