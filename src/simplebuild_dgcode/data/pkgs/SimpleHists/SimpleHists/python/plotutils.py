@@ -1,7 +1,5 @@
-from __future__ import division
-from __future__ import print_function
 from functools import reduce
-__metaclass__ = type#py2 backwards compatibility
+
 __doc__='module for plotting SimpleHists'
 __all__=['plot1d','plot2d','plot2d_lego','plotcounts','plot1d_overlay','overlay']
 
@@ -16,9 +14,9 @@ __all__=['plot1d','plot2d','plot2d_lego','plotcounts','plot1d_overlay','overlay'
 
 from SimpleHists._backend_test import _ensure_backend_ok
 import matplotlib
-_interactive = not (matplotlib.get_backend().lower()=='agg')
 import matplotlib.patches as mplp
 import matplotlib.pyplot as plt
+_interactive = not (matplotlib.get_backend().lower()=='agg')
 
 def _col(cmap,i,n):
     assert i<n
@@ -83,12 +81,13 @@ def _add_help_text(fig,ax,histtype):
         assert False
 
     ht=[]
-    for l in _help_text:
+    for ll in _help_text:
         ok=True
         for b in block:
-            if b in l: ok=False
+            if b in ll:
+                ok=False
         if ok:
-            ht+=[l.replace(select,'')]
+            ht+=[ ll.replace(select,'') ]
     t=('\n '.join(ht)).strip()
     ib = ax.text(0.5,0.5,t,transform=ax.transAxes,
                  verticalalignment='center',horizontalalignment='center',multialignment='left',
@@ -96,7 +95,8 @@ def _add_help_text(fig,ax,histtype):
                  family='monospace',picker=True)
     #NB: Move to figure to avoid colorbar overlapping in 2d plots (colorbars
     #reside in different subplots):
-    ax.texts.remove(ib)
+    if hasattr(ax.texts,'remove'):
+        ax.texts.remove(ib)
     ib.figure = fig
     fig.texts.append(ib)
     ib.set_visible(False)
@@ -149,7 +149,8 @@ def _add_statbox(fig,ax,stats,vis,snap_to_corner=False):
 
     #NB: Move to figure to avoid colorbar overlapping in 2d plots (colorbars
     #reside in different subplots):
-    ax.texts.remove(sb)
+    if hasattr(ax.texts,'remove'):
+        ax.texts.remove(sb)
     sb.figure = fig
     fig.texts.append(sb)
     sb.set_visible(vis)
@@ -165,14 +166,17 @@ def _resize_text_reltofig(figure,textobject,maxsize=0.8):
         currently_resizing.add(canvas)
         width,height=canvas.get_width_height()
         vis = textobject.get_visible()
-        if not vis: textobject.set_visible(True)
+        if not vis:
+            textobject.set_visible(True)
         textobject.set_size(12.0)
         bb = textobject.get_window_extent(renderer=canvas.get_renderer())
         oversize = max(bb.width/float(width),bb.height/float(height))
         target_size=min(12,textobject.get_size()*maxsize/float(oversize))
         textobject.set_size(target_size)
-        if not vis: textobject.set_visible(False)
-        else: canvas.draw()
+        if not vis:
+            textobject.set_visible(False)
+        else:
+            canvas.draw()
         currently_resizing.remove(canvas)
 
     def handle_firstdraw(evt):
@@ -188,10 +192,10 @@ def _hovertext_setpos(handler,evt):
     handler._text.set_x(evt.xdata)
     handler._text.set_y(evt.ydata)
     xfig,yfig=handler._fig.transFigure.inverted().transform((evt.x,evt.y))
-    if handler._text_prev_xfig==None or bool(xfig<0.5)!=bool(handler._text_prev_xfig<0.5):
+    if handler._text_prev_xfig is None or bool(xfig<0.5)!=bool(handler._text_prev_xfig<0.5):
         handler._text_prev_xfig=xfig
         handler._text.set_horizontalalignment('left' if xfig<0.5 else 'right')
-    if handler._text_prev_yfig==None or bool(yfig<0.5)!=bool(handler._text_prev_yfig<0.5):
+    if handler._text_prev_yfig is None or bool(yfig<0.5)!=bool(handler._text_prev_yfig<0.5):
         handler._text_prev_yfig=yfig
         handler._text.set_verticalalignment('bottom' if yfig<0.5 else 'top')
 
@@ -240,7 +244,7 @@ class _hoverhandler1d:
             _hovertext_setpos(self,evt)
             evt.canvas.draw()
             return
-        assert self._rect and self._text and self._rect_bin!=None
+        assert self._rect and self._text and self._rect_bin is not None
         _hovertext_setpos(self,evt)
         if self._rect_bin==ibin:
             if not self._rect.get_visible():
@@ -313,17 +317,17 @@ class _hoverhandleroverlay:
         #Are we over a line?
         iline=None
         for i,lset in enumerate(self._lines):
-            for l in lset:
-                l.set_pickradius(2)
-                c=l.contains(evt)
+            for ll in lset:
+                ll.set_pickradius(2)
+                c=ll.contains(evt)
                 if c[0]:
-                    if iline==None:
+                    if iline is None:
                         iline=i
                         break
                     else:
                         self._update_hover(evt)#multiple lines selected, hide
                         return
-        if iline!=None:
+        if iline is not None:
             self._update_hover(evt,self._labels[iline])
         else:
             self._update_hover(evt)#hide
@@ -374,7 +378,8 @@ class _hoverhandlercounts:
 
     def _update_rect_location(self,evt,icounter):
         w = self._width + self._spacing
-        left,right = icounter*w, icounter*w+self._width
+        left, = icounter*w
+        #right = icounter*w+self._width
         ymin=1.0e-99#not 0 => it will work for log plots as well
         if not self._rect:
             self._rect_bin=icounter
@@ -388,7 +393,7 @@ class _hoverhandlercounts:
             _hovertext_setpos(self,evt)
             evt.canvas.draw()
             return
-        assert self._rect and self._text and self._rect_bin!=None
+        assert self._rect and self._text and self._rect_bin is not None
         _hovertext_setpos(self,evt)
         if self._rect_bin==icounter:
             if not self._rect.get_visible():
@@ -455,7 +460,7 @@ class _hoverhandler2d:
             _hovertext_setpos(self,evt)
             evt.canvas.draw()
             return
-        assert self._rect and self._text and self._rect_bin!=None
+        assert self._rect and self._text and self._rect_bin is not None
         _hovertext_setpos(self,evt)
         if self._rect_bin==(ix,iy):
             if not self._rect.get_visible():
@@ -537,7 +542,7 @@ class _keyhandler:
             sbp=self.statbox.get_position()
             in_corner = (abs(sbp[0]-self.statbox.statbox_corner_pos[0])<1.0e-9 and abs(sbp[1]-self.statbox.statbox_corner_pos[1])<1.0e-9)
             if in_corner and not self.statbox.get_visible():
-                if self.statbox_savedpos!=None:
+                if self.statbox_savedpos is not None:
                     self.statbox.set_position(self.statbox_savedpos)
                 self.statbox.set_visible(True)
             elif in_corner and self.statbox.get_visible():
@@ -557,7 +562,7 @@ class _keyhandler:
         return True
 
 def _add_quit_hook():
-    if not 'q' in plt.rcParams['keymap.quit']:
+    if 'q' not in plt.rcParams['keymap.quit']:
         plt.rcParams['keymap.quit']=tuple(list(plt.rcParams['keymap.quit'])+['q','Q'])
 
 def _set_window_title(hist,fig,extra=''):
@@ -594,14 +599,19 @@ def statsText(hist1d):
         stats+=[('rms','%g'%hist1d.rms)]
         medianbin = hist1d.getPercentileBin(0.5)
         assert -1<=medianbin<=hist1d.nbins
-        if medianbin==-1: mediantext = 'underflow'
-        elif medianbin==hist1d.nbins: mediantext = 'overflow'
-        else: mediantext = u'%g \u00b1 %g'%(hist1d.getBinCenter(medianbin),0.5*hist1d.getBinWidth())
+        if medianbin==-1:
+            mediantext = 'underflow'
+        elif medianbin==hist1d.nbins:
+            mediantext = 'overflow'
+        else:
+            mediantext = u'%g \u00b1 %g'%(hist1d.getBinCenter(medianbin),0.5*hist1d.getBinWidth())
         stats+=[('median',mediantext)]
         stats+=[('min','%g'%hist1d.minfilled)]
         stats+=[('max','%g'%hist1d.maxfilled)]
-    if hist1d.underflow: stats+=[('underflow','%g'%hist1d.underflow)]
-    if hist1d.overflow: stats+=[('overflow','%g'%hist1d.overflow)]
+    if hist1d.underflow:
+        stats+=[('underflow','%g'%hist1d.underflow)]
+    if hist1d.overflow:
+        stats+=[('overflow','%g'%hist1d.overflow)]
     return stats
 
 def formatStatsText(stats):
@@ -674,9 +684,12 @@ def plot1d(hist,show=True,statbox=True,statbox_exactcorner=False,figure=None,axe
             for p in error_lines+(error_markers,):
                 p.set_visible(True)
             #markers:
-            if '.' in estyle: error_markers.set_marker('.')
-            elif 'o' in estyle: error_markers.set_marker('o')
-            else: error_markers.set_visible(False)
+            if '.' in estyle:
+                error_markers.set_marker('.')
+            elif 'o' in estyle:
+                error_markers.set_marker('o')
+            else:
+                error_markers.set_visible(False)
             elw=int(estyle[0])
             for p in error_lines:
                 p.set_linewidth(elw)
@@ -695,13 +708,13 @@ def plot1d(hist,show=True,statbox=True,statbox_exactcorner=False,figure=None,axe
         return fig,ax
 
     def toggle_col_next(evt):
-        if not 'b' in modes[imode[0]]:
+        if 'b' not in modes[imode[0]]:
             imode[0]=modes.index('be')#enable bars
         else:
             icol[0] = (icol[0]+1)%len(_colmap1d)
         update_collwmode()
     def toggle_col_back(evt):
-        if not 'b' in modes[imode[0]]:
+        if 'b' not in modes[imode[0]]:
             imode[0]=modes.index('be')#enable bars
         else:
             icol[0] = (icol[0]-1)%len(_colmap1d)
@@ -713,7 +726,7 @@ def plot1d(hist,show=True,statbox=True,statbox_exactcorner=False,figure=None,axe
         imode[0] = (imode[0]+1)%len(modes)
         update_collwmode()
     def toggle_errorstyle(evt):
-        if not 'e' in modes[imode[0]]:
+        if 'e' not in modes[imode[0]]:
             imode[0]=modes.index('be')#enable errors
         else:
             iestyle[0] = (iestyle[0]+1)%len(errorstyles)
@@ -744,7 +757,7 @@ def plot1d(hist,show=True,statbox=True,statbox_exactcorner=False,figure=None,axe
                 new_nbins=n//i
                 break
             i+=1
-        if new_nbins==None:
+        if new_nbins is None:
             return#no rebinning possible
         hclone=hist.clone()
         hclone.rebin(new_nbins)
@@ -752,16 +765,19 @@ def plot1d(hist,show=True,statbox=True,statbox_exactcorner=False,figure=None,axe
         return 'nodraw'
 
 
+    _keepalive = []
     if _interactive:
-        dragh=_draghandler(fig,ax)
-        keyh=_keyhandler(fig,sb,ib,custom={'m':toggle_col_next,'n':toggle_col_back,
+        dragh = _draghandler(fig,ax)
+        keyh = _keyhandler(fig,sb,ib,custom={'m':toggle_col_next,'n':toggle_col_back,
                                            '1':do_norm,'ctrl+1':do_norm_insideonly,'u':do_clone,
                                            't':toggle_edge,'a':toggle_mode,'e':toggle_errorstyle,
                                            '2':do_rebin})
         hh=_hoverhandler1d(fig,ax,hist)
+        _keepalive += [dragh,keyh,hh]
         _add_quit_hook()
     if show!='almost':
         plt.show()
+    del _keepalive # todo: return as well?
     return fig,ax
 
 def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=None,axes=None):
@@ -808,9 +824,9 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
         for i,c in enumerate(counters):
             center=i*(width+spacing)+0.5*width
             x,y=ax.transAxes.inverted().transform_point(ax.transData.transform_point((center,c.value)))
-            l=ax.text(x,y+0.02,c.displaylabel,transform=ax.transAxes,size='small',
+            ll=ax.text(x,y+0.02,c.displaylabel,transform=ax.transAxes,size='small',
                       verticalalignment='bottom',horizontalalignment='center',multialignment='left',picker=True)
-            labels+=[l]
+            labels+=[ll]
             #bbox={'facecolor':(0.8,0.8,1.0),'alpha':1.0,'edgecolor':'black', 'boxstyle':'round,pad=1'},
             #         family='monospace',picker=True)
     else:
@@ -862,9 +878,12 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
             for p in error_lines+(error_markers,):
                 p.set_visible(True)
             #markers:
-            if '.' in estyle: error_markers.set_marker('.')
-            elif 'o' in estyle: error_markers.set_marker('o')
-            else: error_markers.set_visible(False)
+            if '.' in estyle:
+                error_markers.set_marker('.')
+            elif 'o' in estyle:
+                error_markers.set_marker('o')
+            else:
+                error_markers.set_visible(False)
             elw=int(estyle[0])
             for p in error_lines:
                 p.set_linewidth(elw)
@@ -883,13 +902,13 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
         return fig,ax
 
     def toggle_col_next(evt):
-        if not 'b' in modes[imode[0]]:
+        if 'b' not in modes[imode[0]]:
             imode[0]=modes.index('be')#enable bars
         else:
             icol[0] = (icol[0]+1)%len(_colmap1d)
         update_collwmode()
     def toggle_col_back(evt):
-        if not 'b' in modes[imode[0]]:
+        if 'b' not in modes[imode[0]]:
             imode[0]=modes.index('be')#enable bars
         else:
             icol[0] = (icol[0]-1)%len(_colmap1d)
@@ -901,7 +920,7 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
         imode[0] = (imode[0]+1)%len(modes)
         update_collwmode()
     def toggle_errorstyle(evt):
-        if not 'e' in modes[imode[0]]:
+        if 'e' not in modes[imode[0]]:
             imode[0]=modes.index('be')#enable errors
         else:
             iestyle[0] = (iestyle[0]+1)%len(errorstyles)
@@ -924,6 +943,7 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
         plotcounts(hclone,statbox=statbox,statbox_exactcorner=statbox_exactcorner)
         return 'nodraw'
 
+    _keepalive = []
     if _interactive:
         dragh=_draghandler(fig,ax)
         keyh=_keyhandler(fig,sb,ib,custom={'m':toggle_col_next,'n':toggle_col_back,
@@ -932,9 +952,11 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
                                            'k':lambda x:None,'L':lambda x:None#Block xaxis log-scale switching (TODO: 'L')
                                        })
         hh=_hoverhandlercounts(fig,ax,hist)
+        _keepalive += [dragh,keyh,hh]
     _add_quit_hook()
     if show!='almost':
         plt.show()
+    del _keepalive # todo: return as well?
     return fig,ax
 
 def _mpl_get_cmap( arg ):
@@ -958,7 +980,7 @@ def plot2d_lego(hist,show=True,cmap=None):
     _ensure_backend_ok()
     if not cmap:
         cmap = 'plasma' if _has_cmap('plasma') else 'spectral'
-    from mpl_toolkits.mplot3d import Axes3D
+    from mpl_toolkits.mplot3d import Axes3D # noqa F401
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     fig.subplots_adjust(left=0.03,right=0.97,bottom=0.07,top=0.98)
@@ -1024,7 +1046,7 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
         cmaps+=[dynamic_cmap.name]
     except ImportError:
         pass
-    if not cmap in cmaps:
+    if cmap not in cmaps:
         #query matplotlib for cmap (will throw ValueError if not present - we let it propagate to the caller)
         _mpl_get_cmap(cmap)
         #no exceptions thrown in previous call - add this at front of list:
@@ -1043,7 +1065,7 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
     if hist.empty():
         im.set_clim(0.0,1.0)
 
-    cb=plt.colorbar(im, cax=cax, **extra_colorbar_args)#,ticks=[])
+    plt.colorbar(im, cax=cax, **extra_colorbar_args)#,ticks=[])
 
     ig = hist.integral
     stats=[('integral','%g'%ig)]
@@ -1058,10 +1080,14 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
         stats+=[('xmax','%g'%hist.maxfilledx)]
         stats+=[('ymin','%g'%hist.minfilledy)]
         stats+=[('ymax','%g'%hist.maxfilledy)]
-    if hist.underflowx: stats+=[('underflowx','%g'%hist.underflowx)]
-    if hist.overflowx: stats+=[('overflowx','%g'%hist.overflowx)]
-    if hist.underflowy: stats+=[('underflowy','%g'%hist.underflowy)]
-    if hist.overflowy: stats+=[('overflowy','%g'%hist.overflowy)]
+    if hist.underflowx:
+        stats+=[('underflowx','%g'%hist.underflowx)]
+    if hist.overflowx:
+        stats+=[('overflowx','%g'%hist.overflowx)]
+    if hist.underflowy:
+        stats+=[('underflowy','%g'%hist.underflowy)]
+    if hist.overflowy:
+        stats+=[('overflowy','%g'%hist.overflowy)]
     sb = _add_statbox(fig,ax,stats,vis=statbox,snap_to_corner=statbox_exactcorner)
     ib = _add_help_text(fig,ax,int(hist.histType()))
 
@@ -1070,8 +1096,10 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
     if not show:
         return fig,ax
 
+    _keepalive = []
     if _interactive:
         dragh=_draghandler(fig,ax)
+        _keepalive.append(dragh)
     def toggle_cmap(evt):
         n,ext=im.get_cmap().name,''
         if n.endswith('_r'):
@@ -1119,9 +1147,11 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
                                            'k':lambda x:None,'l':lambda x:None#Block log-scale switching in 2D plots
                                        })
         hh=_hoverhandler2d(fig,ax,hist)
+        _keepalive += [ keyh, hh ]
     _add_quit_hook()
     if show!='almost':
         plt.show()
+    del _keepalive # todo: return as well?
     return fig,ax
 
 def _fill_between(x, y1, y2=0, ax=None, **kwargs):
@@ -1163,10 +1193,14 @@ def overlay(hists,labels,colors=None,
     #fixme: keymap for logy should make sure to enable the clipping!
     _ensure_backend_ok()
 
-    if not cmap: cmap=_defoverlaycolmap
-    if title is None: title = hists[0].title
-    if xlabel is None: xlabel = hists[0].xlabel
-    if ylabel is None: ylabel = hists[0].ylabel
+    if not cmap:
+        cmap=_defoverlaycolmap
+    if title is None:
+        title = hists[0].title
+    if xlabel is None:
+        xlabel = hists[0].xlabel
+    if ylabel is None:
+        ylabel = hists[0].ylabel
 
     if not figure or not axes:
         assert not figure and not axes,"either supply none or both of figure and axes"
@@ -1176,9 +1210,12 @@ def overlay(hists,labels,colors=None,
     else:
         fig,ax=figure,axes
 
-    if title is False: ax.set_title(title)#not making dragable (center seems to be always the right choice)
-    if xlabel is False: ax.set_xlabel(xlabel,picker=True)#todo: should snap to center/right ...
-    if ylabel is False: ax.set_ylabel(ylabel,picker=True)#todo: ... or have a shortcut key
+    if title is False:
+        ax.set_title(title)#not making dragable (center seems to be always the right choice)
+    if xlabel is False:
+        ax.set_xlabel(xlabel,picker=True)#todo: should snap to center/right ...
+    if ylabel is False:
+        ax.set_ylabel(ylabel,picker=True)#todo: ... or have a shortcut key
 
     lines=[]
     proxy_artists=[]
@@ -1192,7 +1229,7 @@ def overlay(hists,labels,colors=None,
         zorder_errors = None
         if 'zorder' in extra_args and (isinstance(extra_args['zorder'],float) or isinstance(extra_args['zorder'],int)):
             zorder_errors = extra_args['zorder']-0.01
-        if not 'color' in extra_args:
+        if 'color' not in extra_args:
             extra_args['color']=col
         else:
             col = extra_args['color']
@@ -1208,7 +1245,8 @@ def overlay(hists,labels,colors=None,
     if logy:
         ax.set_yscale('log',nonposy='clip')
     else:
-        if ymin==None: ymin=0.0
+        if ymin is None:
+            ymin=0.0
     if logx:
         ax.set_xscale('log')
 
@@ -1223,8 +1261,8 @@ def overlay(hists,labels,colors=None,
             handles, labels = ax.get_legend_handles_labels()
             import matplotlib.legend_handler as lh
             my_handler = lh.HandlerLine2D(numpoints=1,marker_pad=0.)
-            leg=ax.legend([(p,h) for (p,l),h in zip(proxy_artists,handles)],
-                          [l for p,l in proxy_artists],handler_map={plt.Line2D:my_handler},
+            leg=ax.legend([(p,h) for (p,ll),h in zip(proxy_artists,handles)],
+                          [ll for p,ll in proxy_artists],handler_map={plt.Line2D:my_handler},
                           title=legend_title)
             #Added here by KK and committed by mistake: plt.setp(leg.get_title(),fontsize='14')
         #if legend_title:
@@ -1240,12 +1278,15 @@ def overlay(hists,labels,colors=None,
 
     if not show:
         return retval
+    _keepalive = []
     if _interactive:
         dragh=_draghandler(fig,ax)
         hh=_hoverhandleroverlay(fig,ax,lines,labels)
+        _keepalive += [dragh,hh]
     _add_quit_hook()
     if show!='almost':
         plt.show()
+    del _keepalive # todo: return as well?
     return retval
 
 def plot1d_overlay(self,hists,labels,colors=None,**args):
