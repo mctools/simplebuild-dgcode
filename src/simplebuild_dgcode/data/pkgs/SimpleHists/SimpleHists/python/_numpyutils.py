@@ -93,7 +93,7 @@ def h1d_histogram(self):
 def h1d_fill(self,*args):
     #direct filling of single entries is never efficient in python anyway,
     #so we focus here on passing in arrays.
-    if not len(args) in (1,2):
+    if len(args) not in (1,2):
         raise ValueError("Hist1D.fill requires 1 or 2 arguments")
 
     if isinstance(args[0],numpy.ndarray):
@@ -155,7 +155,7 @@ def h2d_histogram2d(self):
 def h2d_fill(self,*args):
     #direct filling of single entries is never efficient in python anyway,
     #so we focus here on passing in arrays.
-    if not len(args) in (2,3):
+    if len(args) not in (2,3):
         raise ValueError("Hist2D.fill requires 2 or 3 arguments")
     nnp=0
     for a in args:

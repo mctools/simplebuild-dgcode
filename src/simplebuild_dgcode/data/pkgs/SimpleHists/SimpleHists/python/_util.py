@@ -46,8 +46,8 @@ treated as multiple entries."""
         if i in sel_idx:
             ok=True
         if not ok:
-            for l,u in sel_ranges:
-                if l<=i<=u:
+            for ll,u in sel_ranges:
+                if ll<=i<=u:
                     ok=True
                     break
         if not ok:

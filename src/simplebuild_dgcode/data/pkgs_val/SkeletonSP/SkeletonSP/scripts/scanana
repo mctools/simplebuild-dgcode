@@ -7,18 +7,26 @@
 
 import ScanUtils.ScanLoader
 import SimpleHistsUtils.cmphists
-from PyAna import *
+import sys
 
 jobs=ScanUtils.ScanLoader.get_scan_jobs(sys.argv[1],dict_by_label=True)
+
+
+# Each job object holds information including the analysis histograms and the
+# simulation setup of the particular job. To see what is available, start by
+# uncommenting the next lines:
+#
+# help(jobs['plot1'][0])
+# help(jobs['plot1'][0].setup())
 
 #### Plot 1:
 labelsandhists = [ ( '%g mm sample'%j.setup().geo().sample_radius_mm,
                      j.hist('det_hitradius') )
                    for j in jobs['plot1'] ]
-SimpleHistsUtils.cmphists.cmphists(labelsandhists)
+SimpleHistsUtils.cmphists.cmphists( labelsandhists )
 
 #### Plot 2:
 labelsandhists = [ ( '%g Aa neutron'%j.setup().gen().neutron_wavelength_aangstrom,
                      j.hist('det_hitradius') )
                    for j in jobs['plot2'] ]
-SimpleHistsUtils.cmphists.cmphists(labelsandhists)
+SimpleHistsUtils.cmphists.cmphists( labelsandhists )

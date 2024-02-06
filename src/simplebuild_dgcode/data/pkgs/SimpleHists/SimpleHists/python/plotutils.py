@@ -378,8 +378,8 @@ class _hoverhandlercounts:
 
     def _update_rect_location(self,evt,icounter):
         w = self._width + self._spacing
-        left, = icounter*w
-        #right = icounter*w+self._width
+        left = icounter*w
+        #,right = icounter*w+self._width
         ymin=1.0e-99#not 0 => it will work for log plots as well
         if not self._rect:
             self._rect_bin=icounter
@@ -1210,11 +1210,11 @@ def overlay(hists,labels,colors=None,
     else:
         fig,ax=figure,axes
 
-    if title is False:
+    if title is not False:
         ax.set_title(title)#not making dragable (center seems to be always the right choice)
-    if xlabel is False:
+    if xlabel is not False:
         ax.set_xlabel(xlabel,picker=True)#todo: should snap to center/right ...
-    if ylabel is False:
+    if ylabel is not False:
         ax.set_ylabel(ylabel,picker=True)#todo: ... or have a shortcut key
 
     lines=[]
@@ -1284,7 +1284,19 @@ def overlay(hists,labels,colors=None,
         hh=_hoverhandleroverlay(fig,ax,lines,labels)
         _keepalive += [dragh,hh]
     _add_quit_hook()
-    if show!='almost':
+    import os
+    if os.environ.get('SIMPLEHISTS_OVERLAY_FORCE_SAVEFILE','0')!='0':
+        #Likely used in a unit test.
+        import pathlib
+        def _save(i):
+            f = pathlib.Path('.') / f'shist_overlay_{i}.png'
+            if f.exists():
+                return _save(i+1)
+            plt.savefig(f)
+            print(f'Created {f.name}')
+        _save(1)
+        return retval
+    if show != 'almost':
         plt.show()
     del _keepalive # todo: return as well?
     return retval

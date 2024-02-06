@@ -6,6 +6,8 @@ __all__=['Hist1D','Hist2D','HistBase','HistCollection','histTypeOfData','deseria
 # 1) Include hist classes etc. from the compiled C++ module:
 from . _init import *
 
+from os import environ as _environ
+
 #################################################################################
 # 2) Detect presence of numpy and if present, we add methods for getting
 #    contents/errors as numpy arrays as well as a .histogram[2d] method which
@@ -63,7 +65,6 @@ def is_osx_catalina_or_later():
         return False
     return int(platform.release().split('.')[0])>=19 #see list in dgdepfixers platformutils.py
 
-from os import environ as _environ
 _lacks_display_var = not _environ.get('DISPLAY',None)
 _catalina_mode = is_osx_catalina_or_later()
 _has_agg_backend = (matplotlib and matplotlib.get_backend().lower()=='agg')

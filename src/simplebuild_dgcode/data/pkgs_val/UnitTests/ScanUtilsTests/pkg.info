@@ -1,0 +1,7 @@
+package( USEPKG G4GeoSkeletonSP SkeletonSP ScanUtils SimpleHists GriffFormat USEEXT matplotlib )
+
+######################################################################
+
+Package testing the ScanUtils pkg.
+
+Primary author: thomas.kittelmann@ess.eu

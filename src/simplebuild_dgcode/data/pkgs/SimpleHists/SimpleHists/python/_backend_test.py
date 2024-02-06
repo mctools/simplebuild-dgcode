@@ -7,7 +7,7 @@ _backend_ok = (_backend in ('tkagg','gtkagg','agg'))
 if _backend_ok and _backend=='gtkagg':
     #attempt to silence some useless/confusing warnings
     try:
-        import PyAna._fix_backend_gtk
+        import PyAna._fix_backend_gtk # noqa F401
     except ImportError:
         #perhaps PyAna package was not built, no biggie, users might get warnings.
         pass
@@ -21,13 +21,14 @@ if _backend_ok and _backend=='tkagg':
                                 message=('Treat the new Tool classes introduced in v1.5 as experimental'+
                                          ' for now, the API will likely change in version 2.1'))
 
-from PyAna.fpe import standardMPLFixes as _standardMPLFixes
+from PyAna.fpe import standardMPLFixes as _standardMPLFixes # noqa E402
 _standardMPLFixes
 
 def _ensure_backend_ok():
     if _backend_ok:
         return
-    import os,sys
+    import os
+    import sys
     if hasattr(matplotlib,'get_configdir'):
         _cfgdir=matplotlib.get_configdir()
         _cfgdir=_cfgdir.replace(os.path.expanduser('~'),'~')

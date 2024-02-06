@@ -10,7 +10,7 @@ queues = ['verylong','short','newlong', 'quark', 'neutronics','strange']
 def usage(ec):
     print("Usage:")
     print()
-    print("  %s QUEUE [--email=EMAIL] [--comment=COMMENT] [--name=NAME] [--setupsh=SETUPSH] DIR CMD"%(os.path.basename(sys.argv[0])))
+    print("  %s QUEUE [--email=EMAIL] [--comment=COMMENT] [--name=NAME] DIR CMD"%(os.path.basename(sys.argv[0])))
     print()
     print('Submits CMD to run in QUEUE. The command will be launched in DIR')
     print('stdout and stderr will be placed in DIR/stdout.txt and DIR/stderr.txt')
@@ -19,8 +19,6 @@ def usage(ec):
     print('If a COMMENT is provided, it will be stored inside a comment.txt file in the rundir')
     print()
     print('If a NAME is provided, it will become the job name in the queue system')
-    print()
-    print('If a SETUPSH is provided, it will be used rather than $SBLD_INSTALL_PREFIX/setup.sh')
     print()
     print('QUEUE must be one of: %s'%' '.join(queues))
     print()
@@ -60,15 +58,6 @@ if args[0].startswith('--comment='):
 name=None
 if args[0].startswith('--name='):
     name=args.pop(0)[7:]
-
-setupsh=None
-if args[0].startswith('--setupsh='):
-    setupsh=args.pop(0)[10:]
-if not setupsh:
-    setupsh = os.path.join(os.getenv('SBLD_INSTALL_PREFIX'),'setup.sh')
-if not os.path.exists(setupsh):
-    print("ERROR: %s not found"%setupsh)
-    usage(1)
 
 if not args:
     usage(1)
@@ -117,8 +106,9 @@ if True:
     #Need epilog bug workaround for DMSC:
     extra_prerun_lines.append( Core.System.quote_cmd(['touch','/tmp/slurm_disable_epilog.%s'%os.environ['USER']]))
 
-create_run_script(os.path.join(rundir,'run.sh'),cmd=args, setupsh = setupsh, headerlines=slurmlines,
-                  extra_prerun_lines = extra_prerun_lines)
+create_run_script(os.path.join(rundir,'run.sh'),cmd=args,
+                  headerlines=slurmlines, extra_prerun_lines =
+                  extra_prerun_lines)
 
 if comment:
     fh=open(os.path.join(rundir,'comment.txt'),'w')

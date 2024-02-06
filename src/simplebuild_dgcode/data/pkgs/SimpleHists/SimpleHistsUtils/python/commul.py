@@ -13,6 +13,8 @@ def commul_curve(h1,relative=True,above=True,counting_errors=False):
     y=numpy.zeros(len(x))
     y[0] = h1.underflow
     y[1:] = numpy.cumsum(h1.contents())
-    if above: y = h1.integral - y
-    if relative: y /= h1.integral
+    if above:
+        y = h1.integral - y
+    if relative:
+        y /= h1.integral
     return x,y

@@ -1,5 +1,3 @@
-from __future__ import print_function
-__metaclass__ = type#py2 backwards compatibility
 
 #for collecting the result of parameter scans. Look in the methods below to see
 #how it is assumed the output is organised.
@@ -7,17 +5,21 @@ __metaclass__ = type#py2 backwards compatibility
 import os
 import glob
 import SimpleHists
-
+import pathlib
 class ScanJob:
-    def __init__(self,jobdir,quiet_open=True,grifffile='rundir*/runsample/*.griff',histfile='rundir*/runana/*.shist'):
+    def __init__(self,jobdir,quiet_open=True,
+                 grifffile='rundir*/runsample/*.griff',
+                 histfile='rundir*/runana/*.shist'):
+        jobdir = pathlib.Path(jobdir)
+        self.__setup = None
         self.__jobdir=jobdir
-        assert os.path.exists(os.path.join(jobdir,'state.done'))
-        assert int(open(os.path.join(jobdir,'exitcode.txt')).read())==0
+        assert ( jobdir /'state.done' ).exists()
+        assert ( jobdir /'exitcode.txt' ).exists()
+        assert ( jobdir /'exitcode.txt' ).read_text().strip() == '0'
         sfs=glob.glob(os.path.join(jobdir,grifffile))
         assert len(sfs)==1
         self.__samplegrifffile = sfs[0]
         assert os.path.exists(self.__samplegrifffile)
-        self.__setup = None
         hfs=glob.glob(os.path.join(jobdir,histfile))
         assert len(hfs)==1
         self.__histfile=hfs[0]
@@ -40,7 +42,7 @@ class ScanJob:
         return self.__jobdir
 
     def setup(self):
-        if self.__setup==None:
+        if self.__setup is None:
             #important that we not keep a reference to the datareader (to not
             #have too many file handles open in large scans). Consequently we
             #must ref the setup instance to keep it around afterwards.
@@ -70,7 +72,7 @@ class ScanJob:
             self.__setup=None
 
     def __histload(self):
-        if self.__hists==None:
+        if self.__hists is None:
             self.__hists=SimpleHists.HistCollection(self.__histfile)
         return self.__hists
 
@@ -104,6 +106,8 @@ def get_scan_jobs(scandirbase,quiet_open = True,dict_by_label=False):
         return sj
     d={}
     for j in sj:
-        if j.label() in d: d[j.label()] += [j]
-        else: d[j.label()] = [j]
+        if j.label() in d:
+            d[j.label()] += [j]
+        else:
+            d[j.label()] = [j]
     return d
