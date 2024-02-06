@@ -6,10 +6,6 @@ Installation
 
 .. include:: wipwarning.rst
 
-************
-Installation
-************
-
 The simplebuild system and dgcode is supported only on unix systems (macOS and Linux),
 although it most likely will also work on Windows under the WSL (Windows
 Subsystem for Linux) with a virtual Ubuntu installation. It is used exclusively

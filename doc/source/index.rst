@@ -1,6 +1,6 @@
-************************************************
-Welcome to the simplebuild-dgcode documentation!
-************************************************
+************************************
+Welcome to the dgcode documentation!
+************************************
 
 .. include:: wipwarning.rst
 
@@ -44,3 +44,4 @@ relevant parts of the documentation.
 
    Issue tracker <https://github.com/mctools/simplebuild-dgcode/issues>
    license.rst
+   simplebuild <https://mctools.github.com/simplebuild>

@@ -89,10 +89,9 @@ difference:
    more about the possibilities. The output of the simulation is one or more
    :ref:`Griff <sbgriff>` files. In the :sbpkg:`same
    directory<SkeletonSP/scripts>` you will also find more specialised scripts,
-   which can be used to for instance create parameter scans.
+   which can be used to for instance create :ref:`parameter scans <sbparamscan>`.
 
 :sbpkg:`TriCorder/TriCorder/app_ana/analysis_program.cc<SkeletonSP/app_ana/analysis_program.cc>`:
-
    An analysis program which can be invoked via the command ``sb_tricorder_ana``
    and which is used to run on the :ref:`Griff <sbgriff>` files and which will
    result in a :ref:`SimpleHists <sbsimplehists>` file being created with

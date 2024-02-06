@@ -95,3 +95,5 @@ Or they might be modified directly from the command line::
   $> sb_tricorder_sim material_sample='stdlib::Cu_sg225.ncmat' sample_radius_mm=7.0
 
 
+
+FIXME: mention sb_g4utils_geodisplay

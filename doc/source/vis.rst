@@ -15,6 +15,8 @@ intuitive to the human developers and consumers of a simulation project.
 In dgcode we facilitate the usage of two options for 3D visualisations out of
 the box: The one included in Geant4 itself, and our own custom application.
 
+FIXME: rubric's
+
 .. rubric:: Our custom viewer (aka "CoolNameHere"):
 
 In our coding framework we provide a custom `OpenSceneGraph
@@ -102,6 +104,8 @@ because), reveals how neutrons are scattered in nice Debye-Scherrer cones
 approximation):
 
 |image7|
+
+.. _sbaimdataviewer:
 
 .. rubric:: Aim-mode of the data-viewer
 

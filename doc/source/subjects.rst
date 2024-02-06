@@ -1,27 +1,29 @@
+.. _sbsubjects:
+
 ********
 Subjects
 ********
 
 .. include:: wipwarning.rst
 
-Bla bla bla.
+On the pages below you will find detailed instructions concerning various
+aspects of dgcode. You can either navigate to a particular subject directly via
+one of the links below (or via the sidebar-menu), or you can always try to use
+the search feature of the site.
 
 .. toctree::
 
+   geo.rst
+   particlegenerators.rst
+   simscript.rst
+   vis.rst
    matdef.rst
    matcookbook.rst
-   simscript.rst
-   geo.rst
-   griff.rst
-   vis.rst
    physicslists.rst
+   griff.rst
    heatmap.rst
    mcpl.rst
    gravity.rst
-   simplehists.rst
    extractg4xs.rst
-   particlegenerators.rst
-
-..
-  IdealGasBuilder.rst
-  Performing-parameter-scans.rst
+   scans.rst
+   simplehists.rst

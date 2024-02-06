@@ -239,6 +239,18 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['sb_tricorder_sim','-g'],
                            pkgroot,
                            bd / 'autogen_tricorder_sim_g.txt' )
+        invoke_in_pkgroot( ['sb_g4utils_querygenerator',
+                            '-g','G4StdGenerators.SimpleGen'],
+                           pkgroot,
+                           bd / 'autogen_querygenerator_simplegen.txt' )
+        invoke_in_pkgroot( ['sb_g4utils_querygenerator',
+                            '-g','G4StdGenerators.FlexGen'],
+                           pkgroot,
+                           bd / 'autogen_querygenerator_flexgen.txt' )
+        invoke_in_pkgroot( ['sb_g4utils_querygenerator',
+                            '-g','G4StdGenerators.ProfiledBeamGen'],
+                           pkgroot,
+                           bd / 'autogen_querygenerator_profiledbeamgen.txt' )
         invoke_in_pkgroot( ['sb_tricorder_sim'],
                            pkgroot,
                            bd / 'autogen_tricorder_sim_noargs.txt' )
@@ -277,11 +289,19 @@ def run_tricorder_cmds():
     ( bd / 'autogen_tricorder_geomod_wocomments.cc'
      ).write_text( tc_geomod_txt )
 
-
+    for n in ('scan','scanana'):
+        orig = pkgroot/'TriCorder'/'TriCorder'/'scripts'/n
+        wocomments = read_text_remove_comments( orig )
+        ( bd / f'autogen_tricorder_script_{n}' ).write_text( wocomments )
+        #In the usage in the docs, we assume the script does not contain the
+        #name of the project:
+        #assert not 'tricorder' in wocomments.lower()
+        if n == 'scan':
+            assert 'plot1' in wocomments
+            assert 'plot2' in wocomments
 #Snip between:
 #G4Launcher:: Calling G4RunManager::Initialize()
 #G4Launcher:: Begin simulation of event 1 [seed 123456789]
-
 
     edit = c0.read_text()
     ll = c1.read_text().splitlines()

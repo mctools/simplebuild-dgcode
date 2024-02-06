@@ -5,7 +5,7 @@ SimpleHists
 
 .. include:: wipwarning.rst
 
-This page concerns our custom histogram products for C++ and Python code,
+This page concerns our custom histogram solution for C++ and Python code,
 implemented as the simplebuild package ``SimpleHists``.
 
 |SimpleHists|
