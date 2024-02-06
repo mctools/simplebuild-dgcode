@@ -13,6 +13,7 @@ the search feature of the site.
 
 .. toctree::
 
+   newsimproject.rst
    geo.rst
    particlegenerators.rst
    simscript.rst

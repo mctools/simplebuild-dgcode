@@ -15,9 +15,8 @@ intuitive to the human developers and consumers of a simulation project.
 In dgcode we facilitate the usage of two options for 3D visualisations out of
 the box: The one included in Geant4 itself, and our own custom application.
 
-FIXME: rubric's
-
-.. rubric:: Our custom viewer (aka "CoolNameHere"):
+Custom 3D Viewer
+----------------
 
 In our coding framework we provide a custom `OpenSceneGraph
 <https://www.openscenegraph.com/>`_-based 3D visualisation tool which can be
@@ -25,7 +24,8 @@ used to visualise both simulation geometries and data. Despite being a bit rough
 around the edges (for instance it could use a better name than "CoolNameHere"),
 it has already been highly useful for a lot of work so far
 
-.. rubric:: Visualising and interacting with a simulation geometry
+Geometry visualisation
+^^^^^^^^^^^^^^^^^^^^^^
 
 Simply supply the ``--viewer`` flag to any simulation script to launch our
 viewer. If for instance you have just started a :ref:`new simulation project
@@ -69,7 +69,8 @@ able to "open up" a volume to see the volumes inside it:
 
 |image4|
 
-.. rubric:: Visualising simulated data
+Simulated data visualisation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is pretty bare-bones at the moment, but the viewer also offers a
 non-interactive view of simulated tracks along with the geometry. To get it, one
@@ -88,7 +89,7 @@ were in the way and the spherical sample volume was turned into wireframe with a
 
 |image5|
 
-FIXME: mention colours
+FIXME: mention particle colours
 
 A pencil-beam of neutrons (green) are generated at the left side of the sample,
 headed to the right. Notice how roughly 5 of the 100 neutrons had an interaction
@@ -107,7 +108,8 @@ approximation):
 
 .. _sbaimdataviewer:
 
-.. rubric:: Aim-mode of the data-viewer
+Visualising generator aim
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A very typical usage of the viewer is to debug whether the particle generator
 and the geometry are positioned correctly with respect to each other (if, say,
@@ -143,7 +145,8 @@ geometry. Especially since particles are no longer coloured as per their type in
 this mode, but rather coloured yellow if they never hit another volume than the
 one they start in, and red otherwise.
 
-.. rubric:: Environment variables
+Environment variables
+^^^^^^^^^^^^^^^^^^^^^
 
 As a not-so-pretty-but-it-works solution for advanced users wanting to create
 some specialised plots, the following environment variables can be set in order
@@ -166,7 +169,8 @@ variables can also be set in Python by modifying the ``os.environ`` dictionary):
   down.
 
 
-.. rubric:: Using Geant4's own visualisation
+Using Geant4's own visualisation
+--------------------------------
 
 You can provide the flag ``-v`` to any simulation script to launch Geant4's own
 visualisation option. Doing so will open a secondary visualisation window and

@@ -7,8 +7,6 @@ Performing parameter scans
 
 .. include:: wipwarning.rst
 
-FIXME: todo
-
 It is very common that simulations and analyses need to be run for a variety of
 parameter settings (e.g. related to :ref:`geometry <sbgeo>` and :ref:`particle
 sources <sbparticlegen>`), before final conclusions can be drawn. In a simple

@@ -1,4 +1,4 @@
-Enabling Gravity
+Gravity
 ================
 
 .. include:: wipwarning.rst
@@ -42,10 +42,8 @@ Or change both direction and strength:
   import G4GravityHelper.NeutronGravity as ng
   ng.enableNeutronGravity(launcher,-1,0,0,g=9.82)
 
-.. rubric:: Example
-    :name: EnablingGravityInGeant4-Example
-
-A screenshot of tracking a :math:`10^{-6}` eV ultra-cold neutron in vacuum. The neutron is
-ultimately captured by the floor.
+Here is a example of the effect of gravity, showing the movement of a
+:math:`10^{-6}` eV ultra-cold neutron in vacuum. The neutron is ultimately
+captured by the floor.
 
 .. image:: images/image2016-8-12_gravity.png

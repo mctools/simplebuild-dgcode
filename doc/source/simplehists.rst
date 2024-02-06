@@ -8,10 +8,10 @@ SimpleHists
 This page concerns our custom histogram solution for C++ and Python code,
 implemented as the simplebuild package ``SimpleHists``.
 
-|SimpleHists|
+|image_simplehistsgallery|
 
-.. rubric:: Motivation
-  :name: SimpleHists-Motivation
+Motivation
+----------
 
 In addition to the obvious use-cases of histograms (e.g. estimations of data
 probability density functions), histogram data types are also highly useful
@@ -24,56 +24,61 @@ variance. Association of metadata (title, axis labels). Utilities for on-disk
 storage and quick plotting.
 
 Histogram classes are for instance found in the `ROOT <http://root.cern/>`__
-framework which is common in high energy physics, but for python-centric
+framework which is commonly used in high energy physics, but for python-centric
 analyses based on e.g. "PyLab" (taken here to mean Numpy+SciPy+Matplotlib),
-having a dependency on ROOT is a bit too cumbersome. However, one runs into the
+having a dependency on ROOT can be a bit honerous. However, one runs into the
 problem that Pylab does not by default include histogram classes. Rather, very
 basic histogramming functionality exists, but requires one to first collect all
-data in one array thus defeating the data reduction purpose of histogram
-classes.
+data into arrays thus defeating the primary data reduction purpose of such
+histogram classes.
 
-Thus, it made sense to implement a few custom histogram classes in our
-framework. Especially since features which are important to us could be ensured:
+Features
+--------
+
+The light-weight histogram classes, "SimpleHists", provided in dgcode have
+several features that are all important to their usage in dgcode-based projects:
 usage from both C++ and Python, integration with Pylab, persistification, quick
-plotting, certainty that we can read important data in the future, and finally
-the ability to merge data files collected in multiple concurrent jobs while
-retaining correct statistical metadata.
+plotting, extraction to Numpy arrays. Finally, the histograms crucially have the
+ability that data files collected in multiple concurrent jobs can be safely
+merged without the loss of any statistical metadata. More specifically, the
+list of features include:
 
-.. rubric:: Features
-  :name: SimpleHists-Features
+* Three feature-rich types of histograms: 1D, 2D and counter collection.
+* HistCollection which is an object representing a collection of histograms,
+  each identified by a unique key.
 
--  Three feature-rich types of histograms: 1D, 2D and counter collection.
--  HistCollection which is a collection of histograms, each identified by a key.
+    * Such a collection class simplifies user code.
+    * Can be easily merged with other collections
+    * Can be easily written to, or loaded from, a file (extension ``.shist``)
+* Histograms themselves are also easily (de) serialisable:
 
-   -  Simplifies user code.
-   -  Can be easily merged with other collections
-   -  Can be easily written to, or loaded from, a file (extension ``.shist``)
+    * To/from raw bytes in both C++ and Python (in the form of ``std::string`` or
+      ``bytes`` respectively).
+    * The work with the standard Python ``pickle`` module.
+* Histograms can be cloned, merged, normalised, scaled, integrated, ...
+* The C++ interface is simple to use and very fast.
+* The Python interface additionally features integration with Numpy arrays and
+  matplotlib plotting.
+* Several command-line scripts for working with ``.shist`` files are available,
+  supply ``--help`` to any of them for more detailed instructions:
 
--  Histograms themselves are also easily (de) serialisable:
+    * ``sb_simplehists_browse``: Open up graphical browser.
+    * ``sb_simplehists_merge``: Merge contents in two ``.shist`` files into
+      one. This is meant as an easy and reliable way to merge output done in
+      concurrent computing situations (such as at a computing cluster).
+    * ``sb_simplehists_extract``: extract a subset of histograms from a file into
+      a smaller one.
+    * ``sb_simplehists2root_convertfile``: For compatibility, convert histograms
+      in a ``.shist`` file to `ROOT <http://root.cern.ch/>`__ histograms and store
+      them in a ``.root`` file. This requires ROOT to have been installed in the
+      environment, which `might not be simple
+      <https://github.com/conda-forge/root-feedstock/issues/214>`_.
 
-   -  To/from strings in both C++ and Python.
-   -  Works with the standard Python ``pickle`` module.
-
--  Can be cloned, merged, normalised, scaled, integrated, ...
--  Command-line scripts for working with ``.shist`` files:
-
-   -  ``sb_simplehists_browse``: Open up graphical browser (or all in terminal by specifying options).
-   -  ``sb_simplehists_merge``: Merge contents in two ``.shist`` files into one. This is meant as an easy+reliable way to merge output done in multiprocessing environments (such as at the cluster).
-   -  ``sb_simplehists_extract``: extract a subset of histograms from a file into a smaller one.
-   -  ``sb_simplehists2root_convertfile``: For compatibility, convert histograms
-      in ``.shist`` file to `ROOT <http://root.cern.ch/>`__ histograms and store
-      in ``.root`` file. This requires ROOT to have been installed in the
-      environment, which `might not be simple <https://github.com/conda-forge/root-feedstock/issues/214>`_.
-
--  Simple, fast on C++ side.
-- Python side additionally features integration with Numpy arrays and matplotlib
-  plotting.
-
-.. rubric:: Example part 1 : Produce histograms in C++ code running on the cluster
-  :name: SimpleHists-Examplepart1:ProducehistogramsinC++coderunningonthecluster
+Example: Producing histograms in C++
+-------------------------------------
 
 Imagine for instance the following to be part of some big event loop running on
-the cluster (FIXME dynamic injection of the following example):
+a cluster, collecting histograms in a large number of jobs:
 
 .. code-block:: c++
 
@@ -94,29 +99,30 @@ the cluster (FIXME dynamic injection of the following example):
   }
   hc.saveToFile("results.shist");
 
-Afterwards one might for instance use the ``sb_simplehists_merge`` command to
-merge the ``result.shist`` files from many different cluster jobs into
-one. Thus, relevant data from many billions and billions of events are now all
-present in a single small (tens of kilobytes) file which can be copied easily
-down to ones laptop.
+Afterwards one can then use the ``sb_simplehists_merge`` command to merge the
+``result.shist`` files from many different cluster jobs into one. Thus, relevant
+data from many billions and billions of events are now all present in a single
+small (tens of kilobytes) file which can be copied easily down to ones laptop
+for subsequent analysis. Of course, before launching computationally intensive
+jobs on a cluster, you will most likely have been running the same code on your
+own machine, while developing and verifying it.
 
-.. rubric:: Example part 2: Analysing the results on your laptop
-  :name: SimpleHists-Examplepart2:Analysingtheresultsonyourlaptop
+Example: Python analysis of histograms
+---------------------------------------
 
-After having copied down the results.shist file to your laptop, the first thing
-to do is to have a quick look inside. This is done by the command:
+After having copied down the ``results.shist`` file to your laptop, the first
+thing to do is to have a quick look inside. This is done by the command::
 
-.. code-block:: sh
-
-  sb_simplehists_browse results.shist
+  $> sb_simplehists_browse results.shist
 
 This opens up a graphical browser which can be used to quickly view the
 histograms with various options for the presentations. At this stage it is
 already possible to produce a few quick plots for a paper, talk or email.
 
 For more advanced analysis, one can use Python and the plethora of utilities
-available there (e.g. SciPy). Here is a small example of how one can get data out in formats
-ready to input to the various pylab plotting routines:
+available there (e.g. all the utilities available in matplotlib and SciPy). Here
+is a small example of how one can get data out in formats ready to input to the
+various pylab plotting routines:
 
 .. code-block:: python
 
@@ -135,5 +141,5 @@ ready to input to the various pylab plotting routines:
   print 'edep variance =', h_edep.rms
   print 'mean edep     =', h_edep.mean
 
-.. |SimpleHists| image:: images/Simplehists_preliminary_preview.png
+.. |image_simplehistsgallery| image:: images/Simplehists_preliminary_preview.png
    :width: 400px

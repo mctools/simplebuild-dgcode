@@ -23,8 +23,6 @@ relevant parts of the documentation.
 
    intro.rst
    install.rst
-   newsimproject.rst
-   Geant4SimulationFramework.rst
    subjects.rst
    about.rst
    contact.rst

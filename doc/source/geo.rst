@@ -40,6 +40,13 @@ also important to understand how a geometry is built up in a tree structure,
 with daughter volumes inside their mother volumes, and the world volume being at
 the root of this tree.
 
+While developing a geometry, you most certainly will want to visualise the
+effect of the code you are developing. Visualisation of geometry can for
+instance be performed by supplying a ``--viewer`` flag to any :ref:`sim-script
+<sbsimscript>` or simply via the with the ``sb_g4utils_geodisplay``
+command. Refer to :ref:`the dedicated page <sb3dvis>` for details about how to
+use the visualisation tools.
+
 As concerns creation of ``G4Material`` objects, dgcode provides a handy way to
 set these up from simple strings (cf. :ref:`an intro here <sbmatdef>` and the
 list of examples in the :ref:`cookbook <sbmatcookbook>`). Thus, assuming you
@@ -94,6 +101,3 @@ Or they might be modified directly from the command line::
 
   $> sb_tricorder_sim material_sample='stdlib::Cu_sg225.ncmat' sample_radius_mm=7.0
 
-
-
-FIXME: mention sb_g4utils_geodisplay

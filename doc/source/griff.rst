@@ -6,28 +6,27 @@ Griff
 
 .. include:: wipwarning.rst
 
-.. rubric:: Griff -- Geant4 Results In Friendly Format
+A general purpose object oriented output file format, Griff (**G**\ eant4 **R**\
+esults **I**\ n **F**\ riendly **F**\ ormat), with meta-data has been
+implemented in our CodingFramework, in order to facilitate a faster turn-around
+time when setting up and analysing simulations, as well as allowing more complex
+and detailed whole-event analyses. Based on custom serialisation code, it is
+optimised for easy, fast and reliable analyses from either C++ or Python of
+low-multiplicity physics, but supports filtering for scenarios involving higher
+multiplicities or statistics. No dedicated publication for Griff exists at this
+point in time, but it was presented in `doi:10.1088/1742-6596/513/2/022017
+<http://dx.doi.org/10.1088/1742-6596/513/2/022017>`_ which should so far be used
+as the main reference.
 
-A general purpose object oriented output file format, Griff, with meta-data has
-been implemented in our CodingFramework, in order to facilitate a faster
-turn-around time when setting up and analysing simulations, as well as allowing
-more complex and detailed whole-event analyses. Based on custom serialisation
-code, it is optimised for easy, fast and reliable analyses from either C++ or
-Python of low-multiplicity physics, but supports filtering for scenarios
-involving higher multiplicities or statistics. No dedicated publication for
-Griff exists at this point in time, but it was presented in
-`doi:10.1088/1742-6596/513/2/022017
-<http://dx.doi.org/10.1088/1742-6596/513/2/022017>`_ which should so far be
-used as the main reference.
-
-.. rubric:: What is contained in Griff files
+Data contents
+-------------
 
 .. image:: images/griff_layout.png
 
-Installed through the Geant4 stepping action hook, the entire event will by
-default be written to the file, including information normally available to
-traditional Geant4 in-job analyses such as information about volumes and
-particle data. The file can thus be opened and read without a Geant4
+Installed through the Geant4 stepping action hook, entire simulated events will
+by default be written to the file, including information normally available to
+traditional Geant4 in-job analyses -- such as information about volumes and
+particle meta data. The file can thus be opened and read without a Geant4
 installation, and provides the user with an object oriented access to
 information from the entire event as illustrated in the first figure on the top
 right of this page. Easy navigation between objects (e.g. from a track to its
@@ -56,7 +55,8 @@ looking at the C++ classes in the :sbpkg:`GriffDataRead` package:
 * Convenience functions:
   :sbpkg:`DumpObj<GriffDataRead/libinc/DumpObj.hh>`
 
-.. rubric:: Data reduction / output filtering
+Data reduction / output filtering
+---------------------------------
 
 If necessary, Griff supports two non-exclusive means of reducing data size by
 filtering output (note that this is not to be confused with the selection
@@ -95,17 +95,28 @@ further down this page):
   * :sbpkg:`StepFilterVolume<G4CollectFilters/libinc/StepFilterVolume.hh>` : Only write out the steps in certain volumes.
   * :sbpkg:`StepFilterTime<G4CollectFilters/libinc/StepFilterTime.hh>` : Only write out the steps happening at certain times.
 
-  For how to enable the filters in a simulation script see this
-  example<PhysValTS/scripts/sim>, this example <LokiSim/python/Common.py and
-  this example <G4SimShielding/scripts/simexample> (FIXME: add examples to
-  dgcode_val!)
+  To actually use the filters, they must be enabled in a :ref:`sim-script
+  <sbsimcript>` (see :sbpkg:`here<G4Examples/scripts/simwithgrifffilter>` for a
+  complete example of such a script):
 
-.. rubric:: How to enable Griff output
+  .. code-block:: python
+
+    import G4CollectFilters.StepFilterVolume
+    #...
+    my_griff_filter = G4CollectFilters.StepFilterVolume.create()
+    my_griff_filter.volumeList = ["Detector"]
+    #...
+    launcher.setFilter(my_griff_filter)#Griff filter
+    #...
+
+
+How to enable Griff output
+--------------------------
 
 When using dgcode, the default is that Griff output is enabled and in **FULL**
-Griff mode, written to a file named ``output.griff``. Most simulation scripts
-should change these defaults to something reasonable for the project, which can
-be done with a call:
+Griff mode, written to a file named ``output.griff``. Most :ref:`sim-scripts
+<sbsimscript>` should change these defaults to something reasonable for the
+project, which can be done with a call:
 
 .. code-block:: python
 
@@ -114,8 +125,8 @@ be done with a call:
 Which changes the default to be to write Griff output in **REDUCED** mode to a
 file named ``mystuff.griff``.
 
-No matter what default is specified in the simulation script, it is always
-changeable from the command line using the ``-o`` and ``-m`` flags:
+No matter what default is specified in the :ref:`sim-script <sbsimscript>`, it
+is always changeable from the command line using the ``-o`` and ``-m`` flags:
 
 .. code-block:: sh
 
@@ -123,7 +134,7 @@ changeable from the command line using the ``-o`` and ``-m`` flags:
   -m MODE, --mode=MODE  GRIFF storage mode [default REDUCED]
 
 Use ``launcher.setOutput("none")`` in the script or ``-o none`` (or
-``--output==none``) on the command-line to disable Griff output entirely.
+``--output=none``) on the command-line to disable Griff output entirely.
 
 If for some reason you are *not* using the standard :sbpkg:`G4Launcher`-based
 sim scrips, you can enable Griff output with the following command (after
@@ -138,9 +149,11 @@ header file.  from the :sbpkg:`G4DataCollect` package):
 You will probably also want to call different functions from that header file,
 for instance in case you want to store job-level metadata.
 
-.. rubric:: Analysing Griff files
+Analysing Griff files
+---------------------
 
-.. rubric:: Basic approach
+Basic approach
+^^^^^^^^^^^^^^
 
 One simply instantiates a
 :sbpkg:`GriffDataReader<GriffDataRead/libinc/GriffDataReader.hh>` object from
@@ -162,7 +175,8 @@ A simple example of such an analysis is provided in
    all files are not identical, but this behaviour can be changed to instead
    letting the analysis know when a new setup is encountered.
 
-.. rubric:: Advanced approach
+Advanced approach
+^^^^^^^^^^^^^^^^^
 
 In addition, some higher-level analysis utilities are available in the
 :sbpkg:`GriffAnaUtils` package, which allows (arguably) more readable and
@@ -214,18 +228,22 @@ obviously):
   *  :sbpkg:`StepFilter_EnergyDeposition<GriffAnaUtils/libinc/StepFilter_EnergyDeposition.hh>`
   *  :sbpkg:`StepFilter_Time<GriffAnaUtils/libinc/StepFilter_Time.hh>`
 
-.. rubric:: Using python as well as C++
+Python API
+^^^^^^^^^^
 
 For convenience, all the Griff analysis classes are available in Python as well
 as C++. This allows one to write analyses in python just as (or rather, more)
 easily than in C++, as well as doing away with the need of a compilation in the
-*edit* -> *compile* -> *run* analysis cycle typically carried out.
+*edit* → *compile* → *run* analysis cycle typically carried out.
 
 To see how Griff analysis can be performed in Python, here are the "basic" and
 "advanced" example from the previous sections as Python scripts:
 
 * :sbpkg:`GriffAnaEx/scripts/testpyana_basic`
 * :sbpkg:`GriffAnaEx/scripts/testpyana_advanced`
+
+There is also another advanced example in
+:sbpkg:`GriffAnaTests/scripts/testiter_py`.
 
 There is unfortunately one major downside of performing the analysis in Python
 rather than C++, and that is that it can be a lot slower. Mostly, this does not
@@ -247,7 +265,8 @@ to carry out the initial analysis in C++, writing out histograms
 and plot production in Python, using those histograms (and perhaps also the
 job-level metadata from Griff).
 
-.. rubric:: Command-line utilities
+Command-line utilities
+======================
 
 A few command-line utilities are provided:
 
@@ -264,7 +283,8 @@ A few command-line utilities are provided:
   events from a large griff file into a smaller one. Run with ``--help`` for
   instructions.
 
-.. rubric:: Implementation
+Implementation
+==============
 
 .. image:: images/griff_userview.png
 

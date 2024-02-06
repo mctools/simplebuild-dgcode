@@ -24,7 +24,7 @@ list of all available lists (or alternatively supply the argument
 
 
 Advanced information
-====================
+--------------------
 
 A somewhat outdated overview of physics lists from Geant4 4.9 can be found `here
 <http://geant4.in2p3.fr/IMG/pdf_PhysicsLists.pdf>`__. A briefer more recent one

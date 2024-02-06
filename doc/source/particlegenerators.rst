@@ -295,7 +295,8 @@ Python module, so it can easily be used in several different simulation
 scripts. You can find several examples of that in the
 :sbpkg:`G4CustomPyGen.Examples<G4CustomPyGen/python/Examples.py>` module.
 
-.. rubric:: Generate values by sampling distributions in histograms
+Histogram-based Generators
+--------------------------
 
 If you have a 1-dimensional `SimpleHists <SimpleHists.html>`__ histogram with a
 distribution of some quantity, you can sample it during particle generation and
