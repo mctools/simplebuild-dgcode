@@ -1284,18 +1284,6 @@ def overlay(hists,labels,colors=None,
         hh=_hoverhandleroverlay(fig,ax,lines,labels)
         _keepalive += [dragh,hh]
     _add_quit_hook()
-    import os
-    if os.environ.get('SIMPLEHISTS_OVERLAY_FORCE_SAVEFILE','0')!='0':
-        #Likely used in a unit test.
-        import pathlib
-        def _save(i):
-            f = pathlib.Path('.') / f'shist_overlay_{i}.png'
-            if f.exists():
-                return _save(i+1)
-            plt.savefig(f)
-            print(f'Created {f.name}')
-        _save(1)
-        return retval
     if show != 'almost':
         plt.show()
     del _keepalive # todo: return as well?

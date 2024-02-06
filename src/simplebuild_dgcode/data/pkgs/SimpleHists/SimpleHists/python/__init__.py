@@ -1,19 +1,20 @@
 __metaclass__ = type#py2 backwards compatibility
 __doc__='python module for package SimpleHists'
-__all__=['Hist1D','Hist2D','HistBase','HistCollection','histTypeOfData','deserialise']
+__all__=['Hist1D','Hist2D','HistBase','HistCollection',
+         'histTypeOfData','deserialise']
 
-#################################################################################
+###############################################################################
 # 1) Include hist classes etc. from the compiled C++ module:
 from . _init import *
 
 from os import environ as _environ
 
-#################################################################################
+###############################################################################
 # 2) Detect presence of numpy and if present, we add methods for getting
 #    contents/errors as numpy arrays as well as a .histogram[2d] method which
-#    returns contents in a format similar to that returned by numpy.histogram(..)
-#    and numpy.histogram2d(..). We also enable efficient filling with numpy
-#    arrays.
+#    returns contents in a format similar to that returned by
+#    numpy.histogram(..) and numpy.histogram2d(..). We also enable efficient
+#    filling with numpy arrays.
 
 try:
     import numpy
@@ -46,7 +47,7 @@ else:
     Hist1D.fill=Hist1D._rawfill
     Hist2D.fill=Hist2D._rawfill
 
-#################################################################################
+################################################################################
 # 3) Detect presence of matplotlib and if present, we add methods for quickly
 #    plotting the histograms in interactive viewers.
 
@@ -63,13 +64,13 @@ def is_osx_catalina_or_later():
     import platform
     if platform.system()!='Darwin':
         return False
-    return int(platform.release().split('.')[0])>=19 #see list in dgdepfixers platformutils.py
+    return int(platform.release().split('.')[0])>=19
 
 _lacks_display_var = not _environ.get('DISPLAY',None)
 _catalina_mode = is_osx_catalina_or_later()
 _has_agg_backend = (matplotlib and matplotlib.get_backend().lower()=='agg')
 if (not _has_agg_backend) and _lacks_display_var and _catalina_mode:
-    #insert dummy value to prevent matplotlib from switching to the agg backend by itself:
+    #insert dummy value to prevent matplotlib from switching to the agg backend:
     _environ['DISPLAY']=':0'
     _lacks_display_var=False
 _noninteractive = _has_agg_backend or _lacks_display_var
@@ -82,9 +83,12 @@ if (not _noninteractive) and matplotlib:
     Hist2D.plot_lego = plotutils.plot2d_lego
     HistCounts.plot = plotutils.plotcounts
 else:
-    def no_plot(self,**kwargs):
+    def no_plot(self,*args,**kwargs):
+        if 'SIMPLEHISTS_SILENT_PLOTFAIL' in _environ:
+            return
         if _noninteractive:
-            reason='running in non-interactive mode (agg backend selected or empty DISPLAY variable can cause this)'
+            reason=('running in non-interactive mode (agg backend'
+                    ' selected or empty DISPLAY variable can cause this)')
         else:
             reason='please install numpy and matplotlib'
         raise SystemExit(f"ERROR: Plotting not available ({reason})")
@@ -94,10 +98,10 @@ else:
     Hist2D.plot_lego = no_plot
     HistCounts.plot = no_plot
 
-#################################################################################
-# 4) Make histograms accessible as HistCollection properties so they can be easily
-#    accessed via tab completion in ipython. Note that this only works nicely for
-#    keys of the form (alpha)+(alpha/digit/_)*
+###############################################################################
+# 4) Make histograms accessible as HistCollection properties so they can be
+#    easily accessed via tab completion in ipython. Note that this only works
+#    nicely for keys of the form (alpha)+(alpha/digit/_)*
 
 class _histgetter:
     def __init__(self,hc):
@@ -114,7 +118,7 @@ class _histgetter:
 
 HistCollection.hist_getter = property(lambda self: _histgetter(self))
 
-#################################################################################
+###############################################################################
 # 5) Support fspath interface and thus allow pathlib.Path and similar objects
 #    when specifying file locations:
 
@@ -131,7 +135,7 @@ def __HistCollection_saveToFile(self,*args,**kwargs):
 HistCollection.__init__ = __HistCollection_init
 HistCollection.saveToFile = __HistCollection_saveToFile
 
-#################################################################################
+###############################################################################
 # 6) Make counts accessible as HistCounts properties so they can be easily
 #    accessed via tab completion in ipython.
 
