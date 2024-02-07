@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import G4GeoSkeletonSP.GeoSkeletonSP as geomodule
+import G4StdGenerators.SimpleGen as genmodule
+import G4CollectFilters.StepFilterVolume
+import G4Launcher
+
+#############################################################
+# Define geometry and particle generation:
+geo = geomodule.create()
+geo.sample_posz_mm = 5.0
+gen = genmodule.create()
+gen.particleName = 'neutron'
+gen.neutron_wavelength_aangstrom = 2.2
+gen.fixed_z_meters = -0.1
+
+#############################################################
+# Filter what is kept in the Griff file:
+my_griff_filter = G4CollectFilters.StepFilterVolume.create()
+my_griff_filter.volumeList = ["Detector"]
+
+#############################################################
+# Initialise launcher and let it take control:
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('skeletonsp','REDUCED')#Griff output
+launcher.setFilter(my_griff_filter)#Griff filter
+launcher.go()
+

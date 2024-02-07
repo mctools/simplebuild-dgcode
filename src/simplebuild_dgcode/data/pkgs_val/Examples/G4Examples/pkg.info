@@ -1,4 +1,4 @@
-package(USEPKG G4Launcher Utils G4HeatMap G4StdGeometries G4CustomPyGen G4StdGenerators)
+package(USEPKG G4Launcher Utils G4HeatMap G4StdGeometries G4CustomPyGen G4StdGenerators G4GeoSkeletonSP)
 
 ######################################################################
 

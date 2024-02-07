@@ -8,14 +8,18 @@
 #command-line.
 
 #############################################################
-#Define geometry:
+# Import needed modules:
 import G4GeoSkeletonSP.GeoSkeletonSP as geomodule
+import G4StdGenerators.SimpleGen as genmodule
+import G4Launcher
+
+#############################################################
+# Define geometry:
 geo = geomodule.create()
 geo.sample_posz_mm = 5.0
 
 #############################################################
-#Define particle generation:
-import G4StdGenerators.SimpleGen as genmodule
+# Define particle generation:
 gen = genmodule.create()
 gen.particleName = 'neutron'
 gen.neutron_wavelength_aangstrom = 2.2
@@ -24,14 +28,11 @@ gen.fixed_z_meters = -0.1
 # Hint: If you need a generator with more options you
 #       can replace "SimpleGen" with "FlexGen". Or perhaps,
 #       even better, write your custom python generator.
-#
 # More about particle generators at:
-#
 # https://mctools.github.io/simplebuild-dgcode/particlegenerators.html
 
 #############################################################
-#Framework setup
-import G4Launcher
+# Initialise launcher and let it take control:
 launcher = G4Launcher(geo,gen)
 launcher.setOutput('skeletonsp','REDUCED')#Griff output
 launcher.go()

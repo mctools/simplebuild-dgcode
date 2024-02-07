@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import sys,os
-from optparse import OptionParser#NOTE: The optparse module is deprecated - we should stop using it at some point
+import sys
+import os
+from optparse import OptionParser # Todo: migrate to argparse
 parser = OptionParser(usage='%prog [options]')
 parser.add_option("-n", "--nevts",type="int", dest="nevts", default=10,help="Number of events to simulate")
 parser.add_option("-o", "--output",type="string", dest="outfile", default='testoutput',help="Destination of output data")
@@ -25,10 +26,11 @@ geo.worldExtent_meters=1
 vis = False#todo: as option
 launcher = G4Launcher()
 launcher.setGeo(geo)
+world_meters = geo.getParameterDouble("worldExtent_meters")*Units.units.meter
 launcher.setParticleGun("neutron",
-                      0.025*Units.units.eV,
-                      (0,0,-1.5*geo.getParameterDouble("worldExtent_meters")*Units.units.meter),
-                      (0,0,1))
+                        0.025*Units.units.eV,
+                        (0,0,-1.5*world_meters),
+                        (0,0,1))
 
 launcher.setOutput(opt.outfile,opt.mode)
 launcher.setSeed(1119)
