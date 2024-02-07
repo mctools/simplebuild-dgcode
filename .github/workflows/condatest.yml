@@ -61,11 +61,26 @@ jobs:
           #For dev work: python3 -m pip install --no-deps ./src_co
           python3 -m pip install --no-deps ./src_co
           echo "sb --version: "$(sb --version)
+
+      - name: Prepare matplotlib
+        run: |
+          set -eux
           python3 -c 'import matplotlib'
+          #Trigger fontlib cache (so we don't get output in the middle of our
+          #unit tests later):
           python3 -c 'import matplotlib.pyplot'
-          #NB: import matplotlib.pyplot is also to ensure the font cache is
-          #triggered, so we don't get output in the middle of our unit tests
-          #later..
+
+      - name: Switch macOS matplotlib backend
+        if: runner.os == 'macOS'
+        run: |
+          set -eux
+          #As a temporary workaround for
+          #https://github.com/mctools/simplebuild-dgcode/issues/11 we do (only
+          #really needed for osx):
+          python3 -c 'import matplotlib as m;m.use("tkagg");import matplotlib.pyplot'
+          mkdir -p $(python3 -c 'import matplotlib;print(matplotlib.get_configdir())')
+          echo "backend : tkagg" >> $(python3 -c 'import matplotlib;print(matplotlib.matplotlib_fname())')
+          python3 -c 'import matplotlib.pyplot'
 
       - name: Build and test Core only
         id: build-and-test-core-only

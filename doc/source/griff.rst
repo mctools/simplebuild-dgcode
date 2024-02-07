@@ -96,7 +96,7 @@ further down this page):
   * :sbpkg:`StepFilterTime<G4CollectFilters/libinc/StepFilterTime.hh>` : Only write out the steps happening at certain times.
 
   To actually use the filters, they must be enabled in a :ref:`sim-script
-  <sbsimcript>` (see :sbpkg:`here<G4Examples/scripts/simwithgrifffilter>` for a
+  <sbsimscript>` (see :sbpkg:`here<G4Examples/scripts/simwithgrifffilter>` for a
   complete example of such a script):
 
   .. code-block:: python
