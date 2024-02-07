@@ -42,4 +42,4 @@ relevant parts of the documentation.
 
    Issue tracker <https://github.com/mctools/simplebuild-dgcode/issues>
    license.rst
-   simplebuild <https://mctools.github.com/simplebuild>
+   simplebuild <https://mctools.github.io/simplebuild>

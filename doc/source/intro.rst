@@ -76,7 +76,7 @@ Features
   available.
 
 * Due in particular to being based on `simplebuild
-  <https://mctools.github.com/simplebuild-dgcode>`__, dgcode readily facilitates
+  <https://mctools.github.io/simplebuild>`__, dgcode readily facilitates
   the creation of shared work between multiple related Geant4 projects within a
   group of people.
 
