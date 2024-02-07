@@ -25,3 +25,9 @@ for pkginfo in $(find . -name pkg.info); do
         ruff --ignore $IGNORE "$fn"
     done
 done
+
+#Skeleton should be kept pristine:
+ruff pkgs_val/SkeletonSP/SkeletonSP/scripts/sim
+ruff pkgs_val/SkeletonSP/SkeletonSP/scripts/scan
+ruff pkgs_val/SkeletonSP/SkeletonSP/scripts/scanana
+ruff pkgs_val/SkeletonSP/SkeletonSP/scripts/simanachain

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+sb_g4examples_simwithgrifffilter -lPL_Empty
