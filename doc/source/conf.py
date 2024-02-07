@@ -260,8 +260,13 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['sb_tricorder_sim','--mcpl=help'],
                            pkgroot,
                            bd / 'autogen_tricorder_simmcplhelp.txt' )
-
-
+        invoke_in_pkgroot( ['nctool','-d','stdlib::Al_sg225.ncmat;temp=250K'],
+                           pkgroot,
+                           bd / 'autogen_nctool_dump_example.txt' )
+        invoke_in_pkgroot( ['sb_g4materials_dump',
+                            'G4_STAINLESS-STEEL:temp_kelvin=200:scale_density=1.1'],
+                           pkgroot,
+                           bd / 'autogen_g4matdump_g4stainlesssteel.txt' )
 
     tc_simscript = pkgroot/'TriCorder'/'TriCorder'/'scripts'/'sim'
     tc_simscript_txt = read_text_remove_comments( tc_simscript )

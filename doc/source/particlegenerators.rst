@@ -117,27 +117,17 @@ package.
 
 * ``SimpleGen``: A very simple generator, producing 1 primary particle each
   event, allowing the user to modify position, direction and energy (or, for
-  neutrons, wavelength - but not both wavelength and energy at the same time)::
+  neutrons, wavelength -- but not both wavelength and energy at the same time):
 
-    FIXME dynamic from build/autogen_querygenerator_simplegen.txt
+  .. include:: ../build/autogen_querygenerator_simplegen.txt
+    :literal:
 
-    $> sb_g4utils_querygenerator -g G4StdGenerators.SimpleGen
-    ParticleGenerator[G4StdGenerators/SimpleGen]:
-      [dbl] fixed_x_meters = 0
-      [dbl] fixed_y_meters = 0
-      [dbl] fixed_z_meters = 0
-      [dbl] fixed_energy_eV = 100
-      [dbl] neutron_wavelength_aangstrom = 0.02860143375001
-      [dbl] fixed_xdir = 0
-      [dbl] fixed_ydir = 0
-      [dbl] fixed_zdir = 1
-      [str] particleName = "neutron"
 * ``FlexGen``: The big-brother of ``SimpleGen`` which provides more parameters
   and features. Note that this is a strict super-set of the ``SimpleGen``
   parameters, so migrating code from ``SimpleGen`` to ``FlexGen`` should be as
   simple as renaming ``G4StdGenerators.SimpleGen`` to
   ``G4StdGenerators.FlexGen`` in the import statement. The additional features
-  ``FlexGen`` provides over ``SimpleGen`` are (FIXME: dynamic querygen output?):
+  ``FlexGen`` provides over ``SimpleGen`` are:
 
     * Ability to generate particle directions in spherical coordinates.
     * Ability to randomize all variables uniformly over an interval. As an
@@ -150,28 +140,15 @@ package.
       <https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf>`_
       rather than names, and to generate more than 1 primary particle each
       event.
+    * Too see all the parameters of ``FlexGen``, simply run the command::
+
+        $> sb_g4utils_querygenerator -g G4StdGenerators.FlexGen
 * ``ProfiledBeamGen``: A generator which generates a beam of particles starting
   at z=0 and having a given profile in the x-y plane, symmetric around
-  :math:`(x,y)=(0,0)`, unless an offset is given::
+  :math:`(x,y)=(0,0)`, unless an offset is given:
 
-    FIXME dynamic autogen_querygenerator_profiledbeamgen.txt
-    $> sb_g4utils_querygenerator -g G4StdGenerators.ProfiledBeamGen
-    ParticleGenerator[G4StdGenerators/ProfiledBeamGen]:
-      [dbl] spread_x_mm = 0
-      [dbl] spread_y_mm = 0
-      [str] spread_mode = "GAUSSIAN"
-      [dbl] offset_x_mm = 0
-      [dbl] offset_y_mm = 0
-      [dbl] offset_z_mm = 0
-      [dbl] energy_eV = 100
-      [dbl] neutron_wavelength_aangstrom = 0.02860143375001
-      [dbl] neutron_wavelength_spread_aangstrom = 0
-      [dbl] neutron_thermal_spectrum_kelvin = 0
-      [int] fixed_nparticles = 1
-      [flg] randomize_nparticles = no
-      [dbl] random_nparticles_poissonmean = 1
-      [str] particleName = "neutron"
-      [int] pdgCode = 0
+  .. include:: ../build/autogen_querygenerator_profiledbeamgen.txt
+    :literal:
 
   * It shares the options for setting particle type and number with FlexGen, but
     for energy it provides options for either a Gaussian spread in neutron

@@ -30,7 +30,7 @@ General remarks
 The strings defining Most materials in typical dgcode projects will actually be
 the same strings that are used with `NCrystal (aka "NCrystal cfg-strings)
 <https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
-so you might wish to consult the NCrystal documentation for that in the
+so you might wish to consult the NCrystal documentation for those in the
 `NCrystal wiki
 <https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_. Most
 of the entries in the :ref:`cookbook <sbmatcookbook>` are indeed such NCrystal
@@ -107,72 +107,84 @@ carbide<sbmatb4c>`.
 Investigating materials
 -----------------------
 
-One advantage of defining materials via strings, is that it is possible to
-use various tools to investigate properties of the materials, besides just using
-them in a simulation. Here are a few recommended options for doing that in dgcode:
+One advantage of defining materials via strings, is that it is possible to use
+various tools to investigate properties of the materials, besides just using
+them in a simulation. Below follows two recommended options for doing that in
+dgcode.
 
-* Inspect via ``nctool``
-   The material definitions which are also `NCrystal cfg-strings
-   <https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
-   can be investigated with NCrystal tools. The most easily used of these is the
-   command line tool ``nctool``, and the usage is very simple. First of all,
-   detailed thermal neutron cross sections and sample neutron scattering
-   distributions for the material can be found simply by feeding the material
-   string in question directly to ``nctool`` (remember the ``'`` quotes around
-   the string, or your terminal might misinterpret some of the special
-   characters inside it):
+Inspect via NCrystal utilities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   .. code-block::
+The material definitions which are also `NCrystal cfg-strings
+<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
+can be investigated with NCrystal tools. The most easily used of these is the
+command line tool ``nctool``, and the usage is very simple. First of all,
+detailed thermal neutron cross sections and sample neutron scattering
+distributions for the material can be found simply by feeding the material
+string in question directly to ``nctool`` (remember the ``'`` quotes around
+the string, or your terminal might misinterpret some of the special
+characters inside it)::
 
-     $> nctool 'stdlib::Al_sg225.ncmat;temp=250K'
+  $> nctool 'stdlib::Al_sg225.ncmat;temp=250K'
 
-   Add a flag ``-a`` if you want absorption cross sections included as well, but
-   be aware that NCrystal only supports a simple ``1/v`` model of absorption
-   which will break down at higher neutron energies. When using the material
-   inside a Geant4 simulation, the more detailed absorption models by Geant4
-   will be used instead.
+Add a flag ``-a`` if you want absorption cross sections included as well, but
+be aware that NCrystal only supports a simple ``1/v`` model of absorption
+which will break down at higher neutron energies. When using the material
+inside a Geant4 simulation, the more detailed absorption models by Geant4
+will be used instead.
 
-   It is also possible to compare two materials, for instance to see how the
-   temperature affects the cross sections:
+It is also possible to compare two materials, for instance to see how the
+temperature affects the cross sections::
 
-   .. code-block::
+  $> nctool 'stdlib::Al_sg225.ncmat;temp=250K' 'stdlib::Al_sg225.ncmat;temp=500K'
 
-     $> nctool 'stdlib::Al_sg225.ncmat;temp=250K' 'stdlib::Al_sg225.ncmat;temp=500K'
+To get some printed information about the material, rather than cross section
+plots, you can use the ``--dump`` (or the shorter ``-d``) to get such
+information printed:
 
-   If you wish to read about how the material inside ``Al_sg225.ncmat`` was
-   defined, and perhaps read some comments about how the material was created
-   (or which publications to cite, etc.), you can find the file in the online
-   data library, or simple ask NCrystal to show you the contents (for this usage,
-   first remove parameters like ``;temp=250K``):
+.. include:: ../build/autogen_nctool_dump_example.txt
+  :literal:
 
-   .. code-block::
+If you wish to read about how the material inside ``Al_sg225.ncmat`` was
+defined, and perhaps read some comments about how the material was created
+(or which publications to cite, etc.), you can find the file in the online
+data library, or simple ask NCrystal to show you the contents (for this usage,
+first remove parameters like ``;temp=250K``):
 
-     $> nctool --extract 'stdlib::Al_sg225.ncmat'
+.. code-block::
 
-   Many more options exists, to see them all run:
+  $> nctool --extract 'stdlib::Al_sg225.ncmat'
 
-   .. code-block::
+Many more options exists, to see them all run:
 
-     $> nctool --help
+.. code-block::
 
-* Investigate the material via the NCrystal python API
-   In case ``nctool`` does not exactly provide the plots you need, you might
-   instead find it useful to simply investigate the material via the NCrystal
-   Python API. A short example is found `here
-   <https://github.com/mctools/ncrystal/blob/master/examples/ncrystal_example_py>`__,
-   and Jupyter notebooks with much more details can be found `here
-   <https://github.com/mctools/ncrystal-notebooks/tree/main>`__ (do not forget to
-   scroll down and read the instructions).
-* Inspect any cross section in Geant4
-   The NCrystal-based approaches outlined above are mostly suited for
-   investigating scattering cross sections of thermal neutrons. To investigate
-   other kinds of cross sections, or the effects of different :ref:`physics
-   lists <sbphyslist>`, it is useful to be able to inspect the cross sections
-   directly as they actually manifest themselves in a Geant4 job. This is
-   fortunately easily done in dgcode, and is documented :ref:`on this page
-   <sbxsect>`.
+  $> nctool --help
 
-* Inspect the basic composition of a G4Material sb_g4materials_namedmat
-   lala fixme
+In case ``nctool`` does not exactly provide the plots you need, you might
+instead find it useful to simply investigate the material via the NCrystal
+Python API. A short example is found `here
+<https://github.com/mctools/ncrystal/blob/master/examples/ncrystal_example_py>`__,
+and Jupyter notebooks with much more details can be found `here
+<https://github.com/mctools/ncrystal-notebooks/tree/main>`__ (do not forget to
+scroll down and read the instructions).
 
-fixme also nctool --dump
+
+Inspect via Geant4-based utilities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The NCrystal-based approaches outlined in the previous section are mostly suited
+for investigating scattering cross sections of thermal neutrons, and obviously
+only works for materials which are defined by NCrystal cfg-strings. To
+investigate other kinds of materials or cross sections, or the effects of
+different :ref:`physics lists <sbphyslist>`, it is useful to be able to inspect
+the cross sections directly as they actually manifest themselves in a Geant4
+job. This is fortunately easily done in dgcode, and is documented :ref:`on this
+dedicated page <sbxsect>`.
+
+Additionally, if one is mostly interested in the basic composition of a given
+material, one can simply feed the material string in question to the command
+``sb_g4materials_dump``:
+
+.. include:: ../build/autogen_g4matdump_g4stainlesssteel.txt
+  :literal:
