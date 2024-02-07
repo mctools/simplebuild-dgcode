@@ -99,7 +99,7 @@ def _display_heatmap_help():
     print("CONDITION is an optional filter expression based on the G4ExprParser.")
     print()
     print("FILENAME is the name of the output file (defaults to \"heatmap\" if")
-    print("not provided). Postfix FILENAME with :(nx,ny,nz) to modify binning.")
+    print("not provided). Append :(nx,ny,nz) to the FILENAME to modify binning.")
     print()
     print("Supplying --heatmap with no arguments implies --heatmap=step.edep")
     print()

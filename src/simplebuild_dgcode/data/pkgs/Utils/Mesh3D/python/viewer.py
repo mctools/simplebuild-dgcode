@@ -1,7 +1,4 @@
-from __future__ import print_function
-from __future__ import division
-__metaclass__ = type#py2 backwards compatibility
-from PyAna import *
+from PyAna import plt, np
 from Mesh3D import Mesh3D
 import PyAna.dyncmap
 import matplotlib.widgets as mplwidgets
@@ -10,10 +7,12 @@ class Mesh3DViewer:
     def __cellinfos(self,iaxis=None):
         iaxis = iaxis if iaxis is not None else self.__axis
         ii=[0,1,2]
+        assert iaxis is not None
         ii.remove(iaxis)
         return [self.__mesh.cellinfo[i] for i in range(3) if i!=iaxis]
 
     def __extent(self,iaxis):
+        assert iaxis is not None
         cellh,cellv = self.__cellinfos(iaxis)
         return cellh[1],cellh[2],cellv[1],cellv[2]
 
@@ -35,7 +34,7 @@ class Mesh3DViewer:
                                     extent=(0.0,1.0,0.0,1.0),
                                     origin='lower',picker=True)
         if True:
-            ax_cb = plt.axes([0.82, 0.4, 0.02, 0.5])#fixme: better placement?
+            ax_cb = plt.axes([0.82, 0.4, 0.02, 0.5])#todo: better placement?
             self.__obj_colbar = plt.colorbar(self.__obj_img,cax=ax_cb)#,ticks=[])
         self.__fig.canvas.mpl_connect('pick_event', self.__pick_image)
 
@@ -44,9 +43,11 @@ class Mesh3DViewer:
         self.__ax_1d = plt.axes([0.1, 0.1, 0.7, 0.2])
         self.__poly1d = None
 
-        ax_radio = plt.axes([0.82, 0.1, 0.1, 0.2],axisbg=(0,0,0,0))
+        ax_radio = plt.axes([0.82, 0.1, 0.1, 0.2],facecolor=(1,1,1,0.0))
         axischooser = mplwidgets.RadioButtons(ax_radio, ('  XY', '  YZ', '  XZ'), active=0)
         axischooser.on_clicked(self.__update_axischooser)
+        #self.__axischooser = axischooser # keep alive
+        #self.__ax_radio = ax_radio # keep alive
         self.__lastupdate=(None,None,None)
         self.__update_axischooser('XY')
         self.__unblock()
@@ -82,7 +83,7 @@ class Mesh3DViewer:
     def __update_axischooser(self,choice):
         choice = choice.strip()
         ia = {'XY':2,'YZ':0,'XZ':1}[choice]
-        if self.__axis!=ia:
+        if self.__axis is None or self.__axis != ia:
             self.__block()
             self.__obj_img.set_extent(self.__extent(ia))
             self.__axis = ia
@@ -101,17 +102,19 @@ class Mesh3DViewer:
             self.__ax_1d.set_xlim(x0, x1)
             self.__ax_1d.grid()
             y0,y1=min(0.0,y.min()), max(0.0,y.max())
-            if y0==y1: y1=1.0
+            if y0==y1:
+                y1=1.0
             y0 *= 1.1
             y1 *= 1.1
             self.__ax_1d.set_ylim(y0,y1)
             self.__spanselect = mplwidgets.SpanSelector(self.__ax_1d, self.__spanselected,
                                                         'horizontal', useblit=True,
-                                                        rectprops=dict(alpha=0.5, facecolor='red'))
+                                                        props=dict(alpha=0.5, facecolor='red'))
             self.__unblock()
             self.__update(None)
 
     def __spanselected(self,s0,s1):
+        assert self.__axis is not None
         n1d,x0,x1=self.__mesh.cellinfo[self.__axis]
         import math
         i0 = max(0,int(math.floor((s0-x0)*n1d/(x1-x0))))
@@ -127,6 +130,7 @@ class Mesh3DViewer:
     def __update(self,*dummy):
         if self.__blockcount > 0:
             return
+        assert self.__axis is not None
         ia = self.__axis
         c0 = self.__icell0[ia]
         c1 = self.__icell1[ia]
@@ -149,6 +153,7 @@ class Mesh3DViewer:
         self.__fig.canvas.draw_idle()
 
     def __extract_data(self,mask_zeroes=True):
+        assert self.__axis is not None
         ia = self.__axis
         c0 = self.__icell0[ia]
         c1 = self.__icell1[ia]
@@ -158,13 +163,18 @@ class Mesh3DViewer:
             data = np.ma.masked_where(data == 0.0, data)
         n = data.shape[ia]
         s = slice(c0,c1+1) if c1+1<n else (slice(c0,None) if c0 else slice(0,n))
-        if ia==0: d=np.sum(data[s,:,:], axis=ia)
-        elif ia==1: d=np.sum(data[:,s,:], axis=ia)
-        elif ia==2: d=np.sum(data[:,:,s], axis=ia)
-        else: assert False
+        if ia==0:
+            d=np.sum(data[s,:,:], axis=ia)
+        elif ia==1:
+            d=np.sum(data[:,s,:], axis=ia)
+        elif ia==2:
+            d=np.sum(data[:,:,s], axis=ia)
+        else:
+            assert False
         return d
 
     def __extract_data1d(self):
+        assert self.__axis is not None
         return np.sum(self.__mesh.data,tuple(i for i in range(3) if i!=self.__axis))
 
 def experimental_volume_rendering(mesh):
@@ -194,6 +204,6 @@ def experimental_volume_rendering(mesh):
         i.dimensions = msh.data.shape
         return i
     mlab.figure(bgcolor=(0,0,0))
-    vol=mlab.pipeline.volume(image_data(mesh),vmin=0.01,vmax=0.999)
+    #vol=mlab.pipeline.volume(image_data(mesh),vmin=0.01,vmax=0.999)
     mlab.show()
 
