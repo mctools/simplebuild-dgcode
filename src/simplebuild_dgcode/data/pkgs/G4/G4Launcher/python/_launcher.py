@@ -269,7 +269,7 @@ def _swallowCmdLineAndLaunch(self):
         default_dovis=True
     else:
         default_dovis=False
-        default_visengine='OGLSXm'
+        default_visengine='OGL'
     default_mode=self.getOutputMode()
     default_outfile=self.getOutputFile()
     if not default_mode: default_outfile='FULL'

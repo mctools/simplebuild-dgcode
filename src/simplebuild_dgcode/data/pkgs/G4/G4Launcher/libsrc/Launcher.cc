@@ -309,11 +309,9 @@ void G4Launcher::Launcher::Imp::preinit_vis(Launcher * launcher)
   m_vis = new G4VisExecutive;
   m_vis->Initialize();
   launcher->cmd("/vis/scene/create");
-  std::string tmp; tmp.resize(m_visengine.size()+20);
-  int ntmp = snprintf ( &tmp[0], m_visengine.size()+20, "/vis/open %s",m_visengine.c_str());
-  assert(ntmp<(int)tmp.size());
-  tmp.resize(ntmp);
-  launcher->cmd(tmp.c_str());
+  std::string tmp = "/vis/open ";
+  tmp += m_visengine;
+  launcher->cmd( tmp.c_str() );
   launcher->cmd("/vis/modeling/trajectories/create/drawByCharge colcharge");
   launcher->cmd("/vis/modeling/trajectories/create/drawByParticleID colpdg");
   launcher->cmd("/vis/modeling/trajectories/colpdg/set gamma yellow");
