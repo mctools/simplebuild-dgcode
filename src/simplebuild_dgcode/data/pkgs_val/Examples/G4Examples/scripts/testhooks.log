@@ -20,6 +20,7 @@ G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 0.01
 G4Launcher::   -->   [dbl] target_width_cm = 100
 G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher::   -->   [dbl] world_extra_margin_cm = 0
 G4Launcher:: Setting up particle generation:
 G4Launcher::   --> ParticleGenerator[G4StdGenerators/FlexGen]:
 G4Launcher::   -->   [dbl] fixed_x_meters = 0
@@ -113,6 +114,7 @@ G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 0.01
 G4Launcher::   -->   [dbl] target_width_cm = 100
 G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher::   -->   [dbl] world_extra_margin_cm = 0
 G4Launcher:: Setting up particle generation:
 G4Launcher::   --> ParticleGenerator[G4StdGenerators/FlexGen]:
 G4Launcher::   -->   [dbl] fixed_x_meters = 0

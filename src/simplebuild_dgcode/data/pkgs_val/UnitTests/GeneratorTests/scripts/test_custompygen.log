@@ -8,6 +8,7 @@ G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 0.01
 G4Launcher::   -->   [dbl] target_width_cm = 100
 G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher::   -->   [dbl] world_extra_margin_cm = 0
 G4Launcher:: Setting up particle generation:
 G4Launcher::   --> ParticleGenerator[sb_generatorexamples_custompygen_inline/MyPyGen]:
 G4Launcher::   -->   [dbl] energy_MeV = 1
@@ -29,6 +30,7 @@ G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 0.01
 G4Launcher::   -->   [dbl] target_width_cm = 100
 G4Launcher::   -->   [str] material = "G4_POLYETHYLENE"
+G4Launcher::   -->   [dbl] world_extra_margin_cm = 0
 G4Launcher:: Setting up particle generation:
 G4Launcher::   --> ParticleGenerator[G4CustomPyGen.Examples/CorrelatedBeamGen]:
 G4Launcher::   -->   [dbl] spread_x_mm = 5

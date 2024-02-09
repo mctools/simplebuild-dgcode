@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+# Example sim-script, used on
+# https://mctools.github.io/simplebuild-dgcode/install.html to verify an
+# installation. DO NOT MODIFY THIS SCRIPT WITHOUT UPDATING THE DISCUSSION ON
+# THAT WEBPAGE!!
+
+import G4Launcher
+import G4StdGeometries.GeoSlab as geomodule
+import G4StdGenerators.SimpleGen as genmodule
+
+geo = geomodule.create()
+geo.target_depth_cm = 1
+geo.target_width_cm = 100
+geo.material = 'stdlib::Al_sg225.ncmat;comp=bragg'
+geo.world_extra_margin_cm = 100
+
+gen = genmodule.create()
+gen.particleName = 'neutron'
+gen.neutron_wavelength_aangstrom = 4.4
+gen.fixed_z_meters = -1.9
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('example','REDUCED')#Griff output
+launcher.go()

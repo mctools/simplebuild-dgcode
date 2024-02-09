@@ -70,6 +70,7 @@ void G4OSG::TrkHandle::setupGeode() const
     } else {
       assert(trkcolstyle==1);
       // #colors inspired by http://www.mulinblog.com/a-color-palette-optimized-for-data-visualization/
+      // Used for paper...
       trkcolor = osg::Vec4(0.301960784314,0.301960784314,0.301960784314,0); //change default to gray
       if (pdg==22) trkcolor = osg::Vec4(0.8*0.870588235294,0.8*0.811764705882,0.8*0.247058823529,0);//photon [dark YELLOW, scaled from yellow]
       else if (pdg==2112) trkcolor = osg::Vec4(0.376470588235,0.741176470588,0.407843137255,0);//neutron [GREEN]

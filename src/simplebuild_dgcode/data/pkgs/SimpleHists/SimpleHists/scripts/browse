@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-from __future__ import print_function
-import SimpleHists as sh
 import sys
+import os
+import SimpleHists as sh
 from SimpleHists._util import selected_keys
 
 def parse_cmd_line():
     import argparse as AP
-    import os #, sys
     parser = AP.ArgumentParser(description='Browse an .shist file saved from a SimpleHists::HistCollection.'
                                +' Unless overridden by -p, -d or -i this launches an interactive browser.'
                                +' Supply histogram indices or keys to narrow the selection to a subset of all'
@@ -58,6 +57,13 @@ def parse_cmd_line():
         parser.error('Please only specify a single .shist file')
     args.selection=all_sel
     args.infile=all_shist[0]
+
+    if args.infile.count('/')==1:
+        #support simplebuild pkgname/filename syntax:
+        import Core.FindData3
+        _ = Core.FindData3(args.infile)
+        if _ is not None:
+            args.infile = str(_)
 
     if not os.path.exists(args.infile):
         parser.error('File not found: %s'%args.infile)

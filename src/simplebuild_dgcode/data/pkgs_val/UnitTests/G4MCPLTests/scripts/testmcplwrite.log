@@ -23,6 +23,7 @@ G4Launcher::   --> GeoConstructor[G4StdGeometries/GeoSlab]:
 G4Launcher::   -->   [dbl] target_depth_cm = 20
 G4Launcher::   -->   [dbl] target_width_cm = 100
 G4Launcher::   -->   [str] material = "G4_Al"
+G4Launcher::   -->   [dbl] world_extra_margin_cm = 0
 G4Launcher:: Setting up particle generation:
 G4Launcher::   --> ParticleGenerator[G4StdGenerators/SimpleGen]:
 G4Launcher::   -->   [dbl] fixed_x_meters = 0
@@ -1005,7 +1006,7 @@ Opened MCPL file target.mcpl.gz:
   Basic info
     Format             : MCPL-3
     No. of particles   : 0
-    Header storage     : 899 bytes
+    Header storage     : 931 bytes
     Data storage       : 0 bytes
 
   Custom meta data
@@ -1020,7 +1021,7 @@ Opened MCPL file target.mcpl.gz:
           -> comment 6 : "ESS/dgcode geometry module : G4StdGeometries/GeoSlab"
           -> comment 7 : "ESS/dgcode generator module : G4StdGenerators/SimpleGen"
     Number of blobs    : 2
-          -> 74 bytes of data with key "ESS/dgcode_geopars"
+          -> 106 bytes of data with key "ESS/dgcode_geopars"
           -> 231 bytes of data with key "ESS/dgcode_genpars"
 
   Particle data format
@@ -1037,7 +1038,7 @@ Opened MCPL file recordfwd.mcpl.gz:
   Basic info
     Format             : MCPL-3
     No. of particles   : 11
-    Header storage     : 826 bytes
+    Header storage     : 858 bytes
     Data storage       : 352 bytes
 
   Custom meta data
@@ -1052,7 +1053,7 @@ Opened MCPL file recordfwd.mcpl.gz:
           -> comment 6 : "ESS/dgcode geometry module : G4StdGeometries/GeoSlab"
           -> comment 7 : "ESS/dgcode generator module : G4StdGenerators/SimpleGen"
     Number of blobs    : 2
-          -> 74 bytes of data with key "ESS/dgcode_geopars"
+          -> 106 bytes of data with key "ESS/dgcode_geopars"
           -> 231 bytes of data with key "ESS/dgcode_genpars"
 
   Particle data format

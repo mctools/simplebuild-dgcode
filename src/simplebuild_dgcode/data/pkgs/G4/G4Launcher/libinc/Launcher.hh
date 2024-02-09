@@ -89,9 +89,8 @@ namespace G4Launcher {
     //For custom modifications:
     G4RunManager * getRunManager();
 
-    //Schedules visualisation manager (if you have trouble with the OGLSXm
-    //engine, other options could be OGLI, OGL, OGLIQt, OGLIQt_FALLBACK or OGLIX).
-    void setVis(const char* visengine = "OGLSXm");
+    //Schedules visualisation manager.
+    void setVis(const char* visengine = "OGL");
 
     //Will setup remaining items as required and init visualisation (if setVis
     //was called) and the runManager, and then drop the user to an interactive
