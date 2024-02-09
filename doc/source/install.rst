@@ -6,11 +6,11 @@ Installation
 
 .. include:: wipwarning.rst
 
-The simplebuild system and dgcode is supported only on unix systems (macOS and Linux),
-although it most likely will also work on Windows under the WSL (Windows
-Subsystem for Linux) with a virtual Ubuntu installation. It is used exclusively
-by entering shell commands in a terminal interface, so be sure you are familiar
-with such command line interfaces.
+The simplebuild system and dgcode itself is supported only on unix systems
+(macOS and Linux), although it most likely will also work on Windows under the
+WSL (Windows Subsystem for Linux) with a virtual Ubuntu installation. It is used
+exclusively by entering shell commands in a terminal interface, so be sure you
+are familiar with such command line interfaces.
 
 Install via conda
 =================
@@ -83,15 +83,67 @@ tag by appending ``@<gitid>`` to the URL in the last command. For instance::
 Verifying an installation
 =========================
 
-As a very basic verification of a simplebuild installation, one can create a
-simple simplebuild project and launch a few basic unit tests from the
+As a verification of a dgcode installation, one can create a dgcode-based
+simplebuild project and launch the unit tests from the
 :sbpkg:`bundleroot::dgcode_val` bundle (you can remove the leftover ``sbverify``
 directory afterwards):
 
-.. code-block::
+.. literalinclude:: ../build/autogen_sbverify_cmdout_snipped.txt
 
-   FIXME todo
+FIXME: snip output above
 
-The important thing to notice here is that several unit tests were launched, and
-the message ``All tests completed without failures!`` tells us that they all
-completed without problems.
+The important thing to notice here is that unit tests were launched, and the
+message ``All tests completed without failures!`` tells us that they all
+completed without problems. The last call to ``sb_core_extdeps`` additionally
+confirmed the presence of the most important external software programatically,
+although you could also just have seen it in the output above.
+
+The unit tests above have one draw-back, in that they do mostly not test
+visualisation capabilities. So it is a good idea to manually test the
+:ref:`Geant4 data and geometry viewer <sb3dvis>` by launching the command::
+
+  $> sb_g4launcher_example --dataviewer -n1000
+
+Which should give a view like the following (use the mouse to rotate the view):
+
+|image_example_dataviewer|
+
+In the image above, 4.4Å neutrons (green) hit a slab of aluminium from
+above. The most prominent features in the image should be yellow lines going out
+from the center into all directions, as well as green lines forming a cone. This
+is because the scattering physics in the aluminium in this example is provided
+by NCrystal as ``stdlib::Al_sg225.ncmat;comp=bragg`` (i.e. only Bragg
+diffraction is enabled), so all (singly) scattered neutrons (green) should end
+up in a single Debye-Scherrer cone. Other particles like gammas (yellow) are
+generated in absorption events, based on Geant4's own builtin physics.
+
+It might also be a good idea to verify that the matplotlib-based
+:ref:`SimpleHists <sbsimplehists>` plotting works, which can be done with the
+command::
+
+  $> sb_simplehists_browse -p G4CustomPyGen/example.shist
+
+This should yield an interactive plot of the histogram found in the file (notice
+how hovering over a given bin creates a little light-blue transparent popup-box
+with detailed information about the bin):
+
+|image_shist_example|
+
+You can also run the same command without ``-p`` to test that the SimpleHists
+browser works::
+
+  $> sb_simplehists_browse G4CustomPyGen/example.shist
+
+Which should launch an interactive browser looking like:
+
+|image_shist_browser|
+
+There is only 1 histogram inside this particular file, so the browser is not
+particular useful in this case. But you can still test that it works by
+confirming that clicking on the histogram resuls in that histogram being shown.
+
+.. |image_example_dataviewer| image:: images/dgcode_launcher_example_dataviewer.png
+.. |image_shist_example| image:: images/shist_example.png
+   :height: 400px
+.. |image_shist_browser| image:: images/shist_browser.png
+   :height: 280px

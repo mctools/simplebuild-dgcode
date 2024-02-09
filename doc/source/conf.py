@@ -40,6 +40,14 @@ os.environ['PYTHONUNBUFFERED'] = '1'
 if 'SIMPLEBUILD_CFG' in os.environ:
     del os.environ['SIMPLEBUILD_CFG']
 
+def _configure_fixuptext():
+    import _simple_build_system._sphinxutils as SU
+
+    import simplebuild_dgcode as ourmod
+    SU.add_fixuptext_dirreplacement(pathlib.Path(ourmod.__file__).parent,
+                                    '/some/where/simplebuild_dgcode')
+_configure_fixuptext()
+
 def _reporoot():
     p=pathlib.Path(__file__).parent.parent.parent
     assert ( p / 'src' / 'simplebuild_dgcode'/ '__init__.py' ).is_file()
@@ -324,4 +332,65 @@ def run_tricorder_cmds():
     (c0.parent
      /c0.name.replace('.txt','_plus_snippet_sb.txt')).write_text(edit)
 
+def generate_sbverify():
+    confpydir = pathlib.Path(__file__).parent
+    script = confpydir.parent / 'cmdlauncher_sbverify.x'
+    assert script.is_file()
+    blddir = confpydir.parent / 'build'
+    blddir.mkdir(exist_ok=True)
+    outfile = blddir / 'autogen_sbverify_cmdout.txt'
+    workdir = blddir / 'autogen_sbverify'
+    if workdir.is_dir():
+        return#already done
+    workdir.mkdir()
+    cmd=str(script.absolute())
+    print(f' ---> Launching command {cmd}')
+    env = os.environ.copy()
+    env['PYTHONUNBUFFERED']='1'
+    p = subprocess.run( [cmd],
+                        cwd = workdir,
+                        check = True,
+                        capture_output = True )
+    class dirs:
+        pass
+    dirs = dirs()
+    dirs.root = workdir / 'sbverify'
+    assert ( dirs.root / 'simplebuild.cfg' ).is_file()
+    assert not p.stderr
+    from _simple_build_system._sphinxutils import ( fixuptext,
+                                                    check_output_contains )
+
+    txt = fixuptext( dirs.root, p.stdout.decode() )
+    txt = '\n'.join( e.replace('CMDPROMPT>','(dgcode) $> ')
+                     for e in txt.splitlines() )
+    txt = '$> conda activate dgcode\n' + txt
+    outfile.write_text(txt)
+    check_output_contains( outfile, 'All tests completed without failures!')
+
+def _snip_sbverify():
+    blddir = pathlib.Path(__file__).parent.parent / 'build'
+    fileorig = blddir / 'autogen_sbverify_cmdout.txt'
+    fileout =  blddir / 'autogen_sbverify_cmdout_snipped.txt'
+    assert fileorig.is_file()
+
+    ll = [e.strip() for e in fileorig.read_text().splitlines()]
+    pat0 = 'sbld:  Inspecting environment via CMake'
+    pat1 = 'sbld:  Summary:'
+    assert ll.count(pat0)==1
+    assert ll.count(pat1)==1
+    ntop = ll.index(pat0)+5
+    nbottom = len(ll)-(ll.index(pat1)-5)
+    nstripped = len(ll)-ntop-nbottom
+    assert len(ll) > 50 and nstripped > 10 and ntop+nbottom < len(ll)
+    edit = ''
+    for i,line in enumerate(ll):
+        if i < ntop or i >= len(ll)-nbottom:
+            edit += line+'\n'
+        elif i==ntop:
+            edit += ( f'<<\n<< {nstripped} LINES OF ACTUAL BUILD OUTPUT'
+                      ' NOT SHOWN HERE >>\n<<\n' )
+    fileout.write_text(edit)
+
 run_tricorder_cmds()
+generate_sbverify()
+_snip_sbverify()

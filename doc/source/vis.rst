@@ -89,7 +89,6 @@ were in the way and the spherical sample volume was turned into wireframe with a
 
 |image5|
 
-FIXME: mention particle colours
 
 A pencil-beam of neutrons (green) are generated at the left side of the sample,
 headed to the right. Notice how roughly 5 of the 100 neutrons had an interaction
@@ -105,6 +104,32 @@ because), reveals how neutrons are scattered in nice Debye-Scherrer cones
 approximation):
 
 |image7|
+
+
+For reference, here are the particle colours (they are also printed in the
+terminal):
+
+  .. list-table::
+     :header-rows: 1
+
+     * - Particle(s)
+       - Colour
+     * - n
+       - Green
+     * - :math:`\gamma`
+       - Yellow
+     * - :math:`e^-`
+       - Blue
+     * - :math:`\mathrm{p}`
+       - Red
+     * - :math:`\pi^\pm`
+       - Purple
+     * - :math:`\alpha`
+       - Cyan
+     * - Lithium-7
+       - Orange
+     * - Others
+       - White
 
 .. _sbaimdataviewer:
 

@@ -17,6 +17,13 @@ for pkginfo in $(find . -name pkg.info); do
         continue
     fi
     for fn in "${sd}/"*; do
+
+        if [[ "$fn" == *'~'* ]];then
+            #Ignore backup files
+            echo "Ignoring $fn"
+            continue
+        fi
+
         ISNOTPY=0
         ( head -1 "${fn}"|grep -q 'usr/bin/env python' ) || ISNOTPY=1
         if [ $ISNOTPY -eq 1 ]; then
