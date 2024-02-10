@@ -2,12 +2,12 @@
 #include "G4Box.hh"
 #include "G4Orb.hh"
 
-class GeoGriffTests : public G4Interfaces::GeoConstructBase
+class GeoGriffTests final : public G4Interfaces::GeoConstructBase
 {
 public:
   GeoGriffTests() : GeoConstructBase("G4GeoGriffTests/GeoGriffTests") {}
   virtual ~GeoGriffTests(){}
-  G4VPhysicalVolume* Construct();
+  G4VPhysicalVolume* Construct() override;
 };
 
 PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoGriffTests>(mod, "GeoGriffTests"); }

@@ -4,12 +4,12 @@
 
 #include "G4Interfaces/GeoConstructPyExport.hh"
 
-class GeoEmptyWorld : public G4Interfaces::GeoConstructBase
+class GeoEmptyWorld final : public G4Interfaces::GeoConstructBase
 {
 public:
   GeoEmptyWorld();
   virtual ~GeoEmptyWorld(){}
-  G4VPhysicalVolume* Construct();
+  G4VPhysicalVolume* Construct() override;
 };
 
 PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoEmptyWorld>(mod, "GeoEmptyWorld"); }

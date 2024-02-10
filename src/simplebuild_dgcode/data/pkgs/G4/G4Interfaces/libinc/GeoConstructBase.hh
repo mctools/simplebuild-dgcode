@@ -10,8 +10,7 @@ namespace G4Interfaces {
 
   //NB: Very important for python export that first listed base-class is GeoBase!
 
-  class GeoConstructBase : public GeoBase, public G4VUserDetectorConstruction
-  {
+  class GeoConstructBase : public GeoBase, public G4VUserDetectorConstruction {
   public:
     //Derived classes must:
     //

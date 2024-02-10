@@ -22,7 +22,7 @@
 #include "G4SDManager.hh"
 #include "G4StepPoint.hh"
 
-class MySD : public G4VSensitiveDetector {
+class MySD final : public G4VSensitiveDetector {
   //////////////////////////////////////////////////////////////////////////////
   // Sensitive detector for monitoring neutron hits in the spherical detector
   // volume and printing out the "detected" scattering angle.
@@ -31,7 +31,7 @@ public:
   MySD() : G4VSensitiveDetector("MySD") {}
   virtual ~MySD(){}
 
-  virtual G4bool ProcessHits(G4Step* step, G4TouchableHistory*)
+  G4bool ProcessHits(G4Step* step, G4TouchableHistory*) override
   {
     if (step->GetPreStepPoint()->GetStepStatus() != fGeomBoundary)
       return true;//must have just entered the volume
@@ -46,7 +46,7 @@ public:
   }
 };
 
-class MyGeo : public G4VUserDetectorConstruction {
+class MyGeo final : public G4VUserDetectorConstruction {
   //////////////////////////////////////////////////////////////////////////////
   // Constructs an r=1*mm spherical sample of polycrystalline Aluminium inside an
   // r=100*cm spherical vacuum inside a 1*mm thick spherical counting volume,
@@ -58,7 +58,7 @@ class MyGeo : public G4VUserDetectorConstruction {
 public:
   MyGeo(){}
   virtual ~MyGeo(){}
-  virtual G4VPhysicalVolume* Construct()
+  G4VPhysicalVolume* Construct() override
   {
     G4Material * mat_vacuum = G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic",true);
     //G4Material * mat_sample = G4NCrystalRel::createMaterial("Al_sg225.ncmat;bkgd=0");
@@ -84,7 +84,7 @@ public:
   }
 };
 
-class MyGun : public G4VUserPrimaryGeneratorAction {
+class MyGun final : public G4VUserPrimaryGeneratorAction {
   //////////////////////////////////////////////////////////////////////////////
   // Setup monochromatic source of neutrons, hitting the sample with initial direction (0,0,1)
   //////////////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ public:
     delete m_particleGun;
   }
 
-  void GeneratePrimaries(G4Event* evt)
+  void GeneratePrimaries(G4Event* evt) override
   {
     m_particleGun->GeneratePrimaryVertex(evt);
   }

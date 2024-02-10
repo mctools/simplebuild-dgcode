@@ -10,12 +10,13 @@
 #include "G4Interfaces/PhysListProviderBase.hh"
 
 //More work to do this from the C++ side:
-class Empty_Provider : public G4Interfaces::PhysListProviderBase {
-public:
-  Empty_Provider() : G4Interfaces::PhysListProviderBase("PL_Empty") {}
-  virtual ~Empty_Provider(){}
-  virtual G4VUserPhysicsList * construct() { return new PhysicsListEmpty; }
-};
+namespace {
+  class Empty_Provider final : public G4Interfaces::PhysListProviderBase {
+  public:
+    Empty_Provider() : G4Interfaces::PhysListProviderBase("PL_Empty") {}
+    G4VUserPhysicsList * construct() override { return new PhysicsListEmpty; }
+  };
+}
 
 class DummyGeo : public G4Interfaces::GeoConstructBase {
 public:
@@ -25,7 +26,7 @@ public:
     addParameterDouble("boxThickness",1*Units::um,0.01*Units::um,10*Units::um);
   }
 
-  G4VPhysicalVolume* Construct()
+  G4VPhysicalVolume* Construct() override
   {
     G4Material* mat_galactic = G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic",true);
     G4Material* mat_boroncarbide = G4NistManager::Instance()->FindOrBuildMaterial("G4_BORON_CARBIDE",true);

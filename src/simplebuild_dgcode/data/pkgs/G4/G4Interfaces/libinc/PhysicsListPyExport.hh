@@ -13,11 +13,11 @@
 namespace PhysicsListPyExport {
 
   template <class T>
-  class Provider : public G4Interfaces::PhysListProviderBase {
+  class Provider final : public G4Interfaces::PhysListProviderBase {
   public:
     Provider(const char*name) : G4Interfaces::PhysListProviderBase(name) {}
     virtual ~Provider(){}
-    virtual G4VUserPhysicsList * construct() {
+    G4VUserPhysicsList * construct() override {
       return new T;
     }
   };

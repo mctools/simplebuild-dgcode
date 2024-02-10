@@ -6,12 +6,12 @@
 
 #include "G4Interfaces/GeoConstructPyExport.hh"
 
-class GeoSkeletonSP : public G4Interfaces::GeoConstructBase
+class GeoSkeletonSP final : public G4Interfaces::GeoConstructBase
 {
 public:
   GeoSkeletonSP();
   virtual ~GeoSkeletonSP(){}
-  virtual G4VPhysicalVolume* Construct();
+  G4VPhysicalVolume* Construct() override;
   //(add more member functions and data here if needed)
 };
 

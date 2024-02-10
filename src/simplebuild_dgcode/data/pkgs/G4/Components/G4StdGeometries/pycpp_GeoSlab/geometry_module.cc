@@ -4,12 +4,12 @@
 
 #include "G4Interfaces/GeoConstructPyExport.hh"
 
-class GeoSlab : public G4Interfaces::GeoConstructBase
+class GeoSlab final : public G4Interfaces::GeoConstructBase
 {
 public:
   GeoSlab();
   virtual ~GeoSlab(){}
-  G4VPhysicalVolume* Construct();
+  G4VPhysicalVolume* Construct() override;
   bool validateParameters() override;
 };
 
