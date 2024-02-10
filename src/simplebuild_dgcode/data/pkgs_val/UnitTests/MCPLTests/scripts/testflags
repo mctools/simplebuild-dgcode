@@ -42,9 +42,11 @@ for a in 0 1; do
         for c in 0 1; do
             rm -f out.mcpl*
             flags=""
+            flagslink=""
             flagsprint=""
             if [ $a == 1 ]; then
-                flags="-DMCPL_HASZLIB ${flags} ${ZLIB_LDFLAGS} ${ZLIB_C_CFLAGS}"
+                flags="-DMCPL_HASZLIB ${flags} ${ZLIB_C_CFLAGS}"
+                flagslink="${ZLIB_LDFLAGS}"
                 flagsprint="-DMCPL_HASZLIB ${flagsprint} \${ZLIBFLAGS}"
             fi
             if [ $b == 1 ]; then
@@ -58,7 +60,8 @@ for a in 0 1; do
             echo "=========================================================================="
             echo "=== Testing flags: ${flagsprint}"
             #echo "===    rpathflags: ${rpathflags}"
-            $CC ${CFLAGS} -std=c99 -lm ${flags} ${rpathflags} -I$SBLD_INCLUDE_DIR/MCPL -L$SBLD_LIB_DIR/ $P/libsrc/mcpl.c main.c -lm ${flags} ${rpathflags} -o main && ./main
+            #Linker flags AFTER .c files, other flags BEFORE:
+            $CC ${CFLAGS} -std=c99 ${flags} ${rpathflags} -I$SBLD_INCLUDE_DIR/MCPL $P/libsrc/mcpl.c main.c -L$SBLD_LIB_DIR/ -lm ${flagslink} -o main && ./main
             EC=$?
             ls -1 out.mcpl*
             if [ $? == 0 ]; then
