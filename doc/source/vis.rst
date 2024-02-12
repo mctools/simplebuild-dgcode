@@ -142,28 +142,24 @@ half of the neutrons miss a detector by mistake, a less than careful analysis
 might conclude that the detector efficiency is about 50% too low!).
 
 So one might for instance launch the viewer with 1000 neutrons (here is the
-ESSBoronTestCell simulation FIXME):
+:sbpkg:`BoronTube` simulation from the :sbpkg:`bundleroot::dgcode_val` bundle)::
 
-.. code-block:: sh
+  sb_borontube_sim -n1000 incidence_angle_deg=30  --dataviewer
 
-  sb_ebtcscripts_sim -n1000 incidence_angle_deg=30  --dataviewer
-
-|image8|
+|image_borontube_dataviewer|
 
 It is clear that there is some sort of intense beam of neutrons passing through
 the test cell (the green tube in the center), but the picture is a bit
 messy. Instead, we have a special "generator aiming mode" of our viewer, in
 which only the primary (i.e. generated) particles are shown, and only the very
-first *segment* of each those (to use :ref:`Griff <sbgriff>` terminology). To
-use it, use the ``--aimdataviewer`` flag (or just ``--aim`` for short):
+first *segment* of each of those (to use :ref:`Griff <sbgriff>` terminology). To
+use it, use the ``--aimdataviewer`` flag (or just ``--aim`` for short)::
 
-.. code-block:: sh
-
-  sb_ebtcscripts_sim -n1000 incidence_angle_deg=30  --aimdataviewer
+  sb_borontube_sim -n1000 incidence_angle_deg=30  --aimdataviewer
 
 And get:
 
-|image9|
+|image_borontube_aimdataviewer|
 
 Now it is much more clear how our generated beam intersects the
 geometry. Especially since particles are no longer coloured as per their type in
@@ -173,10 +169,10 @@ one they start in, and red otherwise.
 Environment variables
 ^^^^^^^^^^^^^^^^^^^^^
 
-As a not-so-pretty-but-it-works solution for advanced users wanting to create
-some specialised plots, the following environment variables can be set in order
-to modify certain behaviours of the viewer (this is using BASH syntax, the
-variables can also be set in Python by modifying the ``os.environ`` dictionary):
+Admittedly the implementation could be improved, but as a solution for advanced
+users wanting to create some specialised plots, the following environment
+variables can be set in order to modify certain behaviours of the viewer (to be
+run in the terminal before invoking the command to launch the viewer):
 
 * ``export G4OSG_BGWHITE=1`` : Viewer will launch with a white background.
 * ``export G4OSG_BGBLACK=1`` : Viewer will launch with a black background.
@@ -240,9 +236,9 @@ Note that you exit the terminal by the command "exit" (or ``ctrl+D``, like in BA
 .. |image6| image:: images/dgviewer_skeleton_10k_sample.png
    :height: 400px
 .. |image7| image:: images/dgviewer_skeleton_100k_neutrons.png
-.. |image8| image:: images/coolnamehere_aim1.png
+.. |image_borontube_dataviewer| image:: images/coolnamehere_aim1.png
    :height: 400px
-.. |image9| image:: images/coolnamehere_aim2.png
+.. |image_borontube_aimdataviewer| image:: images/coolnamehere_aim2.png
    :height: 400px
 .. |image10| image:: images/g4_viewer1.png
    :height: 250px

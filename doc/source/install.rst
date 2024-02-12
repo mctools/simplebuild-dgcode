@@ -90,8 +90,6 @@ directory afterwards):
 
 .. literalinclude:: ../build/autogen_sbverify_cmdout_snipped.txt
 
-FIXME: snip output above
-
 The important thing to notice here is that unit tests were launched, and the
 message ``All tests completed without failures!`` tells us that they all
 completed without problems. The last call to ``sb_core_extdeps`` additionally
