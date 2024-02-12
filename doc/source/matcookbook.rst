@@ -310,8 +310,8 @@ material on the `NCrystal data library page
 Beam filters
 ------------
 
- Here are some examples of common beam filters, used to filter out
- higher-energy neutrons by scattering them out of the flight path:
+Here are some examples of common beam filters, used to filter out higher-energy
+neutrons by scattering them out of the flight path:
 
  .. list-table::
     :header-rows: 1
@@ -326,10 +326,12 @@ Beam filters
 The recipe for the sapphire filter above simply uses the crude approximation
 that the single-crystal sapphire filter is oriented so that no Bragg reflections
 are possible from the direction of the incoming neutrons. For a more realistic
-(and much more computationally intensive) approach, refer to the dedicated
+(and much more computationally intensive) approach, one must use the
+:ref:`features for single crystal modelling <sbmatsinglecrystals>`. For a
+detailed discussion of sapphire beam filters, refer furthermore to the dedicated
 jupyter notebook which can be downloaded `here
 <https://github.com/mctools/ncrystal-notebooks/blob/main/notebooks/misc/ncrystal_sapphire_filter.ipynb>`__
-(with general instructions about the notebooks `here
+(with general instructions about how the notebooks can be run `here
 <https://github.com/mctools/ncrystal-notebooks/>`__).
 
 .. _sbmatgd2o3:
@@ -459,9 +461,9 @@ Here are some examples of multi-phase materials:
    * - Material
      - String to use
    * - Quartz grains in heavy water:
-     - ``phases<0.1*SiO2-alpha_sg154_AlphaQuartz.ncmat&0.9*LiquidHeavyWaterD2O_T293.6K.ncmat>``
+     - ``phases<0.1*stdlib::SiO2-alpha_sg154_AlphaQuartz.ncmat&0.9*stdlib::LiquidHeavyWaterD2O_T293.6K.ncmat>``
    * - Enriched Gd2O3 grains mixed into epoxy
-     - ``phases<0.05*solid::Gd2O3/7.07gcm3/Gd_is_0.9_Gd157_0.1_Gd155&0.95*Epoxy_Araldite506_C18H20O3.ncmat>``
+     - ``phases<0.05*solid::Gd2O3/7.07gcm3/Gd_is_0.9_Gd157_0.1_Gd155&0.95*stdlib::Epoxy_Araldite506_C18H20O3.ncmat>``
 
 If your materials in the individual phases can *not* all be described with an
 NCrystal cfg-string, the approach above will not work. Feel free to :ref:`reach
@@ -469,35 +471,124 @@ out <sbcontact>` in case you need advice for your particular use-case.
 
 .. _sbmatsinglecrystals:
 
-Single crystals
----------------
+Single crystals for monochromators and analysers
+------------------------------------------------
 
-Fixme. Monochromators / analysers.
-(i.e. for monochromators, analysers and :ref:`beam filters <sbmatbeamfilters>`)
+Many monochromators and analysers used at neutron scattering instruments are
+based on mosaic single crystal materials, and this is even the case for some
+beam filters. In order to model these, one must use an appropriate model from
+NCrystal. In most cases, this means using a Gaussian mosaicity distribution (see
+instead :ref:`below <sbmatpg>` for pyrolitic graphite), which in NCrystal is
+enabled simply by specifying not only a mosaic spread via the ``mos`` parameter,
+but also the orientation of the preferred direction of the crystal. To do that,
+one must provide two vectors in both the "laboratory-frame" and frame of the
+crystal's unit cell. When the material is used in Geant4, the "laboratory-frame"
+is taken to mean the local coordinate system of the Geant4 volume in which the
+material in question is placed. The vectors are provided via the ``dir1`` and
+``dir2`` parameters, whose exact syntax can be found `in the reference
+documentation of NCrystal
+<https://github.com/mctools/ncrystal/wiki/CfgRefDoc>`__. Other parameters of
+relevance for single crystals are ``sccutoff`` and ``mosprec``.
 
-``Ge_sg227.ncmat;mos=20.0arcmin;dir1=@crys_hkl:5,1,1@lab:0,0,1;dir2=@crys_hkl:0,-1,1@lab:0,1,0``
+In the case where one only knows the primary direction of a mosaic single
+crystal, for example if a given monochromator has specified the plane normal
+associated with a particular Bragg reflection but nothing else, the orientation
+of the crystal is underspecified. If one nonetheless wants to proceed with
+simulations, one can provide the known direction to ``dir1`` and a dummy
+secondary direction to ``dir2``, and then also set ``dirtol=180deg``. Setting
+``dirtol`` to this value means that NCrystal won't complain that the two
+specified directions are not self-consistent, but instead silently "snap" the
+provided ``dir2`` direction into a self-consistent position (the syntax for this
+might eventually be simplified, see `ncrystal#155
+<https://github.com/mctools/ncrystal/issues/155>`__).
 
-Single crystalline mosaic Germanium, which might be used in monochromators or
-analysers in a neutron instrument. The configuration of single crystals
-necessarily gets slightly more complicated, due to the need to specify the
-orientation of the crystal. This is done here by specifying that the normal of
-the (h,k,l)=(5,1,1) plane should point along the z-axis in the laboratory
-system, and the normal of the (h,k,l)=(0,-1,1) plane should point along the
-y-axis. By default, it results in an error if the angle between the specified
-directions in the crystal frame and the specified laboratory frame are not
-essentially identical. For simplicity, it is possible to increase this
-tolerance, when one is only interested in exact alignment of the primary
-direction (e.g. when one is only concerned with the primary reflection plane of
-a monochromator): specifying ``dirtol=180deg`` will relax the condition on the
-secondary direction maximally.
+Here are examples for how a Germanium-511 monochromator or analyser can be
+configured:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Material
+     - String to use
+   * - Germanium-511 monochromator
+
+       *FWHM mosaic spread:* :math:`20'`
+
+       *Primary direction:* :math:`\bar{n}_{511}` along :math:`\hat{z}`
+
+       *Secondary direction:* :math:`\bar{n}_{0\bar{1}1}` along :math:`\hat{y}`
+
+     - ``stdlib::Ge_sg227.ncmat;mos=20.0arcmin;dir1=@crys_hkl:5,1,1@lab:0,0,1;dir2=@crys_hkl:0,-1,1@lab:0,1,0``
+
+   * - Germanium-511 monochromator
+
+       *FWHM mosaic spread:* :math:`20'`
+
+       *Primary direction:* :math:`\bar{n}_{511}` along :math:`\hat{z}`
+
+       *Secondary direction:* No direct choice.
+
+     - ``stdlib::Ge_sg227.ncmat;mos=20.0arcmin;dir1=@crys_hkl:5,1,1@lab:0,0,1;dir2=@crys:1,0,0@lab:1,0,0;dirtol=180deg``
+
+Single crystals are also discussed in the "Basic2" notebook at
+https://github.com/mctools/ncrystal-notebooks.
+
+.. admonition:: Recommended publications
+  :class: tip
+
+  | **If you use NCrystal to model single crystals, please cite:**
+  | T. Kittelmann and X.-X. Cai, Comp. Phys. Commun 267 (2021) 108082,
+  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`_
 
 .. _sbmatpg:
 
 Pyrolytic graphite
 ------------------
 
-   Fixme. Monochromators / analysers. Mention normal graphite.
+Due to the special nature of the graphene sheets in graphite, the mosaic single
+crystal graphite used in neutron instruments follow a different mosaic
+distribution than the typical Gaussian one used :ref:`above
+<sbmatsinglecrystals>`.
 
+Thus, NCrystal supports a dedicated mosaic model with the special rotational
+symmetry found in pyrolytic graphite (PG). This model is automatically enabled,
+with the rotational symmetry axis set to the crystal's :math:`c`-axis, when the
+relevant data file (``C_sg194_pyrolytic_graphite.ncmat``) is used as a single
+crystal (if not used as a single crystal, it can be used as standard graphite).
+
+The only thing to be aware of concerning the configuration, is that the primary
+direction used with the ``dir1`` parameter should be parallel to the crystal's
+:math:`c`-axis, which is for instance the case if using the
+:math:`\bar{n}_{002}` normal to specify this direction. Secondly, although one
+must still for technical reasons set ``dir2``, the value will not have any
+effect in practice due to the rotational symmetry of the mosaic distribution --
+and thus it is recommended to use the ``dirtol=180deg`` workaround to specify
+it. The example below shows this in practice:
+
+
+.. list-table::
+   :header-rows: 1
+
+   * - Material
+     - String to use
+   * - PG-002 monochromator
+
+       *FWHM mosaic spread:* :math:`20'`
+
+       *Primary direction:* :math:`\bar{n}_{002}` along :math:`\hat{z}`
+
+     - ``stdlib::C_sg194_pyrolytic_graphite.ncmat;mos=20.0arcmin;dir1=@crys_hkl:0,0,2@lab:0,0,1;dir2=@crys_hkl:1,,0,0@lab:0,1,0``
+
+   * - Graphite powder
+
+     - ``stdlib::C_sg194_pyrolytic_graphite.ncmat``
+
+.. admonition:: Recommended publications
+  :class: tip
+
+  | **If you use NCrystal to model pyrolitic graphite, please cite:**
+  | T. Kittelmann and X.-X. Cai, Comp. Phys. Commun 267 (2021) 108082,
+  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`_
 
 Other materials
 ---------------
