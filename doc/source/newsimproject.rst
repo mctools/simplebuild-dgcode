@@ -4,8 +4,6 @@
 Starting a new simulation project
 *********************************
 
-.. include:: wipwarning.rst
-
 It can admittedly be a bit daunting for new users to get started on implementing
 their own simulation project. For that reason, we have created a little helpful
 (hopefully) utility, which based on a user-supplied project name helps the users

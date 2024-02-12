@@ -2,8 +2,6 @@
 Introduction
 ************
 
-.. include:: wipwarning.rst
-
 The Geant4 simulation framework which we call "dgcode" is implemented as a set
 of `simplebuild <https://mctools.github.io/simplebuild>`__ packages
 (specifically in the :sbpkg:`bundleroot::dgcode` bundle). Its :ref:`history

@@ -3,8 +3,6 @@
 Visualisation of geometry and data
 ==================================
 
-.. include:: wipwarning.rst
-
 When it comes to understanding ones Geant4 geometry or data, it is very useful
 to be able to launch a 3D visualisation of the volumes and tracks in
 question. While such visualisations lack the precision and number crunching

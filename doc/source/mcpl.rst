@@ -3,8 +3,6 @@
 MCPL
 ====
 
-.. include:: wipwarning.rst
-
 MCPL (**M**\ onte **C**\ arlo **P**\ article **L**\ ists) files contain lists of
 particle state information, and allows for easy storage and interchange of
 particles between various Monte Carlo simulation applications like Geant4,

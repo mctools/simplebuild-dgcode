@@ -3,8 +3,6 @@
 SimpleHists
 ===========
 
-.. include:: wipwarning.rst
-
 This page concerns our custom histogram solution for C++ and Python code,
 implemented as the simplebuild package ``SimpleHists``.
 

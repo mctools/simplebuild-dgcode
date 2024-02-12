@@ -3,8 +3,6 @@
 Heat Maps
 =========
 
-.. include:: wipwarning.rst
-
 .. container::
 
   |image_heatmapviewer|

@@ -4,8 +4,6 @@
 Griff
 =====
 
-.. include:: wipwarning.rst
-
 A general purpose object oriented output file format, Griff (**G**\ eant4 **R**\
 esults **I**\ n **F**\ riendly **F**\ ormat), with meta-data has been
 implemented in our CodingFramework, in order to facilitate a faster turn-around

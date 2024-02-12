@@ -2,8 +2,6 @@
 Welcome to the dgcode documentation!
 ************************************
 
-.. include:: wipwarning.rst
-
 Welcome to the documentation of "dgcode", a set of `simplebuild
 <https://mctools.github.io/simplebuild>`_ packages implementing a Geant4-based
 simulation framework. It originated in the Detector Group at the European

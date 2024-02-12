@@ -1,10 +1,7 @@
 .. _sbparticlegen:
 
-
 Particle generators
 *******************
-
-.. include:: wipwarning.rst
 
 As important for a Geant4 simulation as geometry, materials and physics list, is
 the initial set of particles to be "let loose" in the simulation each event:

@@ -4,8 +4,6 @@
 Subjects
 ********
 
-.. include:: wipwarning.rst
-
 On the pages below you will find detailed instructions concerning various
 aspects of dgcode. You can either navigate to a particular subject directly via
 one of the links below (or via the sidebar-menu), or you can always try to use

@@ -1,8 +1,6 @@
 Gravity
 ================
 
-.. include:: wipwarning.rst
-
 A global gravity field for neutrons can be enabled using the G4GravityHelper
 module in the framework by adding two lines in your main python script (the
 "sim-script"):

@@ -3,8 +3,6 @@
 Defining materials
 ==================
 
-.. include:: wipwarning.rst
-
 Although it is certainly possible to define Geant4 materials in dgcode via
 classical Geant4 C++ code, materials in dgcode are instead mostly defined via a
 simple material definition *string* (see the :ref:`geometry <sbgeo>` section for

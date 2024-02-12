@@ -3,8 +3,6 @@
 Physics lists
 =============
 
-.. include:: wipwarning.rst
-
 Most users will not need to create custom physics lists, as dgcode by default
 uses the ``QGSP_BIC_HP_EMZ`` reference list from Geant4, which provides a high
 level of detail for most detector-related applications. Furthermore, integration

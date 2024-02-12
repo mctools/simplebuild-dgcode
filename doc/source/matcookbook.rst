@@ -3,8 +3,6 @@
 Materials cookbook
 ==================
 
-.. include:: wipwarning.rst
-
 On this page we provide a small "cookbook" of material strings suitable for many
 common use-cases, in particular as regards materials for neutron detectors and
 other components at neutron instruments. The discussion below assumes that

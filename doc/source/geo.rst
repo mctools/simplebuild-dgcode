@@ -3,8 +3,6 @@
 Geometry
 ========
 
-.. include:: wipwarning.rst
-
 In principle, a dgcode geometry module can use completely normal Geant4 code to
 construct the geometry, inside the ``Construct()`` method of the associated
 geometry class. The only constraint is that it must return the world volume (the

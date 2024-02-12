@@ -2,8 +2,6 @@
 About
 *****
 
-.. include:: wipwarning.rst
-
 .. include:: cite.rst
 
 Please report any bugs, problems or feature requests related to simplebuild in
