@@ -1,0 +1,10 @@
+package(USEPKG G4B10Common)
+
+######################################################################
+
+Package containing geometries for the BoronTube simulation project. This is
+based on a project to simulate a test detector assembled by K. Kanaki at the ESS
+detector group.
+
+Primary author(s): thomas.kittelmann@ess.su
+

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+#Unit test which makes a very simple test of our geometry, simulation and
+#analysis (using an empty physics list for speed). To avoid false positives, it
+#silently doesn't do anything when the Geant4 framework is not present.
+
+#Halt immediately on any errors:
+set -eu
+
+if [ -d "${SBLD_INSTALL_PREFIX}/include/G4Launcher/" ]; then
+    mkdir ./simtests_borontube
+    cd ./simtests_borontube
+    #Test geometry:
+    sb_borontube_sim -t -lPL_Empty
+    #Simulate a single event:
+    sb_borontube_simanachain rundir --cleanup -n1 -lPL_Empty
+fi
+

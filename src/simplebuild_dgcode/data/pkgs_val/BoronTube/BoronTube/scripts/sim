@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+#############################################################
+# Import needed modules:
+import G4GeoBoronTube.GeoBoronTube as geomodule
+import G4StdGenerators.ProfiledBeamGen as genmodule
+import G4Launcher
+
+#############################################################
+# Define geometry:
+geo = geomodule.create()
+geo.material_detectorbox = "stdlib::Cu_sg225.ncmat"
+geo.material_world = "Vacuum"
+#Nylon-12 ("stdlib::Nylon12_C12H23NO.ncmat") is correct for the endplugs, but
+#such a "moderator" simulation takes a lot of CPU, so not always a solid
+#choice. So one might wish to put the material as "Vacuum" instead in some
+#scenarios:
+geo.material_endplugs = "stdlib::Nylon12_C12H23NO.ncmat"
+
+#############################################################
+# Define particle generation:
+gen = genmodule.create()
+gen.particleName = 'neutron'
+gen.neutron_thermal_spectrum_kelvin=293.15
+gen.spread_x_mm=50
+gen.spread_y_mm=50
+gen.spread_mode="FLATRECT"
+
+#############################################################
+# Initialise launcher and let it take control:
+launcher = G4Launcher(geo,gen)
+launcher.setOutput('borontube','REDUCED')#Griff output
+launcher.go()
+

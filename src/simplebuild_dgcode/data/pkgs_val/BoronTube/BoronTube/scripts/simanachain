@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+import G4Utils.chain
+G4Utils.chain.chain('sb_borontube_sim','sb_borontube_ana','REDUCED')
+

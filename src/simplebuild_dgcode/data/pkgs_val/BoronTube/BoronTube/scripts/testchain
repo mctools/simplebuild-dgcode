@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+#Halt immediately on any errors:
+set -eu
+
+if [ -d "${SBLD_INSTALL_PREFIX}/include/G4Launcher/" ]; then
+    mkdir ./simtests_chain_borontube
+    cd ./simtests_chain_borontube
+    sb_borontube_simanachain ./rundir --chainmult=2 --cleanup -n 100 -l PL_Empty
+    test -f ./rundir/runana/merged.shist
+    test -f ./rundir/runsample/sim.griff
+    sb_griffformat_dumpfile ./rundir/runsample/sim.griff
+    sb_simplehists_browse -i ./rundir/runana/merged.shist
+fi

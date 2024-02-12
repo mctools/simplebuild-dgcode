@@ -1,0 +1,10 @@
+package(USEPKG PyAna ScanUtils GriffAnaUtils SimpleHists)
+
+######################################################################
+
+Package containing launch scripts and Griff analysis code for the BoronTube
+simulation project. This is based on a project to simulate a test detector
+assembled by K. Kanaki at the ESS detector group.
+
+
+Primary author(s): thomas.kittelmann@ess.su
