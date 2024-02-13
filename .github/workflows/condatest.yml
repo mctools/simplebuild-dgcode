@@ -70,18 +70,6 @@ jobs:
           #unit tests later):
           python3 -c 'import matplotlib.pyplot'
 
-      - name: Switch macOS matplotlib backend
-        if: runner.os == 'macOS'
-        run: |
-          set -eux
-          #As a temporary workaround for
-          #https://github.com/mctools/simplebuild-dgcode/issues/11 we do (only
-          #really needed for osx):
-          python3 -c 'import matplotlib as m;m.use("tkagg");import matplotlib.pyplot'
-          mkdir -p $(python3 -c 'import matplotlib;print(matplotlib.get_configdir())')
-          echo "backend : tkagg" >> $(python3 -c 'import matplotlib;print(matplotlib.matplotlib_fname())')
-          python3 -c 'import matplotlib.pyplot'
-
       - name: Build and test Core only
         id: build-and-test-core-only
         run: |
