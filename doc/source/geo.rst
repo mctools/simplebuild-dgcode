@@ -28,7 +28,7 @@ possibilities for how one can construct a geometry in Geant4, and it is
 recommended to also spend some time reading about `geometry defintions in the
 Geant4 documentation
 <https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/ForApplicationDevelopers/Detector/Geometry/geometry.html>`__
-(note that for historical reasons geometry definition is often refered to as
+(note that for historical reasons geometry definition is often referred to as
 "Detector definition" in Geant4). At the very least, it is important to have a
 clear understanding of the difference between the Geant4 concepts of a *solid*
 (a geometrical shape like a box or cylinder), a *logical volume* (a solid which

@@ -85,7 +85,7 @@ further down this page):
   file-size from this are huge, but the downside is obviously that the whole
   event is no longer available (i.e. when analysing one can't be certain that a
   track has all of its segments, steps or daughter tracks available). They can
-  be activated from either python or C++. A few premade examples of such filters
+  be activated from either Python or C++. A few premade examples of such filters
   reside in the :sbpkg:`G4CollectFilters` package, but users are free to
   implement their own:
 
@@ -230,7 +230,7 @@ Python API
 ^^^^^^^^^^
 
 For convenience, all the Griff analysis classes are available in Python as well
-as C++. This allows one to write analyses in python just as (or rather, more)
+as C++. This allows one to write analyses in Python just as (or rather, more)
 easily than in C++, as well as doing away with the need of a compilation in the
 *edit* → *compile* → *run* analysis cycle typically carried out.
 
@@ -322,7 +322,7 @@ The actual code implementing Griff is spread over several packages:
 
 :sbpkg:`GriffFormat` :
   Package with common definitions used by both reader and
-  writer modules. Also contains command-line scripts for inspecting griff files
+  writer modules. Also contains command-line scripts for inspecting Griff files
   (``sb_griffformat_info`` and ``sb_griffformat_dumpfile``).
 
 :sbpkg:`GriffDataRead` :

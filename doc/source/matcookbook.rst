@@ -382,7 +382,7 @@ the string:
 ``NCrystal:cfg=[solid::Gd2O3/7.07gcm3/Gd_is_0.9_Gd157_0.1_Gd155]:g4physicsonly=1``
 
 Feel free to :ref:`reach out <sbcontact>` in case you need advice for your
-particular usecase.
+particular use case.
 
 .. _unstructuredmaterials:
 

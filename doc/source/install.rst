@@ -113,7 +113,7 @@ diffraction is enabled), so all (singly) scattered neutrons (green) should end
 up in a single Debye-Scherrer cone. Other particles like gammas (yellow) are
 generated in absorption events, based on Geant4's own builtin physics.
 
-It might also be a good idea to verify that the matplotlib-based
+It might also be a good idea to verify that the Matplotlib-based
 :ref:`SimpleHists <sbsimplehists>` plotting works, which can be done with the
 command::
 
@@ -136,7 +136,7 @@ Which should launch an interactive browser looking like:
 
 There is only 1 histogram inside this particular file, so the browser is not
 particular useful in this case. But you can still test that it works by
-confirming that clicking on the histogram resuls in that histogram being shown.
+confirming that clicking on the histogram results in that histogram being shown.
 
 .. |image_example_dataviewer| image:: images/dgcode_launcher_example_dataviewer.png
 .. |image_shist_example| image:: images/shist_example.png

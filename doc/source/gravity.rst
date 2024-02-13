@@ -2,7 +2,7 @@ Gravity
 ================
 
 A global gravity field for neutrons can be enabled using the G4GravityHelper
-module in the framework by adding two lines in your main python script (the
+module in the framework by adding two lines in your main Python script (the
 "sim-script"):
 
 .. code-block:: python

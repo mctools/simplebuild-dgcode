@@ -23,7 +23,7 @@ it in principle also works with any material and physics list.
 
    However, non-neutron, non-scattering, or non-thermal cross sections of the
    material in the Geant4 simulations are not provided by ``nctool``, and must
-   be investigated by using the tools discussed on the present page. Dilligent
+   be investigated by using the tools discussed on the present page. Diligent
    users might wish to investigate a given material using both approaches.
 
 How to extract cross sections
@@ -77,7 +77,7 @@ with ``'`` characters. This is in general a good idea, since such strings might
 contain special characters which could be otherwise be interpreted by your shell
 rather than being passed to ``sb_g4xsectdump_query``.
 
-In addition to launching interactive matplotlib-based cross section plots,
+In addition to launching interactive Matplotlib-based cross section plots,
 either of the above commands produce a list of data files with cross section
 information, a file with a dump of the G4Material, and files with plots like the
 following:

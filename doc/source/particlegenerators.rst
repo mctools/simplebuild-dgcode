@@ -32,7 +32,7 @@ configurable parameters in the same manner as geometry modules are. The main
 differences are firstly that generator modules are very often reusable across
 many specific projects or studies, while this is more rarely seen for geometry
 modules. Secondly, as we shall see below, generator modules can be implemented
-purely in just a few lines python if desired.
+purely in just a few lines Python if desired.
 
 Configuration
 -------------
@@ -66,7 +66,7 @@ module from the :sbpkg:`G4StdGenerators` package:
 If the above script is located in a folder ``TriCorder/scripts/sim`` (i.e. in
 the ``scripts/`` sub-dir of a package called ``TriCorder``), it will end up as a
 command ``sb_tricorder_sim`` (avid readers of the present wiki might recognise
-the TriCorder example from the instructoons for :ref:`creating a new simulation
+the TriCorder example from the instructions for :ref:`creating a new simulation
 project <sbnewsimproject>`). One can see the available parameters by running the
 command with ``-p`` (if you forget that the flag is ``-p`` you can always run
 with ``-h`` first for usage instructions):
@@ -181,7 +181,7 @@ such as MCNP simulations, McStas simulations, or even other Geant4
 simulations. Please find more information for how to create, inspect or modify
 MCPL files :ref:`here <sbmcpl>`, on the `the official MCPL page at GitHub
 <https://mctools.github.io/mcpl/>`__, or in the `published MCPL paper
-<https://doi.org/10.1016/j.cpc.2017.04.012>`__. To use the MPCL generator,
+<https://doi.org/10.1016/j.cpc.2017.04.012>`__. To use the MCPL generator,
 simply import and use the
 :sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pycpp_MCPLGen/mod.cc>` module in
 your :ref:`sim-script <sbsimscript>`, setting at least the ``input_file``

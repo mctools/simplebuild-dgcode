@@ -22,10 +22,10 @@ variance. Association of metadata (title, axis labels). Utilities for on-disk
 storage and quick plotting.
 
 Histogram classes are for instance found in the `ROOT <http://root.cern/>`__
-framework which is commonly used in high energy physics, but for python-centric
+framework which is commonly used in high energy physics, but for Python-centric
 analyses based on e.g. "PyLab" (taken here to mean Numpy+SciPy+Matplotlib),
 having a dependency on ROOT can be a bit honerous. However, one runs into the
-problem that Pylab does not by default include histogram classes. Rather, very
+problem that PyLab does not by default include histogram classes. Rather, very
 basic histogramming functionality exists, but requires one to first collect all
 data into arrays thus defeating the primary data reduction purpose of such
 histogram classes.
@@ -35,7 +35,7 @@ Features
 
 The light-weight histogram classes, "SimpleHists", provided in dgcode have
 several features that are all important to their usage in dgcode-based projects:
-usage from both C++ and Python, integration with Pylab, persistification, quick
+usage from both C++ and Python, integration with PyLab, persistification, quick
 plotting, extraction to Numpy arrays. Finally, the histograms crucially have the
 ability that data files collected in multiple concurrent jobs can be safely
 merged without the loss of any statistical metadata. More specifically, the
@@ -56,7 +56,7 @@ list of features include:
 * Histograms can be cloned, merged, normalised, scaled, integrated, ...
 * The C++ interface is simple to use and very fast.
 * The Python interface additionally features integration with Numpy arrays and
-  matplotlib plotting.
+  Matplotlib plotting.
 * Several command-line scripts for working with ``.shist`` files are available,
   supply ``--help`` to any of them for more detailed instructions:
 
@@ -118,9 +118,9 @@ histograms with various options for the presentations. At this stage it is
 already possible to produce a few quick plots for a paper, talk or email.
 
 For more advanced analysis, one can use Python and the plethora of utilities
-available there (e.g. all the utilities available in matplotlib and SciPy). Here
+available there (e.g. all the utilities available in Matplotlib and SciPy). Here
 is a small example of how one can get data out in formats ready to input to the
-various pylab plotting routines:
+various PyLab plotting routines:
 
 .. code-block:: python
 

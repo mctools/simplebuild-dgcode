@@ -80,7 +80,7 @@ and even override their temperature or density, using dedicated keywords
 :math:`` xenon at :math:`200\mathrm{K}` and :math:`5.4\mathrm{kg}/\mathrm{m}^3`
 could be modelled with a string ``G4_Xe;temp_kelvin=200.0;density_gcm3=5.4``
 (although gases are in general more easily defined with the :ref:`NCrystal
-syntax <sbmatgasmix>`.
+syntax <sbmatgasmix>`).
 
 .. tip::
 
@@ -93,7 +93,7 @@ syntax <sbmatgasmix>`.
    neutrons. If in doubt, prefer to use an NCrystal material.
 
 Most users should not have a need for anything else than NCrystal cfg-strings
-and Geant4 NIST materals, but a few other mostly deprecated options are
+and Geant4 NIST materials, but a few other mostly deprecated options are
 supported for backwards compatibility. As they are deprecated, they will not be
 mentioned here or used in the :ref:`cookbook <sbmatcookbook>`, with the
 exception of the special ``MAT_B4C`` keyword used for enriched :ref:`boron

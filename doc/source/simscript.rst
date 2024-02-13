@@ -47,7 +47,7 @@ Here is a bit of advice concerning when to typically use the options above:
   ``-r`` (supply it once or multiple times). You might also want to use ``-n1 -s
   <SEEDVALUE>`` to start the simulation at a particular event. You can of course
   also use a subsequent :ref:`Griff <sbgriff>` analysis to investigate events
-  programatically.
+  programmatically.
 
 * To control output of the simulation you can use ``-o`` and ``-m`` for
   :ref:`Griff <sbgriff>` output (disable it with ``-o none``), ``--mcpl`` for

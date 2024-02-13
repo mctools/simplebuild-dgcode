@@ -8,7 +8,7 @@ of `simplebuild <https://mctools.github.io/simplebuild>`__ packages
 <sbhistory>` goes back to 2012, but in 2023/2024 it was cleaned up and
 resurrected in its present form.
 
-Most importantly, dgcode includes functionality for easy seting up and launching
+Most importantly, dgcode includes functionality for easy setting up and launching
 of Geant4 simulation jobs based on configurable :ref:`geometry <sbgeo>` and
 :ref:`generator <sbparticlegen>` modules, and contains various functionality for
 :ref:`material definitions <sbmatdef>`, :ref:`physics lists <sbphyslist>`
@@ -23,7 +23,7 @@ eventually also be a good idea to dive into parts of the `Geant4 documentation
 <https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/>`__, in
 particular the parts about `geometry definitions
 <https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/ForApplicationDevelopers/Detector/Geometry/geometry.html>`__
-(note that for historical reasons geometry definition is often refered to as
+(note that for historical reasons geometry definition is often referred to as
 "Detector definition" in Geant4).
 
 Features
