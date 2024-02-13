@@ -74,6 +74,8 @@ if (not _has_agg_backend) and _lacks_display_var and _catalina_mode:
     _environ['DISPLAY']=':0'
     _lacks_display_var=False
 _noninteractive = _has_agg_backend or _lacks_display_var
+if 'SIMPLEHISTS_SILENT_PLOTFAIL' in _environ:
+    _noninteractive = True
 
 if (not _noninteractive) and matplotlib:
     import SimpleHists.plotutils as plotutils
