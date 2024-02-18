@@ -23,7 +23,7 @@ available parameters in the ``QUANTITY`` and ``CONDITION`` expressions.
 
 Resulting heatmap files have the extension ``.mesh3d`` and can be inspected
 interactively via the ``sb_mesh3d_browse command``, leading to an interactive
-display where one can view the 3D data projected onto any cartesian plane and
+display where one can view the 3D data projected onto any cartesian plane, and
 optionally only using data from selected slices of the third dimension. See the
 image above for an example.
 

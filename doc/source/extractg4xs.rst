@@ -3,7 +3,7 @@
 Investigate cross sections
 ==========================
 
-It is is not in general straight-forward to extract information about applied
+It is not in general straight-forward to extract information about applied
 interaction cross sections and associated mean free path lengths from
 Geant4. Therefore, a custom mechanism was created in dgcode in the
 :sbpkg:`G4XSectDump` package, to address this issue. Rather than attempting to

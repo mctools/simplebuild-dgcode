@@ -9,19 +9,19 @@ parameter settings (e.g. related to :ref:`geometry <sbgeo>` and :ref:`particle
 sources <sbparticlegen>`), before final conclusions can be drawn. In a simple
 case one might for instance, want to plot the value of some figure-of-merit as a
 function of a parameter (i.e. the thickness of some geometry volume, or the
-enrichment level of a particular material).  Unfortunately, launching the
+enrichment level of a particular material). Unfortunately, launching the
 relevant simulation and analysis jobs manually, while keeping track of both
 input parameters and output files, can be both tedious and error prone. To
 facilitate this process, dgcode provides
 :sbpkg:`ScanLauncher<ScanUtils/python/ScanLauncher.py>` and
 :sbpkg:`ScanLoader<ScanUtils/python/ScanLoader.py>` utility classes in the
-:sbpkg:`ScanUtils` package. These utilities assume that the 
+:sbpkg:`ScanUtils` package. These utilities assume that the...FIXME
 
 .. admonition:: Important notice
   :class: tip
 
    The usage of the scanning utilities discussed here is of course completely
-   optional, and might not be particularly helpful for all use-cases. For one
+   optional, and might not be particularly helpful for all use cases. For one
    thing, the workflow discussed here is centered around analyses using
    :ref:`Griff <sbgriff>` and :ref:`SimpleHists <sbsimplehists>` for the
    work. Some users might prefer to implement their own custom solutions
@@ -82,7 +82,7 @@ command ``sb_tricorder_scanana``. It has the contents:
 The most important line here is the one invoking ``get_scan_jobs(..)``, where
 the results from the scan are loaded. This places the various histograms and
 other metadata from the jobs into a dictionary, which allows easy plotting in
-the following lines.  In this simple example, a few histograms are simply
+the following lines. In this simple example, a few histograms are simply
 overlaid. In a more complicated example, one might instead perform some sort of
 analysis of each job, in order to extract derived values, and so on, before
 providing results.

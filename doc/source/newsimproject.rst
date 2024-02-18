@@ -44,10 +44,10 @@ to modify the files as appropriate for your actual project before finally ``git
 add``'ing and committing and pushing them to the central repository server. If
 these terms are obscure to you, you should most likely spend some time learning
 about Git, for instance `here <https://en.wikipedia.org/wiki/Git>`__ or `here
-<https://git-scm.com/book/en/v2>`__..
+<https://git-scm.com/book/en/v2>`__.
 
 For now, you can immediately type ``sb`` to ensure that the newly added files
-gets build, or even ``sb --tests`` to also run the associated unit tests:
+get built, or even ``sb --tests`` to also run the associated unit tests:
 
 .. include:: ../build/autogen_tricorder_newsimproj_sbtests.txt
   :literal:
@@ -56,8 +56,8 @@ Editing the generated files
 ===========================
 
 The pre-filled example inside the files consists of a simple setup in which
-neutrons hits a spherical sample and gets recorded on a box-shaped
-detector. Running the simulation and analysis with default values will result in
+neutrons hit a spherical sample and get recorded on a box-shaped detector.
+Running the simulation and analysis with default values will result in
 histograms (in a :ref:`SimpleHists <sbsimplehists>` file) representing the
 "detected" hitmap, in which Debye-Scherrer cones from the polycrystalline sample
 material can be observed. It might be useful to start by :ref:`visualising
@@ -85,7 +85,7 @@ difference:
    becomes the command ``sb_tricorder_sim``, which can be used to launch the
    simulation, or visualise it. Run the command ``sb_tricorder_sim -h`` to learn
    more about the possibilities. The output of the simulation is one or more
-   :ref:`Griff <sbgriff>` files. In the :sbpkg:`same
+   :ref:`Griff <sbgriff>` files. In the :sbpkg:`same 'scripts'
    directory<SkeletonSP/scripts>` you will also find more specialised scripts,
    which can be used to for instance create :ref:`parameter scans <sbparamscan>`.
 

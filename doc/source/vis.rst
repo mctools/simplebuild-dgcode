@@ -3,24 +3,24 @@
 Visualisation of geometry and data
 ==================================
 
-When it comes to understanding ones Geant4 geometry or data, it is very useful
+When it comes to understanding one's Geant4 geometry or data, it is very useful
 to be able to launch a 3D visualisation of the volumes and tracks in
 question. While such visualisations lack the precision and number crunching
-performance of a careful written data-analysis, they instead have the potential
-to provide quick and instant feedback of a setup, in a manner which is very
-intuitive to the human developers and consumers of a simulation project.
+performance of a carefully written data-analysis, they instead have the
+potential to provide quick and instant feedback on a setup, in a manner that
+is very intuitive to the human developers and consumers of a simulation project.
 
-In dgcode we facilitate the usage of two options for 3D visualisations out of
-the box: The one included in Geant4 itself, and our own custom application.
+In dgcode, we facilitate the usage of two options for 3D visualisations out of
+the box: the one included in Geant4 itself, and our own custom application.
 
 Custom 3D Viewer
 ----------------
 
-In our coding framework we provide a custom `OpenSceneGraph
+In dgcode, we provide a custom `OpenSceneGraph
 <https://www.openscenegraph.com/>`_-based 3D visualisation tool which can be
 used to visualise both simulation geometries and data. Despite being a bit rough
 around the edges (for instance it could use a better name than "CoolNameHere"),
-it has already been highly useful for a lot of work so far
+it has already been highly useful for a lot of work so far.
 
 Geometry visualisation
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -37,10 +37,10 @@ And the viewer is launched:
 
 Grab the mouse and change the view as you see fit:
 
-* **Left-click**: rotate view.
-* **Middle-click + move** : pan view.
-* **Scroll wheel** or **right-click + move** : zoom view.
-* **Right-click** or **left-click+S** on a volume : center view on a selected
+* **Left-click + move**: rotate view.
+* **Middle-click + move**: pan view.
+* **Scroll wheel** or **right-click + move**: zoom view.
+* **Right-click** or **left-click+S** on a volume: center view on a selected
   point on the geometry.
 
 |image2|
@@ -51,17 +51,17 @@ style, add measurement points and coordinate axes, and so on. Hit **F1** or
 
 |image3|
 
-In particular, when a Geant4 geometry is hierarchical it is of great value to be
-able to "open up" a volume to see the volumes inside it:
+In particular, when a Geant4 geometry is hierarchical, it is of great value to
+be able to "open up" a volume to see the volumes inside it:
 
-* **left-click** on a volume: Get information about geometry and material
+* **Left-click** on a volume: get information about geometry and material
   printed in the terminal.
-* **middle-click** on a volume: Open it up (i.e. make it invisible) and display
+* **Middle-click** on a volume: open it up (i.e. make it invisible) and display
   daughters (does nothing if it has no daughter volumes).
-* **middle-click+W** on a volume: Open up the volume by rendering it with a
+* **Left-click+W** on a volume: open up the volume by rendering it with a
   wireframe rather than simply making it invisible (if it has no daughter
   volumes, it will simply toggle the volume in and out of wireframe).
-* **Shift+middle-click** on a volume: Close it the containing volume
+* **Shift+middle-click** on a volume: close the containing volume
   (i.e. display the containing volume normally, and hide the volume itself and
   it's "siblings").
 
@@ -73,7 +73,7 @@ Simulated data visualisation
 It is pretty bare-bones at the moment, but the viewer also offers a
 non-interactive view of simulated tracks along with the geometry. To get it, one
 must supply the ``--dataviewer`` flag instead of the ``--viewer`` flag, and as
-usual use the ``-n`` (or ``--nevts``) flag to choose the number of events to be
+usual, use the ``-n`` (or ``--nevts``) flag to choose the number of events to be
 simulated. So, still using the TriCorder example from :ref:`here
 <sbnewsimproject>`, we can run:
 
@@ -139,10 +139,10 @@ and the geometry are positioned correctly with respect to each other (if, say,
 half of the neutrons miss a detector by mistake, a less than careful analysis
 might conclude that the detector efficiency is about 50% too low!).
 
-So one might for instance launch the viewer with 1000 neutrons (here is the
+So one might, for instance, launch the viewer with 1000 neutrons (here is the
 :sbpkg:`BoronTube` simulation from the :sbpkg:`bundleroot::dgcode_val` bundle)::
 
-  sb_borontube_sim -n1000 incidence_angle_deg=30  --dataviewer
+  sb_borontube_sim -n1000 incidence_angle_deg=30 --dataviewer
 
 |image_borontube_dataviewer|
 
@@ -153,7 +153,7 @@ which only the primary (i.e. generated) particles are shown, and only the very
 first *segment* of each of those (to use :ref:`Griff <sbgriff>` terminology). To
 use it, use the ``--aimdataviewer`` flag (or just ``--aim`` for short)::
 
-  sb_borontube_sim -n1000 incidence_angle_deg=30  --aimdataviewer
+  sb_borontube_sim -n1000 incidence_angle_deg=30 --aimdataviewer
 
 And get:
 
@@ -200,7 +200,7 @@ drop you in a Geant4 interactive terminal which looks like this:
 If you have problems, you can try using the ``-e`` option to select a different
 of the Geant4 drivers or "engines" (remember, you can see all the available
 options for the simulation scripts by supplying the option ``--help`` or
-``-h``). Upon startup the visualisation window is completely unresponsive, and
+``-h``). Upon startup, the visualisation window is completely unresponsive, and
 you have to switch control from the Geant4 terminal to the visualisation window
 by typing "/vis/viewer/update" or (to also simulate 10 events first)
 "/run/beamOn 10". That leaves you with a view like the following:
@@ -213,8 +213,8 @@ really interactive as such, but you can change the viewing angle by using the
 menu "Actions". It is beyond the scope of the present page to go further into
 the various commands that one might use in the interactive Geant4 terminal
 (which btw. can be opened without the visualisation window by the flag ``-i``),
-except to note that a few of the more useful commands are printed by our
-framework in the terminal (see first screenshot in this section), and refer
+except to note that a few of the more useful commands are printed by dgcode in
+the terminal (see first screenshot in this section), and refer
 interested parties to the `official Geant4 documentation on visualisation
 <https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/GettingStarted/visualization.html>`_.
 

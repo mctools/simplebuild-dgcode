@@ -25,12 +25,10 @@ their effect. After that, most users will probably find the :ref:`"cookbook"
 General remarks
 ---------------
 
-The strings defining Most materials in typical dgcode projects will actually be
+The strings defining most materials in typical dgcode projects will actually be
 the same strings that are used with `NCrystal (aka "NCrystal cfg-strings)
 <https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
-so you might wish to consult the NCrystal documentation for those in the
-`NCrystal wiki
-<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_. Most
+so you might wish to consult the NCrystal documentation for those. Most
 of the entries in the :ref:`cookbook <sbmatcookbook>` are indeed such NCrystal
 cfg-strings.
 
@@ -71,26 +69,26 @@ directory). For this reason, most of the examples in the :ref:`cookbook
 <sbmatcookbook>` will use the ``stdlib::`` prefix.
 
 In addition to NCrystal materials, you can also use any material from Geant4's
-own `builtin database of elements and NIST compounds
+own `built-in database of elements and NIST compounds
 <https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`_,
 and even override their temperature or density, using dedicated keywords
 ``temp_kelvin`` (:math:`\mathrm{K}`), ``density_gcm3``
 (:math:`\mathrm{g}/\mathrm{cm}^3`), ``density_kgm3``
 (:math:`\mathrm{kg}/\mathrm{m}^3`), and ``scale_density``. For instance,
-:math:`` xenon at :math:`200\mathrm{K}` and :math:`5.4\mathrm{kg}/\mathrm{m}^3`
-could be modelled with a string ``G4_Xe;temp_kelvin=200.0;density_gcm3=5.4``
+xenon at :math:`200\mathrm{K}` and :math:`5.4\mathrm{kg}/\mathrm{m}^3`
+could be modelled with a string ``G4_Xe;temp_kelvin=200.0;density_kgm3=5.4``
 (although gases are in general more easily defined with the :ref:`NCrystal
 syntax <sbmatgasmix>`).
 
 .. tip::
 
-   Note that while Geant4 NIST materials provide material compositions, they do
-   in general do **not** contain information about the structure of the atoms
-   inside the material. This structure is often very important when modelling
-   scattering interactions with thermal neutrons, so in general only use Geant4
-   NIST materials if your material is dominated by non-scattering effects
-   (e.g. strongly absorbing materials) or you are not modelling thermal
-   neutrons. If in doubt, prefer to use an NCrystal material.
+   Note that while Geant4 NIST materials provide material compositions, they in
+   general do **not** contain information about any structure in the position
+   and movements of atoms inside the material. This structure is often very
+   important when modelling scattering interactions with thermal neutrons, so
+   in general only use Geant4 NIST materials if your material is dominated by
+   non-scattering effects (e.g. strongly absorbing materials) or you are not
+   modelling thermal neutrons. If in doubt, prefer to use an NCrystal material.
 
 Most users should not have a need for anything else than NCrystal cfg-strings
 and Geant4 NIST materials, but a few other mostly deprecated options are

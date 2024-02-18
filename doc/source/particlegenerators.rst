@@ -3,12 +3,12 @@
 Particle generators
 *******************
 
-As important for a Geant4 simulation as geometry, materials and physics list, is
-the initial set of particles to be "let loose" in the simulation each event:
-these source particles are called *primary* particles in Geant4 terminology, and
-any particle generated indirectly as a result of the simulation of the
-interactions between particles and the material of the simulation geometry are
-accordingly denoted *secondary* particles.
+As important for a Geant4 simulation as the geometry, materials, and physics
+list, is the initial set of particles to be "let loose" in the simulation each
+event. These source particles are called *primary* particles in Geant4
+terminology, and any particle generated indirectly as a result of the simulation
+of the interactions between particles and the material of the simulation
+geometry are accordingly denoted *secondary* particles.
 
 Whenever creating a new primary particle, a generator module must fully define
 its initial state, which typically means choosing:
@@ -32,17 +32,17 @@ configurable parameters in the same manner as geometry modules are. The main
 differences are firstly that generator modules are very often reusable across
 many specific projects or studies, while this is more rarely seen for geometry
 modules. Secondly, as we shall see below, generator modules can be implemented
-purely in just a few lines Python if desired.
+purely in just a few lines of Python code if desired.
 
 Configuration
 -------------
 
 Picking a generator module in a :ref:`sim-script <sbsimscript>` is done in the
-same manner as picking a geometry module: One imports the desired generator
+same manner as picking a geometry module: one imports the desired generator
 module, instantiates a given generator instance (called ``gen`` below), and
 optionally changes the default value of one or more of the parameters available
 for the given generator module. Of course, those values can again be overwritten
-from the command line should the user of the simulation script so desire). In
+from the command line should the user of the simulation script so desire. In
 the example below, the author of the simulation script in question has decided
 to use the :sbpkg:`SimpleGen <G4StdGenerators/libsrc/SimpleGen.cc>` generator
 module from the :sbpkg:`G4StdGenerators` package:
@@ -78,7 +78,7 @@ To understand what the different parameters are for, there are several strategie
 
 * Read on further down this page where all the generators from the
   :sbpkg:`G4StdGenerators` package are mentioned.
-* Guess based on the hopefully very descriptive names of the parameters
+* Guess based on the hopefully very descriptive names of the parameters.
 * Supply the ``--dataviewer`` or ``--aimdataviewer`` flag to generate and visualise few
   or many events in a 3D viewer, and see how the tracks are generated in the
   geometry (read more :ref:`here <sbaimdataviewer>`):
@@ -87,7 +87,7 @@ To understand what the different parameters are for, there are several strategie
       :height: 200px
       :align: center
 * Supply the ``--verbose`` flag to generate a few events and print out some info
-  about the generated events.
+  about them.
 * Locate the source code of the generator module in question and try to
   understand what it does, or ask its author.
 
@@ -104,7 +104,7 @@ module without a generator). Get full usage instructions by::
 
 Note in particular that by adding the ``-v`` and ``-n<NEVTS>`` flags, one can
 launch the visualisation to see some events generated with it in a empty
-geometry:
+geometry.
 
 Standard generators
 -------------------
@@ -128,9 +128,9 @@ package.
 
     * Ability to generate particle directions in spherical coordinates.
     * Ability to randomize all variables uniformly over an interval. As an
-      example, suppose one would like the y-coordinate of the particles initial
+      example, suppose one would like the y-coordinate of the particles' initial
       position to be distributed uniformly between 0.5m and 1.0m, then rather
-      than setting the fixed_y_meters variable, one would set::
+      than setting the ``fixed_y_meters`` variable, one would set::
 
         randomize_y=True random_min_y_meters=0.5 random_max_y_meters=1.0
     * And finally the ability to specify particle identity via `pdg code
@@ -148,7 +148,7 @@ package.
     :literal:
 
   * It shares the options for setting particle type and number with FlexGen, but
-    for energy it provides options for either a Gaussian spread in neutron
+    for energy, it provides options for either a Gaussian spread in neutron
     wavelength, or a perfect thermal distribution.
 
 * The beam profile is determined by the ``spread_...`` parameters, with
@@ -167,7 +167,7 @@ package.
   the direction of positive :math:`z`, starting at :math:`z=0` and "near"
   :math:`(x,y)=(0,0)`. That way, users will be more easily able to switch
   generators without completely having to re-orient their geometry, rewrite
-  their analyses, etc. Of course, this is not a strict rule and some-times a
+  their analyses, etc. Of course, this is not a strict rule, and sometimes a
   different setup makes sense.
 
 
@@ -227,8 +227,8 @@ Custom generators defined in Python
 
 Wouldn't it be nice if instead of relying on generators written by other people,
 you could add a few lines of code in your :ref:`sim-script <sbsimscript>` to put
-exactly the particles you want exactly where you want them? It is fortunately
-straight-forward to do exactly that:
+exactly the particles you want exactly where you want them? It is, fortunately,
+straight-forward to do exactly that by implementing your own generator:
 
 .. code-block:: python
 
@@ -269,7 +269,7 @@ Python module, so it can easily be used in several different simulation
 scripts. You can find several examples of that in the
 :sbpkg:`G4CustomPyGen.Examples<G4CustomPyGen/python/Examples.py>` module.
 
-Histogram-based Generators
+Histogram-based generators
 --------------------------
 
 If you have a 1-dimensional `SimpleHists <SimpleHists.html>`__ histogram with a
@@ -336,7 +336,7 @@ generator module:
 
 If ``primary_only`` is set to ``True``, Geant4 particles will be generated based
 on the pre-step info of the first step of all primary particles found in the
-file (thus, it can be used to "re-shoots" the generated events inside a Griff
+file (thus, it can be used to "re-shoot" the generated events inside a Griff
 file). If ``primary_only`` is set to ``False``, Geant4 particles will be
 generated based on the pre-step info of the first step of *all* particles in the
 file -- which is obviously mostly useful when the Griff file was created with a

@@ -29,13 +29,13 @@ of how to use it, accessible by supplying the ``-h`` or ``--help`` flag:
 
 Here is a bit of advice concerning when to typically use the options above:
 
-* Notice in particular the ``-n`` and ``-j`` options which controls the number
+* Notice in particular the ``-n`` and ``-j`` options, which control the number
   of events to simulate and how many processes to use (i.e. if you have a 4-core
   machine with hyperthreading enabled, it makes sense to use ``-j8``. If
   combining data from multiple runs, you should remember to use a different
   random seed in each job by using ``-s``.
 
-* When debugging your geometry setup you might want to use ``-g``, and
+* When debugging your geometry setup, you might want to use ``-g``, and
   ``t``. And most certainly you want to :ref:`visualise <sb3dvis>` the geometry
   with ``--viewer``.
 
@@ -49,7 +49,7 @@ Here is a bit of advice concerning when to typically use the options above:
   also use a subsequent :ref:`Griff <sbgriff>` analysis to investigate events
   programmatically.
 
-* To control output of the simulation you can use ``-o`` and ``-m`` for
+* To control the output of the simulation, you can use ``-o`` and ``-m`` for
   :ref:`Griff <sbgriff>` output (disable it with ``-o none``), ``--mcpl`` for
   :ref:`MCPL <sbmcpl>` output, or ``--heatmap`` to collect :ref:`heat maps
   <sbheatmap>`.

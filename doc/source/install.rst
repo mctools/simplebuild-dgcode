@@ -16,10 +16,10 @@ Install via conda
 ..
   Fixme: add conda badges
 
-The recommended and easiest way to install dgcode, is by creating an
+The recommended and easiest way to install dgcode is by creating an
 appropriate conda environment based on the `conda-forge
 <https://conda-forge.org/>`__ channel, in which all the dependencies are
-included. The package for dgcode itself, must still be installed via the PyPI
+included. The package for dgcode itself must still be installed via the PyPI
 (pip) package for the time being, although that will change at some point in the
 future (cf. `#9
 <https://github.com/mctools/simplebuild-dgcode/issues/9>`__). The recommended
@@ -56,8 +56,9 @@ Alternatives for experts
 
 The conda recipe above is intended to give a self-contained and reproducible
 environment with not only dgcode itself, but also any required tools like
-`simplebuild <https://mctools.github.io/simplebuild>`, a Python interpreter and
-all the necessary build tools. For special advanced use-cases, experts might
+`simplebuild
+<https://mctools.github.io/simplebuild>`_, a Python interpreter, and
+all the necessary build tools. For special advanced use cases, experts might
 simply want to add the code itself into an environment where they otherwise have
 ensured that all of these third-party tools are already available. In such a
 case, one can simply install dgcode via ``pip``, either via a PyPI package
@@ -111,7 +112,7 @@ is because the scattering physics in the aluminium in this example is provided
 by NCrystal as ``stdlib::Al_sg225.ncmat;comp=bragg`` (i.e. only Bragg
 diffraction is enabled), so all (singly) scattered neutrons (green) should end
 up in a single Debye-Scherrer cone. Other particles like gammas (yellow) are
-generated in absorption events, based on Geant4's own builtin physics.
+generated in absorption events, based on Geant4's own built-in physics.
 
 It might also be a good idea to verify that the Matplotlib-based
 :ref:`SimpleHists <sbsimplehists>` plotting works, which can be done with the

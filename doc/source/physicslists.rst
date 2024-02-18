@@ -13,8 +13,8 @@ Occasionally it might be useful to be able to use a "sterile" physics list, in
 which particles simply travel around without having any interactions. This might
 for instance be useful for debugging purposes, or in case of wanting to avoid a
 long initialisation time (e.g. when testing or debugging the geometry). For that
-reason, dgcode provides a physics list ``PL_Empty`` which just that (for
-convenience it can also be chosen under the alias ``empty``).
+reason, dgcode provides a physics list ``PL_Empty`` which is designed to serve
+that purpose (for convenience it can also be chosen under the alias ``empty``).
 
 Note that you can always run the command ``sb_g4physicslists_showall`` to see a
 list of all available lists (or alternatively supply the argument
@@ -55,7 +55,7 @@ functionality), simply add a trailing "+TS" to the name of the physics list
 (e.g. "QGSP_BIC_HP_EMZ+TS"). Likewise, special optical physics can be enabled
 with "+OPTICAL", although this is not highly tested.
 
-It is also possibly to completely define your own physics list, as is often done
+It is also possible to completely define your own physics list, as is often done
 in standalone Geant4 applications. To do that, you must first of all know how to
 define such a list in Geant4. Next, you must add a compiled Python module named
 ``dgcode_<yourphyslistname>`` in a simplebuild package, and it will
