@@ -13,8 +13,8 @@ optimised for easy, fast and reliable analyses from either C++ or Python of
 low-multiplicity physics, but supports filtering for scenarios involving higher
 multiplicities or statistics. No dedicated publication for Griff exists at this
 point in time, but it was presented in `doi:10.1088/1742-6596/513/2/022017
-<http://dx.doi.org/10.1088/1742-6596/513/2/022017>`_ which should so far be used
-as the main reference.
+<http://dx.doi.org/10.1088/1742-6596/513/2/022017>`__ which should so far be
+used as the main reference.
 
 Data contents
 -------------

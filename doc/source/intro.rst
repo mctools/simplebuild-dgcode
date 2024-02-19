@@ -68,9 +68,9 @@ Features
 
 * Post-simulation analysis can be done as desired, and might for instance
   include a Griff analysis written in C++, which outputs histogram data in
-  :ref:`SimpleHists<sbsimplehists>` files, usually followed by a final
+  :ref:`SimpleHists <sbsimplehists>` files, usually followed by a final
   statistical analysis and plot-production in Python, where all the usual
-  tools (e.g. `Matplotlib<https://matplotlib.org/>`__ and
+  tools (e.g. `Matplotlib <https://matplotlib.org/>`__ and
   `SciPy <https://scipy.org/>`__) are available.
 
 * Due in particular to being based on `simplebuild

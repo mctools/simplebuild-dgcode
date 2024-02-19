@@ -4,9 +4,8 @@ About
 
 .. include:: cite.rst
 
-Please report any bugs, problems or feature requests related to
-simplebuild-dgcode in the issue tracker at:
-https://github.com/mctools/simplebuild-dgcode/issues.
+Please report any bugs, problems or feature requests related to dgcode in the
+issue tracker at: https://github.com/mctools/simplebuild-dgcode/issues.
 
 .. _sbhistory:
 

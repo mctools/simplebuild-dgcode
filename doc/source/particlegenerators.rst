@@ -134,7 +134,7 @@ package.
 
         randomize_y=True random_min_y_meters=0.5 random_max_y_meters=1.0
     * And finally the ability to specify particle identity via `pdg code
-      <https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf>`_
+      <https://pdg.lbl.gov/2023/reviews/rpp2023-rev-monte-carlo-numbering.pdf>`__
       rather than names, and to generate more than 1 primary particle each
       event.
     * Too see all the parameters of ``FlexGen``, simply run the command::

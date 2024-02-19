@@ -12,7 +12,7 @@ as the "NamedMaterial" mechanism, has several advantages:
 #. Defining materials is easier.
 #. Materials can be easily modified from command line or Python code.
 #. It integrates directly with how materials are defined in `NCrystal
-   <https://github.com/mctools/ncrystal/wiki>`_, allowing direct usage of these
+   <https://github.com/mctools/ncrystal/wiki>`__, allowing direct usage of these
    high-fidelity materials, and exposing all features of NCrystal directly.
 
 In the following, we will provide a few :ref:`general remarks <sbmatgeneral>`
@@ -26,15 +26,15 @@ General remarks
 ---------------
 
 The strings defining most materials in typical dgcode projects will actually be
-the same strings that are used with `NCrystal (aka "NCrystal cfg-strings)
-<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
-so you might wish to consult the NCrystal documentation for those. Most
-of the entries in the :ref:`cookbook <sbmatcookbook>` are indeed such NCrystal
-cfg-strings.
+the same strings that are used with NCrystal (aka "NCrystal cfg-strings),
+so you might wish to consult the `NCrystal documentation
+<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`__
+for those. Most of the entries in the :ref:`cookbook <sbmatcookbook>` are
+indeed such NCrystal cfg-strings.
 
 On that note, be aware that outside the :ref:`cookbook <sbmatcookbook>` you
 can look for specific NCrystal materials both online in the `NCrystal data
-library page <https://github.com/mctools/ncrystal/wiki/Data-library>`_, or in
+library page <https://github.com/mctools/ncrystal/wiki/Data-library>`__, or in
 your terminal via the ``nctool`` command by invoking ``nctool
 --browse``. Combined with the unix ``grep`` command, you can use this for a
 quick-and-dirty material search in the terminal. As an example, searching for
@@ -70,7 +70,7 @@ directory). For this reason, most of the examples in the :ref:`cookbook
 
 In addition to NCrystal materials, you can also use any material from Geant4's
 own `built-in database of elements and NIST compounds
-<https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`_,
+<https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`__,
 and even override their temperature or density, using dedicated keywords
 ``temp_kelvin`` (:math:`\mathrm{K}`), ``density_gcm3``
 (:math:`\mathrm{g}/\mathrm{cm}^3`), ``density_kgm3``
@@ -112,7 +112,7 @@ Inspect via NCrystal utilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The material definitions which are also `NCrystal cfg-strings
-<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
+<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`__,
 can be investigated with NCrystal tools. The most easily used of these is the
 command line tool ``nctool``, and the usage is very simple. First of all,
 detailed thermal neutron cross sections and sample neutron scattering

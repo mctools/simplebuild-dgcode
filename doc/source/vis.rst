@@ -17,7 +17,7 @@ Custom 3D Viewer
 ----------------
 
 In dgcode, we provide a custom `OpenSceneGraph
-<https://www.openscenegraph.com/>`_-based 3D visualisation tool which can be
+<https://www.openscenegraph.com/>`__-based 3D visualisation tool which can be
 used to visualise both simulation geometries and data. Despite being a bit rough
 around the edges (for instance it could use a better name than "CoolNameHere"),
 it has already been highly useful for a lot of work so far.
@@ -216,7 +216,7 @@ the various commands that one might use in the interactive Geant4 terminal
 except to note that a few of the more useful commands are printed by dgcode in
 the terminal (see first screenshot in this section), and refer
 interested parties to the `official Geant4 documentation on visualisation
-<https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/GettingStarted/visualization.html>`_.
+<https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/GettingStarted/visualization.html>`__.
 
 Note that you exit the terminal by the command "exit" (or ``ctrl+D``, like in BASH).
 

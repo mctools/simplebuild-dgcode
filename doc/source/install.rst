@@ -57,7 +57,7 @@ Alternatives for experts
 The conda recipe above is intended to give a self-contained and reproducible
 environment with not only dgcode itself, but also any required tools like
 `simplebuild
-<https://mctools.github.io/simplebuild>`_, a Python interpreter, and
+<https://mctools.github.io/simplebuild>`__, a Python interpreter, and
 all the necessary build tools. For special advanced use cases, experts might
 simply want to add the code itself into an environment where they otherwise have
 ensured that all of these third-party tools are already available. In such a

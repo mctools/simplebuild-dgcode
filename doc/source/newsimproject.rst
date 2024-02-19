@@ -29,7 +29,7 @@ build everything afterwards with ``sb`` (that might take a few minutes):
 So assuming we want a project to investigate the properties of a new amazing
 detector technology, named "tricorder", we then proceed by using the
 ``dgcode_newsimproject`` command (please try to use `CamelCasing
-<https://en.wikipedia.org/wiki/Camel_case>`_ for project names):
+<https://en.wikipedia.org/wiki/Camel_case>`__ for project names):
 
 .. include:: ../build/autogen_tricorder_newsimproj_TriCorder.txt
   :literal:

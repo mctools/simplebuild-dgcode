@@ -72,7 +72,7 @@ case. Instead, one can currently resort to a few different strategies:
 
 - Use the ``G4_STAINLESS-STEEL`` material, which is a structure-less material
   with a particular composition defined in `Geant4's database
-  <https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`_.
+  <https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`__.
 - Use either ``stdlib::Fe_sg229_Iron-alpha.ncmat`` or
   ``stdlib::Fe_sg225_Iron-gamma.ncmat``, and the
   `atomdb <https://github.com/mctools/ncrystal/wiki/CfgRefDoc>`__ keyword of
@@ -257,7 +257,7 @@ density when using these to model a particular component. You can also read the
 notes for a particular material by a command like ``nctool --extract
 stdlib::Polystyrene_C8H8.ncmat | less`` (or simply find and click on the
 material on the `NCrystal data library page
-<https://github.com/mctools/ncrystal/wiki/Data-library>`_.
+<https://github.com/mctools/ncrystal/wiki/Data-library>`__.
 
 .. list-table::
    :header-rows: 1
@@ -446,8 +446,8 @@ aluminium atoms are actually randomly switched with chromium atoms.
 In general the NCrystal cfg-string syntax for defining a multi-phase material is
 ``phases<FRAC1*CFG1&..&FRACN*CFGN>[;COMMONCFG]``. Here, ``FRAC1`` is the
 fraction of phase 1, which is defined by the NCrystal cfg-string ``CFG1``, and
-so forth. The indicated fractions are assumed to be volume fractions, and must
-sum to 1, and ``COMMONCFG`` contains cfg-parameters applied to all phases
+so forth. The indicated fractions are assumed to be "by-volume" fractions, and
+must sum to 1, and ``COMMONCFG`` contains cfg-parameters applied to all phases
 (e.g. if ``COMMONCFG`` is ``;temp=200K``, all phases would change their
 temperature -- which in the particular case of temperature is quite sensible).
 
@@ -536,7 +536,7 @@ https://github.com/mctools/ncrystal-notebooks.
 
   | **If you use NCrystal to model single crystals, please cite:**
   | T. Kittelmann and X.-X. Cai, Comp. Phys. Commun 267 (2021) 108082,
-  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`_
+  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`__
 
 .. _sbmatpg:
 
@@ -586,7 +586,7 @@ it. The example below shows this in practice:
 
   | **If you use NCrystal to model pyrolitic graphite, please cite:**
   | T. Kittelmann and X.-X. Cai, Comp. Phys. Commun 267 (2021) 108082,
-  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`_
+  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`__
 
 Other materials
 ---------------

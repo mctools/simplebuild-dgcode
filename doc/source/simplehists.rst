@@ -52,7 +52,7 @@ list of features include:
 
     * To/from raw bytes in both C++ and Python (in the form of ``std::string`` or
       ``bytes`` respectively).
-    * To work with the standard Python ``pickle`` module.
+    * They work with the standard Python ``pickle`` module.
 * Histograms can be cloned, merged, normalised, scaled, integrated, ...
 * The C++ interface is simple to use and very fast.
 * The Python interface additionally features integration with Numpy arrays and
@@ -70,7 +70,7 @@ list of features include:
       in a ``.shist`` file to `ROOT <http://root.cern.ch/>`__ histograms and store
       them in a ``.root`` file. This requires ROOT to have been installed in the
       environment, which `might not be simple
-      <https://github.com/conda-forge/root-feedstock/issues/214>`_.
+      <https://github.com/conda-forge/root-feedstock/issues/214>`__.
 
 Example: Producing histograms in C++
 -------------------------------------
