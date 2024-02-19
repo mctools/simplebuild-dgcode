@@ -48,12 +48,12 @@ same methods applies to all the materials:
      - ``stdlib::Al2O3_sg167_Corundum.ncmat``
    * - Vanadium
      - ``stdlib::V_sg229.ncmat``
-   * - Kapton (see also :ref:`below<sbmathrich>`)
+   * - Kapton (see also :ref:`below <sbmathrich>`)
      - ``stdlib::Kapton_C22H10N2O5.ncmat``
-   * - Iron (but see :ref:`below<sbmatironsteel>`)
+   * - Iron (but see :ref:`below <sbmatironsteel>`)
      - ``stdlib::Fe_sg229_Iron-alpha.ncmat``
    * - Steel
-     - :ref:`see below<sbmatironsteel>`
+     - :ref:`see below <sbmatironsteel>`
 
 .. _sbmatironsteel:
 
@@ -351,7 +351,7 @@ lengths. A solution to this issue is being pursued in `ncrystal#147
 <https://github.com/mctools/ncrystal/issues/147>`__.
 
 For now, here are two NCrystal cfg-strings which can both be used to model
-Gd2O3. One is an :ref:`unstructured solid<unstructuredmaterials>`, for which a
+Gd2O3. One is an :ref:`unstructured solid <unstructuredmaterials>`, for which a
 density must be explicitly provided (although Gd isotopes only have mass
 differences of 5% so a value of 7.07 might be fine for many purposes), and in
 which all scattering physics is modelled under a free-gas assumption. The other
