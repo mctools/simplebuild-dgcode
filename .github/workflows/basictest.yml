@@ -7,7 +7,8 @@ on:
 
 # Workflow which pip installs the source code and checks that both bundles build
 # and runs tests in both release and debug mode. For simplicity, a lot of
-# optional externals will be missing, so this test is not very comprehensive.
+# optional externals (including Geant4!) will be missing, so this test is not
+# very comprehensive.
 
 # Syntax:
 #   https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
@@ -98,6 +99,7 @@ jobs:
         mkdir test2
         cd test2
         sb --init dgcode_val COMPACT
+        sb --pkgi DGCodeRecommendedNoGUI
         sb -t --testexcerpts=100
         sbenv sb_core_extdeps --require-disabled Geant4
         sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib

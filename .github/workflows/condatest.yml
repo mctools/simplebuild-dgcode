@@ -90,7 +90,7 @@ jobs:
           mkdir test_rel && cd test_rel
           sb --init dgcode_val
           #FIXME: Disabling sb_scanutilstests_testskeleton' since job hangs on macos:
-          sb -t --testexcerpts=100 --testfilter='!sb_scanutilstests_testskeleton'
+          sb -t --testexcerpts=100 --testfilter='!sb_scanutilstests_testskeleton' --requirepkg=DGCodeRecommended
           sbenv sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4
 
       - name: Build-and-test-debug-mode
@@ -102,7 +102,7 @@ jobs:
           mkdir test_dbg && cd test_dbg
           sb --init dgcode_val DEBUG COMPACT
           #FIXME: Disabling sb_scanutilstests_testskeleton' since job hangs on macos:
-          sb -t --testexcerpts=100  --testfilter='!sb_scanutilstests_testskeleton'
+          sb -t --testexcerpts=100 --testfilter='!sb_scanutilstests_testskeleton' --requirepkg=DGCodeRecommended
           sbenv sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4
 
       - name: Setup tmate session for manual debugging

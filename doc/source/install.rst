@@ -96,9 +96,11 @@ directory afterwards):
 
 The important thing to notice here is that unit tests were launched, and the
 message ``All tests completed without failures!`` tells us that they all
-completed without problems. The last call to ``sb_core_extdeps`` additionally
-confirmed the presence of the most important external software programatically,
-although you could also just have seen it in the output above.
+completed without problems. The ``--requirepkg=DGCodeRecommended`` argument,
+ensures that all the most important third party software, like Geant4, NCrystal,
+and Matplotlib, is also available on the system. If installing on a cluster
+where you do not need any plotting or visualisation tools, you can use
+``DGCodeRecommendedNoGUI`` instead.
 
 The unit tests above have one draw-back, in that they do mostly not test
 visualisation capabilities. So it is a good idea to manually test the

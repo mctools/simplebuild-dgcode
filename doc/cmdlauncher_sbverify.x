@@ -16,8 +16,5 @@ sb --init dgcode_val
 #In case we are not run from conda, prevent warning in output:
 eval "$(sb --env-setup)"
 
-echo "CMDPROMPT>sb --tests"
-sb --tests
-
-echo "CMDPROMPT>sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4 OSG && echo AllOK"
-sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4 OSG && echo AllOK
+echo "CMDPROMPT>sb --tests --requirepkg=DGCodeRecommended"
+sb --tests --requirepkg=DGCodeRecommended
