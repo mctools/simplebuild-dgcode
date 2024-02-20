@@ -35,7 +35,7 @@ respectively. First we look at the script in the file
 ``TriCorder/TriCorder/scripts/simanachain``, which can be invoked with the name
 ``sb_tricorder_simanachain``. This simply combines the Geant4 simulation of the
 :ref:`sim-script <sbsimscript>` with a :ref:`Griff <sbgriff>` analysis running
-on the output of the former, and creating a :ref:`SimpleHists<sbsimplehists>`
+on the output of the former, and creating a :ref:`SimpleHists <sbsimplehists>`
 file as a final result:
 
 .. literalinclude:: ../build/autogen_tricorder_projdir/TriCorder/TriCorder/scripts/simanachain

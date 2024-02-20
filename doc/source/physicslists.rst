@@ -34,7 +34,7 @@ also `here
 <https://twiki.cern.ch/twiki/bin/view/Geant4/LoweAtomicDeexcitation>`__). In
 general, if you need to tweak things like range cuts, etc., you must first
 figure out the appropriate Geant4 UI commands which controls them. After that,
-you can add the commands in your :ref:`sim-script<sbsimscript>`. Here are some
+you can add the commands in your :ref:`sim-script <sbsimscript>`. Here are some
 examples of how such commands might look:
 
 .. code-block:: python

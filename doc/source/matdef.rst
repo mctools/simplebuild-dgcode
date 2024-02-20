@@ -95,7 +95,7 @@ and Geant4 NIST materials, but a few other mostly deprecated options are
 supported for backwards compatibility. As they are deprecated, they will not be
 mentioned here or used in the :ref:`cookbook <sbmatcookbook>`, with the
 exception of the special ``MAT_B4C`` keyword used for enriched :ref:`boron
-carbide<sbmatb4c>`.
+carbide <sbmatb4c>`.
 
 
 .. _sbmatstringusage:

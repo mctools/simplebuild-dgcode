@@ -259,7 +259,7 @@ speed is a concern, but for smaller statistics (say, millions of particles
 simulated), Python remains a great option for quickly putting some plots
 together. A typical analysis approach in case of very large statistics would be
 to carry out the initial analysis in C++, writing out histograms
-(cf. :ref:`SimpleHists<sbsimplehists>`), and then performing further analysis
+(cf. :ref:`SimpleHists <sbsimplehists>`), and then performing further analysis
 and plot production in Python, using those histograms (and perhaps also the
 job-level metadata from Griff).
 
@@ -276,7 +276,7 @@ A few command-line utilities are provided:
   that it can be used to verify the integrity of the data, in case one is
   suspicious that a file might have become corrupted.
 * ``sb_g4osg_viewgriff``: Can be used to visualise the data inside a file with
-  our :ref:`custom viewer<sb3dvis>`.
+  our :ref:`custom viewer <sb3dvis>`.
 * ``sb_griffanautils_extractevts``: Can be used to select and extract a few
   events from a large griff file into a smaller one. Run with ``--help`` for
   instructions.
