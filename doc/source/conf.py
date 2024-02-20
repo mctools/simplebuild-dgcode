@@ -226,6 +226,9 @@ def run_tricorder_cmds():
         invoke_in_pkgroot( ['dgcode_newsimproject','-h'],
                            pkgroot,
                            bd / 'autogen_tricorder_newsimproj_help.txt' )
+        invoke_in_pkgroot( ['sb_g4osg_viewgriff','-h'],
+                           pkgroot,
+                           bd / 'autogen_g4osg_viewgriff_help.txt' )
         invoke_in_pkgroot( ['dgcode_newsimproject','TriCorder'],
                            pkgroot,
                            bd / 'autogen_tricorder_newsimproj_TriCorder.txt' )

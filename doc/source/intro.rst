@@ -62,9 +62,9 @@ Features
   * Launch :ref:`3D viewers <sb3dvis>` or interactive Geant4 sessions.
   * Control output in :ref:`Griff <sbgriff>` or :ref:`MCPL <sbmcpl>` format, or
     collect custom :ref:`heat maps <sbheatmap>`.
-  * Allow tuning of geometry and generator parameters, which is useful both for
-    parameter scanning and for simply "playing around" and trying to understand
-    a simulation.
+  * Allow tuning of geometry and particle generator parameters, which is useful
+    both for parameter scanning and for simply "playing around" and trying to
+    understand a simulation.
 
 * Post-simulation analysis can be done as desired, and might for instance
   include a Griff analysis written in C++, which outputs histogram data in

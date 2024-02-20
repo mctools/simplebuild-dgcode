@@ -8,7 +8,10 @@ list, is the initial set of particles to be "let loose" in the simulation each
 event. These source particles are called *primary* particles in Geant4
 terminology, and any particle generated indirectly as a result of the simulation
 of the interactions between particles and the material of the simulation
-geometry are accordingly denoted *secondary* particles.
+geometry are accordingly denoted *secondary* particles. For the case of many
+neutron scattering studies, an event might consist of a single primary neutron,
+but it is certainly possible (and normal) for other types of studies to have
+events with multiple primary particles.
 
 Whenever creating a new primary particle, a generator module must fully define
 its initial state, which typically means choosing:
@@ -308,17 +311,22 @@ Note how we specify the input histogram in one single string with syntax
 ``<filename>:<histogramkey>:<unit>``, and expose the string as a user-visible
 parameter called ``energy_histogram``, allowing users to easily switch histogram
 if desired. Here, ``<filename>`` can be either the path to the :ref:`histogram
-<sbsimplehists>` file, or in the form ``<pkg>/<file>``, if the histogram file is
-stored in the ``data/`` directory of some simplebuild package. The
+<sbsimplehists>` file, or in the form ``<pkgname>/<file>``, if the histogram
+file is stored in the ``data/`` directory of some simplebuild package. The
 ``<histogramkey>`` is used to select which histogram from the file to use, and
-the optional ``<unit>`` part can be specified either as a name or a number. The
-string is then passed to ``self.create_hist_sampler(..)`` during initialisation
-and the returned sampler is stored as ``self._esampler``, which can be invoked
-during ``generate_event()`` calls by calling ``self._esampler()``, returning one
-value sampled at random from the histogram.
+the optional ``<unit>`` part can be specified either as pure value, or the name
+of a unit like ``eV`` or ``keV`` (see the full list of supported unit names in
+:sbpkg:`Units.hh<Units/libinc/Units.hh>`). The complete string is then passed to
+``self.create_hist_sampler(..)`` during initialisation and the returned sampler
+is stored as ``self._esampler``, which can be invoked during
+``generate_event()`` calls by calling ``self._esampler()``, returning one value
+sampled at random from the histogram.
 
 Note that in addition to the actual bin-contents of the histogram, the sampler
-also considers the min/max statistics as well as any underflow/overflow content.
+also considers the min/max statistics as well as any underflow/overflow
+content. So for instance if the histogram has any overflow content, a single
+virtual bin is added between the upper bin edge and the maximum value ever
+filled -- and the content of that bin is then the overflow value.
 
 Generating from Griff files
 ---------------------------

@@ -164,6 +164,26 @@ geometry. Especially since particles are no longer coloured as per their type in
 this mode, but rather coloured yellow if they never hit another volume than the
 one they start in, and red otherwise.
 
+.. _sbvisgrifffile:
+
+Visualising content of Griff file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is possible to simply visualise the events inside a particular :ref:`Griff
+<sbgriff>` file, by using the ``sb_g4osg_viewgriff`` command:
+
+.. include:: ../build/autogen_g4osg_viewgriff_help.txt
+  :literal:
+
+So running ``sb_g4osg_viewgriff myfile.griff`` will visualise the tracks inside
+the file ``myfile.griff``, and the ``-e`` flag can be used to pick out certain
+events only. Additionally, *if* the code in the geometry module did not change
+since the Griff file was produced, one can also use the ``-g`` flag to visualise
+the geometry as well. So ``sb_g4osg_viewgriff -g myfile.griff`` will visualise
+the tracks inside ``myfile.griff`` alongside the geometry. Crucially, this will use
+the geometry parameters that were actually used when ``myfile.griff`` was
+produced, and *not* their default values.
+
 Environment variables
 ^^^^^^^^^^^^^^^^^^^^^
 

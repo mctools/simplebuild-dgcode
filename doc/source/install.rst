@@ -45,6 +45,11 @@ After you have conda installed, download :download:`conda_dgcode.yml
 
   conda env create -f conda_dgcode.yml
 
+Note that since the requested conda environment in this case includes the rather
+sizeable Geant4 packages, it might take several minutes for this command to
+finish, and the resulting conda environment will consume several gigabytes of
+space (the exact number was around 3.8GB in February 2024).
+
 Do not forget that you must activate your newly created environment before using
 it for the first time in a given terminal session::
 

@@ -139,8 +139,8 @@ Use ``launcher.setOutput("none")`` in the script or ``-o none`` (or
 ``--output=none``) on the command-line to disable Griff output entirely.
 
 If for some reason you are *not* using the standard :sbpkg:`G4Launcher`-based
-sim scrips, you can enable Griff output with the following command (after
-including the
+:ref:`sim-scripts <sbsimscript>`, you can enable Griff output with the following
+C++ call (after including the
 :sbpkg:`G4DataCollect/G4DataCollect.hh<G4DataCollect/libinc/G4DataCollect.hh>`
 header file from the :sbpkg:`G4DataCollect` package):
 
@@ -280,7 +280,7 @@ A few command-line utilities are provided:
   that it can be used to verify the integrity of the data, in case one is
   suspicious that a file might have become corrupted.
 * ``sb_g4osg_viewgriff``: Can be used to visualise the data inside a file with
-  our :ref:`custom viewer <sb3dvis>`.
+  our :ref:`custom viewer <sbvisgrifffile>`.
 * ``sb_griffanautils_extractevts``: Can be used to select and extract a few
   events from a large griff file into a smaller one. Run with ``--help`` for
   instructions.

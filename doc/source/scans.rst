@@ -58,12 +58,12 @@ the top (including choice of :ref:`physics list <sbphyslist>`, some
 :math:`10^5` neutrons (a low value for purposes of having the skeleton example
 run fast). After that, the actual jobs are defined in groups as desired. Here
 two groups of parameter scans are defined and given names ``plot1`` and
-``plot2``, which indicates their ultimate usage for two particular plots. Here,
-the first plot will vary the sample size while generating neutrons of a constant
-wavelength, and the second plot will do the opposite and vary the neutron
-wavelength while keeping the sample size constant (in a more realistic scenario
-one would typically have more than just a handful of values of the varied
-parameter).
+``plot2``, which indicates their ultimate intended usage for two particular
+plots. Here, the first plot will vary the sample size while generating neutrons
+of a constant wavelength, and the second plot will do the opposite and vary the
+neutron wavelength while keeping the sample size constant (in a more realistic
+scenario one would typically have more than just a handful of values of the
+varied parameter).
 
 The command ``sb_tricorder_scan --help`` provides full usage information, but if
 one for instance wishes to launch the jobs locally with up to 16 concurrent
