@@ -15,7 +15,7 @@ input parameters and output files, can be both tedious and error prone. To
 facilitate this process, dgcode provides
 :sbpkg:`ScanLauncher<ScanUtils/python/ScanLauncher.py>` and
 :sbpkg:`ScanLoader<ScanUtils/python/ScanLoader.py>` utility classes in the
-:sbpkg:`ScanUtils` package. These utilities assume that the...FIXME
+:sbpkg:`ScanUtils` package.
 
 .. admonition:: Important notice
   :class: tip
