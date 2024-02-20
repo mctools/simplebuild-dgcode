@@ -8,7 +8,7 @@ of `simplebuild <https://mctools.github.io/simplebuild>`__ packages
 <sbhistory>` goes back to 2012, but in 2023/2024 it was cleaned up and
 resurrected in its present form.
 
-Most importantly, dgcode includes functionality for easy seting up and launching
+Most importantly, dgcode includes functionality for easy setting up and launching
 of Geant4 simulation jobs based on configurable :ref:`geometry <sbgeo>` and
 :ref:`generator <sbparticlegen>` modules, and contains various functionality for
 :ref:`material definitions <sbmatdef>`, :ref:`physics lists <sbphyslist>`
@@ -23,7 +23,7 @@ eventually also be a good idea to dive into parts of the `Geant4 documentation
 <https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/>`__, in
 particular the parts about `geometry definitions
 <https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/ForApplicationDevelopers/Detector/Geometry/geometry.html>`__
-(note that for historical reasons geometry definition is often refered to as
+(note that for historical reasons geometry definition is often referred to as
 "Detector definition" in Geant4).
 
 Features
@@ -68,10 +68,10 @@ Features
 
 * Post-simulation analysis can be done as desired, and might for instance
   include a Griff analysis written in C++, which outputs histogram data in
-  SimpleHists files, usually followed by a final statistical analysis and
-  plot-production in Python, where all the usual tools (e.g. `Matplotlib
-  <https://matplotlib.org/>`__ and `SciPy <https://scipy.org/>`__) are
-  available.
+  :ref:`SimpleHists <sbsimplehists>` files, usually followed by a final
+  statistical analysis and plot-production in Python, where all the usual
+  tools (e.g. `Matplotlib <https://matplotlib.org/>`__ and
+  `SciPy <https://scipy.org/>`__) are available.
 
 * Due in particular to being based on `simplebuild
   <https://mctools.github.io/simplebuild>`__, dgcode readily facilitates
@@ -86,11 +86,11 @@ instructions <sbinstall>`, to ensure that dgcode and simplebuild are available
 on the system. It is probably best to then spend a bit of time on the
 `simplebuild documentation <https://mctools.github.io/simplebuild/>`__, focusing
 at least on the introduction and usage examples. Then, it is probably time to
-try to followed the instructions for :ref:`how to easily start a dgcode-based
+try to follow the instructions for :ref:`how to easily start a dgcode-based
 simulation project <sbnewsimproject>`.
 
 After these initial steps, it will be time to start diving into the more
 detailed parts of the documentation, which you can find either from the sidebar
 menu or via the :ref:`subjects overview page <sbsubjects>`. You can of course
-also use the documentations search functionality in case you can not easily find
-something.
+also use the documentation's search functionality in case you can not easily
+find something.

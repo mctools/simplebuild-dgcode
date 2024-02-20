@@ -28,7 +28,7 @@ possibilities for how one can construct a geometry in Geant4, and it is
 recommended to also spend some time reading about `geometry defintions in the
 Geant4 documentation
 <https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/ForApplicationDevelopers/Detector/Geometry/geometry.html>`__
-(note that for historical reasons geometry definition is often refered to as
+(note that for historical reasons geometry definition is often referred to as
 "Detector definition" in Geant4). At the very least, it is important to have a
 clear understanding of the difference between the Geant4 concepts of a *solid*
 (a geometrical shape like a box or cylinder), a *logical volume* (a solid which
@@ -86,10 +86,10 @@ One final thing to note in the above, is that in dgcode we have a convenience
 method called ``place(..)``, which is used to directly combine a shape with a
 material and a position. As can be seen in the implementation
 :sbpkg:`here<G4Interfaces/libsrc/GeoBase.cc>`, this is really just wrapping
-completely standard Geant4 code. Feel free to use this function or not as you
+completely standard Geant4 code. Feel free to use this function or not, as you
 wish.
 
-For completeness we show how some or all of the parameters might be modified in
+For completeness, we show how some or all of the parameters might be modified in
 a Python :ref:`sim-script <sbsimscript>`:
 
 .. literalinclude:: ../build/autogen_tricorder_simscript_wocomments.py

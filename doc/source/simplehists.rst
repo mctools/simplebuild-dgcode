@@ -11,23 +11,23 @@ implemented as the simplebuild package ``SimpleHists``.
 Motivation
 ----------
 
-In addition to the obvious use-cases of histograms (e.g. estimations of data
+In addition to the obvious use cases of histograms (e.g. estimations of data
 probability density functions), histogram data types are also highly useful
-tools for data reduction, as they have a limited size in memory and on disk no
+tools for data reduction, as they have a limited size in memory and on disk, no
 matter how much data is filled in them. Implemented correctly, they can even
 provide more functionality than just the counting of data-points in a certain
-binning. Examples include: Handling of errors, weights and
-normalisations. Collection of one-pass statistics such as unbinned mean and
-variance. Association of metadata (title, axis labels). Utilities for on-disk
-storage and quick plotting.
+binning. Examples include handling of errors, weights, and
+normalisations; collection of one-pass statistics such as unbinned mean and
+variance; association of metadata (title, axis labels); and utilities for
+on-disk storage and quick plotting.
 
 Histogram classes are for instance found in the `ROOT <http://root.cern/>`__
-framework which is commonly used in high energy physics, but for python-centric
+framework which is commonly used in high energy physics, but for Python-centric
 analyses based on e.g. "PyLab" (taken here to mean Numpy+SciPy+Matplotlib),
 having a dependency on ROOT can be a bit honerous. However, one runs into the
-problem that Pylab does not by default include histogram classes. Rather, very
+problem that PyLab does not by default include histogram classes. Rather, very
 basic histogramming functionality exists, but requires one to first collect all
-data into arrays thus defeating the primary data reduction purpose of such
+data into arrays, thus defeating the primary data reduction purpose of such
 histogram classes.
 
 Features
@@ -35,8 +35,8 @@ Features
 
 The light-weight histogram classes, "SimpleHists", provided in dgcode have
 several features that are all important to their usage in dgcode-based projects:
-usage from both C++ and Python, integration with Pylab, persistification, quick
-plotting, extraction to Numpy arrays. Finally, the histograms crucially have the
+usage from both C++ and Python, integration with PyLab, persistification, quick
+plotting, extraction to Numpy arrays. Finally, the histograms have the crucial
 ability that data files collected in multiple concurrent jobs can be safely
 merged without the loss of any statistical metadata. More specifically, the
 list of features include:
@@ -46,17 +46,17 @@ list of features include:
   each identified by a unique key.
 
     * Such a collection class simplifies user code.
-    * Can be easily merged with other collections
-    * Can be easily written to, or loaded from, a file (extension ``.shist``)
+    * Can be easily merged with other collections.
+    * Can be easily written to, or loaded from, a file (extension ``.shist``).
 * Histograms themselves are also easily (de) serialisable:
 
     * To/from raw bytes in both C++ and Python (in the form of ``std::string`` or
       ``bytes`` respectively).
-    * The work with the standard Python ``pickle`` module.
+    * They work with the standard Python ``pickle`` module.
 * Histograms can be cloned, merged, normalised, scaled, integrated, ...
 * The C++ interface is simple to use and very fast.
 * The Python interface additionally features integration with Numpy arrays and
-  matplotlib plotting.
+  Matplotlib plotting.
 * Several command-line scripts for working with ``.shist`` files are available,
   supply ``--help`` to any of them for more detailed instructions:
 
@@ -64,13 +64,13 @@ list of features include:
     * ``sb_simplehists_merge``: Merge contents in two ``.shist`` files into
       one. This is meant as an easy and reliable way to merge output done in
       concurrent computing situations (such as at a computing cluster).
-    * ``sb_simplehists_extract``: extract a subset of histograms from a file into
+    * ``sb_simplehists_extract``: Extract a subset of histograms from a file into
       a smaller one.
     * ``sb_simplehists2root_convertfile``: For compatibility, convert histograms
       in a ``.shist`` file to `ROOT <http://root.cern.ch/>`__ histograms and store
       them in a ``.root`` file. This requires ROOT to have been installed in the
       environment, which `might not be simple
-      <https://github.com/conda-forge/root-feedstock/issues/214>`_.
+      <https://github.com/conda-forge/root-feedstock/issues/214>`__.
 
 Example: Producing histograms in C++
 -------------------------------------
@@ -97,7 +97,7 @@ a cluster, collecting histograms in a large number of jobs:
   }
   hc.saveToFile("results.shist");
 
-Afterwards one can then use the ``sb_simplehists_merge`` command to merge the
+Afterwards, one can then use the ``sb_simplehists_merge`` command to merge the
 ``result.shist`` files from many different cluster jobs into one. Thus, relevant
 data from many billions and billions of events are now all present in a single
 small (tens of kilobytes) file which can be copied easily down to ones laptop
@@ -118,9 +118,9 @@ histograms with various options for the presentations. At this stage it is
 already possible to produce a few quick plots for a paper, talk or email.
 
 For more advanced analysis, one can use Python and the plethora of utilities
-available there (e.g. all the utilities available in matplotlib and SciPy). Here
+available there (e.g. all the utilities available in Matplotlib and SciPy). Here
 is a small example of how one can get data out in formats ready to input to the
-various pylab plotting routines:
+various PyLab plotting routines:
 
 .. code-block:: python
 
@@ -136,8 +136,8 @@ various pylab plotting routines:
   #This can be used for custom analysis (using scipy fitting/interpolation
   #tools, making plots with analytical results on top, etc., etc.)
   #One can access other statistics as well of course:
-  print 'edep variance =', h_edep.rms
-  print 'mean edep     =', h_edep.mean
+  print('edep variance =', h_edep.rms)
+  print('mean edep     =', h_edep.mean)
 
 .. |image_simplehistsgallery| image:: images/Simplehists_preliminary_preview.png
    :width: 400px

@@ -3,7 +3,7 @@ Welcome to the dgcode documentation!
 ************************************
 
 Welcome to the documentation of "dgcode", a set of `simplebuild
-<https://mctools.github.io/simplebuild>`_ packages implementing a Geant4-based
+<https://mctools.github.io/simplebuild>`__ packages implementing a Geant4-based
 simulation framework. It originated in the Detector Group at the European
 Spallation Source ERIC, and is primarily intended for usage for simulation of
 thermal neutron detectors and related projects.

@@ -4,7 +4,7 @@ Materials cookbook
 ==================
 
 On this page we provide a small "cookbook" of material strings suitable for many
-common use-cases, in particular as regards materials for neutron detectors and
+common use cases, in particular as regards materials for neutron detectors and
 other components at neutron instruments. The discussion below assumes that
 readers have first read with :ref:`the general remarks about material
 definitions <sbmatdef>`.
@@ -15,7 +15,7 @@ Support materials
 -----------------
 
 Although some support materials are more complicated (e.g. kapton, steel, ...),
-many support materials (e.g. aluminium, cobber, titanium, vanadium, alumina) can
+many support materials (e.g. aluminium, copper, titanium, vanadium, alumina) can
 for the most part be suitably modelled as singled-phased polycrystalline
 materials under the powder-approximation using NCrystal -- thus enabling
 modelling of thermal neutron physics with features like Bragg diffraction and
@@ -48,12 +48,12 @@ same methods applies to all the materials:
      - ``stdlib::Al2O3_sg167_Corundum.ncmat``
    * - Vanadium
      - ``stdlib::V_sg229.ncmat``
-   * - Kapton (see  also :ref:`below<sbmathrich>`)
+   * - Kapton (see also :ref:`below <sbmathrich>`)
      - ``stdlib::Kapton_C22H10N2O5.ncmat``
-   * - Iron (but see :ref:`below<sbmatironsteel>`)
+   * - Iron (but see :ref:`below <sbmatironsteel>`)
      - ``stdlib::Fe_sg229_Iron-alpha.ncmat``
    * - Steel
-     - :ref:`see below<sbmatironsteel>`
+     - :ref:`see below <sbmatironsteel>`
 
 .. _sbmatironsteel:
 
@@ -72,7 +72,7 @@ case. Instead, one can currently resort to a few different strategies:
 
 - Use the ``G4_STAINLESS-STEEL`` material, which is a structure-less material
   with a particular composition defined in `Geant4's database
-  <https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`_
+  <https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`__.
 - Use either ``stdlib::Fe_sg229_Iron-alpha.ncmat`` or
   ``stdlib::Fe_sg225_Iron-gamma.ncmat``, and the
   `atomdb <https://github.com/mctools/ncrystal/wiki/CfgRefDoc>`__ keyword of
@@ -81,7 +81,7 @@ case. Instead, one can currently resort to a few different strategies:
   the material needs to be described with multiple phases.
 - Feel free to posts comments on `ncrystal#161
   <https://github.com/mctools/ncrystal/issues/161>`__, to make the NCrystal
-  developers aware of your use-case, or provide other relevant feedback.
+  developers aware of your use case, or provide other relevant feedback.
 
 .. _sbmatgasmix:
 
@@ -91,7 +91,7 @@ Gas mixtures
 Based on NCrystal's intrinsic support for gas-mixture calculations, it is
 easy to set up gas mixtures. The support is discussed in a more details `here
 <https://github.com/mctools/ncrystal/wiki/Announcement-Release3.2.0>`__, with
-just some hopefully self-explanatory examples listed in the following.  Here
+just some hopefully self-explanatory examples listed in the following. Here
 is first a few examples of single-component gasses:
 
 .. list-table::
@@ -112,7 +112,7 @@ Multi-component gasses are defined in a similar manner, but obviously needs a
 more complicated gas mixture specification. As an example, here are two ways to
 specify the same 70%-30% (vol.) Ar-CO2 counting gas mixture at
 :math:`\mathrm{P}=1.5\mathrm{atm}` and :math:`\mathrm{T}=250\mathrm{K}`. The
-first example uses (implicit) volume fractions, and the second use mass
+first example uses (implicit) volume fractions, and the second uses mass
 fractions. It might be interesting to note that since
 :math:`\mathrm{mass}(\mathrm{Ar})\approx\mathrm{mass}(\mathrm{CO}_2)`, the mass
 and volume fractions are very similar. Also note, that under the ideal gas
@@ -209,7 +209,7 @@ water files are included with NCrystal itself:
    * - Water (room temperature)
      - ``stdlib::LiquidWaterH2O_T293.6K.ncmat``
    * - Heavy water (room temperature)
-     - ``stdlib::LiquidWaterH2O_T293.6K.ncmat``
+     - ``stdlib::LiquidHeavyWaterD2O_T293.6K.ncmat``
 
 If needed, files for water at other temperatures than 293.6K can be found in
 `the ncrystal-extra repository
@@ -257,7 +257,7 @@ density when using these to model a particular component. You can also read the
 notes for a particular material by a command like ``nctool --extract
 stdlib::Polystyrene_C8H8.ncmat | less`` (or simply find and click on the
 material on the `NCrystal data library page
-<https://github.com/mctools/ncrystal/wiki/Data-library>`_.
+<https://github.com/mctools/ncrystal/wiki/Data-library>`__.
 
 .. list-table::
    :header-rows: 1
@@ -351,7 +351,7 @@ lengths. A solution to this issue is being pursued in `ncrystal#147
 <https://github.com/mctools/ncrystal/issues/147>`__.
 
 For now, here are two NCrystal cfg-strings which can both be used to model
-Gd2O3. One is an :ref:`unstructured solid<unstructuredmaterials>`, for which a
+Gd2O3. One is an :ref:`unstructured solid <unstructuredmaterials>`, for which a
 density must be explicitly provided (although Gd isotopes only have mass
 differences of 5% so a value of 7.07 might be fine for many purposes), and in
 which all scattering physics is modelled under a free-gas assumption. The other
@@ -382,7 +382,7 @@ the string:
 ``NCrystal:cfg=[solid::Gd2O3/7.07gcm3/Gd_is_0.9_Gd157_0.1_Gd155]:g4physicsonly=1``
 
 Feel free to :ref:`reach out <sbcontact>` in case you need advice for your
-particular usecase.
+particular use case.
 
 .. _unstructuredmaterials:
 
@@ -429,7 +429,7 @@ examples:
 Multi-phase materials
 ---------------------
 
-For some use-cases, definition of multi-phased materials might be important.
+For some use cases, definition of multi-phased materials might be important.
 This might for instance be used to describe a multi-phased alloy, a crystalline
 powder suspended in a liquid solution, an imperfectly packed material with void
 areas, a material with density fluctuations, and so on. The multi-phase support
@@ -446,8 +446,8 @@ aluminium atoms are actually randomly switched with chromium atoms.
 In general the NCrystal cfg-string syntax for defining a multi-phase material is
 ``phases<FRAC1*CFG1&..&FRACN*CFGN>[;COMMONCFG]``. Here, ``FRAC1`` is the
 fraction of phase 1, which is defined by the NCrystal cfg-string ``CFG1``, and
-so forth. The indicated fractions are assumed to by volume fractions, and must
-sum to 1, and ``COMMONCFG`` contains cfg-parameters applied to all phases
+so forth. The indicated fractions are assumed to be "by-volume" fractions, and
+must sum to 1, and ``COMMONCFG`` contains cfg-parameters applied to all phases
 (e.g. if ``COMMONCFG`` is ``;temp=200K``, all phases would change their
 temperature -- which in the particular case of temperature is quite sensible).
 
@@ -465,7 +465,7 @@ Here are some examples of multi-phase materials:
 
 If your materials in the individual phases can *not* all be described with an
 NCrystal cfg-string, the approach above will not work. Feel free to :ref:`reach
-out <sbcontact>` in case you need advice for your particular use-case.
+out <sbcontact>` in case you need advice for your particular use case.
 
 .. _sbmatsinglecrystals:
 
@@ -536,7 +536,7 @@ https://github.com/mctools/ncrystal-notebooks.
 
   | **If you use NCrystal to model single crystals, please cite:**
   | T. Kittelmann and X.-X. Cai, Comp. Phys. Commun 267 (2021) 108082,
-  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`_
+  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`__
 
 .. _sbmatpg:
 
@@ -575,7 +575,7 @@ it. The example below shows this in practice:
 
        *Primary direction:* :math:`\bar{n}_{002}` along :math:`\hat{z}`
 
-     - ``stdlib::C_sg194_pyrolytic_graphite.ncmat;mos=20.0arcmin;dir1=@crys_hkl:0,0,2@lab:0,0,1;dir2=@crys_hkl:1,,0,0@lab:0,1,0``
+     - ``stdlib::C_sg194_pyrolytic_graphite.ncmat;mos=20.0arcmin;dir1=@crys_hkl:0,0,2@lab:0,0,1;dir2=@crys_hkl:1,0,0@lab:0,1,0``
 
    * - Graphite powder
 
@@ -586,12 +586,12 @@ it. The example below shows this in practice:
 
   | **If you use NCrystal to model pyrolitic graphite, please cite:**
   | T. Kittelmann and X.-X. Cai, Comp. Phys. Commun 267 (2021) 108082,
-  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`_
+  | `DOI 10.1016/j.cpc.2021.108082 <https://doi.org/10.1016/j.cpc.2021.108082>`__
 
 Other materials
 ---------------
 
 Many more materials than the ones mentioned in this cookbook are possible to
-model with Geant4 and/or NCrystal: Moderators (incl. with magnetic effects),
+model with Geant4 and/or NCrystal: moderators (incl. with magnetic effects),
 reflectors (incl. with SANS/nanodiamonds), optical materials, etc. Feel free to
 :ref:`reach out <sbcontact>` in case you need advice.

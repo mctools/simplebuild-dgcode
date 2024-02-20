@@ -25,7 +25,7 @@ Inspecting MCPL files
 * Run ``mcpltool myfile.mcpl.gz`` to print contents of files,
   including both file-level meta-data and the particle data itself. It can also
   be used to merge or repair files, or perform simple data extraction. Run
-  ``mcpltool --help`` for more instructions.  |image_mcpltool|
+  ``mcpltool --help`` for more instructions. |image_mcpltool|
 
 * Use ``pymcpltool --stats myfile.mcpl.gz`` to get printed a quick summary
   of the particle contents of a file.
@@ -44,7 +44,7 @@ Inspecting MCPL files
   website `here <https://mctools.github.io/mcpl/usage_c/>`__ and `here
   <https://mctools.github.io/mcpl/usage_python/>`__, but note that inside dgcode
   you have to observe a few exceptions/rules with respect to the instructions at
-  the MCPL website: You will have to add ``MCPL`` to your package dependencies
+  the MCPL website. You will have to add ``MCPL`` to your package dependencies
   in your ``pkg.info`` file, and in C/C++ the include statement for ``mcpl.h``
   should be: ``#include "MCPL/mcpl.h"``, while in Python the import statement
   should look like ``import MCPL``.
@@ -127,7 +127,7 @@ Run ``sb_mcplextra_filterfile --help`` for full usage instructions.
 Filter expressions
 ------------------
 
-Several of the commands or Python modules above accepts flexible filter
+Several of the commands or Python modules above accept flexible filter
 expressions. This functionality is implemented via the custom
 :sbpkg:`ExprParser` package inside dgcode, and which variables one can use
 depends on the context.
@@ -157,7 +157,7 @@ depends on the context.
   * Kinetic energy: ``ekin``
 
     * For convenience, the following derived variable is provided for neutrons,
-      to make it easy to filter on the wavelength: neutron_wl. Note that this
+      to make it easy to filter on the wavelength: ``neutron_wl``. Note that this
       variable is only defined for neutrons, so it should be protected in
       expressions with ``is_neutron``, i.e. ``"is_neutron && neutron_wl>1Aa``".
   * Polarisation: ``polx``, ``poly``, ``polz``

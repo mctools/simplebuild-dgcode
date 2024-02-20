@@ -6,15 +6,15 @@ Griff
 
 A general purpose object oriented output file format, Griff (**G**\ eant4 **R**\
 esults **I**\ n **F**\ riendly **F**\ ormat), with meta-data has been
-implemented in our CodingFramework, in order to facilitate a faster turn-around
+implemented in dgcode, in order to facilitate a faster turn-around
 time when setting up and analysing simulations, as well as allowing more complex
 and detailed whole-event analyses. Based on custom serialisation code, it is
 optimised for easy, fast and reliable analyses from either C++ or Python of
 low-multiplicity physics, but supports filtering for scenarios involving higher
 multiplicities or statistics. No dedicated publication for Griff exists at this
 point in time, but it was presented in `doi:10.1088/1742-6596/513/2/022017
-<http://dx.doi.org/10.1088/1742-6596/513/2/022017>`_ which should so far be used
-as the main reference.
+<http://dx.doi.org/10.1088/1742-6596/513/2/022017>`__ which should so far be
+used as the main reference.
 
 Data contents
 -------------
@@ -62,8 +62,8 @@ filtering performed during analysis of Griff files, described in a section
 further down this page):
 
 * **Reduce step data globally:** Due to the contained coordinates, step data
-  requires the most disk space, and the primary global filtering method is
-  therefore to reduce the amount of steps written out. Either by completely
+  requires the most disk space; therefore, the primary global filtering method
+  is to reduce the amount of steps written out. Either by completely
   omitting step data, or by combining all steps on a segment into one
   meta-step. Conveniently controlled by a global flag, there are thus three
   available modes:
@@ -79,13 +79,13 @@ further down this page):
 
 * **Custom output filters:** Alternatively, users can register custom
   step-filters, thereby gaining complete control of the stored output. Step
-  filters implements
+  filters implement
   :sbpkg:`StepFilterBase<G4Interfaces/libinc/StepFilterBase.hh>` and essentially
   filters each G4Step instance during Geant4 simulation. The potential gain in
   file-size from this are huge, but the downside is obviously that the whole
-  event is no longer available (i.e. when analysing one can't be certain that a
+  event is no longer available (i.e. when analysing, one can't be certain that a
   track has all of its segments, steps or daughter tracks available). They can
-  be activated from either python or C++. A few premade examples of such filters
+  be activated from either Python or C++. A few premade examples of such filters
   reside in the :sbpkg:`G4CollectFilters` package, but users are free to
   implement their own:
 
@@ -138,7 +138,7 @@ If for some reason you are *not* using the standard :sbpkg:`G4Launcher`-based
 sim scrips, you can enable Griff output with the following command (after
 including the
 :sbpkg:`G4DataCollect/G4DataCollect.hh<G4DataCollect/libinc/G4DataCollect.hh>`
-header file.  from the :sbpkg:`G4DataCollect` package):
+header file from the :sbpkg:`G4DataCollect` package):
 
 .. code-block:: python
 
@@ -182,9 +182,9 @@ efficient analysis code. The basic idea is that before the loop over events
 begins, one declares one or more iterators for
 :sbpkg:`tracks<GriffAnaUtils/libinc/TrackIterator.hh>`,
 :sbpkg:`segments<GriffAnaUtils/libinc/SegmentIterator.hh>` or
-:sbpkg:`steps<GriffAnaUtils/libinc/StepIterator.hh>` and assigns filters to them
-so that during the event loop they can be used to iterate over just the parts of
-each event which is of interest.
+:sbpkg:`steps<GriffAnaUtils/libinc/StepIterator.hh>`, and assigns filters to
+them so that during the event loop they can be used to iterate over just the
+parts of each event which is of interest.
 
 The :sbpkg:`basic analysis example<GriffAnaEx/app_testcppana_basic/main.cc>`
 from the previous section rewritten to use iterators and selection filters is
@@ -199,8 +199,8 @@ obviously):
 
 * Iterators:
 
-  * :sbpkg:`TrackIterator<GriffAnaUtils/libinc/TrackIterator.hh>`,
-  * :sbpkg:`SegmentIterator<GriffAnaUtils/libinc/SegmentIterator.hh>`,
+  * :sbpkg:`TrackIterator<GriffAnaUtils/libinc/TrackIterator.hh>`
+  * :sbpkg:`SegmentIterator<GriffAnaUtils/libinc/SegmentIterator.hh>`
   * :sbpkg:`StepIterator<GriffAnaUtils/libinc/StepIterator.hh>`
 
 * Track filters:
@@ -230,7 +230,7 @@ Python API
 ^^^^^^^^^^
 
 For convenience, all the Griff analysis classes are available in Python as well
-as C++. This allows one to write analyses in python just as (or rather, more)
+as in C++. This allows one to write analyses in Python just as (or rather, more)
 easily than in C++, as well as doing away with the need of a compilation in the
 *edit* → *compile* → *run* analysis cycle typically carried out.
 
@@ -244,8 +244,8 @@ There is also another advanced example in
 :sbpkg:`GriffAnaTests/scripts/testiter_py`.
 
 There is unfortunately one major downside of performing the analysis in Python
-rather than C++, and that is that it can be a lot slower. Mostly, this does not
-matter, but when one have loops with a high number of events, then any
+rather than in C++, and that is that it can be a lot slower. Mostly, this does
+not matter, but when one have loops with a high number of events, then any
 difference in speed per event will obviously be noticeable. If using the
 "advanced" analysis approach with iterators and selection filters, the act of
 accessing the Griff data itself will be almost as fast in Python as in
@@ -259,12 +259,12 @@ speed is a concern, but for smaller statistics (say, millions of particles
 simulated), Python remains a great option for quickly putting some plots
 together. A typical analysis approach in case of very large statistics would be
 to carry out the initial analysis in C++, writing out histograms
-(cf. :ref:`SimpleHists<sbsimplehists>`), and then performing further analysis
+(cf. :ref:`SimpleHists <sbsimplehists>`), and then performing further analysis
 and plot production in Python, using those histograms (and perhaps also the
 job-level metadata from Griff).
 
 Command-line utilities
-======================
+----------------------
 
 A few command-line utilities are provided:
 
@@ -276,23 +276,23 @@ A few command-line utilities are provided:
   that it can be used to verify the integrity of the data, in case one is
   suspicious that a file might have become corrupted.
 * ``sb_g4osg_viewgriff``: Can be used to visualise the data inside a file with
-  our :ref:`custom viewer<sb3dvis>`.
+  our :ref:`custom viewer <sb3dvis>`.
 * ``sb_griffanautils_extractevts``: Can be used to select and extract a few
   events from a large griff file into a smaller one. Run with ``--help`` for
   instructions.
 
 Implementation
-==============
+--------------
 
 .. image:: images/griff_userview.png
 
 Hidden from the user, the actual on-disk layout of Griff files is illustrated in
-the figure on the right: after a short file header, one event block is appended
+the figure above: after a short file header, one event block is appended
 for each event. Data inside the block is kept in three sections containing
 shared, brief and full data respectively. Data unique to individual tracks,
 segments and steps is kept in the two latter, while as the name implies, common
 data relevant across events is kept in the shared data section. This includes
-any strings and metadata relating to volumes, particles and job configuration,
+any strings and metadata relating to volumes, particles, and job configuration,
 which can then be referenced economically through simple indices in the other
 sections (in current and following events). This means that in order to load the
 ``N``'th event, the shared data sections of events 1 through ``N`` must have
@@ -315,14 +315,13 @@ for a particular segment if needed.
 The actual code implementing Griff is spread over several packages:
 
 :sbpkg:`EvtFile` :
-  Package implementing the container format with file and
-  event header and section blocks as illustrated in the image above/to the
-  right), even skipping, and associated disk I/O and compression.
-
+  Package implementing the container format with file and event header, section
+  blocks (as illustrated in the image above), event skipping, and
+  associated disk I/O and compression.
 
 :sbpkg:`GriffFormat` :
   Package with common definitions used by both reader and
-  writer modules. Also contains command-line scripts for inspecting griff files
+  writer modules. Also contains command-line scripts for inspecting Griff files
   (``sb_griffformat_info`` and ``sb_griffformat_dumpfile``).
 
 :sbpkg:`GriffDataRead` :

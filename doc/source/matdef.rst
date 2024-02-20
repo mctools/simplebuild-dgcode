@@ -12,7 +12,7 @@ as the "NamedMaterial" mechanism, has several advantages:
 #. Defining materials is easier.
 #. Materials can be easily modified from command line or Python code.
 #. It integrates directly with how materials are defined in `NCrystal
-   <https://github.com/mctools/ncrystal/wiki>`_, allowing direct usage of these
+   <https://github.com/mctools/ncrystal/wiki>`__, allowing direct usage of these
    high-fidelity materials, and exposing all features of NCrystal directly.
 
 In the following, we will provide a few :ref:`general remarks <sbmatgeneral>`
@@ -25,18 +25,16 @@ their effect. After that, most users will probably find the :ref:`"cookbook"
 General remarks
 ---------------
 
-The strings defining Most materials in typical dgcode projects will actually be
-the same strings that are used with `NCrystal (aka "NCrystal cfg-strings)
-<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
-so you might wish to consult the NCrystal documentation for those in the
-`NCrystal wiki
-<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_. Most
-of the entries in the :ref:`cookbook <sbmatcookbook>` are indeed such NCrystal
-cfg-strings.
+The strings defining most materials in typical dgcode projects will actually be
+the same strings that are used with NCrystal (aka "NCrystal cfg-strings),
+so you might wish to consult the `NCrystal documentation
+<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`__
+for those. Most of the entries in the :ref:`cookbook <sbmatcookbook>` are
+indeed such NCrystal cfg-strings.
 
 On that note, be aware that outside the :ref:`cookbook <sbmatcookbook>` you
 can look for specific NCrystal materials both online in the `NCrystal data
-library page <https://github.com/mctools/ncrystal/wiki/Data-library>`_, or in
+library page <https://github.com/mctools/ncrystal/wiki/Data-library>`__, or in
 your terminal via the ``nctool`` command by invoking ``nctool
 --browse``. Combined with the unix ``grep`` command, you can use this for a
 quick-and-dirty material search in the terminal. As an example, searching for
@@ -71,33 +69,33 @@ directory). For this reason, most of the examples in the :ref:`cookbook
 <sbmatcookbook>` will use the ``stdlib::`` prefix.
 
 In addition to NCrystal materials, you can also use any material from Geant4's
-own `builtin database of elements and NIST compounds
-<https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`_,
+own `built-in database of elements and NIST compounds
+<https://geant4-userdoc.web.cern.ch/UsersGuides/ForApplicationDeveloper/html/Appendix/materialNames.html>`__,
 and even override their temperature or density, using dedicated keywords
 ``temp_kelvin`` (:math:`\mathrm{K}`), ``density_gcm3``
 (:math:`\mathrm{g}/\mathrm{cm}^3`), ``density_kgm3``
 (:math:`\mathrm{kg}/\mathrm{m}^3`), and ``scale_density``. For instance,
-:math:`` xenon at :math:`200\mathrm{K}` and :math:`5.4\mathrm{kg}/\mathrm{m}^3`
-could be modelled with a string ``G4_Xe;temp_kelvin=200.0;density_gcm3=5.4``
+xenon at :math:`200\mathrm{K}` and :math:`5.4\mathrm{kg}/\mathrm{m}^3`
+could be modelled with a string ``G4_Xe;temp_kelvin=200.0;density_kgm3=5.4``
 (although gases are in general more easily defined with the :ref:`NCrystal
-syntax <sbmatgasmix>`.
+syntax <sbmatgasmix>`).
 
 .. tip::
 
-   Note that while Geant4 NIST materials provide material compositions, they do
-   in general do **not** contain information about the structure of the atoms
-   inside the material. This structure is often very important when modelling
-   scattering interactions with thermal neutrons, so in general only use Geant4
-   NIST materials if your material is dominated by non-scattering effects
-   (e.g. strongly absorbing materials) or you are not modelling thermal
-   neutrons. If in doubt, prefer to use an NCrystal material.
+   Note that while Geant4 NIST materials provide material compositions, they in
+   general do **not** contain information about any structure in the position
+   and movements of atoms inside the material. This structure is often very
+   important when modelling scattering interactions with thermal neutrons, so
+   in general only use Geant4 NIST materials if your material is dominated by
+   non-scattering effects (e.g. strongly absorbing materials) or you are not
+   modelling thermal neutrons. If in doubt, prefer to use an NCrystal material.
 
 Most users should not have a need for anything else than NCrystal cfg-strings
-and Geant4 NIST materals, but a few other mostly deprecated options are
+and Geant4 NIST materials, but a few other mostly deprecated options are
 supported for backwards compatibility. As they are deprecated, they will not be
 mentioned here or used in the :ref:`cookbook <sbmatcookbook>`, with the
 exception of the special ``MAT_B4C`` keyword used for enriched :ref:`boron
-carbide<sbmatb4c>`.
+carbide <sbmatb4c>`.
 
 
 .. _sbmatstringusage:
@@ -114,7 +112,7 @@ Inspect via NCrystal utilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The material definitions which are also `NCrystal cfg-strings
-<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`_,
+<https://github.com/mctools/ncrystal/wiki/Using-NCrystal#uniform-material-configuration-syntax>`__,
 can be investigated with NCrystal tools. The most easily used of these is the
 command line tool ``nctool``, and the usage is very simple. First of all,
 detailed thermal neutron cross sections and sample neutron scattering
