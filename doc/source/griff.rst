@@ -121,10 +121,14 @@ project, which can be done with a call:
   launcher.setOutput("mystuff","REDUCED")
 
 Which changes the default to be to write Griff output in **REDUCED** mode to a
-file named ``mystuff.griff``.
+file named ``mystuff.griff``. In case the simulation is run with multiple
+processes (using the ``-jN`` flag of the :ref:`sim-script <sbsimscript>`), the
+output files will be named ``mystuff.<i>.griff`` where ``<i>`` is a number from
+:math:`0` to :math:`N-1`.
 
-No matter what default is specified in the :ref:`sim-script <sbsimscript>`, it
-is always changeable from the command line using the ``-o`` and ``-m`` flags:
+No matter what default Griff filename and mode is specified in the
+:ref:`sim-script <sbsimscript>`, it is always changeable from the command line
+using the ``-o`` and ``-m`` flags:
 
 .. code-block:: sh
 

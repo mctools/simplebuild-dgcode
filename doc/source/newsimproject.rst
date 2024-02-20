@@ -91,10 +91,10 @@ difference:
 
 :sbpkg:`TriCorder/TriCorder/app_ana/analysis_program.cc<SkeletonSP/app_ana/analysis_program.cc>`:
    An analysis program which can be invoked via the command ``sb_tricorder_ana``
-   and which is used to run on the :ref:`Griff <sbgriff>` files and which will
-   result in a :ref:`SimpleHists <sbsimplehists>` file being created with
-   analysis histograms. It can be opened for additional analysis, or simply
-   browsed with the ``sb_simplehists_browse`` command.
+   and which is used to analyse the :ref:`Griff <sbgriff>` files. This analysis
+   results in the production of a :ref:`SimpleHists <sbsimplehists>` file
+   containing analysis histograms, which can then be opened for additional
+   analysis, or simply browsed with the ``sb_simplehists_browse`` command.
 
 :sbpkg:`TriCorder/TriCorder/pkg.info<SkeletonSP/pkg.info>` and :sbpkg:`TriCorder/G4GeoTriCorder/pkg.info<G4GeoSkeletonSP/pkg.info>` :
    The ``pkg.info`` files should contain a bit of general information about what

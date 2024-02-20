@@ -8,12 +8,12 @@ of `simplebuild <https://mctools.github.io/simplebuild>`__ packages
 <sbhistory>` goes back to 2012, but in 2023/2024 it was cleaned up and
 resurrected in its present form.
 
-Most importantly, dgcode includes functionality for easy setting up and launching
-of Geant4 simulation jobs based on configurable :ref:`geometry <sbgeo>` and
-:ref:`generator <sbparticlegen>` modules, and contains various functionality for
-:ref:`material definitions <sbmatdef>`, :ref:`physics lists <sbphyslist>`
-choice, :ref:`visualisation <sb3dvis>`, multiprocessing, random number handling,
-output persistification and analysis, etc.
+Most importantly, dgcode includes functionality for easy setting up and
+launching of Geant4 simulation jobs based on configurable :ref:`geometry
+<sbgeo>` and :ref:`particle generator <sbparticlegen>` modules, and contains
+various functionality for :ref:`material definitions <sbmatdef>`, :ref:`physics
+lists <sbphyslist>` choice, :ref:`visualisation <sb3dvis>`, multiprocessing,
+random number handling, output persistification and analysis, etc.
 
 Before starting to use dgcode, you should first of all make sure you have
 :ref:`installed <sbinstall>` it, and secondly you should spend some time with
@@ -36,9 +36,9 @@ Features
     strings (a :ref:`cookbook <sbmatcookbook>` of such strings makes material
     setup particularly easy).
 
-* Generators are likewise written as separate modules with tunable parameters,
-  but may also be written in C++. It is also often the case that a pre-existing
-  generator can be used.
+* Particle generators are likewise written as separate modules with tunable
+  parameters, but may also be written in C++. It is also often the case that a
+  pre-existing generator can be used.
 * Overall simulation control is configured in a small Python script known as a
   :ref:`sim-script <sbsimscript>`, in which one will:
 

@@ -124,14 +124,13 @@ various PyLab plotting routines:
 
 .. code-block:: python
 
-  import pylab as pl
   import SimpleHists as sh
   hc = sh.HistCollection('results.shist')
   h_edep = hc.hist('edep')
   #One can launch the quick interactive view for this histogram by:
   h_edep.plot()
   #But for advanced pylab analysis and plots you can ask for the contents
-  #and bin edges in the same format as pl.histogram(..) would return:
+  #and bin edges in the same format as numpy.histogram(..) would return:
   contents, edges = h_edep.histogram()
   #This can be used for custom analysis (using scipy fitting/interpolation
   #tools, making plots with analytical results on top, etc., etc.)

@@ -102,7 +102,7 @@ use it.
 Modify MCPL files
 -----------------
 
-The ``sb_mcplextra_filterview`` command can be used to produce a new MCPL file
+The ``sb_mcplextra_filterfile`` command can be used to produce a new MCPL file
 from an existing one, containing only a subset of the original particles. The following
 example shows how to extract just neutrons with long wavelength (see :ref:`below
 <sbmcplfilterexpressions>` for more info on the filter expressions used here)::
@@ -119,7 +119,9 @@ representative file which can be more easily shared for debugging purposes)::
 
   sb_mcplextra_filterfile infile.mcpl outfile.mcpl -l1000
 
-Run ``sb_mcplextra_filterfile --help`` for full usage instructions.
+Run ``sb_mcplextra_filterfile --help`` for full usage instructions. Note that
+there also exists a ``sb_mcplextra_filterview`` command, which merely prints the
+selected particles, rather than producing a new file.
 
 
 .. _sbmcplfilterexpressions:
