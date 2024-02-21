@@ -1,0 +1,75 @@
+name: test-essdgprivproj
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '30 8 * * 2'  # 8:30 every Tuesday
+
+  workflow_dispatch:
+    inputs:
+      manual-debugging:
+        type: boolean
+        description: Launch manual debugging tmate session on failure
+        default: false
+
+jobs:
+
+  build:
+    strategy:
+      #fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, CC: gcc,      CXX: g++,        python: '3.11' }
+          - { os: macos-latest,  CC: clang,    CXX: clang++,    python: "3.10" }
+    name: ${{ matrix.os }}.${{ matrix.CC }}.python-${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      CC: ${{ matrix.CC }}
+      CXX: ${{ matrix.CXX }}
+      CONDA_SOLVER: libmamba
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./src_co
+
+      - name: Checkout project repo
+        env: # Or as an environment variable
+          THEACCESSTOKEN: ${{ secrets.ACCESS_TOKEN_DGCODE_PRIVATE_PROJECTS }}
+        run: |
+          set -eux
+          git clone --depth=1 'https://usernamedoesnotmatter:'"${THEACCESSTOKEN}"'@git.esss.dk/dgcode/dgcode_private_projects.git' ./src_testproject
+
+      - name: Setup conda environment
+        uses: ./src_co/.github/actions/setup
+        with:
+          PYTHON_VERSION: ${{ matrix.python }}
+          USE_MAMBA: true
+          CACHED_NOARCH_DEF_PY_FILE: ./src_co/.github/resources/cached_noarch_definitions.py
+          CONDA_ENV_FILE : ./src_co/.github/resources/conda-setup.yml
+
+      - name: Install
+        run: |
+          set -eux
+          #For dev work: python3 -m pip install git+https://github.com/mctools/simplebuild@whateverbranchname
+          #For dev work: python3 -m pip install --no-deps ./src_co
+          python3 -m pip install --no-deps ./src_co
+          echo "sb --version: "$(sb --version)
+
+      - name: Build and test release mode
+        id: build-and-test-release-mode
+        run: |
+          set -eux
+          geant4-config  --version
+          cd src_testproject
+          sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended,G4GeoBifrost
+
+      - name: Setup tmate session for manual debugging
+        uses: mxschmitt/action-tmate@v3
+        if: always() && inputs.manual-debugging == true && (steps.build-and-test-core-only.outcome != 'success' || steps.build-and-test-release-mode.outcome != 'success' || steps.build-and-test-debug-mode.outcome != 'success')
+        with:
+          limit-access-to-actor: true
