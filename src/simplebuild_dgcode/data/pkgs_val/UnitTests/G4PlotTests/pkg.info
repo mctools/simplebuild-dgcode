@@ -1,0 +1,7 @@
+package(USEPKG G4Tests USEEXT matplotlib)
+
+######################################################################
+
+Same as G4Tests, but with packages needing matplotlib.
+
+Primary author: thomas.kittelmann@ess.eu
