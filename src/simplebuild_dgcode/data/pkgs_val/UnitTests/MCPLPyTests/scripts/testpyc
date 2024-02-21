@@ -33,8 +33,6 @@ except ImportError as e:
 shutil.rmtree('./fakepypath')
 sys.path = oldsyspath
 
-import MCPL as mcpl
-
 from Utils.printnumpy import format_numpy_1darray_asfloat as npfmt
 
 #import Core.System as Sys

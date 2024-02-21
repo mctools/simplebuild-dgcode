@@ -1,10 +1,7 @@
 import XSectParse.ParseXSectFile
 from Utils.NeutronMath import neutron_eV_to_angstrom
-import PyAna
-np = PyAna.np
-numpy = PyAna.numpy
-Units = PyAna.Units
-plt = PyAna.plt
+import numpy as np
+import Units
 
 def _find_nearest(array,value):
     idx = (np.abs(array-value)).argmin()
@@ -32,6 +29,7 @@ def _extract_vals(npa,wl,mfp):
         return energy_ev,yvals
 
 def _plot_begin():
+    from PyAna import plt
     #from Core.System import which
     #if which('latex'):
     #    plt.enable_tex_fonts()
@@ -39,6 +37,7 @@ def _plot_begin():
     plt.clf()
 
 def _plot_end(show,save_fig,wl,mfp,logx,logy,extra=None,mfpunit='cm',softbrackets=False):
+    from PyAna import plt
     if extra:
         extra()
     xl = 'Neutron wavelength [Å]' if wl else 'Energy [eV]'
@@ -89,6 +88,8 @@ def plot_file( filename,
     'show' controls display of interactive window (default is to show when no
     saving a figure)"""
 
+    from PyAna import plt
+
     _plot_begin()
     showMFP=mfp
     colors_nored = ['c', 'm', 'y','k','g','b']
@@ -114,7 +115,7 @@ def plot_file( filename,
         procnames+=['Total']
 
     for iprocname,procname in enumerate(procnames):
-        npa=numpy.asarray(procs[procname])
+        npa=np.asarray(procs[procname])
         if not len(npa):#could be an empty physics list
             continue
         xvals,yvals = _extract_vals(npa,versus_wavelength,showMFP)
@@ -145,6 +146,7 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
     be used to customise the label generator. Set extra to a function object to
     invoke to plot custom curves."""
 
+    from PyAna import plt
     _plot_begin()
     showMFP=mfp
 
@@ -158,7 +160,7 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
     pp=[XSectParse.ParseXSectFile.parse(filename) for filename in filenames]
 
     for ifile,p in enumerate(pp):
-        npa=numpy.asarray(p['procs'][xsectname])
+        npa=np.asarray(p['procs'][xsectname])
         if not len(npa):#could be an empty physics list
             continue
         xvals,yvals = _extract_vals(npa,versus_wavelength,showMFP)
