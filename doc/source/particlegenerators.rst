@@ -275,7 +275,7 @@ scripts. You can find several examples of that in the
 Histogram-based generators
 --------------------------
 
-If you have a 1-dimensional `SimpleHists <SimpleHists.html>`__ histogram with a
+If you have a 1-dimensional :ref:`SimpleHists <sbsimplehists>` histogram with a
 distribution of some quantity, you can sample it during particle generation and
 use the sampled value as desired: perhaps for the energy spectrum, or the
 initial position of your generated particles if you have a histogram with a

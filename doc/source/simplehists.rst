@@ -21,7 +21,7 @@ normalisations; collection of one-pass statistics such as unbinned mean and
 variance; association of metadata (title, axis labels); and utilities for
 on-disk storage and quick plotting.
 
-Histogram classes are for instance found in the `ROOT <http://root.cern/>`__
+Histogram classes are for instance found in the `ROOT <https://root.cern/>`__
 framework which is commonly used in high energy physics, but for Python-centric
 analyses based on e.g. "PyLab" (taken here to mean Numpy+SciPy+Matplotlib),
 having a dependency on ROOT can be a bit honerous. However, one runs into the
@@ -67,7 +67,7 @@ list of features include:
     * ``sb_simplehists_extract``: Extract a subset of histograms from a file into
       a smaller one.
     * ``sb_simplehists2root_convertfile``: For compatibility, convert histograms
-      in a ``.shist`` file to `ROOT <http://root.cern.ch/>`__ histograms and store
+      in a ``.shist`` file to `ROOT <https://root.cern.ch/>`__ histograms and store
       them in a ``.root`` file. This requires ROOT to have been installed in the
       environment, which `might not be simple
       <https://github.com/conda-forge/root-feedstock/issues/214>`__.

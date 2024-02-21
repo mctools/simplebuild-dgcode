@@ -16,16 +16,7 @@ jobs:
     - name: Checkout main repository
       uses: actions/checkout@v4
 
-#Old version from when we didn't need geant4 for the docs:
-#    - name: Setup conda environment
-#      uses: conda-incubator/setup-miniconda@v2
-#      with:
-#        activate-environment: publish-doc-condaenv
-#        environment-file: .github/resources/publish-doc-condaenv.yml
-#        #use-mamba: no
-#
-
-     #Since we need geant4 for the docs, we use the smart method from
+     #Since we need geant4 for the docs, we use the geant-data cache method from
      #condatest.yml, and then update afterwards:
     - name: Setup conda environment
       uses: ./.github/actions/setup
@@ -52,4 +43,8 @@ jobs:
     - name: Build documentation
       #NB: -W to turn warnings into errors:
       run: make html SPHINXOPTS="-W"
+      working-directory: ./doc/
+
+    - name: Check HTML links
+      run: make linkcheck
       working-directory: ./doc/

@@ -24,9 +24,7 @@ concurrency:
 
 jobs:
   build-and-deploy:
-    # environment: #TODO
-    #   name: github-pages
-    #   url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -42,16 +40,7 @@ jobs:
       with:
         fetch-depth: 0
 
-#Old version from when we didn't need geant4 for the docs:
-#    - name: Setup conda environment
-#      uses: conda-incubator/setup-miniconda@v2
-#      with:
-#        activate-environment: publish-doc-condaenv
-#        environment-file: .github/resources/publish-doc-condaenv.yml
-#        #use-mamba: no
-#
-
-     #Since we need geant4 for the docs, we use the smart method from
+     #Since we need geant4 for the docs, we use the geant-data cache method from
      #condatest.yml, and then update afterwards:
     - name: Setup conda environment
       uses: ./.github/actions/setup
@@ -72,14 +61,9 @@ jobs:
     - name: Build documentation
       #NB: -W to turn warnings into errors:
       #NB: SIMPLEBUILD_GITVERSION_USE_LATEST_VTAG=1 to show vx.y.z on website,
-      #even if making additional commits (e.g. with updates for workflows).
+      #    even if making additional commits (e.g. with updates for workflows).
       run: SIMPLEBUILD_GITVERSION_USE_LATEST_VTAG=1 make html SPHINXOPTS="-W"
       working-directory: ./doc/
-
-    # - name: Debug
-    #   run: |
-    #     conda list
-    #     ls test_sphinx_doc/docs/build/
 
     # - name: Setup Pages
     #   uses: actions/configure-pages@v3
@@ -88,6 +72,8 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         path: './doc/build/html'
+
+    # NB: for robustness we do not run "make linkcheck" here, only in test-doc.yml.
 
     - name: Deploy to GitHub Pages
       id: deployment

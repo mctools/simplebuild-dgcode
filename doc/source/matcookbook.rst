@@ -498,7 +498,7 @@ secondary direction to ``dir2``, and then also set ``dirtol=180deg``. Setting
 specified directions are not self-consistent, but instead silently "snap" the
 provided ``dir2`` direction into a self-consistent position (the syntax for this
 might eventually be simplified, see `ncrystal#155
-<https://github.com/mctools/ncrystal/issues/155>`__).
+<https://github.com/mctools/ncrystal/discussions/155>`__).
 
 Here are examples for how a Germanium-511 monochromator or analyser can be
 configured:
