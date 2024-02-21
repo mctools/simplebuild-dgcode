@@ -18,7 +18,9 @@ import os
 import glob
 import sys
 import shutil
+import contextlib
 from io import open#py2's open is now like py3's.
+from Utils.printnumpy import format_numpy_1darray_asfloat as npfmt
 
 os.mkdir('./fakepypath')
 with open('./fakepypath/numpy.py','tw') as f:
@@ -30,10 +32,12 @@ try:
     import MCPL as mcpl
 except ImportError as e:
     print("Caught expected error: %s"%str(e))
+    mcpl = None
 shutil.rmtree('./fakepypath')
 sys.path = oldsyspath
 
-from Utils.printnumpy import format_numpy_1darray_asfloat as npfmt
+if mcpl is None:
+    import MCPL as mcpl #noqa E402
 
 #import Core.System as Sys
 
@@ -95,7 +99,7 @@ testtool([quote(os.path.join(datadir,'MCPLTests/reffile_truncated.mcpl'))])
 testtool([quote(os.path.join(datadir,'MCPLTests/reffile_truncated.mcpl.gz'))])
 testtool([quote(os.path.join(datadir,'MCPLTests/reffile_encodings.mcpl.gz')),'-basciidata'])
 testtool([quote(os.path.join(datadir,'MCPLTests/reffile_encodings.mcpl.gz')),'-butf8data'])
-import contextlib
+
 @contextlib.contextmanager
 def stdout_buffer_write_hexvalues():
     #Hack needed to prevent the nasty stuff inside the "binarydata" blob cause
@@ -139,7 +143,7 @@ loadbad(None)
 for bf in badfiles:
     loadbad(bf)
 
-from numpy import asarray as np_asarray
+from numpy import asarray as np_asarray # noqa E402
 
 for fn in (file1,file2,file3):
     print ("---> testing array access")
@@ -170,25 +174,40 @@ with mcpl.MCPLFile(file1,blocklength=3) as f:
         print('indices in block starting at %i a: %s'%(pb.file_offset,','.join(   str(pb[i].file_index) for i in range(len(pb)))))
         print('indices in block starting at %i b: %s'%(pb.file_offset,','.join(   str(p.file_index) for p in pb.particles)))
     f.rewind()
-    p=f.read();assert p.file_index==0
-    f.skip_forward(1);p=f.read(); assert p.file_index==2
-    f.skip_forward(1);p=f.read(); assert p.file_index==4
-    f.rewind();f.skip_forward(4);p=f.read(); assert p.file_index==4
+    p=f.read()
+    assert p.file_index==0
+    f.skip_forward(1)
+    p=f.read()
+    assert p.file_index==2
+    f.skip_forward(1)
+    p=f.read()
+    assert p.file_index==4
+    f.rewind()
+    f.skip_forward(4)
+    p=f.read()
+    assert p.file_index==4
     try:
-        f.skip_forward(-1);p=f.read()
+        f.skip_forward(-1)
+        p=f.read()
     except mcpl.MCPLError as e:
         print(str(e))
-    f.skip_forward(999999);p=f.read(); assert p is None
+    f.skip_forward(999999)
+    p=f.read()
+    assert p is None
 
 def tostr(a):
     """convert bytes/unicode to str in both py2 or py3 (assuming ascii chars
     only). Other objects are simply converted via str(..)."""
     #the amount of bullshit we have to deal with in order to support both py2
     #and py3 is rather wild...
-    if isinstance(a,str): return a#bytes in py2, unicode in py3
-    elif isinstance(a,bytes): return a.decode('ascii')#got bytes in py3
-    elif str==bytes and isinstance(a,unicode): return a.encode('ascii')#got unicode in py2 # noqa f821
-    else: return str(a)#neither str/bytes/unicode
+    if isinstance(a,str):
+        return a#bytes in py2, unicode in py3
+    elif isinstance(a,bytes):
+        return a.decode('ascii')#got bytes in py3
+    elif str==bytes and isinstance(a,unicode): #noqa F821 ("unicode" not in py3)
+        return a.encode('ascii')#got unicode in py2 # noqa f821
+    else:
+        return str(a)#neither str/bytes/unicode
 
 def test_stats(*args,**kwargs):
     def fmtkw(k,v):
