@@ -406,6 +406,10 @@ def _snip_sbverify():
                       ' NOT SHOWN HERE >>\n<<\n' )
     fileout.write_text(edit)
 
+#Trigger matplotlib font cache early, so we don't have that confusing output in
+#the examples on the website:
+import matplotlib.pyplot # noqa E402 F401
+
 run_tricorder_cmds()
 generate_sbverify()
 _snip_sbverify()

@@ -62,14 +62,6 @@ jobs:
           python3 -m pip install --no-deps ./src_co
           echo "sb --version: "$(sb --version)
 
-      - name: Prepare matplotlib
-        run: |
-          set -eux
-          python3 -c 'import matplotlib'
-          #Trigger fontlib cache (so we don't get output in the middle of our
-          #unit tests later):
-          python3 -c 'import matplotlib.pyplot'
-
       - name: Build and test Core only
         id: build-and-test-core-only
         run: |

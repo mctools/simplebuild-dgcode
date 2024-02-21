@@ -61,11 +61,6 @@ jobs:
           #For dev work: python3 -m pip install --no-deps ./src_co
           python3 -m pip install --no-deps ./src_co
           echo "sb --version: "$(sb --version)
-          python3 -c 'import matplotlib'
-          python3 -c 'import matplotlib.pyplot'
-          #NB: import matplotlib.pyplot is also to ensure the font cache is
-          #triggered, so we don't get output in the middle of our unit tests
-          #later..
 
       - name: Build and test release mode
         id: build-and-test-release-mode

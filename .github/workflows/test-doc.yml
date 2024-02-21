@@ -32,13 +32,7 @@ jobs:
       run: conda env update --name simplebuild_dgcode --file ./.github/resources/conda-setup_extra_for_docs.yml
 
     - name: Install self
-      run: |
-           python3 -mpip install .
-           python3 -c 'import matplotlib'
-           python3 -c 'import matplotlib.pyplot'
-           #NB: import matplotlib.pyplot is also to ensure the font cache is
-           #triggered, so we don't get output in the middle of our unit tests
-           #later..
+      run: python3 -mpip install .
 
     - name: Build documentation
       #NB: -W to turn warnings into errors:
