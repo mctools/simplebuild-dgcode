@@ -5,17 +5,15 @@ channels:
 dependencies:
   - compilers
   - bash
-  - simple-build-system
+  - simple-build-dgcode >= 0.0.15
   - ncrystal
   - mcpl
   - matplotlib
   - zlib
-  - geant4
+  - geant4 >= 11.1.3
   - expat
   - openscenegraph
   - scipy
   - hdf5
   - pysimplegui
   - pip
-  - pip:
-    - simple-build-dgcode

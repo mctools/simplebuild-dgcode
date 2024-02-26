@@ -13,18 +13,21 @@ are familiar with such command line interfaces.
 Install via conda
 =================
 
-..
-  Fixme: add conda badges
+*Current status:* |sbcondastatus|_ |sbcondaplatforms|_
 
-The recommended and easiest way to install dgcode is by creating an
-appropriate conda environment based on the `conda-forge
-<https://conda-forge.org/>`__ channel, in which all the dependencies are
-included. The package for dgcode itself must still be installed via the PyPI
-(pip) package for the time being, although that will change at some point in the
-future (cf. `#9
-<https://github.com/mctools/simplebuild-dgcode/issues/9>`__). The recommended
-conda environment ``.yml`` file to use to create the environment is the
-following:
+.. |sbcondastatus| image:: https://img.shields.io/conda/vn/conda-forge/simple-build-dgcode.svg
+.. _sbcondastatus: https://anaconda.org/conda-forge/simple-build-dgcode
+
+.. |sbcondaplatforms| image:: https://img.shields.io/conda/pn/conda-forge/simple-build-dgcode.svg
+.. _sbcondaplatforms: https://anaconda.org/conda-forge/simple-build-dgcode
+
+The recommended and easiest way to install dgcode is by creating an appropriate
+conda environment based on the `conda-forge <https://conda-forge.org/>`__
+channel, in which all the dependencies are included. Which exact dependencies to
+include, depends on the use-case but must always include at least the
+``simple-build-dgcode`` and ``compilers`` packages. For most users, the
+recommended conda environment ``.yml`` file to use to create the environment is
+the following:
 
 .. include:: ../../resources/conda_dgcode.yml
   :literal:
