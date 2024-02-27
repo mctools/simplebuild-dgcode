@@ -1,0 +1,53 @@
+name: cppcheck
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '30 22 * * 2'  # 22:30 every Wednesday
+
+jobs:
+
+  build:
+    name: cppcheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      CONDA_SOLVER: libmamba
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./src_co
+
+      - name: Setup conda environment
+        uses: ./src_co/.github/actions/setup
+        with:
+          PYTHON_VERSION: ${{ matrix.python }}
+          USE_MAMBA: true
+          CACHED_NOARCH_DEF_PY_FILE: ./src_co/.github/resources/cached_noarch_definitions.py
+          CONDA_ENV_FILE : ./src_co/.github/resources/conda-setup.yml
+
+      - name: Install cppcheck
+        run: conda install --yes cppcheck
+
+      - name: Install
+        run: |
+          set -eux
+          python3 -m pip install --no-deps ./src_co
+          echo "sb --version: "$(sb --version)
+
+      - name: Build and check
+        run: |
+          set -eux
+          test -f $CONDA_PREFIX/share/Geant4/data/NDL*/Elastic/CrossSection/13_27_Aluminum.z
+          geant4-config  --version
+          mkdir test_rel && cd test_rel
+          sb --init dgcode_val
+          SIMPLEBUILD_EXPORT_JSONCMDS=1 sb --requirepkg=DGCodeRecommended
+          export THECMDFILE="$PWD"/simplebuild_cache/bld/compile_commands.json
+          test -f "$THECMDFILE"
+          mkdir ./cppcheck_cache
+          cppcheck --inline-suppr --project="$THECMDFILE" --check-level=normal -j4 --cppcheck-build-dir="$PWD"/cppcheck_cache -q --suppress='*:'"$CONDA_PREFIX"'/include/*' --error-exitcode=1
