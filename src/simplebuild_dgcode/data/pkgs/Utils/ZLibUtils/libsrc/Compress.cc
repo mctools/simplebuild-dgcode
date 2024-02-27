@@ -36,19 +36,60 @@ void ZLibUtils::compressToBuffer(const char* indata, unsigned indataLength, std:
   throw std::runtime_error("ZLibUtils::compressToBuffer failed");
 }
 
-void ZLibUtils::decompressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength)
+// void ZLibUtils::decompressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength)
+// {
+//   output.clear();
+//   assert(indataLength>=sizeof(std::uint32_t));
+//   std::uint32_t outdataLength_orig = *(reinterpret_cast<const std::uint32_t*>(indata));
+//   outdataLength = outdataLength_orig;
+//   if (outdataLength_orig==0&&indataLength==sizeof(std::uint32_t))
+//     {
+//       return;//original buffer was empty
+//     }
+//   output.clear();
+//   output.reserve(outdataLength);
+//   unsigned long outlength = outdataLength;
+//   //reinterpret_cast<unsigned char*>(output.data())
+
+//   int res = uncompress(reinterpret_cast<unsigned char*>(&(output[0])),&outlength,
+//                        reinterpret_cast<const unsigned char*>(indata)+sizeof(std::uint32_t),indataLength);
+//   if (res==Z_OK) {
+//     assert(outlength<UINT_MAX-sizeof(std::uint32_t));
+//     outdataLength = static_cast<unsigned>(outlength);
+//     if (outdataLength!=outdataLength_orig) {
+//       printf("ZLibUtils::decompressToBuffer ERROR: Weird error during decompression. Exiting.\n");
+//       exit(1);
+//     }
+//     return;
+//   }
+//   //something went wrong:
+//   if (res==Z_MEM_ERROR) {
+//     printf("ZLibUtils::decompressToBuffer ERROR: Z_MEM_ERROR during decompression. Exiting.\n");
+//   } else if (res==Z_BUF_ERROR) {
+//     printf("ZLibUtils::decompressToBuffer ERROR: Z_BUF_ERROR during decompression. Exiting.\n");
+//   } else if (res==Z_BUF_ERROR) {
+//     printf("ZLibUtils::decompressToBuffer ERROR: Z_DATA_ERROR during decompression. Data might be incomplete or corrupted. Exiting.\n");
+//   } else {
+//     printf("ZLibUtils::decompressToBuffer ERROR: Unknown problem during decompression. Exiting.\n");
+//   }
+//   throw std::runtime_error("ZLibUtils::decompressToBuffer failed");
+// }
+
+void ZLibUtils::decompressToBufferNew(const char* indata, unsigned indataLength, std::vector<char>& output)
 {
   output.clear();
   assert(indataLength>=sizeof(std::uint32_t));
   std::uint32_t outdataLength_orig = *(reinterpret_cast<const std::uint32_t*>(indata));
-  outdataLength = outdataLength_orig;
-  if (outdataLength_orig==0&&indataLength==sizeof(std::uint32_t))
-    {
-      return;//original buffer was empty
-    }
-  output.clear();
-  output.reserve(outdataLength);
+  unsigned long outdataLength = static_cast<unsigned long>(outdataLength_orig);
+  if ( outdataLength_orig == 0 && indataLength == sizeof(std::uint32_t) ) {
+    return;//original buffer was empty
+  }
+  output.resize(outdataLength);//needless initialisation here
+  if ( output.empty() )
+    return;//should never happen, but just to be sure.
   unsigned long outlength = outdataLength;
+  //reinterpret_cast<unsigned char*>(output.data())
+
   int res = uncompress(reinterpret_cast<unsigned char*>(&(output[0])),&outlength,
                        reinterpret_cast<const unsigned char*>(indata)+sizeof(std::uint32_t),indataLength);
   if (res==Z_OK) {

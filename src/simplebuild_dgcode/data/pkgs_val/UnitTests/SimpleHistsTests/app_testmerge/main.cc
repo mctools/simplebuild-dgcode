@@ -7,27 +7,28 @@
 
 namespace sh = SimpleHists;
 
-class SimpleRandGen {
-  // very simple multiply-with-carry rand gen (http://en.wikipedia.org/wiki/Random_number_generation)
-public:
-  SimpleRandGen()
-    : m_w(117),/* must not be zero, nor 0x464fffff */
-      m_z(11713)/* must not be zero, nor 0x9068ffff */
-  {
-  }
-  ~SimpleRandGen(){}
+namespace {
+  class SimpleRandGen {
+    // very simple multiply-with-carry rand gen (http://en.wikipedia.org/wiki/Random_number_generation)
+  public:
+    SimpleRandGen()
+      : m_w(117),/* must not be zero, nor 0x464fffff */
+        m_z(11713)/* must not be zero, nor 0x9068ffff */
+    {
+    }
+    ~SimpleRandGen(){}
 
-  double shoot()
-  {
-    m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-    m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-    return double((m_z << 16) + m_w)/double(UINT32_MAX);  /* 32-bit result */
-  }
-private:
-  std::uint32_t m_w;
-  std::uint32_t m_z;
-};
-
+    double shoot()
+    {
+      m_w = 18000 * (m_w & 65535) + (m_w >> 16);
+      m_z = 36969 * (m_z & 65535) + (m_z >> 16);
+      return double((m_z << 16) + m_w)/double(UINT32_MAX);  /* 32-bit result */
+    }
+  private:
+    std::uint32_t m_w;
+    std::uint32_t m_z;
+  };
+}
 
 int main(int,char**) {
 

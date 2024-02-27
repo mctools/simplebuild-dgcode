@@ -43,8 +43,8 @@ int main(int,char**) {
 
   //Unzip:
   std::vector<char> data_unzipped;
-  unsigned unzippeddataLength;
-  ZLibUtils::decompressToBuffer(&(data_zipped[0]), zippeddataLength, data_unzipped,unzippeddataLength);
+  ZLibUtils::decompressToBufferNew(&(data_zipped[0]), zippeddataLength, data_unzipped);
+  unsigned unzippeddataLength = static_cast<unsigned>(data_unzipped.size());
   if (data_orig.size()+1!=unzippeddataLength) {
     printf("ERROR: uncompressed data has different size than original data\n");
     return 1;
@@ -63,8 +63,8 @@ int main(int,char**) {
   }
 
   const std::uint32_t nullbuffer = 0;
-  ZLibUtils::decompressToBuffer(reinterpret_cast<const char*>(&nullbuffer),sizeof(nullbuffer),data_unzipped,unzippeddataLength);
-  if (unzippeddataLength!=0) {
+  ZLibUtils::decompressToBufferNew(reinterpret_cast<const char*>(&nullbuffer),sizeof(nullbuffer),data_unzipped);
+  if (data_unzipped.size()!=0) {
     printf("ERROR: uncompressing null buffer yields unexpected result\n");
     return 1;
   }

@@ -4,6 +4,7 @@
 #include "EvtFileDefs.hh"
 #include "Utils/ProgressiveHash.hh"
 #include "ZLibUtils/Compress.hh"
+#include <limits>
 #include <cassert>
 
 namespace EvtFile {
@@ -349,7 +350,11 @@ namespace EvtFile {
       if (m_fulldata_compressed) {
         //uncompress:
         assert(n>sizeof(std::uint32_t));
-        ZLibUtils::decompressToBuffer(&(m_section_fulldata_compressed[0]), n, m_section_fulldata,m_fulldata_size);
+        //ZLibUtils::decompressToBuffer(&(m_section_fulldata_compressed[0]), n, m_section_fulldata,m_fulldata_size);
+        ZLibUtils::decompressToBufferNew(&(m_section_fulldata_compressed[0]), n, m_section_fulldata);
+        if ( m_section_fulldata.size() >= std::numeric_limits<unsigned>::max() )
+          throw std::runtime_error("full data section size exceeds unsigned integer limits");
+        m_fulldata_size = static_cast<unsigned>(m_section_fulldata.size());
       }
     }
     m_fulldata_isloaded=true;

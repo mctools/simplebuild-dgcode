@@ -13,7 +13,9 @@ namespace ZLibUtils {
   //Note from TK ~10 years later: This is not exactly a great way to do it - and perhaps even UB.
 
   void compressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength);
-  void decompressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength);
+  //void decompressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength);
+
+  void decompressToBufferNew(const char* indata, unsigned indataLength, std::vector<char>& output);
 }
 
 #endif

@@ -22,7 +22,7 @@ void EvtFile::DBStringsReader::load(const char*& data)
   unsigned oldnstr = m_stringdb.size();
   m_stringdb.resize(oldnstr+nstrings);
   str_type* it = &(m_stringdb[oldnstr]);
-  str_type* itE = &(m_stringdb[m_stringdb.size()]);
+  str_type* itE = std::next(it,nstrings);
 
   while(it!=itE)
     ByteStream::read(data,*(it++));

@@ -5,93 +5,95 @@
 #include <cstring>
 #include <functional>
 
-class SimpleRandGen {
-  // very simple multiply-with-carry rand gen
-  // (http://en.wikipedia.org/wiki/Random_number_generation)
-public:
-  SimpleRandGen()
-    : m_w(117),/* must not be zero, nor 0x464fffff */
-      m_z(11713)/* must not be zero, nor 0x9068ffff */
-  {
-  }
-  ~SimpleRandGen(){}
-  std::uint32_t shoot()
-  {
-    m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-    m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-    return (m_z << 16) + m_w;  /* 32-bit result */
-  }
-private:
-  std::uint32_t m_w;
-  std::uint32_t m_z;
-};
-
-class MemoryBuffer {
-public:
-
-  MemoryBuffer() : m_idx(0) {}
-  ~MemoryBuffer() {}
-
-  void clear() { m_idx = 0; m_buffer.clear(); }
-
-  void write(unsigned char* buf, unsigned buflen)
-  {
-    for (unsigned i = 0; i < buflen; ++i)
-      m_buffer.push_back(buf[i]);
-  }
-
-  void read_rewind() { m_idx = 0; }
-  unsigned read(unsigned char* buf, unsigned buflen)
-  {
-    unsigned i = 0;
-    while(i<buflen&&m_idx<m_buffer.size())
-      buf[i++] = m_buffer[m_idx++];
-    return i;
-  }
-
-  std::function<void(unsigned char*, unsigned)> write_function()
-  { return std::bind(&MemoryBuffer::write,this,std::placeholders::_1,std::placeholders::_2); }
-
-  std::function<unsigned(unsigned char*, unsigned)> read_function()
-  { read_rewind(); return std::bind(&MemoryBuffer::read,this,std::placeholders::_1,std::placeholders::_2); }
-
-  void print()
-  {
-    printf("Buflen %lu: ", (unsigned long)m_buffer.size());
-    for (size_t i = 0; i < m_buffer.size(); ++i) {
-      printf("%02x ", (unsigned char)m_buffer[i]);
-      if (i%4==3)
-        printf(": ");
+namespace {
+  class SimpleRandGen {
+    // very simple multiply-with-carry rand gen
+    // (http://en.wikipedia.org/wiki/Random_number_generation)
+  public:
+    SimpleRandGen()
+      : m_w(117),/* must not be zero, nor 0x464fffff */
+        m_z(11713)/* must not be zero, nor 0x9068ffff */
+    {
     }
-    printf("\n");
-  }
+    ~SimpleRandGen(){}
+    std::uint32_t shoot()
+    {
+      m_w = 18000 * (m_w & 65535) + (m_w >> 16);
+      m_z = 36969 * (m_z & 65535) + (m_z >> 16);
+      return (m_z << 16) + m_w;  /* 32-bit result */
+    }
+  private:
+    std::uint32_t m_w;
+    std::uint32_t m_z;
+  };
 
-  bool operator==( const MemoryBuffer & o ) const
-  { return m_buffer==o.m_buffer; }
+  class MemoryBuffer {
+  public:
 
-private:
-  MemoryBuffer( const MemoryBuffer & );
-  MemoryBuffer & operator= ( const MemoryBuffer & );
-  std::vector<char> m_buffer;
-  size_t m_idx;
-};
+    MemoryBuffer() : m_idx(0) {}
+    ~MemoryBuffer() {}
 
-void test(const std::vector<double>& v) {
-  MemoryBuffer buf;
-  Utils::PackSparseVector::write(v,buf.write_function());
-  Utils::DelayedAllocVector<double> v2;
-  static int toresize = 0;
-  if (toresize++%2)
-    v2.resize(v.size());
-  Utils::PackSparseVector::read(v2,buf.read_function());
-  if (v2.size()!=v.size()) {
-    printf("Unexpected vector length\n");
-    exit(1);
-  }
-  for (unsigned i = 0; i < v2.size(); ++i) {
-    if (v2[i]!=v[i]) {
-      printf("Unexpected value (expected %g)!\n",v.at(i));
+    void clear() { m_idx = 0; m_buffer.clear(); }
+
+    void write(unsigned char* buf, unsigned buflen)
+    {
+      for (unsigned i = 0; i < buflen; ++i)
+        m_buffer.push_back(buf[i]);
+    }
+
+    void read_rewind() { m_idx = 0; }
+    unsigned read(unsigned char* buf, unsigned buflen)
+    {
+      unsigned i = 0;
+      while(i<buflen&&m_idx<m_buffer.size())
+        buf[i++] = m_buffer[m_idx++];
+      return i;
+    }
+
+    std::function<void(unsigned char*, unsigned)> write_function()
+    { return std::bind(&MemoryBuffer::write,this,std::placeholders::_1,std::placeholders::_2); }
+
+    std::function<unsigned(unsigned char*, unsigned)> read_function()
+    { read_rewind(); return std::bind(&MemoryBuffer::read,this,std::placeholders::_1,std::placeholders::_2); }
+
+    void print()
+    {
+      printf("Buflen %lu: ", (unsigned long)m_buffer.size());
+      for (size_t i = 0; i < m_buffer.size(); ++i) {
+        printf("%02x ", (unsigned char)m_buffer[i]);
+        if (i%4==3)
+          printf(": ");
+      }
+      printf("\n");
+    }
+
+    bool operator==( const MemoryBuffer & o ) const
+    { return m_buffer==o.m_buffer; }
+
+  private:
+    MemoryBuffer( const MemoryBuffer & );
+    MemoryBuffer & operator= ( const MemoryBuffer & );
+    std::vector<char> m_buffer;
+    size_t m_idx;
+  };
+
+  void test(const std::vector<double>& v) {
+    MemoryBuffer buf;
+    Utils::PackSparseVector::write(v,buf.write_function());
+    Utils::DelayedAllocVector<double> v2;
+    static int toresize = 0;
+    if (toresize++%2)
+      v2.resize(v.size());
+    Utils::PackSparseVector::read(v2,buf.read_function());
+    if (v2.size()!=v.size()) {
+      printf("Unexpected vector length\n");
       exit(1);
+    }
+    for (unsigned i = 0; i < v2.size(); ++i) {
+      if (v2[i]!=v[i]) {
+        printf("Unexpected value (expected %g)!\n",v.at(i));
+        exit(1);
+      }
     }
   }
 }
