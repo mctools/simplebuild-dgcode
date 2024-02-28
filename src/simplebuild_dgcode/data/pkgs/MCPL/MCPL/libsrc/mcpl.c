@@ -1950,7 +1950,8 @@ mcpl_outfile_t mcpl_forcemerge_files( const char * file_output,
     opt_uf = 0;
 
   mcpl_outfile_t out = mcpl_create_outfile(file_output);
-  mcpl_hdr_set_srcname(out,"mcpl_forcemerge_files (from MCPL v" MCPL_VERSION_STR ")");
+  mcpl_hdr_set_srcname(out,"mcpl_forcemerge_files (from MCPL v"
+                       MCPL_VERSION_STR ")"); // cppcheck-suppress unknownMacro
   if ( opt_uf )
     mcpl_enable_userflags(out);
   if ( opt_pol )

@@ -135,7 +135,9 @@ int phits2mcpl2( const char * phitsdumpfile, const char * mcplfile,
 
   mcpl_hdr_set_srcname(mcplfh,"PHITS");
 
-  mcpl_hdr_add_comment(mcplfh,"Converted from PHITS with phits2mcpl (from MCPL release v" MCPL_VERSION_STR ")");
+  mcpl_hdr_add_comment(mcplfh,"Converted from PHITS with"
+                       " phits2mcpl (from MCPL release v"
+                       MCPL_VERSION_STR ")");  // cppcheck-suppress unknownMacro
 
   if (opt_dp)
     mcpl_enable_doubleprec(mcplfh);

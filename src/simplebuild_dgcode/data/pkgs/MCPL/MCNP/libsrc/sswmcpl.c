@@ -144,7 +144,8 @@ int ssw2mcpl2(const char * sswfile, const char * mcplfile,
     buf[0] = '\0';
     strcat(buf,"SSW file from ");
     strcat(buf,ssw_mcnpflavour(f));
-    strcat(buf," converted with ssw2mcpl (from MCPL release v" MCPL_VERSION_STR ")");
+    strcat(buf," converted with ssw2mcpl (from MCPL release v"
+           MCPL_VERSION_STR ")"); // cppcheck-suppress unknownMacro
     mcpl_hdr_add_comment(mcplfh,buf);
 
     buf[0] = '\0';
