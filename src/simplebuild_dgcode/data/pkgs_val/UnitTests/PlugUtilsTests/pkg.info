@@ -1,0 +1,7 @@
+package( USEPKG PluginUtils )
+
+#############################################################
+
+Test PluginUtils
+
+primary author: thomas.kittelmann@ess.eu

@@ -1,0 +1,6 @@
+Found mytestplugintype plugin in pkg PlugUtilsTests : "Bla_bla"
+Found mytestplugintype plugin in pkg PlugUtilsTests : "WUHU"
+ pfct_Bla_bla("yiha",3) = "Bla_bla::yiha,yiha,yiha,"
+ pfct_Bla_bla("muh",2) = "Bla_bla::muh,muh,"
+ pfct_WUHU("yiha",3) = "WUHU::yiha,yiha,yiha,yiha,yiha,yiha,"
+ pfct_WUHU("muh",2) = "WUHU::muh,muh,muh,muh,"

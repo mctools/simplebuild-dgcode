@@ -1,0 +1,54 @@
+namespace PluginHelper {
+
+  template<class TPluginDef>
+  inline std::vector<PluginInfo> getAvailablePlugins( LoadDescriptions descr )
+  {
+    return getAvailablePluginsByType( std::string(TPluginDef::plugin_type),
+                                      descr );
+  }
+
+
+  template<class TPluginDef>
+  inline
+  std::function<typename TPluginDef::plugin_fct_signature_t>
+  loadPlugin( std::string plugin_key )
+  {
+    const std::string plugin_type(TPluginDef::plugin_type);
+    for ( auto& e : getAvailablePlugins<TPluginDef>() ){
+      if ( e.plugin_key == plugin_key ) {
+        auto dynloader = loadPkgLib( e.pkgname, AllowAbsent::YES );
+        if (!dynloader) {
+          std::ostringstream ss;
+          ss<<"Package \""<<e.pkgname
+            <<"\" has plugin files in data/ but does not"
+            <<" provide any shared library.";
+          throw std::runtime_error(ss.str());
+        }
+        {
+          std::ostringstream fctsymbol_ss;
+          fctsymbol_ss << "sbldplugindef_"<<plugin_type<<"_"<<plugin_key;
+          std::string fctsymbol = fctsymbol_ss.str();
+          auto fctloaded = dynloader->template
+            tryGetFunction<typename TPluginDef::plugin_fct_signature_t>
+            (fctsymbol);
+          if ( !fctloaded.first) {
+            std::ostringstream ss;
+            ss<<"Package \""<<e.pkgname
+              <<"\" does not provide \""<<fctsymbol<<"\" function as expected"
+              " from plugin files in its data/ dir. Did you implement it (and"
+              " with 'extern \"C\"' mangling?).";
+            throw std::runtime_error(ss.str());
+          }
+          return fctloaded.second;
+        }
+      }
+    }
+    {
+      std::ostringstream ss;
+      ss<<"No \""<<plugin_key
+        <<"\" plugin available for plugin type \""
+        <<plugin_type<<"\".";
+      throw std::runtime_error(ss.str());
+    }
+  }
+}
