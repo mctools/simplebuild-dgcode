@@ -63,10 +63,13 @@ automatically show up as an available physics list with the name
 ``PL_<yourphyslistname>``. More specifically, you must implement a few specific
 interfaces from the :sbpkg:`G4PhysicsLists` package. For an example of how this
 is done, refer to the implementation of the ``PL_Empty`` physics list in the
-:sbpkg:`G4PhysicsLists` package (specifically look at the files
-:sbpkg:`pycpp_g4physlist_Empty/mod.cc<G4PhysicsLists/pycpp_g4physlist_Empty/mod.cc>`,
-:sbpkg:`libinc/PhysicsListEmpty.hh<G4PhysicsLists/libinc/PhysicsListEmpty.hh>`, and
-:sbpkg:`libsrc/PhysicsListEmpty.cc<G4PhysicsLists/libsrc/PhysicsListEmpty.cc>`).
+:sbpkg:`G4PhysicsLists` package: the file
+:sbpkg:`data/plugin_g4physlist_Empty.txt<G4PhysicsLists/data/plugin_g4physlist_Empty.txt>`
+declares that the package provides a physics list plugin named ``PL_Empty``, and
+the `sbldplugindef_g4physlist_Empty()` function in
+:sbpkg:`libsrc/PhysicsListEmpty.cc<G4PhysicsLists/libsrc/PhysicsListEmpty.cc>`
+provides the call-back function which can be used to actually create such a
+physics list when requested.
 
 In general the topic of physics lists is a complicated one in Geant4. Feel free
 to :ref:`reach out <sbcontact>` in case you need dgcode-specific advice for your
