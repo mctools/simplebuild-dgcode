@@ -1,4 +1,4 @@
-package(USEPKG Utils IdealGasBuilder G4NCrystalRel)
+package(USEPKG Utils IdealGasBuilder G4NCrystalRel PluginUtils)
 
 ######################################################################
 

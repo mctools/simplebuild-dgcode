@@ -1,7 +1,7 @@
 #define DOSUPPORT_NCRYSTALDEV_MATERIALS
 
 #ifdef DOSUPPORT_NCRYSTALDEV_MATERIALS
-#  include "Core/Python.hh"//for dynamic NCrystalDev support
+#  include "PluginUtils/PluginHelper.hh"//for dynamic NCrystalDev support
 #endif
 #include "G4Materials/NamedMaterialProvider.hh"
 #include "G4Materials/CommonMaterials.hh"
@@ -26,13 +26,25 @@ namespace NC = NCrystal;
 
 namespace NamedMaterialProvider {
 
+#ifdef DOSUPPORT_NCRYSTALDEV_MATERIALS
+  namespace {
+    const G4Material * loadNCrystalDevMaterial( const std::string& cfgstr )
+    {
+      static auto thelib = PluginHelper::loadPkgLib( "NCrystalPreview" );
+      static auto thefunc =
+        thelib->getFunction<G4Material*(const char*)>
+        ("plugin_ncrystaldev_create_material");
+      return thefunc( cfgstr.c_str() );
+    }
+  }
+#endif
+
   static std::string s_prefix;
   void setPrintPrefix(const char* p)
   {
     s_prefix = p;
     s_prefix += "NamedMaterial ";
   }
-
 
   struct MatInfo {
     MatInfo(const std::string&fullname);
@@ -456,7 +468,7 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
     cfgstr += matinfo.getTempAsNCrystalCfgStrPostfix();
     cfgstr += matinfo.getDensityAsNCrystalCfgStrPostfix();
     //Use NCrystal from the NCrystalPreview package in the ncrystaldev repo, but
-    //use python bindings to avoid a static dependency (FIXME: It would be
+    //use dynamic bindings to avoid a static dependency (FIXME: It would be
     //better to enable dynamic "NamedMaterial factories" and have such a factory
     //in the NCrystalDev repo!!!).
     {
@@ -466,19 +478,11 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
                                  "must be enabled. This is intended solely for code in the ncrystaldev repo, most\n"
                                  "users should use \"NCrystal\" instead of \"NCrystalDev\".\n");
       }
-      pyextra::ensurePyInit();
-      py::object mod = pyextra::pyimport("NCrystalPreview");
-      py::object py_g4mat_str = mod.attr("createMaterial_AsSafeStr")(py::str(cfgstr));
-      if ( !py::isinstance<py::str>( py_g4mat_str ) )
-        throw std::runtime_error("Unexpected problem getting G4Material pointer for NCrystalDev material.");
-      std::string g4mat_str =  py_g4mat_str.cast<std::string>();
-      std::stringstream ss_int;
-      ss_int << g4mat_str;
-      std::uintptr_t g4mat_int;
-      ss_int >> g4mat_int;
-      mat = reinterpret_cast<G4Material*>(g4mat_int);
-      if (!mat)
-        throw std::runtime_error("Got null G4Material pointer for NCrystalDev material.");
+      const G4Material * ncdevmat = loadNCrystalDevMaterial(cfgstr);
+      if (!ncdevmat)
+        throw std::runtime_error("Got null G4Material pointer"
+                                 " for NCrystalDev material.");
+      mat = const_cast<G4Material *>(ncdevmat);//fixme: https://github.com/mctools/simplebuild-dgcode/issues/34
     }
 #else
     throw std::runtime_error("NamedMaterialProvider was compiled without support for NCrystalDev materials");
@@ -609,18 +613,21 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
 
   } else {
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////// NIST materials, NCrystal or Shielding MATERIALS - POSSIBLY WITH CHANGED DENSITY AND TEMPERATURE //////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////
+    ////// NIST materials, NCrystal or Shielding MATERIALS //////
+    ////// - POSSIBLY WITH CHANGED DENSITY AND TEMPERATURE //////
+    /////////////////////////////////////////////////////////////
 
     if ( NC::contains(matinfo.name, ';') ) {
-      printf("%sERROR: Invalid request (did you use \";\" instead of \":\" ?): \"%s\".\n",
+      printf("%sERROR: Invalid request (did you use \";\" "
+             "instead of \":\" ?): \"%s\".\n",
              s_prefix.c_str(),matinfo.name.c_str());
       exit(1);
     }
 
     if ( NC::contains_any(matinfo.name, ";:<>/[]\\" ) ) {
-      printf("%sERROR: Unexpected special character in requested material name \"%s\"\n",
+      printf("%sERROR: Unexpected special character in requested"
+             " material name \"%s\"\n",
              s_prefix.c_str(),matinfo.name.c_str());
       exit(1);
     }
@@ -629,14 +636,17 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
       //Shielding material
       mat = ShieldingMaterials::createMat(matinfo.name);
       if (!mat) {
-        printf("%sERROR: Unknown shielding material \"%s\"\n",s_prefix.c_str(),matinfo.name.c_str());
+        printf("%sERROR: Unknown shielding material \"%s\"\n",
+               s_prefix.c_str(),matinfo.name.c_str());
         exit(1);
       }
     } else {
       //G4 nist material
-      mat = CommonMaterials::getNISTMaterial(matinfo.name.c_str(),s_prefix.c_str());
+      mat = CommonMaterials::getNISTMaterial(matinfo.name.c_str(),
+                                             s_prefix.c_str());
       if (!mat) {
-        printf("%sERROR: Unknown material \"%s\"\n",s_prefix.c_str(),matinfo.name.c_str());
+        printf("%sERROR: Unknown material \"%s\"\n",
+               s_prefix.c_str(),matinfo.name.c_str());
         exit(1);
       }
     }
@@ -650,7 +660,6 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
                            mat0->GetState(),
                            temperature,
                            mat0->GetPressure());
-      //      NXSG4::copyProperty(mat0,mat);//in case shielding materials ever use nxsg4 properties
     } else {
       assert(matinfo.name==matinfo.fullname);//no other properties
     }
@@ -658,10 +667,11 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
 
   assert(mat);
 
-  //make sure the name is set consistently (only when material does not already have a base material!!!)
-  //See also https://bugzilla-geant4.kek.jp/show_bug.cgi?id=2520
+  //make sure the name is set consistently (only when material does not already
+  //have a base material!!!)  See also
+  //https://bugzilla-geant4.kek.jp/show_bug.cgi?id=2520
 
-  if ( matinfo.fullname != mat->GetName() && mat->GetBaseMaterial() == nullptr ) {
+  if ( matinfo.fullname != mat->GetName() && !mat->GetBaseMaterial() ) {
     G4Material * mat0 = mat;
     mat = new G4Material(matinfo.fullname.c_str(),
                          mat0->GetDensity(),
@@ -669,12 +679,12 @@ G4Material * NamedMaterialProvider::getMaterial(const std::string& sss)
                          mat0->GetState(),
                          mat0->GetTemperature(),
                          mat0->GetPressure());
-    //NXSG4::copyProperty(mat0,mat);
-    //No need to copy NCrystal property, since it resides in the
+    //NB: No need to copy NCrystal property, since it resides in the
     //G4MaterialPropertyTable which is copied over when used as a base material.
-    //update: the mat->GetBaseMaterial() check means we never do this for the NCrystal materials
+    //update: the mat->GetBaseMaterial() check means we never do this for the
+    //NCrystal materials
+    //assert(matinfo.fullname == mat->GetName());
   }
-  //  assert(matinfo.fullname == mat->GetName());
 
   cache[ss] = mat;
   return validate( mat );
