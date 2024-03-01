@@ -1,0 +1,8 @@
+package( USEEXT NCrystal )
+
+######################################################################
+
+Package providing utilities for dynamic loading of shared libraries of
+simplebuild packages, and implementation of dynamic plugins through that.
+
+Primary author: thomas.kittelmann@ess.eu
