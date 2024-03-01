@@ -7,7 +7,7 @@
 #include "Core/String.hh"
 #include "G4Launcher/Launcher.hh"
 #include "G4Launcher/SingleParticleGun.hh"
-#include "G4PhysicsLists/PhysicsListFactory.hh"
+#include "G4PhysicsLists/PhysListMgr.hh"
 #include "G4Interfaces/GeoConstructBase.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/StepFilterBase.hh"
@@ -431,19 +431,7 @@ void G4Launcher::Launcher::Imp::preinit()
           }
         }
 
-        //A bit brute-force and inefficient, but no biggie:
-        std::vector<std::string> reflists;
-        PhysicsListFactory::getAllReferenceListNames(reflists);
-        for (auto it = reflists.begin();it!=reflists.end();++it) {
-          if (*it==pln_parts.front()) {
-            pl = PhysicsListFactory::createReferencePhysicsList(pln_parts.front());
-            assert(pl);
-          }
-        }
-        if (!pl) {
-          //Our own custom list which was simply specified via a string name rather than a provider?
-          pl = PhysicsListFactory::attemptCreateCustomPhysicsList(pln_parts.front());
-        }
+        pl = PhysListMgr::createList( pln_parts.front() );
         if (!pl) {
           printf("%sUnknown physics list: %s\n",prefix(),pln_parts.front().c_str());
           error("Physics list name is not known");

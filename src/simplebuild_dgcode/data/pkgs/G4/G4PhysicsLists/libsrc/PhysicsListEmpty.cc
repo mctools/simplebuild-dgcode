@@ -35,3 +35,10 @@ void PhysicsListEmpty::ConstructProcess()
 }
 
 
+
+extern "C" {
+  G4VUserPhysicsList * sbldplugindef_g4physlist_Empty()
+  {
+    return new PhysicsListEmpty;
+  }
+}

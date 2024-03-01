@@ -583,19 +583,20 @@ def _swallowCmdLineAndLaunch(self):
 
     self._shutdown()#shutdown: Make sure run-manager deletion happens now and not when garbage collection runs
 
-_setPhysicsList_orig = Launcher.setPhysicsList
-def _setPhysicsList(self,physlistname):
-    #Make sure that custom physics lists will be translated into a provider
-    #rather than just the string (this assumes that the default physics list
-    #will not be custom, which it can't be if we want to avoid a direct
-    #dependency on the custom physics list code in question).
-    import G4PhysicsLists
-    if G4PhysicsLists.listIsCustom(physlistname):
-        #extract physics list provider and apply that:
-        self.setPhysicsListProvider(G4PhysicsLists.extractProvider(physlistname))
-    else:
-        _setPhysicsList_orig(self,physlistname)
+##_setPhysicsList_orig = Launcher.setPhysicsList
+##def _setPhysicsList(self,physlistname):
+##    #Make sure that custom physics lists will be translated into a provider
+##    #rather than just the string (this assumes that the default physics list
+##    #will not be custom, which it can't be if we want to avoid a direct
+##    #dependency on the custom physics list code in question).
+##    import G4PhysicsLists
+##    if G4PhysicsLists.listIsCustom(physlistname):
+##        #extract physics list provider and apply that:
+##        self.setPhysicsListProvider(G4PhysicsLists.extractProvider(physlistname))
+##    else:
+##        _setPhysicsList_orig(self,physlistname)
+##
+#Launcher.setPhysicsList = _setPhysicsList
 
-Launcher.setPhysicsList = _setPhysicsList
 Launcher.swallowCmdLineAndLaunch = _swallowCmdLineAndLaunch
 Launcher.go = _swallowCmdLineAndLaunch#alias
