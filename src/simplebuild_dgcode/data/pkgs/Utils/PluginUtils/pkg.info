@@ -1,4 +1,4 @@
-package( USEEXT NCrystal )
+package( USEEXT NCrystal DL )
 
 ######################################################################
 
