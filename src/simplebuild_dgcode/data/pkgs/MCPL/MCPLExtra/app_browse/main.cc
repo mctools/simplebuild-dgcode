@@ -1,4 +1,10 @@
-#include "Core/Python.hh"
+//We can do the shist browser with or without python. Choosing without python,
+//since it saves >5seconds of compilation time!
+#define MCPLEXTRA_AVOID_USING_PYTHON
+
+#ifndef MCPLEXTRA_AVOID_USING_PYTHON
+#  include "Core/Python.hh"
+#endif
 #include "MCPLExtra/HistCreate.hh"
 #include "Core/String.hh"
 #include "Core/File.hh"
@@ -8,6 +14,13 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdio>
+#ifdef MCPLEXTRA_AVOID_USING_PYTHON
+#  include <cstdlib>
+#  include <stdexcept>
+#  include "sys/wait.h"
+#  include <iostream>
+#  include "Utils/Cmd.hh"
+#endif
 
 int usage(char**argv,const char* errmsg = 0) {
 
@@ -143,11 +156,26 @@ int main(int argc, char** argv) {
     MCPLExtra::mcplStdHists( hc, opt_filename, opt_condexpr, opt_limit);
   }
 
-  const std::string outfile = "mcpl.shist";
+#define MCPLEXTRA_OUTFILE_NAME "mcpl.shist"
+  const std::string outfile = MCPLEXTRA_OUTFILE_NAME;
   hc.saveToFile(outfile,true);
   printf("created requested histogram%s in %s\n",(opt_plotexpr.empty()?"s":""),outfile.c_str());
 
   if (!opt_nographics) {
+#ifdef MCPLEXTRA_AVOID_USING_PYTHON
+    const char * cmd;
+    if (opt_plotexpr.empty()) {
+      //bring up browser for file:
+      cmd = "sb_simplehists_browse " MCPLEXTRA_OUTFILE_NAME;
+    } else {
+      //just display the single custom histogram:
+      cmd = "sb_simplehists_browse -p " MCPLEXTRA_OUTFILE_NAME " custom";
+    }
+    std::cout<<"Launching: "<<cmd<<std::endl;
+    int status = std::system(cmd);
+    if ( ! (status >=0 && WIFEXITED( status ) && WEXITSTATUS( status ) == 0 ) )
+      throw std::runtime_error(std::string("cmd failed: ")+cmd);
+#else
     try {
       pyextra::ensurePyInit();
       if (opt_plotexpr.empty()) {
@@ -162,6 +190,7 @@ int main(int argc, char** argv) {
     } catch (py::error_already_set&) {
       throw;//TODO: better handling in pybind11 than this?
     }
+#endif
   }
 
   return 0;
