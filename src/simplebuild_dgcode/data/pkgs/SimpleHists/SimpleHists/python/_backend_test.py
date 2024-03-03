@@ -21,7 +21,11 @@ if _backend_ok and _backend=='tkagg':
                                 message=('Treat the new Tool classes introduced in v1.5 as experimental'+
                                          ' for now, the API will likely change in version 2.1'))
 
-from PyAna.fpe import standardMPLFixes as _standardMPLFixes # noqa E402
+try:
+    from PyAna.fpe import standardMPLFixes as _standardMPLFixes # noqa E402
+except ModuleNotFoundError:
+    #fail silently, the PyAna pkg might be disabled
+    _standardMPLFixes = lambda : None
 _standardMPLFixes()
 
 def _ensure_backend_ok():
