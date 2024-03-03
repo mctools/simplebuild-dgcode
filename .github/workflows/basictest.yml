@@ -93,6 +93,8 @@ jobs:
         mkdir test2
         cd test2
         sb --init dgcode_val COMPACT
+        #FIXME: workaround for https://github.com/mctools/ncrystal/issues/166
+        echo "  pkg_filter = [ '"'!'"PlugUtilsTests' ]" >> simplebuild.cfg
         sb --pkgi DGCodeRecommendedNoGUI
         sb -t --testexcerpts=100
         sbenv sb_core_extdeps --require-disabled Geant4
@@ -104,6 +106,8 @@ jobs:
         mkdir test3
         cd test3
         sb --init dgcode_val DEBUG
+        #FIXME: workaround for https://github.com/mctools/ncrystal/issues/166
+        echo "  pkg_filter = [ '"'!'"PlugUtilsTests' ]" >> simplebuild.cfg
         sb -t --testexcerpts=100
         sbenv sb_core_extdeps --require-disabled Geant4
         sbenv sb_core_extdeps --require NCrystal Numpy matplotlib ZLib
