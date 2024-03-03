@@ -1,0 +1,3 @@
+#!/usr/bin/env python3
+from Utils.dl_url_to_local_cache import _cli
+_cli()

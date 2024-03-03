@@ -1,6 +1,8 @@
 #ifndef Utils_Url2Local_hh
 #define Utils_Url2Local_hh
 
+#include <string>
+
 namespace Utils {
 
   //If input_filename is a local path (or an invalid filename), it will be
