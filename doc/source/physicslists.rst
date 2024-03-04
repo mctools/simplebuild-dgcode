@@ -57,16 +57,24 @@ with "+OPTICAL", although this is not highly tested.
 
 It is also possible to completely define your own physics list, as is often done
 in standalone Geant4 applications. To do that, you must first of all know how to
-define such a list in Geant4. Next, you must add a compiled Python module named
-``dgcode_<yourphyslistname>`` in a simplebuild package, and it will
+define such a list in Geant4, and implement it in a shared library (i.e. in the
+``libsrc/`` of a simplebuild package). In order to make your new list
 automatically show up as an available physics list with the name
-``PL_<yourphyslistname>``. More specifically, you must implement a few specific
-interfaces from the :sbpkg:`G4PhysicsLists` package. For an example of how this
-is done, refer to the implementation of the ``PL_Empty`` physics list in the
-:sbpkg:`G4PhysicsLists` package: the file
+``PL_<yourphyslistname>``, you must perform two specific steps. The first step
+is the addition of an empty file named
+`plugin_g4physlist_<yourphyslistname>.txt` in the `data/` directory of the same
+package. This is needed solely as a way for your package to advertise the
+existence of the physics list. The second step is to add a factory function
+named ``sbldplugindef_g4physlist_<yourphyslistname>`` inside your shared
+library. This factory function should actually create ("i.e. ``new
+MyPhysList``") the physics list and return a pointer to it, and it must be
+enclosed in an ``extern "C" { ... }`` block.
+
+For an example of how this is done, refer to the implementation of the
+``PL_Empty`` physics list in the :sbpkg:`G4PhysicsLists` package: the file
 :sbpkg:`data/plugin_g4physlist_Empty.txt<G4PhysicsLists/data/plugin_g4physlist_Empty.txt>`
 declares that the package provides a physics list plugin named ``PL_Empty``, and
-the `sbldplugindef_g4physlist_Empty()` function in
+the ``sbldplugindef_g4physlist_Empty()`` function in
 :sbpkg:`libsrc/PhysicsListEmpty.cc<G4PhysicsLists/libsrc/PhysicsListEmpty.cc>`
 provides the call-back function which can be used to actually create such a
 physics list when requested.
