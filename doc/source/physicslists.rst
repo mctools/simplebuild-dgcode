@@ -62,12 +62,12 @@ define such a list in Geant4, and implement it in a shared library (i.e. in the
 automatically show up as an available physics list with the name
 ``PL_<yourphyslistname>``, you must perform two specific steps. The first step
 is the addition of an empty file named
-`plugin_g4physlist_<yourphyslistname>.txt` in the `data/` directory of the same
-package. This is needed solely as a way for your package to advertise the
+``plugin_g4physlist_<yourphyslistname>.txt`` in the ``data/`` directory of the
+same package. This is needed solely as a way for your package to advertise the
 existence of the physics list. The second step is to add a factory function
 named ``sbldplugindef_g4physlist_<yourphyslistname>`` inside your shared
-library. This factory function should actually create ("i.e. ``new
-MyPhysList``") the physics list and return a pointer to it, and it must be
+library. This factory function should actually create (i.e. ``return new
+MyPhysList()``) the physics list and return a pointer to it, and it must be
 enclosed in an ``extern "C" { ... }`` block.
 
 For an example of how this is done, refer to the implementation of the
