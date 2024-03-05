@@ -54,7 +54,7 @@ NCrystal data files in `NCMAT
 <https://github.com/mctools/ncrystal/wiki/NCMAT-format>`__ format (for instance
 according to the tutorials `here
 <https://github.com/mctools/ncrystal-notebooks>`__), you can place them in
-either your working directory or the `data/` directory of a simplebuild
+either your working directory or the ``data/`` directory of a simplebuild
 package. It can then be used in material definitions via the name
 ``<pkgname>/<filename>`` syntax. In other words if you have added a file
 ``MyPkg/data/mycoolmat.ncmat``, you can load and use it in cfg-strings like
