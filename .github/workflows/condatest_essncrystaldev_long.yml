@@ -1,4 +1,4 @@
-name: test-essncrystaldev-short
+name: test-essncrystaldev-long
 on:
   push:
   pull_request:
@@ -76,8 +76,19 @@ jobs:
         run: |
           set -eu
           cd src_testproject
-          #NCLong* tests are run in a different workflow:
-          sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended,NCUtils,NCG4,NCTests,NCThreadVal,NCPerfVal --testfilter='!sb_nclong*'
+          export tmp='sb_nclong*'
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            #Disable a few specific tests on macos until
+            #https://github.com/mctools/ncrystal/issues/167 is resolved.
+            export tmp="${tmp}"',!sb_nclongextratests_testdosplot'
+            export tmp="${tmp}"',!sb_nclongextratests_testplots2'
+            export tmp="${tmp}"',!sb_nclongtests_testloadvdos'
+            export tmp="${tmp}"',!sb_nclongtests_testrange'
+            export tmp="${tmp}"',!sb_nclongtests_vdosloaddbg'
+          fi
+          echo "Using --testfilter=${tmp}"
+          set -x
+          sb -t -j4 --testexcerpts=100 --requirepkg='NCLongExtraTests,NCLongG4Tests,NCLongTests' --testfilter="${tmp}"
 
       - name: Setup tmate session for manual debugging
         uses: mxschmitt/action-tmate@v3

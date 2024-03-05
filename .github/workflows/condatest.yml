@@ -71,7 +71,7 @@ jobs:
           mkdir test_core && cd test_core
           sb --init core_val
           sb -t --testexcerpts=100
-          sbenv sb_core_extdeps --require-disabled NCrystal Numpy matplotlib Geant4 ZLib
+          sbenv sb_core_extdeps --require-disabled Numpy matplotlib Geant4 ZLib
 
       - name: Build and test release mode
         id: build-and-test-release-mode
