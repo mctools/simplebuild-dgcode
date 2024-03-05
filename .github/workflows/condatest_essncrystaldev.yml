@@ -70,8 +70,22 @@ jobs:
           set -eux
           geant4-config  --version
           cd src_testproject
-          sb -t --testexcerpts=100 --testfilter='!sb_nclong*' --requirepkg=DGCodeRecommended,NCUtils,NCG4,NCTests,NCThreadVal,NCPerfVal
-          sb -t --testexcerpts=100 --testfilter='sb_nclong*' --requirepkg=DGCodeRecommended,NCLongTests,NCLongG4Tests,NCLongExtraTests
+          export common_testargs='-t --testexcerpts=100 --requirepkg=DGCodeRecommended,NCUtils,NCG4,NCTests,NCThreadVal,NCPerfVal'
+          #For quicker feedback, first NCTests, then run everything else except
+          #the NCLong* tests, then run the NCLong* tests afterwards.
+          sb ${common_testargs} --testfilter='sb_nctests_*'
+          sb ${common_testargs} --testfilter='!sb_nclong*,!sb_nctests_*'
+          export tmp='sb_nclong*'
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            #Disable a few specific tests on macos until
+            #https://github.com/mctools/ncrystal/issues/167 is resolved.
+            export tmp="${tmp}"',!sb_nclongextratests_testdosplot'
+            export tmp="${tmp}"',!sb_nclongextratests_testplots2'
+            export tmp="${tmp}"',!sb_nclongtests_testloadvdos'
+            export tmp="${tmp}"',!sb_nclongtests_testrange'
+            export tmp="${tmp}"',!sb_nclongtests_vdosloaddbg'
+          fi
+          sb ${common_testargs} --testfilter="{$tmp}"
 
       - name: Setup tmate session for manual debugging
         uses: mxschmitt/action-tmate@v3
