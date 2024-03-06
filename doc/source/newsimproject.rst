@@ -21,7 +21,7 @@ For the sake of the following discussions, we will assume you are creating a
 completely fresh working directory in which you wish to work (this might of
 course not be the case). Thus, first create a new empty directory, step into it
 and use ``sb --init dgcode`` to setup a new simplebuild and dgcode-based
-project.  Technically, the commands creates an appropriate ``simplebuild.cfg``
+project.  Technically, the command creates an appropriate ``simplebuild.cfg``
 file which will serve as the master cfg file whenever you later invoke the
 ``sb`` command (more details available `here
 <https://mctools.github.io/simplebuild/simplebuilddotcfg.html#sbdotcfg>`__ and
