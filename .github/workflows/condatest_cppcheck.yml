@@ -39,15 +39,26 @@ jobs:
           python3 -m pip install --no-deps ./src_co
           echo "sb --version: "$(sb --version)
 
-      - name: Build and check
+      - name: Build and export commands
         run: |
-          set -eux
+          set -eu
           test -f $CONDA_PREFIX/share/Geant4/data/NDL*/Elastic/CrossSection/13_27_Aluminum.z
           geant4-config  --version
           mkdir test_rel && cd test_rel
           sb --init dgcode_val
-          SIMPLEBUILD_EXPORT_JSONCMDS=1 sb --requirepkg=DGCodeRecommended
-          export THECMDFILE="$PWD"/simplebuild_cache/bld/compile_commands.json
-          test -f "$THECMDFILE"
+          sb --exportcmds cmds.json  --requirepkg=DGCodeRecommended
+          test -f cmds.json
+
+      - name: Run cppcheck
+        run: |
+          set -eux
+          cd test_rel
+          test -f cmds.json
           mkdir ./cppcheck_cache
-          cppcheck --inline-suppr --project="$THECMDFILE" --check-level=normal -j4 --cppcheck-build-dir="$PWD"/cppcheck_cache -q --suppress='*:'"$CONDA_PREFIX"'/include/*' --error-exitcode=1
+          if [ "$RUNNER_OS" == "macOS" ]; then
+            #macos runners are already slow enough
+            export tmp_cppcheck_level="normal"
+          else
+            export tmp_cppcheck_level="exhaustive"
+          fi
+          cppcheck --inline-suppr --project=cmds.json --check-level=${tmp_cppcheck_level} -j4 --cppcheck-build-dir="$PWD"/cppcheck_cache -q --suppress='*:'"$CONDA_PREFIX"'/include/*' --error-exitcode=1
