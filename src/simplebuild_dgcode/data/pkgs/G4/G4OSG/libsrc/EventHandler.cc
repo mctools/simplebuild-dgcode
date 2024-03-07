@@ -486,7 +486,7 @@ bool G4OSG::EventHandler::handle(const osgGA::GUIEventAdapter& ea,
             if (mother) {
               mother->setDisplayStyle(VolHandle::NORMAL);
               mother->display();
-              mother->hideDaughters();
+              mother->hideDaughtersRecursively();
               updateHoverInfo(view,ea);
             }
             return true;
