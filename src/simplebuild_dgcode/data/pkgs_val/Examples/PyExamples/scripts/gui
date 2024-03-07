@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from PyAna import plt,np
-#from pylab import *
 from matplotlib.widgets import Slider, Button, RadioButtons
 
 ax = plt.subplot(111)

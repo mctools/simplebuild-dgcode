@@ -23,23 +23,22 @@ on-disk storage and quick plotting.
 
 Histogram classes are for instance found in the `ROOT <https://root.cern/>`__
 framework which is commonly used in high energy physics, but for Python-centric
-analyses based on e.g. "PyLab" (taken here to mean Numpy+SciPy+Matplotlib),
-having a dependency on ROOT can be a bit honerous. However, one runs into the
-problem that PyLab does not by default include histogram classes. Rather, very
-basic histogramming functionality exists, but requires one to first collect all
-data into arrays, thus defeating the primary data reduction purpose of such
-histogram classes.
+analyses based on tools like Numpy, SciPy, or Matplotlib, having a dependency on
+ROOT can be a bit onerous. However, one runs into the problem that e.g. Numpy
+does not by default include histogram classes. Rather, very basic histogramming
+functionality exists, but requires one to first collect all data into arrays,
+which, as mentioned, can give capacity issues for large data sets.
 
 Features
 --------
 
 The light-weight histogram classes, "SimpleHists", provided in dgcode have
 several features that are all important to their usage in dgcode-based projects:
-usage from both C++ and Python, integration with PyLab, persistification, quick
-plotting, extraction to Numpy arrays. Finally, the histograms have the crucial
-ability that data files collected in multiple concurrent jobs can be safely
-merged without the loss of any statistical metadata. More specifically, the
-list of features include:
+usage from both C++ and Python, integration with Numpy and Matplotlib,
+persistification, quick plotting, extraction to Numpy arrays. Finally, the
+histograms have the crucial ability that data files collected in multiple
+concurrent jobs can be safely merged without the loss of any statistical
+metadata. More specifically, the list of features include:
 
 * Three feature-rich types of histograms: 1D, 2D and counter collection.
 * HistCollection which is an object representing a collection of histograms,
@@ -119,8 +118,8 @@ already possible to produce a few quick plots for a paper, talk or email.
 
 For more advanced analysis, one can use Python and the plethora of utilities
 available there (e.g. all the utilities available in Matplotlib and SciPy). Here
-is a small example of how one can get data out in formats ready to input to the
-various PyLab plotting routines:
+is a small example of how one can get data out in formats ready to input to
+various Matplotlib plotting routines:
 
 .. code-block:: python
 
@@ -129,10 +128,11 @@ various PyLab plotting routines:
   h_edep = hc.hist('edep')
   #One can launch the quick interactive view for this histogram by:
   h_edep.plot()
-  #But for advanced pylab analysis and plots you can ask for the contents
-  #and bin edges in the same format as numpy.histogram(..) would return:
+  #But for advanced customised analysis and plotting, you can ask for the
+  #contents and bin edges in the same format as numpy.histogram(..) would
+  #return:
   contents, edges = h_edep.histogram()
-  #This can be used for custom analysis (using scipy fitting/interpolation
+  #This can be used for custom analysis (using SciPy fitting/interpolation
   #tools, making plots with analytical results on top, etc., etc.)
   #One can access other statistics as well of course:
   print('edep variance =', h_edep.rms)

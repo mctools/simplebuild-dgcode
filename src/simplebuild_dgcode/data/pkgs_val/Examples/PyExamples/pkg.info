@@ -2,6 +2,7 @@ package()
 
 ######################################################################
 
-A place to collect various examples of how to use scipy/numpy/matploblib/pylab
+A place to collect various examples of how to use Python tools like scipy,
+numpy, and matploblib.
 
 Primary author: thomas.kittelmann@ess.eu
