@@ -3,8 +3,8 @@ import pathlib
 
 def determine_default_project_dir():
     from _simple_build_system.envcfg import var as sbcfg
-    assert sbcfg.projects_dir.is_dir()
-    return sbcfg.projects_dir
+    assert sbcfg.main_bundle_pkg_root.is_dir()
+    return sbcfg.main_bundle_pkg_root
 
 def get_target_dir(target_dir, project_name):
     return ( target_dir
@@ -25,7 +25,7 @@ def parse_cmdline():
                         type = normpath_or_none, default=None,
                         help=('Target directory. Defaults to <root>/PROJECTNAME'
                               ' where <root> is the pkg-root associated with '
-                              'your master simplebuild.cfg file.'))
+                              'your main simplebuild.cfg file.'))
     args=parser.parse_args()
     if not args.project_name:
         parser.error('Must supply project name')

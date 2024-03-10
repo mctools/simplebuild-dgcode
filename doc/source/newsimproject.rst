@@ -20,12 +20,12 @@ The command to use is ``dgcode_newsimproject``:
 For the sake of the following discussions, we will assume you are creating a
 completely fresh working directory in which you wish to work (this might of
 course not be the case). Thus, first create a new empty directory, step into it
-and use ``sb --init dgcode`` to setup a new simplebuild and dgcode-based
-project.  Technically, the command creates an appropriate ``simplebuild.cfg``
-file which will serve as the master cfg file whenever you later invoke the
-``sb`` command (more details available `here
-<https://mctools.github.io/simplebuild/simplebuilddotcfg.html#sbdotcfg>`__ and
-`here
+and use ``sb --init dgcode`` to setup a new simplebuild and dgcode-based bundle
+in which you can create packages for your project.  Technically, the command
+creates an appropriate ``simplebuild.cfg`` file which will serve as the main
+cfg file whenever you later invoke the ``sb`` command (more details available
+`here <https://mctools.github.io/simplebuild/simplebuilddotcfg.html#sbdotcfg>`__
+and `here
 <https://mctools.github.io/simplebuild/simplebuilddotcfg.html#automatic-creation>`__).
 Next, configure and build everything by typing the command ``sb`` (this might
 take a few minutes to complete):
@@ -42,7 +42,7 @@ detector technology, named "tricorder", we then proceed by using the
   :literal:
 
 As written, new packages and files have been created for you in your local
-directory (defaulting to the directory of your master ``simplebuild.cfg``
+directory (defaulting to the directory of your main ``simplebuild.cfg``
 file). Of course, if you are working with code in a shared repository (e.g. at
 GitHub), nothing has been added to the remote repository at this point. Nor
 should it, since having multiple essentially identical copies of the same
@@ -108,8 +108,8 @@ difference:
    your simulation project is about, which people are involved with it,
    etc.
 
-Of course, you should only git commit some or all of these files once you have
+Of course, you should only Git commit some or all of these files once you have
 actually edited them somewhat as suits your project. After all, you are most
-likely not interested in filling up your project's repository filled up with 10
-versions of the same simple example, only differing in their names.
+likely not interested in filling up your Git repository with 10 copies of what
+is essentially the same simple example, only differing in naming.
 

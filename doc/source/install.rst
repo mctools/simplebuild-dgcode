@@ -91,7 +91,7 @@ Verifying an installation
 =========================
 
 As a verification of a dgcode installation, one can create a dgcode-based
-simplebuild project and launch the unit tests from the
+simplebuild configuration and launch the unit tests from the
 :sbpkg:`bundleroot::dgcode_val` bundle (you can remove the leftover ``sbverify``
 directory afterwards):
 

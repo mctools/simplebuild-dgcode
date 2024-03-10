@@ -6,7 +6,6 @@
 import simplebuild.cfg
 pkgs = simplebuild.cfg.pkgs
 
-legacy_mode = not hasattr(simplebuild.cfg.dirs,'projdir')
 
 def pkg_dep_iter(pkgdata,direct_deps_only=False):
     for pkgdepname in pkgdata.get('deps_pkgs_direct' if direct_deps_only else 'deps_pkgs',[]):
@@ -39,8 +38,6 @@ select_fmwk_or_fmwkattic = (lambda pd : select_fmwkattic(pd) or select_fmwk(pd))
 
 select_non_fmwk = lambda pd : not select_fmwk(pd)
 select_val = lambda pd : pd['reldirname'].startswith('Validation/')
-if legacy_mode:
-    select_ex = lambda pd : pd['reldirname'].startswith('Examples/')
 
 def select_named_pkg(pkgname):
     return lambda pd : pd['name']==pkgname
@@ -51,20 +48,12 @@ check_rule( select_fmwk,
 check_rule( select_fmwkattic,
             fct_negate(fct_or(select_fmwk,select_fmwkattic)),
             'Projects/FmwkAttic/ packages are only allowed to depend on other Projects/FmwkAttic/ pkgs or Framework/ pkgs.' )
-if legacy_mode:
-    check_rule( select_ex,
-                fct_negate(fct_or(select_ex,select_fmwk)),
-                'Examples/ packages are only allowed to depend on other Examples/ pkgs or Framework/ pkgs.' )
 check_rule( select_val,
-            fct_negate(fct_or(select_ex,fct_or(select_val,select_fmwk))) if legacy_mode else fct_negate(fct_or(select_val,select_fmwk)),
+            fct_negate(fct_or(select_val,select_fmwk)),
             'Validation/ packages are only allowed to depend on other Validation/ pkgs or Framework/ pkgs.' )
 check_rule( fct_negate(select_val),
             select_val,
             'No packages outside Validation/ should depend on pkgs in Validation/.' )
-if legacy_mode:
-    check_rule( fct_negate(fct_or(select_val,select_ex)),
-                fct_or(select_val,select_ex),
-                'No packages outside Validation/+Examples/ should depend on pkgs in Validation/+Examples/.' )
 
 core_pkg_deps = []
 check_rule( select_named_pkg('Core'),

@@ -21,7 +21,7 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-    'simple-build-system >= 0.0.45'
+    'simple-build-system >= 1.1.0'
 ]
 
 [project.optional-dependencies]

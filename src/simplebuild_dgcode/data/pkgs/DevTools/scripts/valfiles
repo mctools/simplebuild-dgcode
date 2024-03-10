@@ -46,8 +46,8 @@ for f in all_files():
         if not any( (f in p.parents) for p in all_pkgdirs):
             raise SystemExit(f'ERROR: Forbidden directory: {f}')
     else:
-        if hasattr(cfg.dirs,'projdir') and f == cfg.dirs.projdir/'bootstrap.sh':
-          continue
+        #if hasattr(cfg.dirs,'projdir') and f == cfg.dirs.projdir/'bootstrap.sh':
+        #  continue
         if f.name == 'LICENSE':
             #must be in pkg directory:
             if f.parent in all_pkgdirs:

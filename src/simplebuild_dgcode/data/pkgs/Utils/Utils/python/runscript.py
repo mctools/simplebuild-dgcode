@@ -6,7 +6,7 @@ def create_run_script(filename,cmd, simplebuildcfg = None, headerlines=None, ext
     import shlex
     if simplebuildcfg is None:
         import _simple_build_system.cfglocate as _
-        simplebuildcfg = _.locate_master_cfg_file()
+        simplebuildcfg = _.locate_main_cfg_file()
 
     fh=open(filename,'w')
     fh.write('#!/usr/bin/env bash\n')
