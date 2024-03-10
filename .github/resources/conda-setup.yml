@@ -10,12 +10,12 @@ dependencies:
 #should be left out (and replaced with simple-build-system).
   - compilers
   - bash
-  - simple-build-system
+  - simple-build-system>=1.1.0
   - ncrystal
   - mcpl
   - matplotlib
   - zlib
-  - geant4 >= 11.1.3
+  - geant4>=11.1.3
   - expat
   - openscenegraph
   - scipy

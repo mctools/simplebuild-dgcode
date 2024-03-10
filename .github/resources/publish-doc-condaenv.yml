@@ -4,7 +4,7 @@ channels:
   - nodefaults
 dependencies:
   - python>=3.11
-  - simple-build-system
+  - simple-build-system>=1.1.0
   - compilers
   - bash
   - zlib
