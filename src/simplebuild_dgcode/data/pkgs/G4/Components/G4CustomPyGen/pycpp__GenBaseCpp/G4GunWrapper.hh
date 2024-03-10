@@ -1,10 +1,11 @@
 #ifndef G4CustomPyGen_pycpp_G4GunWrapper_hh
 #define G4CustomPyGen_pycpp_G4GunWrapper_hh
 
-#include "Core/Python.hh"
+#include "Core/Types.hh"
 #include "G4Utils/GenUtils.hh"
 #include "G4ParticleGun.hh"
 #include "G4Event.hh"
+#include <cassert>
 
 namespace G4CustomPyGen {
 
