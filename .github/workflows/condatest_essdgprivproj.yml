@@ -42,6 +42,7 @@ jobs:
           THEACCESSTOKEN: ${{ secrets.ACCESS_TOKEN_DGCODE_PRIVATE_PROJECTS }}
         run: |
           set -eux
+          test "${THEACCESSTOKEN:-}" != "" || ( echo "Access token missing"; exit 1 )
           git clone --depth=1 'https://usernamedoesnotmatter:'"${THEACCESSTOKEN}"'@git.esss.dk/dgcode/dgcode_private_projects.git' ./src_testproject
 
       - name: Setup conda environment

@@ -42,6 +42,7 @@ jobs:
           THEACCESSTOKEN: ${{ secrets.ACCESS_TOKEN_NCRYSTALDEV }}
         run: |
           set -eu
+          test "${THEACCESSTOKEN:-}" != "" || ( echo "Access token missing"; exit 1 )
           git clone --depth=1 'https://usernamedoesnotmatter:'"${THEACCESSTOKEN}"'@git.esss.dk/ncrystal/ncrystaldev.git' ./src_testproject
 
       - name: Setup conda environment
