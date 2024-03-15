@@ -35,6 +35,12 @@ And the viewer is launched:
 
 |image1|
 
+.. warning::
+    There is a known issue on macOS where the viewer will either crash
+    or only use part of the graphics window. There is a workaround described `in
+    this comment
+    <https://github.com/mctools/simplebuild-dgcode/issues/38#issuecomment-1999469177>`__.
+
 Grab the mouse and change the view as you see fit:
 
 * **Left-click + move**: rotate view.

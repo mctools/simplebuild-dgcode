@@ -124,6 +124,13 @@ diffraction is enabled), so all (singly) scattered neutrons (green) should end
 up in a single Debye-Scherrer cone. Other particles like gammas (yellow) are
 generated in absorption events, based on Geant4's own built-in physics.
 
+.. warning::
+    There is a known issue on macOS where the viewer will either crash
+    or only use part of the graphics window. There is a workaround described `in
+    this comment
+    <https://github.com/mctools/simplebuild-dgcode/issues/38#issuecomment-1999469177>`__.
+
+
 It might also be a good idea to verify that the Matplotlib-based
 :ref:`SimpleHists <sbsimplehists>` plotting works, which can be done with the
 command::
