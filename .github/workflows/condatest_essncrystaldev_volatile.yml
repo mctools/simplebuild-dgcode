@@ -1,4 +1,4 @@
-name: test-essncrystaldev-short
+name: test-essncrystaldev-tkvolatile
 on:
   workflow_dispatch:
     inputs:
