@@ -46,7 +46,7 @@ class ExportMgr:
             args.remove('--skiptar')
             self.skip_tar=True
         if len(args)==0:
-            dgdir = cfg.dirs.projdir
+            dgdir = cfg.dirs.main_bundle_pkg_root
             self.outdir = self._normalisepath(dgdir,'%s_exported'%projectname)
         elif len(args)==1:
             self.outdir = self._normalisepath(args[0])
