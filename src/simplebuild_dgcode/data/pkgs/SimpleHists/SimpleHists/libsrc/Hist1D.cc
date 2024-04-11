@@ -324,7 +324,7 @@ void SimpleHists::Hist1D::initErrors()
 void SimpleHists::Hist1D::setErrorsByContent()
 {
   delete[] m_errors;
-  m_errors = 0;
+  m_errors = nullptr;
 }
 
 double SimpleHists::Hist1D::getMaxContent() const

@@ -21,7 +21,7 @@ inline double SimpleHists::Hist1D::getBinContent(unsigned ibin) const
 inline double SimpleHists::Hist1D::getBinError(unsigned ibin) const
 {
   assert(ibin<m_data.nbins);
-  return sqrt(m_errors ? m_errors[ibin] : m_content[ibin]);
+  return std::sqrt(m_errors ? m_errors[ibin] : m_content[ibin]);
 }
 
 
