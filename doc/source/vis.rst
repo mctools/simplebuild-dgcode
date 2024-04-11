@@ -17,7 +17,7 @@ Custom 3D Viewer
 ----------------
 
 In dgcode, we provide a custom `OpenSceneGraph
-<https://www.openscenegraph.com/>`__-based 3D visualisation tool which can be
+<https://openscenegraph.github.io/openscenegraph.io/>`__-based 3D visualisation tool which can be
 used to visualise both simulation geometries and data. Despite being a bit rough
 around the edges (for instance it could use a better name than "CoolNameHere"),
 it has already been highly useful for a lot of work so far.
