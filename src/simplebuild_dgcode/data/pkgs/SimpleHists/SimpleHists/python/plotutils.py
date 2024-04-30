@@ -163,6 +163,8 @@ def _resize_text_reltofig(figure,textobject,maxsize=0.8):
     def do_resize(canvas):
         if canvas in currently_resizing:
             return#prevent triggering recursion
+        if textobject.figure is None:
+            return#Avoid crash in textobject.get_window_extent call
         currently_resizing.add(canvas)
         width,height=canvas.get_width_height()
         vis = textobject.get_visible()
