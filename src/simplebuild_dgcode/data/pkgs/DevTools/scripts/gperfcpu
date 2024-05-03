@@ -13,21 +13,30 @@ else
     ISPY=0
 fi
 
-lp=/usr/lib64/libprofiler.so
-if [ ! -f $lp ]; then
-    lp=/usr/lib/libprofiler.so
-fi
-if [ ! -f $lp ]; then
-    lp=/usr/lib/x86_64-linux-gnu/libprofiler.so
-fi
-if [ ! -f $lp ]; then
-    "Error: neither /usr/lib64/libprofiler.so nor /usr/lib/libprofiler.so nor /usr/lib/x86_64-linux-gnu/libprofiler.so exists. Did you install gperftools?"
-    exit 1
-fi
-PPROFCMD="$(which google-pprof || echo $(which pprof))"
-if [ "x$PPROFCMD" == "x" ]; then
-    "Error: neither google-pprof nor pprof commands found..."
-    exit 1
+if [ "x${CONDA_PREFIX:-}" != "x" ]; then
+    lp="${CONDA_PREFIX}/lib/libprofiler.so"
+    PPROFCMD="${CONDA_PREFIX}/bin/pprof"
+    if [ ! -f "${lp}" -o ! -f "${PPROFCMD}" ]; then
+        echo "Error: You are in a conda environment but I did not find CONDA_PREFIX/lib/libprofiler.so and CONDA_PREFIX/bin/pprof. Did you install the gperftools conda package?"
+        exit 1
+    fi
+else
+    lp=/usr/lib64/libprofiler.so
+    if [ ! -f $lp ]; then
+        lp=/usr/lib/libprofiler.so
+    fi
+    if [ ! -f $lp ]; then
+        lp=/usr/lib/x86_64-linux-gnu/libprofiler.so
+    fi
+    if [ ! -f $lp ]; then
+        echo "Error: neither /usr/lib64/libprofiler.so nor /usr/lib/libprofiler.so nor /usr/lib/x86_64-linux-gnu/libprofiler.so exists. Did you install gperftools?"
+        exit 1
+    fi
+    PPROFCMD="$(which google-pprof || echo $(which pprof))"
+    if [ "x$PPROFCMD" == "x" ]; then
+        echo "Error: neither google-pprof nor pprof commands found..."
+        exit 1
+    fi
 fi
 shift 1
 if [ $ISPY == 1 ]; then
