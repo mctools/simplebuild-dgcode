@@ -44,6 +44,14 @@ SimpleHists::Hist1D* SimpleHists::HistCollection::book1D(unsigned nbins, double 
   return h;
 }
 
+void SimpleHists::HistCollection::cloneMissing( const HistCollection& o )
+{
+  for( auto& e : o.m_hists ) {
+    if ( !m_hists.count( e.first ) )
+      m_hists[ e.first ] = e.second->clone();
+  }
+}
+
 SimpleHists::Hist1D* SimpleHists::HistCollection::book1D(const std::string& title,
                                                          unsigned nbins, double xmin, double xmax,
                                                          const std::string& key)

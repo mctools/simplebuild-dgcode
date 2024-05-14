@@ -86,6 +86,10 @@ namespace SimpleHists {
     HistCollection( HistCollection && o ) { m_hists.clear(); std::swap(m_hists,o.m_hists); }
     HistCollection & operator= ( HistCollection && rh ) { clear(); m_hists.clear(); std::swap(m_hists,rh.m_hists); return *this; }
 
+    //Add clones of all histograms found in the other collection. Ignores any
+    //histogram with a key already present in this instance:
+    void cloneMissing( const HistCollection& o );
+
   private:
     //Contained histograms, in order of keys
     std::map<std::string,HistBase*> m_hists;
