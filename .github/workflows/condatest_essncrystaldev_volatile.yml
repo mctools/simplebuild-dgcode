@@ -6,6 +6,10 @@ on:
         type: boolean
         description: Launch manual debugging tmate session on failure
         default: false
+      longtests:
+        type: boolean
+        description: Include NCLongxxx tests
+        default: false
 
 jobs:
 
@@ -67,16 +71,23 @@ jobs:
           cd src_testproject
           sb
 
-      - name: Launch unit tests (release mode)
-        id: test-release-mode
+      - name: Launch short unit tests (release mode)
+        id: test-release-mode-short
         run: |
           set -eu
           cd src_testproject
-          #NCLong* tests are run in a different workflow:
           sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended,NCUtils,NCG4,NCTests,NCThreadVal,NCPerfVal --testfilter='!sb_nclong*'
+
+      - name: Launch long unit tests (release mode)
+        id: test-release-mode-long
+        if: inputs.includelongtests == true
+        run: |
+          set -eu
+          cd src_testproject
+          sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended,NCUtils,NCG4,NCTests,NCThreadVal,NCPerfVal --testfilter='sb_nclong*'
 
       - name: Setup tmate session for manual debugging
         uses: mxschmitt/action-tmate@v3
-        if: always() && inputs.manual-debugging == true && (steps.build-and-test-core-only.outcome != 'success' || steps.build-and-test-release-mode.outcome != 'success' || steps.build-and-test-debug-mode.outcome != 'success')
+        if: always() && inputs.manual-debugging == true && (steps.test-release-mode-short.outcome != 'success' || steps.test-release-mode-long.outcome != 'success')
         with:
           limit-access-to-actor: true
