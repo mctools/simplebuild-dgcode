@@ -55,7 +55,7 @@ namespace SimpleHists {
     void fillMany(const double* vals, unsigned n);
     void fillMany(const double* vals, const double* weights, unsigned n);
 
-    //Multiple fillings - just like N calls to fill(val,weight). Note that
+    //Multiple fillings - just like N calls to fill(val). Note that
     //concerning errors this is not the same as fill(val,N).
     void fillN(unsigned long N, double val);
 
