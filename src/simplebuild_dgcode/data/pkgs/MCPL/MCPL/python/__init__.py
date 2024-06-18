@@ -1538,7 +1538,7 @@ def dump_stats(stats):
         s=stats[statname]
         assert s['type']=='hist'
         su = '%s %s'%(statname.ljust(6),('[%s]'%s['unit']).rjust(5)) if s['unit'] else statname
-        print('%s : %15g %15g %15g %15g'%(su.ljust(12),s['mean'],s['rms'],s['min'],s['max']))
+        print('%s : %15g %15.5g %15g %15g'%(su.ljust(12),s['mean'],s['rms'],s['min'],s['max']))
     for statname in _possible_freq_stats:
         if not statname in stats:
             continue
