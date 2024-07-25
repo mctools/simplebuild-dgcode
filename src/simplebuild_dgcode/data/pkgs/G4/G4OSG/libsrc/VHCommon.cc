@@ -2,7 +2,6 @@
 #include "G4OSG/VolHandle.hh"
 #include "G4OSG/Viewer.hh"
 #include "HepPolyhedron.h"
-#include "G4strstreambuf.hh"
 #include "G4OSG/BestUnit.hh"
 #include <sstream>
 

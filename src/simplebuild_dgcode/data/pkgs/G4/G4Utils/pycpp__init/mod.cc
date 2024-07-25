@@ -1,6 +1,5 @@
 #include "G4Utils/Flush.hh"
 #include "Core/Python.hh"
-#include "G4strstreambuf.hh"
 #include "G4Version.hh"
 
 namespace pyG4Utils {
