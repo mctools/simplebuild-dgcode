@@ -19,8 +19,8 @@ namespace SimpleHists {
     // const std::string& getZLabel() const;
     // void setZLabel(const std::string& l);
 
-    virtual unsigned dimension() const { return 1; }
-    virtual void dump(bool contents = false, const std::string& prefix = "") const;
+    unsigned dimension() const override { return 1; }
+    void dump(bool contents = false, const std::string& prefix = "") const override;
 
     unsigned getNBins() const;
     double getBinContent(unsigned ibin) const;
@@ -39,8 +39,8 @@ namespace SimpleHists {
 
     double getMaxContent() const;
 
-    virtual bool empty() const;
-    virtual double getIntegral() const;
+    bool empty() const override;
+    double getIntegral() const override;
 
     double getMean() const;//only well-defined if hist is non-empty
     double getRMS() const;//only well-defined if hist is non-empty
@@ -59,26 +59,26 @@ namespace SimpleHists {
     //concerning errors this is not the same as fill(val,N).
     void fillN(unsigned long N, double val);
 
-    virtual char histType() const { return 0x01; }
-    virtual void serialise(std::string&) const;
+    char histType() const override { return 0x01; }
+    void serialise(std::string&) const override;
 
     //Raw access to the contents (might get invalidated by future calls to non-const methods):
     const double * rawContents() const { return m_content; }
     const double * rawErrorsSquared() const { return m_errors ? m_errors : m_content; }
 
     //Merge contents of another compatible histogram onto this one.
-    virtual bool mergeCompatible(const HistBase*) const;//check this before calling next method
-    virtual void merge(const HistBase*);
+    bool mergeCompatible(const HistBase*) const override;//check this before calling next method
+    void merge(const HistBase*) override;
 
     void setErrorsByContent();//After this errors will be sqrt(content)
 
-    virtual bool isSimilar(const HistBase*) const;
+    bool isSimilar(const HistBase*) const override;
 
-    virtual void scale(double scalefact);
+    void scale(double scalefact) override;
 
-    virtual HistBase* clone() const;
+    HistBase* clone() const override;
 
-    virtual void reset();
+    void reset() override;
     bool canRebin(unsigned new_nbins) const;
     void rebin(unsigned new_nbins);//Only ok to call if canRebin(..) is true.
     void resetAndRebin(unsigned nbins, double xmin, double xmax);

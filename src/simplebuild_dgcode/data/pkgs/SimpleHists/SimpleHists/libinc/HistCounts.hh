@@ -32,30 +32,30 @@ namespace SimpleHists {
     bool hasCounter(const std::string& label) const;
 
     unsigned dimension() const override { return 1; }
-    virtual void dump(bool contents = false, const std::string& prefix = "") const;
+    void dump(bool contents = false, const std::string& prefix = "") const override;
 
     double getMaxContent() const;
 
-    virtual bool empty() const;
+    bool empty() const override;
     size_t nCounters() const;
-    virtual double getIntegral() const;
+    double getIntegral() const override;
 
-    virtual char histType() const { return 0x03; }
-    virtual void serialise(std::string&) const;
+    char histType() const override { return 0x03; }
+    void serialise(std::string&) const override;
 
     //Merge contents of another compatible histogram onto this one.
-    virtual bool mergeCompatible(const HistBase*) const;//check this before calling next method
-    virtual void merge(const HistBase*);
+    bool mergeCompatible(const HistBase*) const override;//check this before calling next method
+    void merge(const HistBase*) override;
 
     void setErrorsByContent();//After this errors will be sqrt(content)
 
-    virtual bool isSimilar(const HistBase*) const;
+    bool isSimilar(const HistBase*) const override;
 
-    virtual void scale(double scalefact);
+    void scale(double scalefact) override;
 
-    virtual HistBase* clone() const;
+    HistBase* clone() const override;
 
-    virtual void reset();//all counters will be reset
+    void reset() override;//all counters will be reset
 
     //resort added counters (default is order of addCounter calls):
     void sortByLabels();

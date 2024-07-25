@@ -17,7 +17,7 @@ namespace SimpleHists {
     virtual ~Hist2D();
 
     unsigned dimension() const override { return 2; }
-    virtual void dump(bool contents = false,const std::string& prefix = "") const;
+    void dump(bool contents = false,const std::string& prefix = "") const override;
 
     unsigned getNBinsX() const;
     unsigned getNBinsY() const;
@@ -45,8 +45,8 @@ namespace SimpleHists {
     int valueToBinX(double valx) const;
     int valueToBinY(double valy) const;
 
-    virtual bool empty() const;
-    virtual double getIntegral() const;
+    bool empty() const override;
+    double getIntegral() const override;
 
     //Next six functions are only well-defined when historam is not empty:
     double getMeanX() const;
@@ -67,23 +67,23 @@ namespace SimpleHists {
     void fillMany(const double* valsx, const double* valsy, unsigned n);
     void fillMany(const double* valsx, const double* valsy, const double* weights, unsigned n);
 
-    virtual char histType() const { return 0x02; }
-    virtual void serialise(std::string&) const;
+    char histType() const override { return 0x02; }
+    void serialise(std::string&) const override;
 
     //Raw access to the contents:
     const double * rawContents() { return m_content; }
 
     //Merge contents of another compatible histogram onto this one.
-    virtual bool mergeCompatible(const HistBase*) const;//check this before calling next method
-    virtual void merge(const HistBase*);
+    bool mergeCompatible(const HistBase*) const override;//check this before calling next method
+    void merge(const HistBase*) override;
 
-    virtual bool isSimilar(const HistBase*) const;
+    bool isSimilar(const HistBase*) const override;
 
-    virtual void scale(double scalefact);
+    void scale(double scalefact) override;
 
-    virtual HistBase* clone() const;
+    HistBase* clone() const override;
 
-    virtual void reset();
+    void reset() override;
 
   private:
     void init(unsigned nbinsx, double xmin, double xmax,
