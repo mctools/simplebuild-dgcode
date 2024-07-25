@@ -29,7 +29,7 @@ namespace SimpleHists {
 
     virtual bool empty() const = 0 ;//true after first fill with non-zero weight
     virtual double getIntegral() const = 0;
-    virtual unsigned dimension() = 0;//return histogram dimension (1 or 2)
+    virtual unsigned dimension() const = 0;//return histogram dimension (1 or 2)
     virtual void dump(bool contents = false, const std::string& prefix = "") const = 0;
 
     //methods for serialisation:

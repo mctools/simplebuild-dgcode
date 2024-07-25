@@ -6,7 +6,7 @@
 
 namespace SimpleHists {
 
-  class Hist1D : public HistBase {
+  class Hist1D final : public HistBase {
   public:
 
     Hist1D(unsigned nbins, double xmin, double xmax);
@@ -19,7 +19,7 @@ namespace SimpleHists {
     // const std::string& getZLabel() const;
     // void setZLabel(const std::string& l);
 
-    virtual unsigned dimension() { return 1; }
+    virtual unsigned dimension() const { return 1; }
     virtual void dump(bool contents = false, const std::string& prefix = "") const;
 
     unsigned getNBins() const;

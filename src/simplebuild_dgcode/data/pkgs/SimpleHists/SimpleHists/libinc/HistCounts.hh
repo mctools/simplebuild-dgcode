@@ -15,7 +15,7 @@
 
 namespace SimpleHists {
 
-  class HistCounts : public HistBase {
+  class HistCounts final : public HistBase {
   public:
 
     HistCounts();
@@ -31,7 +31,7 @@ namespace SimpleHists {
 
     bool hasCounter(const std::string& label) const;
 
-    virtual unsigned dimension() { return 1; }
+    unsigned dimension() const override { return 1; }
     virtual void dump(bool contents = false, const std::string& prefix = "") const;
 
     double getMaxContent() const;

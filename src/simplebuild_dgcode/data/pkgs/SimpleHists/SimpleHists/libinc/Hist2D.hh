@@ -5,7 +5,7 @@
 
 namespace SimpleHists {
 
-  class Hist2D : public HistBase {
+  class Hist2D final : public HistBase {
   public:
 
     Hist2D(unsigned nbinsx, double xmin, double xmax,
@@ -16,7 +16,7 @@ namespace SimpleHists {
     Hist2D(const std::string& serialised_data);
     virtual ~Hist2D();
 
-    virtual unsigned dimension() { return 2; }
+    unsigned dimension() const override { return 2; }
     virtual void dump(bool contents = false,const std::string& prefix = "") const;
 
     unsigned getNBinsX() const;
