@@ -19,6 +19,11 @@ namespace EvtFile {
 
     IDBEntry();
 
+    IDBEntry( const IDBEntry& ) = delete;
+    IDBEntry& operator=( const IDBEntry& ) = delete;
+    IDBEntry( IDBEntry&& ) = delete;
+    IDBEntry& operator=( IDBEntry&& ) = delete;
+
     //When writing:
     virtual void write(EvtFile::FileWriter&) = 0;//stream data to db section
 
@@ -37,8 +42,8 @@ namespace EvtFile {
     virtual bool equals(const IDBEntry& o) const = 0;
     virtual ~IDBEntry() {}
   private:
-    IDBEntry( const IDBEntry & );
-    IDBEntry & operator= ( const IDBEntry & );
+    // IDBEntry( const IDBEntry & );
+    // IDBEntry & operator= ( const IDBEntry & );
     unsigned m_hash;
     unsigned m_refCount;
     friend class DBEntryWriter;

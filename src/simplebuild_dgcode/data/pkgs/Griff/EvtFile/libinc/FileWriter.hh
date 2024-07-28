@@ -37,6 +37,11 @@ namespace EvtFile {
                 const char* filename,
                 int buffer_len=8192 );
 
+    FileWriter( const FileWriter& ) = delete;
+    FileWriter& operator=( const FileWriter& ) = delete;
+    FileWriter( FileWriter&& ) = delete;
+    FileWriter& operator=( FileWriter&& ) = delete;
+
     //Register callbacks to be notified just before events are flush to disk:
     void registerPreFlushCallback(IFWPreFlushCB&);
 
@@ -78,8 +83,8 @@ namespace EvtFile {
 
   private:
 
-    FileWriter( const FileWriter & );
-    FileWriter & operator= ( const FileWriter & );
+    // FileWriter( const FileWriter & );
+    // FileWriter & operator= ( const FileWriter & );
 
     const IFormat* m_format;
     char * m_buf;
@@ -91,7 +96,10 @@ namespace EvtFile {
     std::vector<IFWPreFlushCB*> m_preFlushCBs;
     std::string m_filename;
     void write( const char*data, unsigned nbytes ) { m_os.write( data, nbytes); }
-    void write( const Utils::DynBuffer<char>& buf ) { m_os.write( buf.data(), buf.size()); }
+    void write( const Utils::DynBuffer<char>& buf )
+    { if (!buf.empty())
+        m_os.write( buf.data(), buf.size());
+    }
     template<class T>
     void write(const T&t) { m_os.write( (char*)&t, sizeof(t)); }
   };

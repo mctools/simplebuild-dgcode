@@ -11,10 +11,11 @@ namespace EvtFile {
                           const char* filename,
                           int buffer_len )
     : m_format(format),
-      m_buf(buffer_len ? new char[buffer_len] : 0),
+      m_buf(buffer_len ? new char[buffer_len] : nullptr),
       m_filename(filename)
   {
-    m_os.rdbuf()->pubsetbuf(m_buf, buffer_len );
+    if ( buffer_len > 0 )
+      m_os.rdbuf()->pubsetbuf(m_buf, buffer_len );
 
     if (Core::ends_with(filename,format->fileExtension()))
       m_os.open(filename, std::ios::out | std::ios::binary);
@@ -28,7 +29,6 @@ namespace EvtFile {
     m_section_briefdata.reserve(4096);
     m_section_fulldata.reserve(4096);
     m_section_fulldata_compressed.reserve(4096);
-
   }
 
   FileWriter::~FileWriter()
@@ -58,7 +58,7 @@ namespace EvtFile {
     unsigned fulldata_compressed_size(0);
     if (compress_full_data&&!m_section_fulldata.empty()) {
       ZLibUtils::compressToBuffer(m_section_fulldata.data(), m_section_fulldata.size(),
-                                  m_section_fulldata_compressed,fulldata_compressed_size);
+                                  m_section_fulldata_compressed, fulldata_compressed_size);
     }
 
     //For efficient hash calculation and file i/o, put the event header in an array:
@@ -104,6 +104,7 @@ namespace EvtFile {
     m_section_database.clear();
     m_section_briefdata.clear();
     m_section_fulldata.clear();
+    m_section_fulldata_compressed.clear();
   }
 
 }

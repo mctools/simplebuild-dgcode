@@ -1,5 +1,7 @@
 inline void FileWriter::writeDataDBSection(const char* data, unsigned n)//data nbytes
 {
+  if (!n)
+    return;
   unsigned l(m_section_database.size());
   m_section_database.resize_without_init(l+n);
   std::memcpy(&(m_section_database[l]),data,n);
@@ -7,6 +9,8 @@ inline void FileWriter::writeDataDBSection(const char* data, unsigned n)//data n
 
 inline void FileWriter::writeDataBriefSection(const char* data, unsigned n)
 {
+  if (!n)
+    return;
   unsigned l(m_section_briefdata.size());
   m_section_briefdata.resize_without_init(l+n);
   std::memcpy(&(m_section_briefdata[l]),data,n);
@@ -14,6 +18,8 @@ inline void FileWriter::writeDataBriefSection(const char* data, unsigned n)
 
 inline void FileWriter::writeDataFullSection(const char* data, unsigned n)
 {
+  if (!n)
+    return;
   unsigned l(m_section_fulldata.size());
   m_section_fulldata.resize_without_init(l+n);
   std::memcpy(&(m_section_fulldata[l]),data,n);

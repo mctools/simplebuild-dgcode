@@ -42,6 +42,11 @@ namespace EvtFile {
                 EvtFileDB* db_listener = 0,
                 int buffer_len=8192 );
 
+    FileReader( const FileReader& ) = delete;
+    FileReader& operator=( const FileReader& ) = delete;
+    FileReader( FileReader&& ) = delete;
+    FileReader& operator=( FileReader&& ) = delete;
+
     bool isInit() const;//returns true after init() has been called.
 
     bool init();//Actually opens file and seeks to the first event if
@@ -114,8 +119,8 @@ namespace EvtFile {
   private:
 
 
-    FileReader( const FileReader & );
-    FileReader & operator= ( const FileReader & );
+    // FileReader( const FileReader & );
+    // FileReader & operator= ( const FileReader & );
 
     const IFormat* m_format;
     bool m_isInitialised;

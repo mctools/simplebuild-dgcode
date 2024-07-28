@@ -12,10 +12,15 @@
 
 namespace EvtFile {
 
-  class DBStringsReader : public IDBSubSectionReader {
+  class DBStringsReader final : public IDBSubSectionReader {
   public:
     DBStringsReader(subsectid_type subSectionID);
     ~DBStringsReader(){}
+
+    DBStringsReader( const DBStringsReader& ) = delete;
+    DBStringsReader& operator=( const DBStringsReader& ) = delete;
+    DBStringsReader( DBStringsReader&& ) = delete;
+    DBStringsReader& operator=( DBStringsReader&& ) = delete;
 
     //Access the string DB:
     const str_type& getString( index_type i ) const
@@ -30,10 +35,6 @@ namespace EvtFile {
     virtual void clearInfo() { m_stringdb.clear(); }
 
   private:
-
-    DBStringsReader( const DBStringsReader & );
-    DBStringsReader & operator= ( const DBStringsReader & );
-
     //Indices are loaded consecutively and starting from zero => We can use a vector:
     std::vector<str_type> m_stringdb;
     subsectid_type m_subSectionID;

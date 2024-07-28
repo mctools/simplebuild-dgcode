@@ -18,12 +18,17 @@
 namespace EvtFile {
 
   template<class Tentry>
-  class DBEntryReader : public IDBSubSectionReader {
+  class DBEntryReader final : public IDBSubSectionReader {
   public:
 
     DBEntryReader(subsectid_type subSectionID)
       : m_subSectionID(subSectionID) {}
     ~DBEntryReader(){}
+
+    DBEntryReader( const DBEntryReader& ) = delete;
+    DBEntryReader& operator=( const DBEntryReader& ) = delete;
+    DBEntryReader( DBEntryReader&& ) = delete;
+    DBEntryReader& operator=( DBEntryReader&& ) = delete;
 
     //Access the DB:
     const Tentry& getEntry( index_type i )
@@ -38,8 +43,6 @@ namespace EvtFile {
     virtual void clearInfo();
 
   private:
-    DBEntryReader( const DBEntryReader & );
-    DBEntryReader & operator= ( const DBEntryReader & );
 
     std::vector<Tentry*> m_db;
     subsectid_type m_subSectionID;

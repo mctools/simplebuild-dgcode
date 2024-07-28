@@ -7,17 +7,19 @@ namespace EvtFile {
 
   class IDBSubSectionReader;
 
-  class DBSubSectReaderMgr : public EvtFileDB {
+  class DBSubSectReaderMgr final : public EvtFileDB {
   public:
     DBSubSectReaderMgr(){}
     virtual ~DBSubSectReaderMgr(){}
 
+    DBSubSectReaderMgr( const DBSubSectReaderMgr& ) = delete;
+    DBSubSectReaderMgr& operator=( const DBSubSectReaderMgr& ) = delete;
+    DBSubSectReaderMgr( DBSubSectReaderMgr&& ) = delete;
+    DBSubSectReaderMgr& operator=( DBSubSectReaderMgr&& ) = delete;
+
     void addSubSection(IDBSubSectionReader&);//will keep a reference to the subsection
 
   private:
-
-    DBSubSectReaderMgr( const DBSubSectReaderMgr & );
-    DBSubSectReaderMgr & operator= ( const DBSubSectReaderMgr & );
 
     void newInfoAvailable(const char*data, unsigned nbytes);
     void clearInfo();

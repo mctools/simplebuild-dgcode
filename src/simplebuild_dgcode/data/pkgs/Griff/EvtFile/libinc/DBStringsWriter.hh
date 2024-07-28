@@ -13,7 +13,7 @@
 
 namespace EvtFile {
 
-  class DBStringsWriter : public IDBSubSectionWriter {
+  class DBStringsWriter final : public IDBSubSectionWriter {
   public:
     DBStringsWriter(subsectid_type subSectionID, FileWriter& fw)
       : IDBSubSectionWriter(fw),
@@ -21,6 +21,11 @@ namespace EvtFile {
         m_subSectionID(subSectionID)
     {}
     ~DBStringsWriter(){}
+
+    DBStringsWriter( const DBStringsWriter& ) = delete;
+    DBStringsWriter& operator=( const DBStringsWriter& ) = delete;
+    DBStringsWriter( DBStringsWriter&& ) = delete;
+    DBStringsWriter& operator=( DBStringsWriter&& ) = delete;
 
     virtual subsectid_type uniqueSubSectionID() const { return m_subSectionID; }
 
@@ -36,9 +41,6 @@ namespace EvtFile {
     { return !m_addedSinceLastWrite.empty(); }
 
   private:
-
-    DBStringsWriter( const DBStringsWriter & );
-    DBStringsWriter & operator= ( const DBStringsWriter & );
 
     typedef std::map<str_type,index_type,Utils::fast_str_cmp> map_type;
     static const unsigned NMAPS = 32;//reduce map lookup time by keeping several maps and looking in m_map[str.size()%NMAPS]

@@ -14,7 +14,7 @@ namespace EvtFile {
 
   class IDBEntry;
 
-  class DBEntryWriter : public IDBSubSectionWriter {
+  class DBEntryWriter final : public IDBSubSectionWriter {
   public:
     typedef std::uint32_t index_type;
 
@@ -23,6 +23,12 @@ namespace EvtFile {
         m_nextIndex(0),
         m_subSectionID(subSectionID)
     {}
+
+    DBEntryWriter( const DBEntryWriter& ) = delete;
+    DBEntryWriter& operator=( const DBEntryWriter& ) = delete;
+    DBEntryWriter( DBEntryWriter&& ) = delete;
+    DBEntryWriter& operator=( DBEntryWriter&& ) = delete;
+
     virtual ~DBEntryWriter();
 
     virtual std::uint16_t uniqueSubSectionID() const { return m_subSectionID; }
