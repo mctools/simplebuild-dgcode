@@ -94,7 +94,7 @@ namespace EvtFile {
     //eventActive() returns false if not at a readable event. This can occur as
     //a result of a failed navigation attempt or right after the constructor in
     //case the file has 0 events:
-    bool eventActive() const { return m_currentEventInfo!=0; }
+    bool eventActive() const { return m_currentEventInfo!=nullptr; }
 
     //Actual data access. Do not call before testing eventActive above.
     unsigned runNumber() const { return m_currentEventInfo->runNumber; }

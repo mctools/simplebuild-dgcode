@@ -15,7 +15,7 @@ namespace Utils {
     static const unsigned chunksize = NBytes;
 
     MemPool() { grow(); }
-    ~MemPool() { releaseAll(); delete[] m_areas[0]; }
+    ~MemPool() { releaseAll(); free(m_areas[0]); }
     char* acquire()
     {
       if (m_next == Count)
@@ -30,7 +30,8 @@ namespace Utils {
       auto itE = m_areas.end();
       ++it;//keep the first area for next time
       for(;it!=itE;++it)
-        delete[] *it;
+	//        delete[] *it;
+        free(*it);
       m_areas.resize(1);
       m_current = m_areas.front();
     }
@@ -38,7 +39,8 @@ namespace Utils {
     void grow()
     {
       m_next = 0;
-      m_areas.push_back(m_current = new char[NBytes*Count]);
+      //m_areas.push_back(m_current = new char[NBytes*Count]);
+      m_areas.push_back(m_current = (char*)malloc(NBytes*Count));
     }
     unsigned m_next;
     char * m_current;

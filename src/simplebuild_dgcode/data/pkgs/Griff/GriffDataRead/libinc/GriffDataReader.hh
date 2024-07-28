@@ -16,6 +16,7 @@
 #include "EvtFile/DBEntryReader.hh"
 #include "Utils/ByteStream.hh"
 #include "Utils/MemPool.hh"
+#include "Utils/DynBuffer.hh"
 #include <cassert>
 #include <vector>
 #include <string>
@@ -147,7 +148,7 @@ private:
   //current file:
   unsigned m_fileIdx;
   EvtFile::FileReader * m_fr;
-  char m_mempool_filereader[sizeof(EvtFile::FileReader)];
+  alignas(EvtFile::FileReader) char m_mempool_filereader[sizeof(EvtFile::FileReader)];
   //event data:
   mutable bool m_needsLoad;
   mutable bool m_tracksContiguous;
@@ -165,10 +166,11 @@ private:
   mutable const GriffDataRead::Track* m_primaryTracksBegin;
   mutable const GriffDataRead::Track* m_primaryTracksEnd;
   mutable std::vector<GriffDataRead::Track> m_tracks;
-  mutable std::vector<char> m_mempool_segments;
+  //mutable std::vector<char> m_mempool_segments;//fixme align!
+  mutable Utils::DynBuffer<char> m_mempool_segments;//fixme align!
   static const unsigned MEMPOOL_STEPS_NSTEPS = 10;
   static const unsigned STEP_SIZE = 2*sizeof(void*);//to avoid include loop
-  Utils::MemPool<STEP_SIZE*MEMPOOL_STEPS_NSTEPS> m_mempool_steps;
+  Utils::MemPool<STEP_SIZE*MEMPOOL_STEPS_NSTEPS> m_mempool_steps;//fixme align
   std::vector<char*> m_mempool_dynamic;//stuff to delete[] in clearEvent
 
   //db:

@@ -201,8 +201,8 @@ void GriffDataReader::initFile(unsigned i)
       m_fileIdx = i;
       return;
     }
-    m_fr->EvtFile::FileReader::~FileReader();
-    m_fr = 0;
+    m_fr->EvtFile::FileReader::~FileReader();//fixme std::optional would be better!
+    m_fr = nullptr;
   }
   m_fr = new(&(m_mempool_filereader[0])) EvtFile::FileReader(GriffFormat::Format::getFormat(),m_inputFiles[i].c_str(),&m_dbmgr);
   bool ok = m_fr->init();
@@ -316,7 +316,8 @@ void GriffDataReader::actualLoadTracks() const
   assert(m_primaryTracksEnd>=m_primaryTracksBegin);
 
   //Segments:
-  m_mempool_segments.reserve(nsegments*sizeof(GriffDataRead::Segment));
+  //  m_mempool_segments.reserve(nsegments*sizeof(GriffDataRead::Segment));
+  m_mempool_segments.resize_without_init(nsegments*sizeof(GriffDataRead::Segment));
   unsigned iseg(0);
   for (GriffDataRead::Track* it=const_cast<GriffDataRead::Track*>(m_tracksBegin);it!=const_cast<GriffDataRead::Track*>(m_tracksEnd);++it) {
 
