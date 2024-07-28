@@ -1,7 +1,7 @@
 #ifndef Utils_Compress_hh
 #define Utils_Compress_hh
 
-#include <vector>
+#include "Utils/DynBuffer.hh"
 
 namespace ZLibUtils {
   //Will perform zlib compression on indata and places it in output. Note that
@@ -10,12 +10,14 @@ namespace ZLibUtils {
   //inspect outdataLength to see the resulting amount of uncompressed data. This
   //allows the caller to recycle the output buffer.
 
-  //Note from TK ~10 years later: This is not exactly a great way to do it - and perhaps even UB.
+  //Note from TK ~10 years later: This is not exactly a great way to do it - and
+  //perhaps even UB. Moving to custom DynBuffer.
 
-  void compressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength);
-  //void decompressToBuffer(const char* indata, unsigned indataLength, std::vector<char>& output,unsigned& outdataLength);
-
-  void decompressToBufferNew(const char* indata, unsigned indataLength, std::vector<char>& output);
+  void compressToBuffer( const char* indata, unsigned indataLength,
+                         Utils::DynBuffer<char>& output,
+                         unsigned& outdataLength );
+  void decompressToBufferNew( const char* indata, unsigned indataLength,
+                              Utils::DynBuffer<char>& output );
 }
 
 #endif

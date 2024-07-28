@@ -24,7 +24,7 @@ namespace EvtFile {
       m_fulldata_compressed(format->compressFullData()),
       m_briefdata_isloaded(false),
       m_fulldata_isloaded(false),
-      m_currentEventInfo(0),
+      m_currentEventInfo(nullptr),
       m_fileName(filename)
   {
     //NB: Rest of initialisation done in init()
@@ -85,6 +85,7 @@ namespace EvtFile {
     m_version=fileversion;
     m_section_briefdata.reserve(4096);
     m_section_fulldata.reserve(4096);
+    m_section_fulldata_compressed.reserve(4096);
     m_evts.reserve(1000);
     initEventAtIndex(0);
     return ok();
@@ -126,7 +127,7 @@ namespace EvtFile {
     unsigned targetidx=idx+n;
     if (targetidx<m_evts.size()) {
       initEventAtIndex(targetidx);//Already read it, jump directly there
-      return m_currentEventInfo!=0;
+      return m_currentEventInfo!=nullptr;
     }
 
     //Ok, targetidx lies beyond the events already read. Jump to the first
@@ -135,7 +136,7 @@ namespace EvtFile {
     while(m_currentEventInfo && targetidx>m_currentEventInfo->evtIndex)
       initEventAtIndex(m_evts.size());
 
-    return m_currentEventInfo!=0;
+    return m_currentEventInfo!=nullptr;
   }
 
   bool FileReader::seekEventByIndex(unsigned idx)
@@ -175,7 +176,7 @@ namespace EvtFile {
     if (m_currentEventInfo && m_currentEventInfo->evtIndex==idx)
       return;//already there
 
-    m_currentEventInfo=0;
+    m_currentEventInfo=nullptr;
     m_briefdata_isloaded = false;
     m_fulldata_isloaded = false;
 
@@ -211,7 +212,7 @@ namespace EvtFile {
       }
       if (m_evts.capacity()==m_evts.size())
         m_evts.reserve(m_evts.size()*2);
-      m_evts.resize(m_evts.size()+1);
+      m_evts.emplace_back();//.resize(m_evts.size()+1);
       EventInfo& newEvt = m_evts.back();
       newEvt.evtPosInFile = newEvtPos;
       newEvt.evtIndex = m_evts.size()-1;
@@ -229,15 +230,15 @@ namespace EvtFile {
         //Read the database info and pass it on to any derived class.
         //For economical reasons we temporarily use the m_section_briefdata for this.
         assert(!m_briefdata_isloaded);
-        m_section_briefdata.reserve(newEvt.sectionSize_database);
-        read(&(m_section_briefdata[0]),newEvt.sectionSize_database);
+        m_section_briefdata.resize_without_init(newEvt.sectionSize_database);
+        read(m_section_briefdata.data(),newEvt.sectionSize_database);
         if (m_is.fail()) {
           m_bad=true;
           m_evts.resize(m_evts.size()-1);
           m_reason="Errors encountered while reading database section of event";
           return;
         }
-        m_db_listener->newInfoAvailable(&(m_section_briefdata[0]),newEvt.sectionSize_database);
+        m_db_listener->newInfoAvailable(m_section_briefdata.data(),newEvt.sectionSize_database);
       }
       //All ok it seems:
       m_currentEventInfo=&newEvt;
@@ -254,7 +255,8 @@ namespace EvtFile {
     if (m_currentEventInfo&&m_currentEventInfo->evtNumber==evt_number&&m_currentEventInfo->runNumber==run_number)
       return true;//already there.
 
-    m_currentEventInfo=0;
+    m_currentEventInfo=nullptr;
+
     m_briefdata_isloaded = false;
     m_fulldata_isloaded = false;
 
@@ -276,13 +278,14 @@ namespace EvtFile {
     assert(isInit());
     assert(eventActive() && "getSharedDataInEvent() called when not eventActive()");
 
+    assert(m_currentEventInfo!=nullptr);
     data.resize(m_currentEventInfo->sectionSize_database);
     if (!m_currentEventInfo->sectionSize_database)
       return;
 
     m_is.seekg(m_currentEventInfo->evtPosInFile+std::streampos(EVTFILE_EVENT_HEADER_BYTES));
     assert(m_is.tellg()==m_currentEventInfo->evtPosInFile+std::streampos(EVTFILE_EVENT_HEADER_BYTES));
-    char * tmp = &data[0];
+    char * tmp = data.data();
     assert(tmp);
     read(tmp,m_currentEventInfo->sectionSize_database);
     return;
@@ -291,11 +294,12 @@ namespace EvtFile {
   const char* FileReader::getBriefData() {
     assert(isInit());
     if (m_briefdata_isloaded)
-      return &(m_section_briefdata[0]);
+      return m_section_briefdata.data();
     assert(eventActive() && "getBriefData() called when not eventActive()");
     unsigned n(nBytesBriefData());
     if (n) {
-      m_section_briefdata.reserve(nBytesBriefData());
+      m_section_briefdata.resize_without_init(nBytesBriefData());
+      assert(m_currentEventInfo!=nullptr);
       std::streampos pos = m_currentEventInfo->evtPosInFile;
       pos+=EVTFILE_EVENT_HEADER_BYTES;
       pos+=m_currentEventInfo->sectionSize_database;
@@ -304,21 +308,21 @@ namespace EvtFile {
         m_bad=true;
         return 0;
       }
-      read(&(m_section_briefdata[0]),n);
+      read(m_section_briefdata.data(),n);
       if (m_is.fail()) {
         m_bad=true;
         return 0;
       }
     }
     m_briefdata_isloaded=true;
-    return &(m_section_briefdata[0]);
+    return m_section_briefdata.data();
   }
 
   const char* FileReader::getFullData() {
     assert(isInit());
 
     if (m_fulldata_isloaded)
-      return &(m_section_fulldata[0]);
+      return m_section_fulldata.data();
 
     assert(eventActive() && "getFullData() called when not eventActive()");
 
@@ -327,9 +331,10 @@ namespace EvtFile {
     if (n) {
       //read compressed data:
       if (m_fulldata_compressed)
-        m_section_fulldata_compressed.reserve(n);
+        m_section_fulldata_compressed.resize_without_init(n);
       else
-        m_section_fulldata.reserve(n);
+        m_section_fulldata.resize_without_init(n);
+      assert(m_currentEventInfo!=nullptr);
       std::streampos pos = m_currentEventInfo->evtPosInFile;
       pos+=EVTFILE_EVENT_HEADER_BYTES;
       pos+=m_currentEventInfo->sectionSize_database;
@@ -340,9 +345,9 @@ namespace EvtFile {
         return 0;
       }
       if (m_fulldata_compressed)
-        read(&(m_section_fulldata_compressed[0]),n);
+        read(m_section_fulldata_compressed.data(),n);
       else
-        read(&(m_section_fulldata[0]),n);
+        read(m_section_fulldata.data(),n);
       if (m_is.fail()) {
         m_bad=true;
         return 0;
@@ -350,15 +355,14 @@ namespace EvtFile {
       if (m_fulldata_compressed) {
         //uncompress:
         assert(n>sizeof(std::uint32_t));
-        //ZLibUtils::decompressToBuffer(&(m_section_fulldata_compressed[0]), n, m_section_fulldata,m_fulldata_size);
-        ZLibUtils::decompressToBufferNew(&(m_section_fulldata_compressed[0]), n, m_section_fulldata);
+        ZLibUtils::decompressToBufferNew(m_section_fulldata_compressed.data(), n, m_section_fulldata);
         if ( m_section_fulldata.size() >= std::numeric_limits<unsigned>::max() )
           throw std::runtime_error("full data section size exceeds unsigned integer limits");
         m_fulldata_size = static_cast<unsigned>(m_section_fulldata.size());
       }
     }
     m_fulldata_isloaded=true;
-    return &(m_section_fulldata[0]);
+    return m_section_fulldata.data();
   }
 
   bool FileReader::verifyEventDataIntegrity()

@@ -36,14 +36,14 @@ static const std::string data_orig = "Det sydede og bruste, mens Ilden flammede 
 "H.C. Andersen.";
 
 int main(int,char**) {
-  std::vector<char> data_zipped;
+  Utils::DynBuffer<char> data_zipped;
   unsigned zippeddataLength;
   ZLibUtils::compressToBuffer(data_orig.c_str(), data_orig.size()+1, data_zipped,zippeddataLength);
   std::cout<<"Compressed data from "<<data_orig.size()+1<<" B to "<<zippeddataLength<<" B ("<<zippeddataLength*100.0/(1+data_orig.size())<<" %%)\n"<<std::endl;
 
   //Unzip:
-  std::vector<char> data_unzipped;
-  ZLibUtils::decompressToBufferNew(&(data_zipped[0]), zippeddataLength, data_unzipped);
+  Utils::DynBuffer<char> data_unzipped;
+  ZLibUtils::decompressToBufferNew(data_zipped.data(), zippeddataLength, data_unzipped);
   unsigned unzippeddataLength = static_cast<unsigned>(data_unzipped.size());
   if (data_orig.size()+1!=unzippeddataLength) {
     printf("ERROR: uncompressed data has different size than original data\n");

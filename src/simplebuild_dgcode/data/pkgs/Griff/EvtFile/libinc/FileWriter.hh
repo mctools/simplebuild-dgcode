@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <cstring>
+#include "Utils/DynBuffer.hh"
 
 //TODO: Add method which will ignore current event.
 //TODO: Make sure (#evt,#run) is unique in file (merger scripts must honour this)
@@ -23,7 +24,7 @@ namespace EvtFile {
     virtual void aboutToFlushEventToDisk(FileWriter&) = 0;
   };
 
-  class FileWriter {
+  class FileWriter final {
   public:
     ////////////////////////////////////////////
     //  Methods for opening/closing the file  //
@@ -83,13 +84,14 @@ namespace EvtFile {
     const IFormat* m_format;
     char * m_buf;
     std::ofstream m_os;
-    std::vector<char> m_section_database;
-    std::vector<char> m_section_briefdata;
-    std::vector<char> m_section_fulldata;
-    std::vector<char> m_section_fulldata_compressed;
+    Utils::DynBuffer<char> m_section_database;
+    Utils::DynBuffer<char> m_section_briefdata;
+    Utils::DynBuffer<char> m_section_fulldata;
+    Utils::DynBuffer<char> m_section_fulldata_compressed;
     std::vector<IFWPreFlushCB*> m_preFlushCBs;
     std::string m_filename;
-    void write(const char*data,unsigned nbytes) { m_os.write( data, nbytes); }
+    void write( const char*data, unsigned nbytes ) { m_os.write( data, nbytes); }
+    void write( const Utils::DynBuffer<char>& buf ) { m_os.write( buf.data(), buf.size()); }
     template<class T>
     void write(const T&t) { m_os.write( (char*)&t, sizeof(t)); }
   };

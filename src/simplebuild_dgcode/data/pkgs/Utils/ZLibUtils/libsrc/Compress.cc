@@ -7,20 +7,17 @@
 
 void ZLibUtils::compressToBuffer(const char* indata,
                                  unsigned indataLength,
-                                 std::vector<char>& output,
+                                 Utils::DynBuffer<char>& output,
                                  unsigned& outdataLength)
 {
   outdataLength = 0;
-  output.clear();
   assert(indataLength<UINT32_MAX);
   //Always embed old original size at first 4 bytes (todo: we could one day
   //compress length=0 data as length=0 vectors, but for now we keep it like
   //this):
 
   auto outbuf_maxsize = ( indataLength==0 ? 0 : compressBound(indataLength) );
-  output.resize( indataLength==0
-                 ? sizeof(std::uint32_t)
-                 : outbuf_maxsize + 128 + sizeof(std::uint32_t) );//fixme: why + 128??? ??!?!?!?!?!?
+  output.resize_without_init( sizeof(std::uint32_t) + outbuf_maxsize );
 
   auto out_data = reinterpret_cast<unsigned char*>(output.data());
   auto in_data = reinterpret_cast<const unsigned char*>(indata);
@@ -41,11 +38,12 @@ void ZLibUtils::compressToBuffer(const char* indata,
     assert(outlength<UINT_MAX-sizeof(std::uint32_t));
     outdataLength = static_cast<unsigned>(outlength) + sizeof(std::uint32_t);
     assert( outdataLength <= output.size() );
-    output.resize( outdataLength );
+    output.resize_without_init( outdataLength );
     return;
   }
 
   //something went wrong:
+  output.clear();
   if (res==Z_MEM_ERROR) {
     printf("ZLibUtils::compressToBuffer ERROR: Z_MEM_ERROR during compression.\n");
   } else if (res==Z_BUF_ERROR) {
@@ -56,7 +54,7 @@ void ZLibUtils::compressToBuffer(const char* indata,
   throw std::runtime_error("ZLibUtils::compressToBuffer failed");
 }
 
-void ZLibUtils::decompressToBufferNew(const char* indata, unsigned indataLength, std::vector<char>& output)
+void ZLibUtils::decompressToBufferNew(const char* indata, unsigned indataLength, Utils::DynBuffer<char>& output)
 {
   output.clear();
   if ( indataLength < sizeof(std::uint32_t) ) {
@@ -71,12 +69,12 @@ void ZLibUtils::decompressToBufferNew(const char* indata, unsigned indataLength,
     assert( indataLength == sizeof(std::uint32_t) );
     return;//original buffer was empty, and used 4 bytes to store that zero length.
   }
-  output.resize(outdataLength);//unfortunately we have a needless initialisation here
+  output.resize_without_init(outdataLength);
   if ( output.empty() )
     return;//should never happen, but just to be sure.
   unsigned long outlength = outdataLength;
 
-  const int res = uncompress(reinterpret_cast<unsigned char*>(&(output[0])),
+  const int res = uncompress(reinterpret_cast<unsigned char*>(output.data()),
                              &outlength,
                              reinterpret_cast<const unsigned char*>(indata)+sizeof(std::uint32_t),
                              indataLength);

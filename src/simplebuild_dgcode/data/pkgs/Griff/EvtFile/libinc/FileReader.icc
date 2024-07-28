@@ -6,6 +6,7 @@ inline bool EvtFile::FileReader::isInit() const
 
 inline void EvtFile::FileReader::read(char*data,unsigned nbytes)
 {
+  assert( data != nullptr );
   m_is.read( data, nbytes);
 }
 
@@ -23,5 +24,6 @@ inline void EvtFile::FileReader::clearEOF()
 
 inline std::uint32_t EvtFile::FileReader::eventCheckSum() const
 {
+  assert( m_currentEventInfo != nullptr );
   return m_currentEventInfo->checkSum;
 }

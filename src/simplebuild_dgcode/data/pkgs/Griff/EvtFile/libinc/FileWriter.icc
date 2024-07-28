@@ -1,22 +1,21 @@
 inline void FileWriter::writeDataDBSection(const char* data, unsigned n)//data nbytes
 {
-  //TODO: Could we do something slightly more efficient here by a custom data array and integer?
   unsigned l(m_section_database.size());
-  m_section_database.resize(l+n);//useless initialisation happens...
+  m_section_database.resize_without_init(l+n);
   std::memcpy(&(m_section_database[l]),data,n);
 }
 
 inline void FileWriter::writeDataBriefSection(const char* data, unsigned n)
 {
   unsigned l(m_section_briefdata.size());
-  m_section_briefdata.resize(l+n);
+  m_section_briefdata.resize_without_init(l+n);
   std::memcpy(&(m_section_briefdata[l]),data,n);
 }
 
 inline void FileWriter::writeDataFullSection(const char* data, unsigned n)
 {
   unsigned l(m_section_fulldata.size());
-  m_section_fulldata.resize(l+n);
+  m_section_fulldata.resize_without_init(l+n);
   std::memcpy(&(m_section_fulldata[l]),data,n);
 }
 

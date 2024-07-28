@@ -2,7 +2,7 @@
 #define EvtFile_FileReader_hh
 
 #ifndef __STDC_LIMIT_MACROS
-#define __STDC_LIMIT_MACROS
+#  define __STDC_LIMIT_MACROS
 #endif
 
 //Class responsible for actual reading of the data files.
@@ -15,6 +15,7 @@
 #include <cstring>
 #include <map>
 #include <cassert>
+#include "Utils/DynBuffer.hh"
 
 namespace EvtFile {
 
@@ -27,7 +28,7 @@ namespace EvtFile {
     virtual ~EvtFileDB(){}
   };
 
-  class FileReader {
+  class FileReader final {
   public:
 
     ////////////////////////////////////////////
@@ -132,11 +133,11 @@ namespace EvtFile {
     void read(T&t);
     void clearEOF();
 
-    std::vector<char> m_section_briefdata;
-    std::vector<char> m_section_fulldata;
+    Utils::DynBuffer<char> m_section_briefdata;
+    Utils::DynBuffer<char> m_section_fulldata;
     unsigned m_fulldata_size;
     bool m_fulldata_compressed;
-    std::vector<char> m_section_fulldata_compressed;
+    Utils::DynBuffer<char> m_section_fulldata_compressed;
     bool m_briefdata_isloaded;
     bool m_fulldata_isloaded;
 
@@ -152,7 +153,8 @@ namespace EvtFile {
       std::uint32_t evtIndex;
       std::uint32_t dummy;//Here to have sizeof(EventInfo)==8*sizeof(std::uint32_t)+sizeof(streampos) even on 64bit.
     };
-    EventInfo * m_currentEventInfo;
+    static_assert( sizeof(EventInfo)==8*sizeof(std::uint32_t)+sizeof(std::streampos), "" );
+    EventInfo * m_currentEventInfo = nullptr;
     std::vector<EventInfo> m_evts;
     ////The next map is only populated on demand when goToEvent is called!
     std::map<std::pair<std::uint32_t,std::uint32_t>,EventInfo* > m_evtMap; //(runNbr,evtNbr) -> EventInfo*

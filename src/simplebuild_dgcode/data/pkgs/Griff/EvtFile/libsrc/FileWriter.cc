@@ -27,6 +27,7 @@ namespace EvtFile {
     m_section_database.reserve(4096);
     m_section_briefdata.reserve(4096);
     m_section_fulldata.reserve(4096);
+    m_section_fulldata_compressed.reserve(4096);
 
   }
 
@@ -56,7 +57,7 @@ namespace EvtFile {
     //Compress the full data section:
     unsigned fulldata_compressed_size(0);
     if (compress_full_data&&!m_section_fulldata.empty()) {
-      ZLibUtils::compressToBuffer(&(m_section_fulldata[0]), m_section_fulldata.size(),
+      ZLibUtils::compressToBuffer(m_section_fulldata.data(), m_section_fulldata.size(),
                                   m_section_fulldata_compressed,fulldata_compressed_size);
     }
 
@@ -77,22 +78,22 @@ namespace EvtFile {
     //Calculate the hash (from uncompressed data!):
     ProgressiveHash hash;
     hash.addData((char*)&(eventheader[1]),5*sizeof(std::uint32_t));
-    if (!m_section_database.empty()) hash.addData(&(m_section_database[0]),m_section_database.size());
-    if (!m_section_briefdata.empty()) hash.addData(&(m_section_briefdata[0]),m_section_briefdata.size());
-    if (!m_section_fulldata.empty()) hash.addData(&(m_section_fulldata[0]),m_section_fulldata.size());
+    if (!m_section_database.empty()) hash.addData(m_section_database.data(),m_section_database.size());
+    if (!m_section_briefdata.empty()) hash.addData(m_section_briefdata.data(),m_section_briefdata.size());
+    if (!m_section_fulldata.empty()) hash.addData(m_section_fulldata.data(),m_section_fulldata.size());
     eventheader[0] = hash.getHash();
 
     //Write out the header:
     write((char*)&(eventheader[0]),6*sizeof(std::uint32_t));
 
     //Write out the three data blobs:
-    if (!m_section_database.empty()) write(&(m_section_database[0]),m_section_database.size());
-    if (!m_section_briefdata.empty()) write(&(m_section_briefdata[0]),m_section_briefdata.size());
+    if (!m_section_database.empty()) write(m_section_database);
+    if (!m_section_briefdata.empty()) write(m_section_briefdata);
     if (!m_section_fulldata.empty()) {
       if (compress_full_data)
-        write(&(m_section_fulldata_compressed[0]),fulldata_compressed_size);
+        write(m_section_fulldata_compressed);
       else
-        write(&(m_section_fulldata[0]),m_section_fulldata.size());
+        write(m_section_fulldata);
     }
 
     if (!m_os.good()) {

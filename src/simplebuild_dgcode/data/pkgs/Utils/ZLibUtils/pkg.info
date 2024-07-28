@@ -1,4 +1,4 @@
-package(USEEXT ZLib)
+package(USEPKG Utils USEEXT ZLib)
 
 ######################################################################
 
