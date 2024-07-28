@@ -5,7 +5,7 @@ channels:
 dependencies:
   - compilers
   - bash
-  - simple-build-dgcode >= 1.1.0
+  - simple-build-dgcode >= 1.2.1
   - ncrystal
   - mcpl
   - matplotlib
