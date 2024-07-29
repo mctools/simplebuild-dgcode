@@ -10,7 +10,7 @@ dependencies:
 #should be left out (and replaced with simple-build-system).
   - compilers
   - bash
-  - simple-build-system>=1.1.0
+  - simple-build-system>=1.2.6
   - ncrystal
   - mcpl
   - matplotlib
