@@ -71,7 +71,7 @@ if matplotlib.get_backend().lower()=='tkagg':
 
 #3) disable FPE's certain matplotlib function calls (we don't care too
 #   much about FPE's in other peoples gui/plotting code):
-from PyAna.fpe import standardMPLFixes as _standardMPLFixes
+from PyAnaMisc.fpe import standardMPLFixes as _standardMPLFixes
 _standardMPLFixes()
 
 #4) Make all legends draggable by default (unless new kw notdraggable=True) and set default numpoints=1 :

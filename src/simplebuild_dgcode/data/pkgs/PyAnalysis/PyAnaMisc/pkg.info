@@ -1,0 +1,7 @@
+package()
+
+######################################################################
+
+Package providing standalone modules (empty __init__.py!) related to PyAna.
+
+primary author: thomas.kittelmann@ess.eu

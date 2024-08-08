@@ -1,4 +1,4 @@
-package( USEPKG Units USEEXT Numpy )
+package( USEPKG Units PyAnaMisc USEEXT Numpy )
 
 ######################################################################
 

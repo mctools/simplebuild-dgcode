@@ -1,4 +1,4 @@
-package(USEPKG Utils USEEXT ZLib)
+package(USEPKG Utils PyAnaMisc USEEXT ZLib)
 
 ######################################################################
 

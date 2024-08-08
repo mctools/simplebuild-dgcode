@@ -978,6 +978,16 @@ def _has_cmap(cm):
         return False
     return True
 
+def _mpl_register_cmap(name, cmap, fail_if_present = True ):
+    if fail_if_present and _has_cmap(name):
+        return
+    if hasattr(matplotlib,'colormaps'):
+        #force to allow overwrite:
+        matplotlib.colormaps.register(name=name,cmap=cmap,force=True)
+    else:
+        #deprecated? at least it stopped working.
+        plt.register_cmap(name=name,cname=cname)
+
 def plot2d_lego(hist,show=True,cmap=None):
     _ensure_backend_ok()
     if not cmap:
@@ -1036,15 +1046,15 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
         cmap = cmaps[0]
 
     try:
-        from PyAna.dyncmap import dynamic_2d_colormap
+        from PyAnaMisc.dyncmap import dynamic_2d_colormap
         _,_,dynamic_cmap=dynamic_2d_colormap(tmp['X'])
-        plt.register_cmap(name=dynamic_cmap.name, cmap=dynamic_cmap)
+        _mpl_register_cmap(name=dynamic_cmap.name, cmap=dynamic_cmap)
         #to not break other functionality, make a fake copy for the "reverse" of
         #this custom map as well:
         import copy
         dynamic_cmap_r = copy.deepcopy(dynamic_cmap)
         dynamic_cmap_r.name = dynamic_cmap.name+'_r'
-        plt.register_cmap(name=dynamic_cmap_r.name, cmap=dynamic_cmap_r)#register a fake inverse
+        _mpl_register_cmap(name=dynamic_cmap_r.name, cmap=dynamic_cmap_r)#register a fake inverse
         cmaps+=[dynamic_cmap.name]
     except ImportError:
         pass

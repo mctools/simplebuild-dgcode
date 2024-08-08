@@ -1,6 +1,6 @@
 from PyAna import plt, np
 from Mesh3D import Mesh3D
-import PyAna.dyncmap
+import PyAna.dyncmap#FIXME: PyAna.misc ?
 import matplotlib.widgets as mplwidgets
 
 class Mesh3DViewer:
