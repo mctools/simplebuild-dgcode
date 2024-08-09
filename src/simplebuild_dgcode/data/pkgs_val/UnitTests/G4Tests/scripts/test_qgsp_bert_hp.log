@@ -1,6 +1,6 @@
 
 **************************************************************
- Geant4 version Name: geant4-11-01-patch-03 [MT]   (10-November-2023)
+ Geant4 version Name: geant4-11-02-patch-02 [MT]   (21-June-2024)
                        Copyright : Geant4 Collaboration
                       References : NIM A 506 (2003), 250-303
                                  : IEEE-TNS 53 (2006), 270-278
@@ -99,8 +99,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : Bs0
  PDG particle code : 531 [PDG anti-particle code: -531]
- Mass [GeV/c2] : 5.36689     Width : 4.374e-13
- Lifetime [nsec] : 0.001505
+ Mass [GeV/c2] : 5.36692     Width : 4.327e-13
+ Lifetime [nsec] : 0.001521
  Charge [e]: 0
  Spin : 0/2
  Parity : -1
@@ -255,7 +255,7 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : N(1440)+
  PDG particle code : 12212 [PDG anti-particle code: -12212]
- Mass [GeV/c2] : 1.43     Width : 0.35
+ Mass [GeV/c2] : 1.44     Width : 0.35
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -281,7 +281,7 @@ G4DecayTable:  N(1440)+
 --- G4ParticleDefinition ---
  Particle Name : N(1440)0
  PDG particle code : 12112 [PDG anti-particle code: -12112]
- Mass [GeV/c2] : 1.43     Width : 0.35
+ Mass [GeV/c2] : 1.44     Width : 0.35
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -307,7 +307,7 @@ G4DecayTable:  N(1440)0
 --- G4ParticleDefinition ---
  Particle Name : N(1520)+
  PDG particle code : 2124 [PDG anti-particle code: -2124]
- Mass [GeV/c2] : 1.515     Width : 0.115
+ Mass [GeV/c2] : 1.515     Width : 0.11
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -333,7 +333,7 @@ G4DecayTable:  N(1520)+
 --- G4ParticleDefinition ---
  Particle Name : N(1520)0
  PDG particle code : 1214 [PDG anti-particle code: -1214]
- Mass [GeV/c2] : 1.515     Width : 0.115
+ Mass [GeV/c2] : 1.515     Width : 0.11
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -413,7 +413,7 @@ G4DecayTable:  N(1535)0
 --- G4ParticleDefinition ---
  Particle Name : N(1650)+
  PDG particle code : 32212 [PDG anti-particle code: -32212]
- Mass [GeV/c2] : 1.655     Width : 0.14
+ Mass [GeV/c2] : 1.65     Width : 0.125
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -443,7 +443,7 @@ G4DecayTable:  N(1650)+
 --- G4ParticleDefinition ---
  Particle Name : N(1650)0
  PDG particle code : 32112 [PDG anti-particle code: -32112]
- Mass [GeV/c2] : 1.655     Width : 0.14
+ Mass [GeV/c2] : 1.65     Width : 0.125
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -473,7 +473,7 @@ G4DecayTable:  N(1650)0
 --- G4ParticleDefinition ---
  Particle Name : N(1675)+
  PDG particle code : 2216 [PDG anti-particle code: -2216]
- Mass [GeV/c2] : 1.675     Width : 0.15
+ Mass [GeV/c2] : 1.675     Width : 0.145
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 5/2
@@ -497,7 +497,7 @@ G4DecayTable:  N(1675)+
 --- G4ParticleDefinition ---
  Particle Name : N(1675)0
  PDG particle code : 2116 [PDG anti-particle code: -2116]
- Mass [GeV/c2] : 1.675     Width : 0.15
+ Mass [GeV/c2] : 1.675     Width : 0.145
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 5/2
@@ -521,7 +521,7 @@ G4DecayTable:  N(1675)0
 --- G4ParticleDefinition ---
  Particle Name : N(1680)+
  PDG particle code : 12216 [PDG anti-particle code: -12216]
- Mass [GeV/c2] : 1.685     Width : 0.13
+ Mass [GeV/c2] : 1.685     Width : 0.12
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 5/2
@@ -547,7 +547,7 @@ G4DecayTable:  N(1680)+
 --- G4ParticleDefinition ---
  Particle Name : N(1680)0
  PDG particle code : 12116 [PDG anti-particle code: -12116]
- Mass [GeV/c2] : 1.685     Width : 0.13
+ Mass [GeV/c2] : 1.685     Width : 0.12
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 5/2
@@ -573,7 +573,7 @@ G4DecayTable:  N(1680)0
 --- G4ParticleDefinition ---
  Particle Name : N(1700)+
  PDG particle code : 22124 [PDG anti-particle code: -22124]
- Mass [GeV/c2] : 1.7     Width : 0.15
+ Mass [GeV/c2] : 1.72     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -602,7 +602,7 @@ G4DecayTable:  N(1700)+
 --- G4ParticleDefinition ---
  Particle Name : N(1700)0
  PDG particle code : 21214 [PDG anti-particle code: -21214]
- Mass [GeV/c2] : 1.7     Width : 0.15
+ Mass [GeV/c2] : 1.72     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -631,7 +631,7 @@ G4DecayTable:  N(1700)0
 --- G4ParticleDefinition ---
  Particle Name : N(1710)+
  PDG particle code : 42212 [PDG anti-particle code: -42212]
- Mass [GeV/c2] : 1.71     Width : 0.1
+ Mass [GeV/c2] : 1.71     Width : 0.14
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -663,7 +663,7 @@ G4DecayTable:  N(1710)+
 --- G4ParticleDefinition ---
  Particle Name : N(1710)0
  PDG particle code : 42112 [PDG anti-particle code: -42112]
- Mass [GeV/c2] : 1.71     Width : 0.1
+ Mass [GeV/c2] : 1.71     Width : 0.14
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -753,7 +753,7 @@ G4DecayTable:  N(1720)0
 --- G4ParticleDefinition ---
  Particle Name : N(1900)+
  PDG particle code : 42124 [PDG anti-particle code: -42124]
- Mass [GeV/c2] : 1.9     Width : 0.5
+ Mass [GeV/c2] : 1.92     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -780,7 +780,7 @@ G4DecayTable:  N(1900)+
 --- G4ParticleDefinition ---
  Particle Name : N(1900)0
  PDG particle code : 41214 [PDG anti-particle code: -41214]
- Mass [GeV/c2] : 1.9     Width : 0.5
+ Mass [GeV/c2] : 1.92     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -807,7 +807,7 @@ G4DecayTable:  N(1900)0
 --- G4ParticleDefinition ---
  Particle Name : N(1990)+
  PDG particle code : 12218 [PDG anti-particle code: -12218]
- Mass [GeV/c2] : 1.95     Width : 0.555
+ Mass [GeV/c2] : 2.02     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 7/2
@@ -838,7 +838,7 @@ G4DecayTable:  N(1990)+
 --- G4ParticleDefinition ---
  Particle Name : N(1990)0
  PDG particle code : 12118 [PDG anti-particle code: -12118]
- Mass [GeV/c2] : 1.95     Width : 0.555
+ Mass [GeV/c2] : 2.02     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 7/2
@@ -927,7 +927,7 @@ G4DecayTable:  N(2090)0
 --- G4ParticleDefinition ---
  Particle Name : N(2190)+
  PDG particle code : 2128 [PDG anti-particle code: -2128]
- Mass [GeV/c2] : 2.19     Width : 0.5
+ Mass [GeV/c2] : 2.18     Width : 0.4
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 7/2
@@ -957,7 +957,7 @@ G4DecayTable:  N(2190)+
 --- G4ParticleDefinition ---
  Particle Name : N(2190)0
  PDG particle code : 1218 [PDG anti-particle code: -1218]
- Mass [GeV/c2] : 2.19     Width : 0.5
+ Mass [GeV/c2] : 2.18     Width : 0.4
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 7/2
@@ -1043,7 +1043,7 @@ G4DecayTable:  N(2220)0
 --- G4ParticleDefinition ---
  Particle Name : N(2250)+
  PDG particle code : 100012210 [PDG anti-particle code: -100012210]
- Mass [GeV/c2] : 2.275     Width : 0.5
+ Mass [GeV/c2] : 2.28     Width : 0.5
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 9/2
@@ -1073,7 +1073,7 @@ G4DecayTable:  N(2250)+
 --- G4ParticleDefinition ---
  Particle Name : N(2250)0
  PDG particle code : 100012110 [PDG anti-particle code: -100012110]
- Mass [GeV/c2] : 2.275     Width : 0.5
+ Mass [GeV/c2] : 2.28     Width : 0.5
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 9/2
@@ -1120,7 +1120,7 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : a0(1450)+
  PDG particle code : 10211 [PDG anti-particle code: -10211]
- Mass [GeV/c2] : 1.474     Width : 0.265
+ Mass [GeV/c2] : 1.439     Width : 0.258
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 0/2
@@ -1142,7 +1142,7 @@ G4DecayTable:  a0(1450)+
 --- G4ParticleDefinition ---
  Particle Name : a0(1450)-
  PDG particle code : -10211 [PDG anti-particle code: 10211]
- Mass [GeV/c2] : 1.474     Width : 0.265
+ Mass [GeV/c2] : 1.439     Width : 0.258
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 0/2
@@ -1164,7 +1164,7 @@ G4DecayTable:  a0(1450)-
 --- G4ParticleDefinition ---
  Particle Name : a0(1450)0
  PDG particle code : 10111 [PDG anti-particle code: 10111]
- Mass [GeV/c2] : 1.474     Width : 0.265
+ Mass [GeV/c2] : 1.439     Width : 0.258
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -1313,7 +1313,7 @@ G4DecayTable:  a1(1260)0
 --- G4ParticleDefinition ---
  Particle Name : a2(1320)+
  PDG particle code : 215 [PDG anti-particle code: -215]
- Mass [GeV/c2] : 1.3183     Width : 0.107
+ Mass [GeV/c2] : 1.3182     Width : 0.107
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 4/2
@@ -1337,7 +1337,7 @@ G4DecayTable:  a2(1320)+
 --- G4ParticleDefinition ---
  Particle Name : a2(1320)-
  PDG particle code : -215 [PDG anti-particle code: 215]
- Mass [GeV/c2] : 1.3183     Width : 0.107
+ Mass [GeV/c2] : 1.3182     Width : 0.107
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 4/2
@@ -1361,7 +1361,7 @@ G4DecayTable:  a2(1320)-
 --- G4ParticleDefinition ---
  Particle Name : a2(1320)0
  PDG particle code : 115 [PDG anti-particle code: 115]
- Mass [GeV/c2] : 1.3183     Width : 0.107
+ Mass [GeV/c2] : 1.3182     Width : 0.107
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -1422,8 +1422,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : anti_Bs0
  PDG particle code : -531 [PDG anti-particle code: 531]
- Mass [GeV/c2] : 5.36689     Width : 4.374e-13
- Lifetime [nsec] : 0.001505
+ Mass [GeV/c2] : 5.36692     Width : 4.327e-13
+ Lifetime [nsec] : 0.001521
  Charge [e]: 0
  Spin : 0/2
  Parity : -1
@@ -1475,7 +1475,7 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1440)+
  PDG particle code : -12212 [PDG anti-particle code: 12212]
- Mass [GeV/c2] : 1.43     Width : 0.35
+ Mass [GeV/c2] : 1.44     Width : 0.35
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -1501,7 +1501,7 @@ G4DecayTable:  anti_N(1440)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1440)0
  PDG particle code : -12112 [PDG anti-particle code: 12112]
- Mass [GeV/c2] : 1.43     Width : 0.35
+ Mass [GeV/c2] : 1.44     Width : 0.35
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -1527,7 +1527,7 @@ G4DecayTable:  anti_N(1440)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1520)+
  PDG particle code : -2124 [PDG anti-particle code: 2124]
- Mass [GeV/c2] : 1.515     Width : 0.115
+ Mass [GeV/c2] : 1.515     Width : 0.11
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -1553,7 +1553,7 @@ G4DecayTable:  anti_N(1520)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1520)0
  PDG particle code : -1214 [PDG anti-particle code: 1214]
- Mass [GeV/c2] : 1.515     Width : 0.115
+ Mass [GeV/c2] : 1.515     Width : 0.11
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -1633,7 +1633,7 @@ G4DecayTable:  anti_N(1535)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1650)+
  PDG particle code : -32212 [PDG anti-particle code: 32212]
- Mass [GeV/c2] : 1.655     Width : 0.14
+ Mass [GeV/c2] : 1.65     Width : 0.125
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -1663,7 +1663,7 @@ G4DecayTable:  anti_N(1650)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1650)0
  PDG particle code : -32112 [PDG anti-particle code: 32112]
- Mass [GeV/c2] : 1.655     Width : 0.14
+ Mass [GeV/c2] : 1.65     Width : 0.125
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -1693,7 +1693,7 @@ G4DecayTable:  anti_N(1650)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1675)+
  PDG particle code : -2216 [PDG anti-particle code: 2216]
- Mass [GeV/c2] : 1.675     Width : 0.15
+ Mass [GeV/c2] : 1.675     Width : 0.145
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 5/2
@@ -1717,7 +1717,7 @@ G4DecayTable:  anti_N(1675)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1675)0
  PDG particle code : -2116 [PDG anti-particle code: 2116]
- Mass [GeV/c2] : 1.675     Width : 0.15
+ Mass [GeV/c2] : 1.675     Width : 0.145
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 5/2
@@ -1741,7 +1741,7 @@ G4DecayTable:  anti_N(1675)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1680)+
  PDG particle code : -12216 [PDG anti-particle code: 12216]
- Mass [GeV/c2] : 1.685     Width : 0.13
+ Mass [GeV/c2] : 1.685     Width : 0.12
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 5/2
@@ -1767,7 +1767,7 @@ G4DecayTable:  anti_N(1680)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1680)0
  PDG particle code : -12116 [PDG anti-particle code: 12116]
- Mass [GeV/c2] : 1.685     Width : 0.13
+ Mass [GeV/c2] : 1.685     Width : 0.12
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 5/2
@@ -1793,7 +1793,7 @@ G4DecayTable:  anti_N(1680)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1700)+
  PDG particle code : -22124 [PDG anti-particle code: 22124]
- Mass [GeV/c2] : 1.7     Width : 0.15
+ Mass [GeV/c2] : 1.72     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -1822,7 +1822,7 @@ G4DecayTable:  anti_N(1700)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1700)0
  PDG particle code : -21214 [PDG anti-particle code: 21214]
- Mass [GeV/c2] : 1.7     Width : 0.15
+ Mass [GeV/c2] : 1.72     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -1851,7 +1851,7 @@ G4DecayTable:  anti_N(1700)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1710)+
  PDG particle code : -42212 [PDG anti-particle code: 42212]
- Mass [GeV/c2] : 1.71     Width : 0.1
+ Mass [GeV/c2] : 1.71     Width : 0.14
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -1883,7 +1883,7 @@ G4DecayTable:  anti_N(1710)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1710)0
  PDG particle code : -42112 [PDG anti-particle code: 42112]
- Mass [GeV/c2] : 1.71     Width : 0.1
+ Mass [GeV/c2] : 1.71     Width : 0.14
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -1973,7 +1973,7 @@ G4DecayTable:  anti_N(1720)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1900)+
  PDG particle code : -42124 [PDG anti-particle code: 42124]
- Mass [GeV/c2] : 1.9     Width : 0.5
+ Mass [GeV/c2] : 1.92     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -2000,7 +2000,7 @@ G4DecayTable:  anti_N(1900)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1900)0
  PDG particle code : -41214 [PDG anti-particle code: 41214]
- Mass [GeV/c2] : 1.9     Width : 0.5
+ Mass [GeV/c2] : 1.92     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -2027,7 +2027,7 @@ G4DecayTable:  anti_N(1900)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1990)+
  PDG particle code : -12218 [PDG anti-particle code: 12218]
- Mass [GeV/c2] : 1.95     Width : 0.555
+ Mass [GeV/c2] : 2.02     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 7/2
@@ -2058,7 +2058,7 @@ G4DecayTable:  anti_N(1990)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(1990)0
  PDG particle code : -12118 [PDG anti-particle code: 12118]
- Mass [GeV/c2] : 1.95     Width : 0.555
+ Mass [GeV/c2] : 2.02     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 7/2
@@ -2147,7 +2147,7 @@ G4DecayTable:  anti_N(2090)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(2190)+
  PDG particle code : -2128 [PDG anti-particle code: 2128]
- Mass [GeV/c2] : 2.19     Width : 0.5
+ Mass [GeV/c2] : 2.18     Width : 0.4
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 7/2
@@ -2177,7 +2177,7 @@ G4DecayTable:  anti_N(2190)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(2190)0
  PDG particle code : -1218 [PDG anti-particle code: 1218]
- Mass [GeV/c2] : 2.19     Width : 0.5
+ Mass [GeV/c2] : 2.18     Width : 0.4
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 7/2
@@ -2263,7 +2263,7 @@ G4DecayTable:  anti_N(2220)0
 --- G4ParticleDefinition ---
  Particle Name : anti_N(2250)+
  PDG particle code : -100012210 [PDG anti-particle code: 100012210]
- Mass [GeV/c2] : 2.275     Width : 0.5
+ Mass [GeV/c2] : 2.28     Width : 0.5
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 9/2
@@ -2293,7 +2293,7 @@ G4DecayTable:  anti_N(2250)+
 --- G4ParticleDefinition ---
  Particle Name : anti_N(2250)0
  PDG particle code : -100012110 [PDG anti-particle code: 100012110]
- Mass [GeV/c2] : 2.275     Width : 0.5
+ Mass [GeV/c2] : 2.28     Width : 0.5
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 9/2
@@ -2701,7 +2701,7 @@ G4DecayTable:  anti_N(2250)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1600)+
  PDG particle code : -32214 [PDG anti-particle code: 32214]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -2727,7 +2727,7 @@ G4DecayTable:  anti_delta(1600)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1600)++
  PDG particle code : -32224 [PDG anti-particle code: 32224]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 3/2
@@ -2750,7 +2750,7 @@ G4DecayTable:  anti_delta(1600)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1600)-
  PDG particle code : -31114 [PDG anti-particle code: 31114]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -2773,7 +2773,7 @@ G4DecayTable:  anti_delta(1600)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1600)0
  PDG particle code : -32114 [PDG anti-particle code: 32114]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -2799,7 +2799,7 @@ G4DecayTable:  anti_delta(1600)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1620)+
  PDG particle code : -2122 [PDG anti-particle code: 2122]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -2825,7 +2825,7 @@ G4DecayTable:  anti_delta(1620)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1620)++
  PDG particle code : -2222 [PDG anti-particle code: 2222]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 1/2
@@ -2848,7 +2848,7 @@ G4DecayTable:  anti_delta(1620)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1620)-
  PDG particle code : -1112 [PDG anti-particle code: 1112]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -2871,7 +2871,7 @@ G4DecayTable:  anti_delta(1620)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1620)0
  PDG particle code : -1212 [PDG anti-particle code: 1212]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -2897,7 +2897,7 @@ G4DecayTable:  anti_delta(1620)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1700)+
  PDG particle code : -12214 [PDG anti-particle code: 12214]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -2925,7 +2925,7 @@ G4DecayTable:  anti_delta(1700)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1700)++
  PDG particle code : -12224 [PDG anti-particle code: 12224]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 3/2
@@ -2949,7 +2949,7 @@ G4DecayTable:  anti_delta(1700)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1700)-
  PDG particle code : -11114 [PDG anti-particle code: 11114]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -2973,7 +2973,7 @@ G4DecayTable:  anti_delta(1700)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1700)0
  PDG particle code : -12114 [PDG anti-particle code: 12114]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -3001,7 +3001,7 @@ G4DecayTable:  anti_delta(1700)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1900)+
  PDG particle code : -12122 [PDG anti-particle code: 12122]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -3029,7 +3029,7 @@ G4DecayTable:  anti_delta(1900)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1900)++
  PDG particle code : -12222 [PDG anti-particle code: 12222]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 1/2
@@ -3053,7 +3053,7 @@ G4DecayTable:  anti_delta(1900)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1900)-
  PDG particle code : -11112 [PDG anti-particle code: 11112]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -3077,7 +3077,7 @@ G4DecayTable:  anti_delta(1900)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1900)0
  PDG particle code : -11212 [PDG anti-particle code: 11212]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -3209,7 +3209,7 @@ G4DecayTable:  anti_delta(1905)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1910)+
  PDG particle code : -22122 [PDG anti-particle code: 22122]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -3237,7 +3237,7 @@ G4DecayTable:  anti_delta(1910)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1910)++
  PDG particle code : -22222 [PDG anti-particle code: 22222]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 1/2
@@ -3261,7 +3261,7 @@ G4DecayTable:  anti_delta(1910)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1910)-
  PDG particle code : -21112 [PDG anti-particle code: 21112]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -3285,7 +3285,7 @@ G4DecayTable:  anti_delta(1910)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1910)0
  PDG particle code : -21212 [PDG anti-particle code: 21212]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -3313,7 +3313,7 @@ G4DecayTable:  anti_delta(1910)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1920)+
  PDG particle code : -22214 [PDG anti-particle code: 22214]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -3341,7 +3341,7 @@ G4DecayTable:  anti_delta(1920)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1920)++
  PDG particle code : -22224 [PDG anti-particle code: 22224]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 3/2
@@ -3365,7 +3365,7 @@ G4DecayTable:  anti_delta(1920)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1920)-
  PDG particle code : -21114 [PDG anti-particle code: 21114]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -3389,7 +3389,7 @@ G4DecayTable:  anti_delta(1920)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1920)0
  PDG particle code : -22114 [PDG anti-particle code: 22114]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -3417,7 +3417,7 @@ G4DecayTable:  anti_delta(1920)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1930)+
  PDG particle code : -12126 [PDG anti-particle code: 12126]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 5/2
@@ -3445,7 +3445,7 @@ G4DecayTable:  anti_delta(1930)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1930)++
  PDG particle code : -12226 [PDG anti-particle code: 12226]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 5/2
@@ -3469,7 +3469,7 @@ G4DecayTable:  anti_delta(1930)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1930)-
  PDG particle code : -11116 [PDG anti-particle code: 11116]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 5/2
@@ -3493,7 +3493,7 @@ G4DecayTable:  anti_delta(1930)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1930)0
  PDG particle code : -11216 [PDG anti-particle code: 11216]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 5/2
@@ -3521,7 +3521,7 @@ G4DecayTable:  anti_delta(1930)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1950)+
  PDG particle code : -2218 [PDG anti-particle code: 2218]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 7/2
@@ -3550,7 +3550,7 @@ G4DecayTable:  anti_delta(1950)+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1950)++
  PDG particle code : -2228 [PDG anti-particle code: 2228]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 7/2
@@ -3574,7 +3574,7 @@ G4DecayTable:  anti_delta(1950)++
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1950)-
  PDG particle code : -1118 [PDG anti-particle code: 1118]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 7/2
@@ -3598,7 +3598,7 @@ G4DecayTable:  anti_delta(1950)-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta(1950)0
  PDG particle code : -2118 [PDG anti-particle code: 2118]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 7/2
@@ -3627,7 +3627,7 @@ G4DecayTable:  anti_delta(1950)0
 --- G4ParticleDefinition ---
  Particle Name : anti_delta+
  PDG particle code : -2214 [PDG anti-particle code: 2214]
- Mass [GeV/c2] : 1.232     Width : 0.12
+ Mass [GeV/c2] : 1.232     Width : 0.117
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -3648,7 +3648,7 @@ G4DecayTable:  anti_delta+
 --- G4ParticleDefinition ---
  Particle Name : anti_delta++
  PDG particle code : -2224 [PDG anti-particle code: 2224]
- Mass [GeV/c2] : 1.232     Width : 0.12
+ Mass [GeV/c2] : 1.232     Width : 0.117
  Lifetime [nsec] : 0
  Charge [e]: -2
  Spin : 3/2
@@ -3688,7 +3688,7 @@ G4DecayTable:  anti_delta-
 --- G4ParticleDefinition ---
  Particle Name : anti_delta0
  PDG particle code : -2114 [PDG anti-particle code: 2114]
- Mass [GeV/c2] : 1.232     Width : 0.12
+ Mass [GeV/c2] : 1.232     Width : 0.117
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -3867,7 +3867,7 @@ G4DecayTable:  anti_hypertriton
 --- G4ParticleDefinition ---
  Particle Name : anti_k(1460)0
  PDG particle code : -100311 [PDG anti-particle code: 100311]
- Mass [GeV/c2] : 1.46     Width : 0.26
+ Mass [GeV/c2] : 1.482     Width : 0.335
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -3890,7 +3890,7 @@ G4DecayTable:  anti_k(1460)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k0_star(1430)0
  PDG particle code : -10311 [PDG anti-particle code: 10311]
- Mass [GeV/c2] : 1.43     Width : 0.27
+ Mass [GeV/c2] : 1.425     Width : 0.27
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -3911,7 +3911,7 @@ G4DecayTable:  anti_k0_star(1430)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k1(1270)0
  PDG particle code : -10313 [PDG anti-particle code: 10313]
- Mass [GeV/c2] : 1.272     Width : 0.09
+ Mass [GeV/c2] : 1.253     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -3980,7 +3980,7 @@ G4DecayTable:  anti_k2(1770)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k2_star(1430)0
  PDG particle code : -315 [PDG anti-particle code: 315]
- Mass [GeV/c2] : 1.4324     Width : 0.109
+ Mass [GeV/c2] : 1.4341     Width : 0.1105
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -4008,7 +4008,7 @@ G4DecayTable:  anti_k2_star(1430)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k2_star(1980)0
  PDG particle code : -100315 [PDG anti-particle code: 100315]
- Mass [GeV/c2] : 1.973     Width : 0.373
+ Mass [GeV/c2] : 1.994     Width : 0.348
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -4030,7 +4030,7 @@ G4DecayTable:  anti_k2_star(1980)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k3_star(1780)0
  PDG particle code : -317 [PDG anti-particle code: 317]
- Mass [GeV/c2] : 1.776     Width : 0.159
+ Mass [GeV/c2] : 1.779     Width : 0.161
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 6/2
@@ -4056,7 +4056,7 @@ G4DecayTable:  anti_k3_star(1780)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k_star(1410)0
  PDG particle code : -100313 [PDG anti-particle code: 100313]
- Mass [GeV/c2] : 1.421     Width : 0.236
+ Mass [GeV/c2] : 1.414     Width : 0.232
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -4081,7 +4081,7 @@ G4DecayTable:  anti_k_star(1410)0
 --- G4ParticleDefinition ---
  Particle Name : anti_k_star(1680)0
  PDG particle code : -30313 [PDG anti-particle code: 30313]
- Mass [GeV/c2] : 1.718     Width : 0.32
+ Mass [GeV/c2] : 1.718     Width : 0.322
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -4189,7 +4189,7 @@ G4DecayTable:  anti_lambda(1405)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1520)
  PDG particle code : -3124 [PDG anti-particle code: 3124]
- Mass [GeV/c2] : 1.5195     Width : 0.0156
+ Mass [GeV/c2] : 1.5194     Width : 0.0157
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -4217,7 +4217,7 @@ G4DecayTable:  anti_lambda(1520)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1600)
  PDG particle code : -23122 [PDG anti-particle code: 23122]
- Mass [GeV/c2] : 1.6     Width : 0.15
+ Mass [GeV/c2] : 1.6     Width : 2
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -4241,7 +4241,7 @@ G4DecayTable:  anti_lambda(1600)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1670)
  PDG particle code : -33122 [PDG anti-particle code: 33122]
- Mass [GeV/c2] : 1.67     Width : 0.035
+ Mass [GeV/c2] : 1.674     Width : 0.03
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -4266,7 +4266,7 @@ G4DecayTable:  anti_lambda(1670)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1690)
  PDG particle code : -13124 [PDG anti-particle code: 13124]
- Mass [GeV/c2] : 1.69     Width : 0.06
+ Mass [GeV/c2] : 1.69     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -4293,7 +4293,7 @@ G4DecayTable:  anti_lambda(1690)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1800)
  PDG particle code : -43122 [PDG anti-particle code: 43122]
- Mass [GeV/c2] : 1.8     Width : 0.3
+ Mass [GeV/c2] : 1.8     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -4322,7 +4322,7 @@ G4DecayTable:  anti_lambda(1800)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1810)
  PDG particle code : -53122 [PDG anti-particle code: 53122]
- Mass [GeV/c2] : 1.81     Width : 0.15
+ Mass [GeV/c2] : 1.79     Width : 0.11
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -4378,7 +4378,7 @@ G4DecayTable:  anti_lambda(1820)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1830)
  PDG particle code : -13126 [PDG anti-particle code: 13126]
- Mass [GeV/c2] : 1.83     Width : 0.095
+ Mass [GeV/c2] : 1.825     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 5/2
@@ -4405,7 +4405,7 @@ G4DecayTable:  anti_lambda(1830)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(1890)
  PDG particle code : -23124 [PDG anti-particle code: 23124]
- Mass [GeV/c2] : 1.89     Width : 0.1
+ Mass [GeV/c2] : 1.89     Width : 0.12
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -4465,7 +4465,7 @@ G4DecayTable:  anti_lambda(2100)
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda(2110)
  PDG particle code : -23126 [PDG anti-particle code: 23126]
- Mass [GeV/c2] : 2.11     Width : 0.2
+ Mass [GeV/c2] : 2.09     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 5/2
@@ -4508,8 +4508,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : anti_lambda_c+
  PDG particle code : -4122 [PDG anti-particle code: 4122]
- Mass [GeV/c2] : 2.28646     Width : 3.3e-12
- Lifetime [nsec] : 0.0002
+ Mass [GeV/c2] : 2.28646     Width : 3.27e-12
+ Lifetime [nsec] : 0.0002015
  Charge [e]: -1
  Spin : 1/2
  Parity : 1
@@ -4635,7 +4635,7 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : anti_omega_c0
  PDG particle code : -4332 [PDG anti-particle code: 4332]
- Mass [GeV/c2] : 2.6952     Width : 9.6e-12
+ Mass [GeV/c2] : 2.6952     Width : 2.46e-12
  Lifetime [nsec] : 0.000268
  Charge [e]: 0
  Spin : 1/2
@@ -4791,7 +4791,7 @@ G4DecayTable:  anti_sigma(1385)0
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1660)+
  PDG particle code : -13222 [PDG anti-particle code: 13222]
- Mass [GeV/c2] : 1.66     Width : 0.1
+ Mass [GeV/c2] : 1.66     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -4814,7 +4814,7 @@ G4DecayTable:  anti_sigma(1660)+
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1660)-
  PDG particle code : -13112 [PDG anti-particle code: 13112]
- Mass [GeV/c2] : 1.66     Width : 0.1
+ Mass [GeV/c2] : 1.66     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -4837,7 +4837,7 @@ G4DecayTable:  anti_sigma(1660)-
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1660)0
  PDG particle code : -13212 [PDG anti-particle code: 13212]
- Mass [GeV/c2] : 1.66     Width : 0.1
+ Mass [GeV/c2] : 1.66     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -4861,7 +4861,7 @@ G4DecayTable:  anti_sigma(1660)0
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1670)+
  PDG particle code : -13224 [PDG anti-particle code: 13224]
- Mass [GeV/c2] : 1.67     Width : 0.06
+ Mass [GeV/c2] : 1.675     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -4884,7 +4884,7 @@ G4DecayTable:  anti_sigma(1670)+
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1670)-
  PDG particle code : -13114 [PDG anti-particle code: 13114]
- Mass [GeV/c2] : 1.67     Width : 0.06
+ Mass [GeV/c2] : 1.675     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -4907,7 +4907,7 @@ G4DecayTable:  anti_sigma(1670)-
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1670)0
  PDG particle code : -13214 [PDG anti-particle code: 13214]
- Mass [GeV/c2] : 1.67     Width : 0.06
+ Mass [GeV/c2] : 1.675     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -4931,7 +4931,7 @@ G4DecayTable:  anti_sigma(1670)0
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1750)+
  PDG particle code : -23222 [PDG anti-particle code: 23222]
- Mass [GeV/c2] : 1.75     Width : 0.09
+ Mass [GeV/c2] : 1.75     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -4954,7 +4954,7 @@ G4DecayTable:  anti_sigma(1750)+
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1750)-
  PDG particle code : -23112 [PDG anti-particle code: 23112]
- Mass [GeV/c2] : 1.75     Width : 0.09
+ Mass [GeV/c2] : 1.75     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -4977,7 +4977,7 @@ G4DecayTable:  anti_sigma(1750)-
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1750)0
  PDG particle code : -23212 [PDG anti-particle code: 23212]
- Mass [GeV/c2] : 1.75     Width : 0.09
+ Mass [GeV/c2] : 1.75     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 1/2
@@ -5156,7 +5156,7 @@ G4DecayTable:  anti_sigma(1915)0
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1940)+
  PDG particle code : -23224 [PDG anti-particle code: 23224]
- Mass [GeV/c2] : 1.94     Width : 0.22
+ Mass [GeV/c2] : 1.94     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -5185,7 +5185,7 @@ G4DecayTable:  anti_sigma(1940)+
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1940)-
  PDG particle code : -23114 [PDG anti-particle code: 23114]
- Mass [GeV/c2] : 1.94     Width : 0.22
+ Mass [GeV/c2] : 1.94     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -5214,7 +5214,7 @@ G4DecayTable:  anti_sigma(1940)-
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma(1940)0
  PDG particle code : -23214 [PDG anti-particle code: 23214]
- Mass [GeV/c2] : 1.94     Width : 0.22
+ Mass [GeV/c2] : 1.94     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -5394,7 +5394,7 @@ G4DecayTable:  anti_sigma0
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma_b+
  PDG particle code : -5222 [PDG anti-particle code: 5222]
- Mass [GeV/c2] : 5.8113     Width : 0.0097
+ Mass [GeV/c2] : 5.81056     Width : 0.005
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -5413,7 +5413,7 @@ G4DecayTable:  anti_sigma_b+
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma_b-
  PDG particle code : -5112 [PDG anti-particle code: 5112]
- Mass [GeV/c2] : 5.8155     Width : 0.0049
+ Mass [GeV/c2] : 5.81564     Width : 0.0053
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -5451,7 +5451,7 @@ G4DecayTable:  anti_sigma_b0
 --- G4ParticleDefinition ---
  Particle Name : anti_sigma_c+
  PDG particle code : -4212 [PDG anti-particle code: 4212]
- Mass [GeV/c2] : 2.4529     Width : 0.0022
+ Mass [GeV/c2] : 2.45265     Width : 0.0023
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -5715,7 +5715,7 @@ G4DecayTable:  anti_xi(1530)0
 --- G4ParticleDefinition ---
  Particle Name : anti_xi(1690)-
  PDG particle code : -23314 [PDG anti-particle code: 23314]
- Mass [GeV/c2] : 1.69     Width : 0.05
+ Mass [GeV/c2] : 1.69     Width : 0.02
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -5739,7 +5739,7 @@ G4DecayTable:  anti_xi(1690)-
 --- G4ParticleDefinition ---
  Particle Name : anti_xi(1690)0
  PDG particle code : -23324 [PDG anti-particle code: 23324]
- Mass [GeV/c2] : 1.69     Width : 0.05
+ Mass [GeV/c2] : 1.69     Width : 0.02
  Lifetime [nsec] : 0
  Charge [e]: -0
  Spin : 3/2
@@ -5981,8 +5981,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : anti_xi_c+
  PDG particle code : -4232 [PDG anti-particle code: 4232]
- Mass [GeV/c2] : 2.46787     Width : 1.49e-12
- Lifetime [nsec] : 0.000442
+ Mass [GeV/c2] : 2.46771     Width : 1.45e-12
+ Lifetime [nsec] : 0.0004531
  Charge [e]: -1
  Spin : 1/2
  Parity : 1
@@ -5998,8 +5998,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : anti_xi_c0
  PDG particle code : -4132 [PDG anti-particle code: 4132]
- Mass [GeV/c2] : 2.47085     Width : 5.9e-12
- Lifetime [nsec] : 0.0001519
+ Mass [GeV/c2] : 2.47044     Width : 4.33e-12
+ Lifetime [nsec] : 0.000152
  Charge [e]: 0
  Spin : 1/2
  Parity : 1
@@ -6452,7 +6452,7 @@ G4DecayTable:  b1(1235)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1600)+
  PDG particle code : 32214 [PDG anti-particle code: -32214]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -6478,7 +6478,7 @@ G4DecayTable:  delta(1600)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1600)++
  PDG particle code : 32224 [PDG anti-particle code: -32224]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 3/2
@@ -6501,7 +6501,7 @@ G4DecayTable:  delta(1600)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1600)-
  PDG particle code : 31114 [PDG anti-particle code: -31114]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -6524,7 +6524,7 @@ G4DecayTable:  delta(1600)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1600)0
  PDG particle code : 32114 [PDG anti-particle code: -32114]
- Mass [GeV/c2] : 1.6     Width : 0.32
+ Mass [GeV/c2] : 1.57     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -6550,7 +6550,7 @@ G4DecayTable:  delta(1600)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1620)+
  PDG particle code : 2122 [PDG anti-particle code: -2122]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -6576,7 +6576,7 @@ G4DecayTable:  delta(1620)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1620)++
  PDG particle code : 2222 [PDG anti-particle code: -2222]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 1/2
@@ -6599,7 +6599,7 @@ G4DecayTable:  delta(1620)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1620)-
  PDG particle code : 1112 [PDG anti-particle code: -1112]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -6622,7 +6622,7 @@ G4DecayTable:  delta(1620)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1620)0
  PDG particle code : 1212 [PDG anti-particle code: -1212]
- Mass [GeV/c2] : 1.63     Width : 0.14
+ Mass [GeV/c2] : 1.61     Width : 0.13
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -6648,7 +6648,7 @@ G4DecayTable:  delta(1620)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1700)+
  PDG particle code : 12214 [PDG anti-particle code: -12214]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -6676,7 +6676,7 @@ G4DecayTable:  delta(1700)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1700)++
  PDG particle code : 12224 [PDG anti-particle code: -12224]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 3/2
@@ -6700,7 +6700,7 @@ G4DecayTable:  delta(1700)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1700)-
  PDG particle code : 11114 [PDG anti-particle code: -11114]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -6724,7 +6724,7 @@ G4DecayTable:  delta(1700)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1700)0
  PDG particle code : 12114 [PDG anti-particle code: -12114]
- Mass [GeV/c2] : 1.7     Width : 0.3
+ Mass [GeV/c2] : 1.71     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -6752,7 +6752,7 @@ G4DecayTable:  delta(1700)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1900)+
  PDG particle code : 12122 [PDG anti-particle code: -12122]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -6780,7 +6780,7 @@ G4DecayTable:  delta(1900)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1900)++
  PDG particle code : 12222 [PDG anti-particle code: -12222]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 1/2
@@ -6804,7 +6804,7 @@ G4DecayTable:  delta(1900)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1900)-
  PDG particle code : 11112 [PDG anti-particle code: -11112]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -6828,7 +6828,7 @@ G4DecayTable:  delta(1900)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1900)0
  PDG particle code : 11212 [PDG anti-particle code: -11212]
- Mass [GeV/c2] : 1.9     Width : 0.2
+ Mass [GeV/c2] : 1.86     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -6960,7 +6960,7 @@ G4DecayTable:  delta(1905)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1910)+
  PDG particle code : 22122 [PDG anti-particle code: -22122]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -6988,7 +6988,7 @@ G4DecayTable:  delta(1910)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1910)++
  PDG particle code : 22222 [PDG anti-particle code: -22222]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 1/2
@@ -7012,7 +7012,7 @@ G4DecayTable:  delta(1910)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1910)-
  PDG particle code : 21112 [PDG anti-particle code: -21112]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -7036,7 +7036,7 @@ G4DecayTable:  delta(1910)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1910)0
  PDG particle code : 21212 [PDG anti-particle code: -21212]
- Mass [GeV/c2] : 1.89     Width : 0.28
+ Mass [GeV/c2] : 1.9     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -7064,7 +7064,7 @@ G4DecayTable:  delta(1910)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1920)+
  PDG particle code : 22214 [PDG anti-particle code: -22214]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -7092,7 +7092,7 @@ G4DecayTable:  delta(1920)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1920)++
  PDG particle code : 22224 [PDG anti-particle code: -22224]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 3/2
@@ -7116,7 +7116,7 @@ G4DecayTable:  delta(1920)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1920)-
  PDG particle code : 21114 [PDG anti-particle code: -21114]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -7140,7 +7140,7 @@ G4DecayTable:  delta(1920)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1920)0
  PDG particle code : 22114 [PDG anti-particle code: -22114]
- Mass [GeV/c2] : 1.92     Width : 0.26
+ Mass [GeV/c2] : 1.92     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -7168,7 +7168,7 @@ G4DecayTable:  delta(1920)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1930)+
  PDG particle code : 12126 [PDG anti-particle code: -12126]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 5/2
@@ -7196,7 +7196,7 @@ G4DecayTable:  delta(1930)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1930)++
  PDG particle code : 12226 [PDG anti-particle code: -12226]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 5/2
@@ -7220,7 +7220,7 @@ G4DecayTable:  delta(1930)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1930)-
  PDG particle code : 11116 [PDG anti-particle code: -11116]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 5/2
@@ -7244,7 +7244,7 @@ G4DecayTable:  delta(1930)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1930)0
  PDG particle code : 11216 [PDG anti-particle code: -11216]
- Mass [GeV/c2] : 1.95     Width : 0.36
+ Mass [GeV/c2] : 1.95     Width : 0.3
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 5/2
@@ -7272,7 +7272,7 @@ G4DecayTable:  delta(1930)0
 --- G4ParticleDefinition ---
  Particle Name : delta(1950)+
  PDG particle code : 2218 [PDG anti-particle code: -2218]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 7/2
@@ -7301,7 +7301,7 @@ G4DecayTable:  delta(1950)+
 --- G4ParticleDefinition ---
  Particle Name : delta(1950)++
  PDG particle code : 2228 [PDG anti-particle code: -2228]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 7/2
@@ -7325,7 +7325,7 @@ G4DecayTable:  delta(1950)++
 --- G4ParticleDefinition ---
  Particle Name : delta(1950)-
  PDG particle code : 1118 [PDG anti-particle code: -1118]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 7/2
@@ -7349,7 +7349,7 @@ G4DecayTable:  delta(1950)-
 --- G4ParticleDefinition ---
  Particle Name : delta(1950)0
  PDG particle code : 2118 [PDG anti-particle code: -2118]
- Mass [GeV/c2] : 1.93     Width : 0.28
+ Mass [GeV/c2] : 1.93     Width : 0.285
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 7/2
@@ -7378,7 +7378,7 @@ G4DecayTable:  delta(1950)0
 --- G4ParticleDefinition ---
  Particle Name : delta+
  PDG particle code : 2214 [PDG anti-particle code: -2214]
- Mass [GeV/c2] : 1.232     Width : 0.12
+ Mass [GeV/c2] : 1.232     Width : 0.117
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -7400,7 +7400,7 @@ G4DecayTable:  delta+
 --- G4ParticleDefinition ---
  Particle Name : delta++
  PDG particle code : 2224 [PDG anti-particle code: -2224]
- Mass [GeV/c2] : 1.232     Width : 0.12
+ Mass [GeV/c2] : 1.232     Width : 0.117
  Lifetime [nsec] : 0
  Charge [e]: 2
  Spin : 3/2
@@ -7440,7 +7440,7 @@ G4DecayTable:  delta-
 --- G4ParticleDefinition ---
  Particle Name : delta0
  PDG particle code : 2114 [PDG anti-particle code: -2114]
- Mass [GeV/c2] : 1.232     Width : 0.12
+ Mass [GeV/c2] : 1.232     Width : 0.117
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -7607,7 +7607,7 @@ G4DecayTable:  eta(1295)
 --- G4ParticleDefinition ---
  Particle Name : eta(1405)
  PDG particle code : 9020221 [PDG anti-particle code: 9020221]
- Mass [GeV/c2] : 1.4088     Width : 0.051
+ Mass [GeV/c2] : 1.4088     Width : 0.0501
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7627,7 +7627,7 @@ G4DecayTable:  eta(1405)
 --- G4ParticleDefinition ---
  Particle Name : eta(1475)
  PDG particle code : 100331 [PDG anti-particle code: 100331]
- Mass [GeV/c2] : 1.476     Width : 0.085
+ Mass [GeV/c2] : 1.475     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7706,7 +7706,7 @@ G4DecayTable:  eta2(1870)
 --- G4ParticleDefinition ---
  Particle Name : eta_prime
  PDG particle code : 331 [PDG anti-particle code: 331]
- Mass [GeV/c2] : 0.95778     Width : 0.000196
+ Mass [GeV/c2] : 0.95778     Width : 0.000188
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7771,7 +7771,7 @@ G4DecayTable:  f0(1370)
 --- G4ParticleDefinition ---
  Particle Name : f0(1500)
  PDG particle code : 9030221 [PDG anti-particle code: 9030221]
- Mass [GeV/c2] : 1.504     Width : 0.109
+ Mass [GeV/c2] : 1.522     Width : 0.108
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7791,7 +7791,7 @@ G4DecayTable:  f0(1500)
 --- G4ParticleDefinition ---
  Particle Name : f0(1710)
  PDG particle code : 10331 [PDG anti-particle code: 10331]
- Mass [GeV/c2] : 1.723     Width : 0.139
+ Mass [GeV/c2] : 1.733     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7813,7 +7813,7 @@ G4DecayTable:  f0(1710)
 --- G4ParticleDefinition ---
  Particle Name : f0(500)
  PDG particle code : 9000221 [PDG anti-particle code: 9000221]
- Mass [GeV/c2] : 0.475     Width : 0.55
+ Mass [GeV/c2] : 0.6     Width : 0.45
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7833,7 +7833,7 @@ G4DecayTable:  f0(500)
 --- G4ParticleDefinition ---
  Particle Name : f0(980)
  PDG particle code : 9010221 [PDG anti-particle code: 9010221]
- Mass [GeV/c2] : 0.99     Width : 0.06
+ Mass [GeV/c2] : 0.99     Width : 0.055
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -7882,7 +7882,7 @@ G4DecayTable:  f1(1285)
 --- G4ParticleDefinition ---
  Particle Name : f1(1420)
  PDG particle code : 20333 [PDG anti-particle code: 20333]
- Mass [GeV/c2] : 1.4264     Width : 0.0549
+ Mass [GeV/c2] : 1.4263     Width : 0.0545
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -7909,7 +7909,7 @@ G4DecayTable:  f1(1420)
 --- G4ParticleDefinition ---
  Particle Name : f2(1270)
  PDG particle code : 225 [PDG anti-particle code: 225]
- Mass [GeV/c2] : 1.2755     Width : 0.1867
+ Mass [GeV/c2] : 1.275     Width : 0.1866
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -7959,7 +7959,7 @@ G4DecayTable:  f2(1810)
 --- G4ParticleDefinition ---
  Particle Name : f2(2010)
  PDG particle code : 9060225 [PDG anti-particle code: 9060225]
- Mass [GeV/c2] : 2.01     Width : 0.2
+ Mass [GeV/c2] : 2.011     Width : 0.202
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -7980,7 +7980,7 @@ G4DecayTable:  f2(2010)
 --- G4ParticleDefinition ---
  Particle Name : f2_prime(1525)
  PDG particle code : 335 [PDG anti-particle code: 335]
- Mass [GeV/c2] : 1.525     Width : 0.073
+ Mass [GeV/c2] : 1.5174     Width : 0.086
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -8056,7 +8056,7 @@ G4DecayTable:  f2_prime(1525)
 --- G4ParticleDefinition ---
  Particle Name : h1(1170)
  PDG particle code : 10223 [PDG anti-particle code: 10223]
- Mass [GeV/c2] : 1.17     Width : 0.36
+ Mass [GeV/c2] : 1.166     Width : 0.375
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -8079,7 +8079,7 @@ G4DecayTable:  h1(1170)
 --- G4ParticleDefinition ---
  Particle Name : h1(1380)
  PDG particle code : 10333 [PDG anti-particle code: 10333]
- Mass [GeV/c2] : 1.386     Width : 0.091
+ Mass [GeV/c2] : 1.409     Width : 0.078
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -8194,7 +8194,7 @@ G4DecayTable:  hypertriton
 --- G4ParticleDefinition ---
  Particle Name : k(1460)+
  PDG particle code : 100321 [PDG anti-particle code: -100321]
- Mass [GeV/c2] : 1.46     Width : 0.26
+ Mass [GeV/c2] : 1.482     Width : 0.335
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 0/2
@@ -8217,7 +8217,7 @@ G4DecayTable:  k(1460)+
 --- G4ParticleDefinition ---
  Particle Name : k(1460)-
  PDG particle code : -100321 [PDG anti-particle code: 100321]
- Mass [GeV/c2] : 1.46     Width : 0.26
+ Mass [GeV/c2] : 1.482     Width : 0.335
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 0/2
@@ -8240,7 +8240,7 @@ G4DecayTable:  k(1460)-
 --- G4ParticleDefinition ---
  Particle Name : k(1460)0
  PDG particle code : 100311 [PDG anti-particle code: -100311]
- Mass [GeV/c2] : 1.46     Width : 0.26
+ Mass [GeV/c2] : 1.482     Width : 0.335
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -8263,7 +8263,7 @@ G4DecayTable:  k(1460)0
 --- G4ParticleDefinition ---
  Particle Name : k0_star(1430)+
  PDG particle code : 10321 [PDG anti-particle code: -10321]
- Mass [GeV/c2] : 1.43     Width : 0.27
+ Mass [GeV/c2] : 1.425     Width : 0.27
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 0/2
@@ -8284,7 +8284,7 @@ G4DecayTable:  k0_star(1430)+
 --- G4ParticleDefinition ---
  Particle Name : k0_star(1430)-
  PDG particle code : -10321 [PDG anti-particle code: 10321]
- Mass [GeV/c2] : 1.43     Width : 0.27
+ Mass [GeV/c2] : 1.425     Width : 0.27
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 0/2
@@ -8305,7 +8305,7 @@ G4DecayTable:  k0_star(1430)-
 --- G4ParticleDefinition ---
  Particle Name : k0_star(1430)0
  PDG particle code : 10311 [PDG anti-particle code: -10311]
- Mass [GeV/c2] : 1.43     Width : 0.27
+ Mass [GeV/c2] : 1.425     Width : 0.27
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 0/2
@@ -8326,7 +8326,7 @@ G4DecayTable:  k0_star(1430)0
 --- G4ParticleDefinition ---
  Particle Name : k1(1270)+
  PDG particle code : 10323 [PDG anti-particle code: -10323]
- Mass [GeV/c2] : 1.272     Width : 0.09
+ Mass [GeV/c2] : 1.253     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 2/2
@@ -8350,7 +8350,7 @@ G4DecayTable:  k1(1270)+
 --- G4ParticleDefinition ---
  Particle Name : k1(1270)-
  PDG particle code : -10323 [PDG anti-particle code: 10323]
- Mass [GeV/c2] : 1.272     Width : 0.09
+ Mass [GeV/c2] : 1.253     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 2/2
@@ -8374,7 +8374,7 @@ G4DecayTable:  k1(1270)-
 --- G4ParticleDefinition ---
  Particle Name : k1(1270)0
  PDG particle code : 10313 [PDG anti-particle code: -10313]
- Mass [GeV/c2] : 1.272     Width : 0.09
+ Mass [GeV/c2] : 1.253     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -8533,7 +8533,7 @@ G4DecayTable:  k2(1770)0
 --- G4ParticleDefinition ---
  Particle Name : k2_star(1430)+
  PDG particle code : 325 [PDG anti-particle code: -325]
- Mass [GeV/c2] : 1.4256     Width : 0.0985
+ Mass [GeV/c2] : 1.4273     Width : 0.1
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 4/2
@@ -8561,7 +8561,7 @@ G4DecayTable:  k2_star(1430)+
 --- G4ParticleDefinition ---
  Particle Name : k2_star(1430)-
  PDG particle code : -325 [PDG anti-particle code: 325]
- Mass [GeV/c2] : 1.4256     Width : 0.0985
+ Mass [GeV/c2] : 1.4273     Width : 0.1
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 4/2
@@ -8589,7 +8589,7 @@ G4DecayTable:  k2_star(1430)-
 --- G4ParticleDefinition ---
  Particle Name : k2_star(1430)0
  PDG particle code : 315 [PDG anti-particle code: -315]
- Mass [GeV/c2] : 1.4324     Width : 0.109
+ Mass [GeV/c2] : 1.4341     Width : 0.1105
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -8617,7 +8617,7 @@ G4DecayTable:  k2_star(1430)0
 --- G4ParticleDefinition ---
  Particle Name : k2_star(1980)+
  PDG particle code : 100325 [PDG anti-particle code: -100325]
- Mass [GeV/c2] : 1.973     Width : 0.373
+ Mass [GeV/c2] : 1.994     Width : 0.348
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 4/2
@@ -8639,7 +8639,7 @@ G4DecayTable:  k2_star(1980)+
 --- G4ParticleDefinition ---
  Particle Name : k2_star(1980)-
  PDG particle code : -100325 [PDG anti-particle code: 100325]
- Mass [GeV/c2] : 1.973     Width : 0.373
+ Mass [GeV/c2] : 1.994     Width : 0.348
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 4/2
@@ -8661,7 +8661,7 @@ G4DecayTable:  k2_star(1980)-
 --- G4ParticleDefinition ---
  Particle Name : k2_star(1980)0
  PDG particle code : 100315 [PDG anti-particle code: -100315]
- Mass [GeV/c2] : 1.973     Width : 0.373
+ Mass [GeV/c2] : 1.994     Width : 0.348
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -8683,7 +8683,7 @@ G4DecayTable:  k2_star(1980)0
 --- G4ParticleDefinition ---
  Particle Name : k3_star(1780)+
  PDG particle code : 327 [PDG anti-particle code: -327]
- Mass [GeV/c2] : 1.776     Width : 0.159
+ Mass [GeV/c2] : 1.779     Width : 0.161
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 6/2
@@ -8709,7 +8709,7 @@ G4DecayTable:  k3_star(1780)+
 --- G4ParticleDefinition ---
  Particle Name : k3_star(1780)-
  PDG particle code : -327 [PDG anti-particle code: 327]
- Mass [GeV/c2] : 1.776     Width : 0.159
+ Mass [GeV/c2] : 1.779     Width : 0.161
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 6/2
@@ -8735,7 +8735,7 @@ G4DecayTable:  k3_star(1780)-
 --- G4ParticleDefinition ---
  Particle Name : k3_star(1780)0
  PDG particle code : 317 [PDG anti-particle code: -317]
- Mass [GeV/c2] : 1.776     Width : 0.159
+ Mass [GeV/c2] : 1.779     Width : 0.161
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 6/2
@@ -8761,7 +8761,7 @@ G4DecayTable:  k3_star(1780)0
 --- G4ParticleDefinition ---
  Particle Name : k_star(1410)+
  PDG particle code : 100323 [PDG anti-particle code: -100323]
- Mass [GeV/c2] : 1.421     Width : 0.236
+ Mass [GeV/c2] : 1.414     Width : 0.232
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 2/2
@@ -8786,7 +8786,7 @@ G4DecayTable:  k_star(1410)+
 --- G4ParticleDefinition ---
  Particle Name : k_star(1410)-
  PDG particle code : -100323 [PDG anti-particle code: 100323]
- Mass [GeV/c2] : 1.421     Width : 0.236
+ Mass [GeV/c2] : 1.414     Width : 0.232
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 2/2
@@ -8811,7 +8811,7 @@ G4DecayTable:  k_star(1410)-
 --- G4ParticleDefinition ---
  Particle Name : k_star(1410)0
  PDG particle code : 100313 [PDG anti-particle code: -100313]
- Mass [GeV/c2] : 1.421     Width : 0.236
+ Mass [GeV/c2] : 1.414     Width : 0.232
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -8836,7 +8836,7 @@ G4DecayTable:  k_star(1410)0
 --- G4ParticleDefinition ---
  Particle Name : k_star(1680)+
  PDG particle code : 30323 [PDG anti-particle code: -30323]
- Mass [GeV/c2] : 1.718     Width : 0.32
+ Mass [GeV/c2] : 1.718     Width : 0.322
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 2/2
@@ -8860,7 +8860,7 @@ G4DecayTable:  k_star(1680)+
 --- G4ParticleDefinition ---
  Particle Name : k_star(1680)-
  PDG particle code : -30323 [PDG anti-particle code: 30323]
- Mass [GeV/c2] : 1.718     Width : 0.32
+ Mass [GeV/c2] : 1.718     Width : 0.322
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 2/2
@@ -8884,7 +8884,7 @@ G4DecayTable:  k_star(1680)-
 --- G4ParticleDefinition ---
  Particle Name : k_star(1680)0
  PDG particle code : 30313 [PDG anti-particle code: -30313]
- Mass [GeV/c2] : 1.718     Width : 0.32
+ Mass [GeV/c2] : 1.718     Width : 0.322
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -8908,7 +8908,7 @@ G4DecayTable:  k_star(1680)0
 --- G4ParticleDefinition ---
  Particle Name : k_star+
  PDG particle code : 323 [PDG anti-particle code: -323]
- Mass [GeV/c2] : 0.89176     Width : 0.0503
+ Mass [GeV/c2] : 0.89167     Width : 0.0514
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 2/2
@@ -8929,7 +8929,7 @@ G4DecayTable:  k_star+
 --- G4ParticleDefinition ---
  Particle Name : k_star-
  PDG particle code : -323 [PDG anti-particle code: 323]
- Mass [GeV/c2] : 0.89176     Width : 0.0503
+ Mass [GeV/c2] : 0.89167     Width : 0.0514
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 2/2
@@ -9126,7 +9126,7 @@ G4DecayTable:  lambda(1405)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1520)
  PDG particle code : 3124 [PDG anti-particle code: -3124]
- Mass [GeV/c2] : 1.5195     Width : 0.0156
+ Mass [GeV/c2] : 1.5194     Width : 0.0157
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -9154,7 +9154,7 @@ G4DecayTable:  lambda(1520)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1600)
  PDG particle code : 23122 [PDG anti-particle code: -23122]
- Mass [GeV/c2] : 1.6     Width : 0.15
+ Mass [GeV/c2] : 1.6     Width : 2
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -9178,7 +9178,7 @@ G4DecayTable:  lambda(1600)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1670)
  PDG particle code : 33122 [PDG anti-particle code: -33122]
- Mass [GeV/c2] : 1.67     Width : 0.035
+ Mass [GeV/c2] : 1.674     Width : 0.03
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -9203,7 +9203,7 @@ G4DecayTable:  lambda(1670)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1690)
  PDG particle code : 13124 [PDG anti-particle code: -13124]
- Mass [GeV/c2] : 1.69     Width : 0.06
+ Mass [GeV/c2] : 1.69     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -9230,7 +9230,7 @@ G4DecayTable:  lambda(1690)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1800)
  PDG particle code : 43122 [PDG anti-particle code: -43122]
- Mass [GeV/c2] : 1.8     Width : 0.3
+ Mass [GeV/c2] : 1.8     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -9259,7 +9259,7 @@ G4DecayTable:  lambda(1800)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1810)
  PDG particle code : 53122 [PDG anti-particle code: -53122]
- Mass [GeV/c2] : 1.81     Width : 0.15
+ Mass [GeV/c2] : 1.79     Width : 0.11
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -9315,7 +9315,7 @@ G4DecayTable:  lambda(1820)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1830)
  PDG particle code : 13126 [PDG anti-particle code: -13126]
- Mass [GeV/c2] : 1.83     Width : 0.095
+ Mass [GeV/c2] : 1.825     Width : 0.09
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 5/2
@@ -9342,7 +9342,7 @@ G4DecayTable:  lambda(1830)
 --- G4ParticleDefinition ---
  Particle Name : lambda(1890)
  PDG particle code : 23124 [PDG anti-particle code: -23124]
- Mass [GeV/c2] : 1.89     Width : 0.1
+ Mass [GeV/c2] : 1.89     Width : 0.12
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -9402,7 +9402,7 @@ G4DecayTable:  lambda(2100)
 --- G4ParticleDefinition ---
  Particle Name : lambda(2110)
  PDG particle code : 23126 [PDG anti-particle code: -23126]
- Mass [GeV/c2] : 2.11     Width : 0.2
+ Mass [GeV/c2] : 2.09     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 5/2
@@ -9445,8 +9445,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : lambda_c+
  PDG particle code : 4122 [PDG anti-particle code: -4122]
- Mass [GeV/c2] : 2.28646     Width : 3.3e-12
- Lifetime [nsec] : 0.0002
+ Mass [GeV/c2] : 2.28646     Width : 3.27e-12
+ Lifetime [nsec] : 0.0002015
  Charge [e]: 1
  Spin : 1/2
  Parity : 1
@@ -9573,7 +9573,7 @@ G4DecayTable:  neutron
 --- G4ParticleDefinition ---
  Particle Name : omega
  PDG particle code : 223 [PDG anti-particle code: 223]
- Mass [GeV/c2] : 0.78265     Width : 0.00849
+ Mass [GeV/c2] : 0.78265     Width : 0.00868
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -9595,7 +9595,7 @@ G4DecayTable:  omega
 --- G4ParticleDefinition ---
  Particle Name : omega(1420)
  PDG particle code : 100223 [PDG anti-particle code: 100223]
- Mass [GeV/c2] : 1.425     Width : 0.215
+ Mass [GeV/c2] : 1.41     Width : 0.29
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -9704,7 +9704,7 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : omega_c0
  PDG particle code : 4332 [PDG anti-particle code: -4332]
- Mass [GeV/c2] : 2.6952     Width : 9.6e-12
+ Mass [GeV/c2] : 2.6952     Width : 2.46e-12
  Lifetime [nsec] : 0.000268
  Charge [e]: 0
  Spin : 1/2
@@ -9738,7 +9738,7 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : phi
  PDG particle code : 333 [PDG anti-particle code: 333]
- Mass [GeV/c2] : 1.01946     Width : 0.004247
+ Mass [GeV/c2] : 1.01946     Width : 0.004249
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -9941,7 +9941,7 @@ G4DecayTable:  pi0
 --- G4ParticleDefinition ---
  Particle Name : pi2(1670)+
  PDG particle code : 10215 [PDG anti-particle code: -10215]
- Mass [GeV/c2] : 1.6722     Width : 0.26
+ Mass [GeV/c2] : 1.6706     Width : 0.258
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 4/2
@@ -9966,7 +9966,7 @@ G4DecayTable:  pi2(1670)+
 --- G4ParticleDefinition ---
  Particle Name : pi2(1670)-
  PDG particle code : -10215 [PDG anti-particle code: 10215]
- Mass [GeV/c2] : 1.6722     Width : 0.26
+ Mass [GeV/c2] : 1.6706     Width : 0.258
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 4/2
@@ -9991,7 +9991,7 @@ G4DecayTable:  pi2(1670)-
 --- G4ParticleDefinition ---
  Particle Name : pi2(1670)0
  PDG particle code : 10115 [PDG anti-particle code: 10115]
- Mass [GeV/c2] : 1.6722     Width : 0.26
+ Mass [GeV/c2] : 1.6706     Width : 0.258
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 4/2
@@ -10103,7 +10103,7 @@ G4DecayTable:  rho(1450)0
 --- G4ParticleDefinition ---
  Particle Name : rho(1700)+
  PDG particle code : 30213 [PDG anti-particle code: -30213]
- Mass [GeV/c2] : 1.72     Width : 0.25
+ Mass [GeV/c2] : 1.729     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 2/2
@@ -10128,7 +10128,7 @@ G4DecayTable:  rho(1700)+
 --- G4ParticleDefinition ---
  Particle Name : rho(1700)-
  PDG particle code : -30213 [PDG anti-particle code: 30213]
- Mass [GeV/c2] : 1.72     Width : 0.25
+ Mass [GeV/c2] : 1.729     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 2/2
@@ -10153,7 +10153,7 @@ G4DecayTable:  rho(1700)-
 --- G4ParticleDefinition ---
  Particle Name : rho(1700)0
  PDG particle code : 30113 [PDG anti-particle code: 30113]
- Mass [GeV/c2] : 1.72     Width : 0.25
+ Mass [GeV/c2] : 1.729     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -10178,7 +10178,7 @@ G4DecayTable:  rho(1700)0
 --- G4ParticleDefinition ---
  Particle Name : rho+
  PDG particle code : 213 [PDG anti-particle code: -213]
- Mass [GeV/c2] : 0.7758     Width : 0.1503
+ Mass [GeV/c2] : 0.7758     Width : 0.1491
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 2/2
@@ -10198,7 +10198,7 @@ G4DecayTable:  rho+
 --- G4ParticleDefinition ---
  Particle Name : rho-
  PDG particle code : -213 [PDG anti-particle code: 213]
- Mass [GeV/c2] : 0.7758     Width : 0.1503
+ Mass [GeV/c2] : 0.7758     Width : 0.1491
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 2/2
@@ -10218,7 +10218,7 @@ G4DecayTable:  rho-
 --- G4ParticleDefinition ---
  Particle Name : rho0
  PDG particle code : 113 [PDG anti-particle code: 113]
- Mass [GeV/c2] : 0.77526     Width : 0.1491
+ Mass [GeV/c2] : 0.77526     Width : 0.1474
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 2/2
@@ -10431,7 +10431,7 @@ G4DecayTable:  sigma(1385)0
 --- G4ParticleDefinition ---
  Particle Name : sigma(1660)+
  PDG particle code : 13222 [PDG anti-particle code: -13222]
- Mass [GeV/c2] : 1.66     Width : 0.1
+ Mass [GeV/c2] : 1.66     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -10454,7 +10454,7 @@ G4DecayTable:  sigma(1660)+
 --- G4ParticleDefinition ---
  Particle Name : sigma(1660)-
  PDG particle code : 13112 [PDG anti-particle code: -13112]
- Mass [GeV/c2] : 1.66     Width : 0.1
+ Mass [GeV/c2] : 1.66     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -10477,7 +10477,7 @@ G4DecayTable:  sigma(1660)-
 --- G4ParticleDefinition ---
  Particle Name : sigma(1660)0
  PDG particle code : 13212 [PDG anti-particle code: -13212]
- Mass [GeV/c2] : 1.66     Width : 0.1
+ Mass [GeV/c2] : 1.66     Width : 0.2
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -10501,7 +10501,7 @@ G4DecayTable:  sigma(1660)0
 --- G4ParticleDefinition ---
  Particle Name : sigma(1670)+
  PDG particle code : 13224 [PDG anti-particle code: -13224]
- Mass [GeV/c2] : 1.67     Width : 0.06
+ Mass [GeV/c2] : 1.675     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -10524,7 +10524,7 @@ G4DecayTable:  sigma(1670)+
 --- G4ParticleDefinition ---
  Particle Name : sigma(1670)-
  PDG particle code : 13114 [PDG anti-particle code: -13114]
- Mass [GeV/c2] : 1.67     Width : 0.06
+ Mass [GeV/c2] : 1.675     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -10547,7 +10547,7 @@ G4DecayTable:  sigma(1670)-
 --- G4ParticleDefinition ---
  Particle Name : sigma(1670)0
  PDG particle code : 13214 [PDG anti-particle code: -13214]
- Mass [GeV/c2] : 1.67     Width : 0.06
+ Mass [GeV/c2] : 1.675     Width : 0.07
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -10571,7 +10571,7 @@ G4DecayTable:  sigma(1670)0
 --- G4ParticleDefinition ---
  Particle Name : sigma(1750)+
  PDG particle code : 23222 [PDG anti-particle code: -23222]
- Mass [GeV/c2] : 1.75     Width : 0.09
+ Mass [GeV/c2] : 1.75     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -10594,7 +10594,7 @@ G4DecayTable:  sigma(1750)+
 --- G4ParticleDefinition ---
  Particle Name : sigma(1750)-
  PDG particle code : 23112 [PDG anti-particle code: -23112]
- Mass [GeV/c2] : 1.75     Width : 0.09
+ Mass [GeV/c2] : 1.75     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -10617,7 +10617,7 @@ G4DecayTable:  sigma(1750)-
 --- G4ParticleDefinition ---
  Particle Name : sigma(1750)0
  PDG particle code : 23212 [PDG anti-particle code: -23212]
- Mass [GeV/c2] : 1.75     Width : 0.09
+ Mass [GeV/c2] : 1.75     Width : 0.15
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 1/2
@@ -10796,7 +10796,7 @@ G4DecayTable:  sigma(1915)0
 --- G4ParticleDefinition ---
  Particle Name : sigma(1940)+
  PDG particle code : 23224 [PDG anti-particle code: -23224]
- Mass [GeV/c2] : 1.94     Width : 0.22
+ Mass [GeV/c2] : 1.94     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 3/2
@@ -10825,7 +10825,7 @@ G4DecayTable:  sigma(1940)+
 --- G4ParticleDefinition ---
  Particle Name : sigma(1940)-
  PDG particle code : 23114 [PDG anti-particle code: -23114]
- Mass [GeV/c2] : 1.94     Width : 0.22
+ Mass [GeV/c2] : 1.94     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -10854,7 +10854,7 @@ G4DecayTable:  sigma(1940)-
 --- G4ParticleDefinition ---
  Particle Name : sigma(1940)0
  PDG particle code : 23214 [PDG anti-particle code: -23214]
- Mass [GeV/c2] : 1.94     Width : 0.22
+ Mass [GeV/c2] : 1.94     Width : 0.25
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -11034,7 +11034,7 @@ G4DecayTable:  sigma0
 --- G4ParticleDefinition ---
  Particle Name : sigma_b+
  PDG particle code : 5222 [PDG anti-particle code: -5222]
- Mass [GeV/c2] : 5.8113     Width : 0.0097
+ Mass [GeV/c2] : 5.81056     Width : 0.005
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -11053,7 +11053,7 @@ G4DecayTable:  sigma_b+
 --- G4ParticleDefinition ---
  Particle Name : sigma_b-
  PDG particle code : 5112 [PDG anti-particle code: -5112]
- Mass [GeV/c2] : 5.8155     Width : 0.0049
+ Mass [GeV/c2] : 5.81564     Width : 0.0053
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 1/2
@@ -11091,7 +11091,7 @@ G4DecayTable:  sigma_b0
 --- G4ParticleDefinition ---
  Particle Name : sigma_c+
  PDG particle code : 4212 [PDG anti-particle code: -4212]
- Mass [GeV/c2] : 2.4529     Width : 0.0022
+ Mass [GeV/c2] : 2.45265     Width : 0.0023
  Lifetime [nsec] : 0
  Charge [e]: 1
  Spin : 1/2
@@ -11405,7 +11405,7 @@ G4DecayTable:  xi(1530)0
 --- G4ParticleDefinition ---
  Particle Name : xi(1690)-
  PDG particle code : 23314 [PDG anti-particle code: -23314]
- Mass [GeV/c2] : 1.69     Width : 0.05
+ Mass [GeV/c2] : 1.69     Width : 0.02
  Lifetime [nsec] : 0
  Charge [e]: -1
  Spin : 3/2
@@ -11429,7 +11429,7 @@ G4DecayTable:  xi(1690)-
 --- G4ParticleDefinition ---
  Particle Name : xi(1690)0
  PDG particle code : 23324 [PDG anti-particle code: -23324]
- Mass [GeV/c2] : 1.69     Width : 0.05
+ Mass [GeV/c2] : 1.69     Width : 0.02
  Lifetime [nsec] : 0
  Charge [e]: 0
  Spin : 3/2
@@ -11671,8 +11671,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : xi_c+
  PDG particle code : 4232 [PDG anti-particle code: -4232]
- Mass [GeV/c2] : 2.46787     Width : 1.49e-12
- Lifetime [nsec] : 0.000442
+ Mass [GeV/c2] : 2.46771     Width : 1.45e-12
+ Lifetime [nsec] : 0.0004531
  Charge [e]: 1
  Spin : 1/2
  Parity : 1
@@ -11688,8 +11688,8 @@ Decay Table is not defined !!
 --- G4ParticleDefinition ---
  Particle Name : xi_c0
  PDG particle code : 4132 [PDG anti-particle code: -4132]
- Mass [GeV/c2] : 2.47085     Width : 5.9e-12
- Lifetime [nsec] : 0.0001519
+ Mass [GeV/c2] : 2.47044     Width : 4.33e-12
+ Lifetime [nsec] : 0.000152
  Charge [e]: 0
  Spin : 1/2
  Parity : 1
@@ -11761,8 +11761,5 @@ physicsList->Construct() start.
     1) between BERT  and FTF/P over the interval 3 to 6 GeV. 
     2) between FTF/P and QGS/P over the interval 12 to 25 GeV. 
   -- quasiElastic: 1 for QGS  and 0 for FTF
-<<G4DATADIR>>/G4NDL4.7
-@@@ G4ParticleHPInelastic instantiated for particle neutron data directory variable is G4NEUTRONHPDATA pointing to <<G4DATADIR>>/G4NDL4.7/Inelastic
-@@@ G4ParticleHPInelasticData instantiated for particle neutron data directory variable is G4NEUTRONHPDATA pointing to <<G4DATADIR>>/G4NDL4.7
 physicsList->CheckParticleList() start.
 physicsList->setCut() start.

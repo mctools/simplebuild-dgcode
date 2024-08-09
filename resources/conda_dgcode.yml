@@ -5,13 +5,14 @@ channels:
 dependencies:
   - compilers
   - bash
-  - simple-build-dgcode >= 1.3.0
+  - simple-build-dgcode >= 1.3.3
   - ncrystal
   - mcpl
   - matplotlib
   - zlib
-  - geant4>=11.1.3,<11.2.0
-  - geant4-data-ndl=4.7.0
+  #Need to avoid python 3.12 due to conda pkg issues
+  - python>=3.10.0,<3.12
+  - geant4=11.2.2
   - expat
   - openscenegraph
   - scipy

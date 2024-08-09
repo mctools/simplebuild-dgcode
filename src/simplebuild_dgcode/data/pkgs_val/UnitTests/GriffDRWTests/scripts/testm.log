@@ -1,6 +1,6 @@
 
 **************************************************************
- Geant4 version Name: geant4-11-01-patch-03 [MT]   (10-November-2023)
+ Geant4 version Name: geant4-11-02-patch-02 [MT]   (21-June-2024)
                        Copyright : Geant4 Collaboration
                       References : NIM A 506 (2003), 250-303
                                  : IEEE-TNS 53 (2006), 270-278
@@ -65,7 +65,7 @@ G4Launcher:: Simulation done
 Dumping grifftests.griff:
   File format version: 2
   Position RunNbr EvtNbr EvtHdr[B] DBData[B] BriefData[B] FullData[B] Total[B] Integrity
-         0      0      0        24      1405           96           0     1525 [success]
+         0      0      0        24      1403           96           0     1523 [success]
          1      0      1        24         0           96           0      120 [success]
          2      0      2        24         0           96           0      120 [success]
          3      0      3        24         0           96           0      120 [success]
@@ -965,24 +965,24 @@ Dumping grifftests.griff:
        897      0    897        24         0           96           0      120 [success]
        898      0    898        24         0           96           0      120 [success]
        899      0    899        24         0           96           0      120 [success]
-  Total [nevts=900]:         21600      2053       121856           0   145509 [success]
+  Total [nevts=900]:         21600      2051       121856           0   145507 [success]
       1 GriffDataReader opened file grifftests.griff
       1 ===========================  GRIFF SETUP  ===========================
       1   UserData:
       1     <none>
       1   MetaData:
-      1     "G4Date" : "(10-November-2023)"
+      1     "G4Date" : "(21-June-2024)"
       1     "G4PhysicsList" : "PL_Empty"
-      1     "G4Version" : "geant4-11-01-patch-03_MT"
-      1     "G4VersionNumber" : "1113"
+      1     "G4Version" : "geant4-11-02-patch-02_MT"
+      1     "G4VersionNumber" : "1122"
       1     "GriffMode" : "MINIMAL"
       1     "RandEngine" : "NCrystalXoroshiroEngine"
-      1     "datadir/G4ABLADATA" : "G4ABLA3.1"
+      1     "datadir/G4ABLADATA" : "G4ABLA3.3"
       1     "datadir/G4ENSDFSTATEDATA" : "G4ENSDFSTATE2.3"
-      1     "datadir/G4INCLDATA" : "G4INCL1.0"
-      1     "datadir/G4LEDATA" : "G4EMLOW8.2"
+      1     "datadir/G4INCLDATA" : "G4INCL1.2"
+      1     "datadir/G4LEDATA" : "G4EMLOW8.5"
       1     "datadir/G4LEVELGAMMADATA" : "G4PhotonEvaporation5.7"
-      1     "datadir/G4NEUTRONHPDATA" : "G4NDL4.7"
+      1     "datadir/G4NEUTRONHPDATA" : "G4NDL4.7.1"
       1     "datadir/G4PARTICLEXSDATA" : "G4PARTICLEXS4.0"
       1     "datadir/G4PIIDATA" : "G4PII1.3"
       1     "datadir/G4RADIOACTIVEDATA" : "G4RadioactiveDecay5.6"
