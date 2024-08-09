@@ -34,8 +34,11 @@ runs:
       if: steps.cache-geant4-data-packages.outputs.cache-hit != 'true'
       run: |
         python3 ${NOARCHDEFPYFILE} --yml > ~/cached_noarch_definitions.yml
+        conda config --remove-key pkgs_dirs ~/my-geant4-data-cache
+        conda config --add pkgs_dirs ~/my-geant4-data-cache
         conda env create -n geant4data -f ~/cached_noarch_definitions.yml
-        mkdir -p ~/my-geant4-data-cache/noarch && cp -r ~/conda_pkgs_dir/*.conda ~/my-geant4-data-cache/noarch/
+        #mkdir -p ~/my-geant4-data-cache/noarch && cp -r ~/conda_pkgs_dir/*.conda ~/my-geant4-data-cache/noarch/
+        #mkdir -p ~/my-geant4-data hest-cache/noarch && cp -r ~/conda_pkgs_dir/*.conda ~/my-geant4-data-cache/noarch/
       shell: bash -l {0}
       env:
         CONDA_SOLVER: libmamba
@@ -72,7 +75,7 @@ runs:
     - name: Setup simplebuild_dgcode environment
       run: |
         conda config --show pkgs_dirs
-        conda env update --verbose --verbose -n simplebuild_dgcode -f actualenv.yml
+        conda env update --verbose --verbose --verbose -n simplebuild_dgcode -f actualenv.yml
       shell: bash -el {0}
 
     - name: Conda list
