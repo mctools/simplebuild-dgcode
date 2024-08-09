@@ -1,15 +1,17 @@
+#Here are the ones for geant4 11.2.2 (with .0 on the data versions where needed
+#for safety):
 cached_noarch_pkgs_def = """
-geant4-data-abla=3.1
-geant4-data-emlow=8.2
-geant4-data-ensdfstate=2.3
-geant4-data-incl=1.0
-geant4-data-ndl=4.7
-geant4-data-particlexs=4.0
-geant4-data-photonevaporation=5.7
-geant4-data-pii=1.3
-geant4-data-radioactivedecay=5.6
-geant4-data-realsurface=2.2
-geant4-data-saiddata=2.0
+geant4-data-abla =3.3.0
+geant4-data-emlow =8.5.0
+geant4-data-ensdfstate =2.3.0
+geant4-data-incl =1.2.0
+geant4-data-ndl =4.7.1
+geant4-data-particlexs =4.0.0
+geant4-data-photonevaporation =5.7.0
+geant4-data-pii =1.3.0
+geant4-data-radioactivedecay =5.6.0
+geant4-data-realsurface =2.2.0
+geant4-data-saiddata =2.0.0
 """
 
 cached_noarch_pkgs = [ l.strip().split('=') for l in cached_noarch_pkgs_def.splitlines() if l.strip() ]
