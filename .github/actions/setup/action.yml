@@ -45,7 +45,7 @@ runs:
         NOARCHDEFPYFILE: ${{ inputs.CACHED_NOARCH_DEF_PY_FILE }}
 
     - name: DEBUG list dir content
-      run: ls -l ~/my-geant4-data-cache/noarch
+      run: ls -l ~/my-geant4-data-cache
       shell: bash
 
     - name: Set Geant4 data packages source
