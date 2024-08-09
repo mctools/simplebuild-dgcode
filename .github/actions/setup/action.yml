@@ -44,7 +44,7 @@ runs:
         else
           conda env create -n geant4data -f ~/cached_noarch_definitions.yml
         fi
-        mkdir -p ~/my-geant4-data-cache/noarch && cp -r ~/conda_pkgs_dir/*.tar.bz2 ~/my-geant4-data-cache/noarch/
+        mkdir -p ~/my-geant4-data-cache/noarch && cp -r ~/conda_pkgs_dir/*.conda ~/my-geant4-data-cache/noarch/
       shell: bash -l {0}
       env:
         CONDA_SOLVER: libmamba
