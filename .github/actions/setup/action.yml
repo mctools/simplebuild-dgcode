@@ -92,6 +92,16 @@ runs:
         fi
       shell: bash -el {0}
 
+    - name: Conda list
+      run: |
+        which python3
+        python3 --version
+        which cmake
+        cmake --version
+        conda info
+        conda list
+      shell: bash -el {0}
+
     - name: Verify that Geant4 data packages match the cached versions
       run: python3 ${NOARCHDEFPYFILE} --verify-usage
       shell: bash -el {0}
