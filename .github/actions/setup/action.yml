@@ -13,20 +13,15 @@ inputs:
     description: Path to conda .yml file
     type: string
     required: true
-  USE_MAMBA:
-    description: Use mamba instead of conda
-    type: boolean
-    default: true
 
 runs:
   using: "composite"
   steps:
-    - name: Setup ${{ inputs.USE_MAMBA == 'true' && 'Mamba' || 'Conda' }}
+    - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
         miniforge-version: latest
         activate-environment: simplebuild_dgcode
-        use-mamba: ${{ inputs.USE_MAMBA }}
 
     - name: Retrieve cached Geant4 data packages
       id: cache-geant4-data-packages
@@ -39,11 +34,7 @@ runs:
       if: steps.cache-geant4-data-packages.outputs.cache-hit != 'true'
       run: |
         python3 ${NOARCHDEFPYFILE} --yml > ~/cached_noarch_definitions.yml
-        if [[ "${{ inputs.USE_MAMBA }}" == "true" ]]; then
-          mamba env create -n geant4data -f ~/cached_noarch_definitions.yml
-        else
-          conda env create -n geant4data -f ~/cached_noarch_definitions.yml
-        fi
+        conda env create -n geant4data -f ~/cached_noarch_definitions.yml
         mkdir -p ~/my-geant4-data-cache/noarch && cp -r ~/conda_pkgs_dir/*.conda ~/my-geant4-data-cache/noarch/
       shell: bash -l {0}
       env:
@@ -56,12 +47,7 @@ runs:
 
     - name: Set Geant4 data packages source
       if: steps.cache-geant4-data-packages.outputs.cache-hit == 'true'
-      run: |
-        if [[ "${{ inputs.USE_MAMBA }}" == "true" ]]; then
-          conda config --add pkgs_dirs ~/my-geant4-data-cache/noarch
-        else
-          conda config --add channels file://~/my-geant4-data-cache
-        fi
+      run: conda config --add channels file://~/my-geant4-data-cache
       shell: bash -l {0}
       env:
         CONDA_SOLVER: libmamba
@@ -84,12 +70,8 @@ runs:
 
     - name: Setup simplebuild_dgcode environment
       run: |
-        if [[ "${{ inputs.USE_MAMBA }}" == "true" ]]; then
-          mamba env update -n simplebuild_dgcode -f actualenv.yml
-        else
-          conda config --show pkgs_dirs
-          conda env update -n simplebuild_dgcode -f actualenv.yml
-        fi
+        conda config --show pkgs_dirs
+        conda env update --verbose --verbose -n simplebuild_dgcode -f actualenv.yml
       shell: bash -el {0}
 
     - name: Conda list
