@@ -47,7 +47,8 @@ runs:
 
     - name: Set Geant4 data packages source
       if: steps.cache-geant4-data-packages.outputs.cache-hit == 'true'
-      run: conda config --add channels file://~/my-geant4-data-cache
+      run: conda config --add pkgs_dirs ~/my-geant4-data-cache
+      #run: conda config --add channels file://~/my-geant4-data-cache
       shell: bash -l {0}
       env:
         CONDA_SOLVER: libmamba
