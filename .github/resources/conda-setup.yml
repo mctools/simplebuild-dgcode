@@ -15,7 +15,8 @@ dependencies:
   - mcpl
   - matplotlib
   - zlib
-  - geant4=11.2.2 #Note: issues when mixed with python 3.12!!
+  - geant4>=11.1.3,<11.2.0
+  - geant4-data-ndl=4.7.0
   - expat
   - openscenegraph
   - scipy
