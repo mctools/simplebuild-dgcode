@@ -6,21 +6,27 @@ namespace {
   void spyG4XSect()
   {
     auto launcher = G4Launcher::Launcher::getTheLauncher();
-    if (!launcher) {
-      printf("XSectSpy ERROR: Launcher not initialised!\n");
-      exit(1);
-    }
-    launcher->setUserSteppingAction(new XSectSpySteppingAction(launcher->getPhysicsList()));
+    if (!launcher)
+      throw std::runtime_error("XSectSpy ERROR: Launcher not initialised!\n");
+    launcher->setUserSteppingAction([]()
+    {
+      auto launcher2 = G4Launcher::Launcher::getTheLauncher();
+      assert(launcher2);
+      return new XSectSpySteppingAction(launcher2->getPhysicsList());
+    });
   }
 
   void spyOneG4XSect()
   {
     auto launcher = G4Launcher::Launcher::getTheLauncher();
-    if (!launcher) {
-      printf("XSectSpy ERROR: Launcher not initialised!\n");
-      exit(1);
-    }
-    launcher->setUserSteppingAction(new XSectSpySteppingAction(launcher->getPhysicsList(),1));
+    if (!launcher)
+      throw std::runtime_error("XSectSpy ERROR: Launcher not initialised!\n");
+    launcher->setUserSteppingAction([]()
+    {
+      auto launcher2 = G4Launcher::Launcher::getTheLauncher();
+      assert(launcher2);
+      return new XSectSpySteppingAction(launcher2->getPhysicsList(),1);
+    });
   }
 }
 

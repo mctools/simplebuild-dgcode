@@ -17,6 +17,7 @@ namespace G4DataCollectInternals {
   public:
     DCSteppingAction(const char* outputFile, GriffFormat::Format::MODE mode, G4UserSteppingAction * otherAction);
     virtual ~DCSteppingAction();
+    void shutdown();
     void UserSteppingAction(const G4Step*);
     void EndOfEventAction(const G4Event*);//This non-standard method will be invoked by our helpful event action.
     G4UserSteppingAction * otherAction() const { return m_otherAction; }

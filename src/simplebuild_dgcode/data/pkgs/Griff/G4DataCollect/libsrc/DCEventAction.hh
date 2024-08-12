@@ -20,6 +20,12 @@ namespace G4DataCollectInternals {
 
     virtual ~DCEventAction()
     {
+      shutdown();
+    }
+
+    void shutdown()
+    {
+      //...
     }
 
     virtual void BeginOfEventAction(const G4Event * evt)

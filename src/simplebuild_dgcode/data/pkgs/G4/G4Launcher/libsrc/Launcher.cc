@@ -21,7 +21,7 @@
 #include "Units/Units.hh"
 #include "MultiProcessingMgr.hh"
 #include "G4Utils/Flush.hh"
-#include "G4RunManager.hh"
+#include "G4MTRunManager.hh"//for g4 11.2.2
 #include "G4UImanager.hh"
 #include "G4ParticleGun.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
@@ -39,8 +39,9 @@
 #include <limits>
 #include <stdexcept>
 #include "launcher_impl_ts.hh"
-
 #include "NCrystal/internal/NCString.hh"
+
+#include "G4Utils/STUserActionInitHelper.hh"
 
 struct G4Launcher::Launcher::Imp {
   static Launcher *& singleTonLauncherPtr()
@@ -76,7 +77,8 @@ struct G4Launcher::Launcher::Imp {
   void ensureCreateRM() {
     if (!m_rm) {
       //this->print("Creating G4RunManager");
-      m_rm = new G4RunManager;
+      m_rm = new G4MTRunManager;
+      m_rm->SetNumberOfThreads(1);
       m_rm->SetVerboseLevel(0);
     }
   }
@@ -346,6 +348,7 @@ bool G4Launcher::Launcher::preInitDone() const
 
 void G4Launcher::Launcher::Imp::preinit()
 {
+  namespace UAIH = G4Utils::UserActionInitHelper;
 
   //setup various missing parts
   if (m_isinit_pre)
@@ -480,7 +483,10 @@ void G4Launcher::Launcher::Imp::preinit()
       print("Setting up particle generation:");
       m_gen->dump((std::string(Imp::prefix())+"  --> ").c_str());
       RandomManager::attach(m_gen);
-      m_rm->SetUserAction(m_gen->getAction());
+      auto* thegen = m_gen;
+      UAIH::addUserPrimaryGeneratorActionFct([thegen](){return thegen->getAction();});
+      //UAIH::ensureRegisterWithRunManager();
+      //m_rm->SetUserAction(m_gen->getAction());
     }
   }
 
@@ -508,6 +514,7 @@ void G4Launcher::Launcher::Imp::preinit()
     G4DataCollect::installHooks(m_output.c_str(),m_outputmode.c_str());
   }
 
+  UAIH::ensureRegisterWithRunManager();
   print("Pre-init done");
 }
 
@@ -708,7 +715,6 @@ void G4Launcher::Launcher::init()
 
   for (auto& e : m_imp->m_postinithooks )
     (*e)();
-
 }
 
 void G4Launcher::Launcher::startSimulation(unsigned nevents)
@@ -962,28 +968,36 @@ void G4Launcher::Launcher::setSeed(std::uint64_t seed)
   m_imp->m_seed = seed;
 }
 
-void G4Launcher::Launcher::setUserSteppingAction(G4UserSteppingAction*ua)
+void G4Launcher::Launcher::setUserSteppingAction(std::function<G4UserSteppingAction*()>f)
 {
-  if (!m_imp->m_isinit_rm)
-    m_imp->error("setUserSteppingAction must only be called after init()");
-  if (!ua)
-    m_imp->error("Only call setUserSteppingAction with non-zero argument.");
+  namespace UAIH = G4Utils::UserActionInitHelper;
+  // if (!m_imp->m_isinit_rm)
+  //   m_imp->error("setUserSteppingAction must only be called after init()");
+  // if (!ua)
+  //   m_imp->error("Only call setUserSteppingAction with non-zero argument.");
   if (m_imp->m_output!="none")
-    G4DataCollect::installUserSteppingAction(ua);//via Griff
-  else
-    m_imp->m_rm->SetUserAction(ua);//directly on the run manager
+    G4DataCollect::installUserSteppingAction(std::move(f));//via Griff
+  else {
+    UAIH::addUserSteppingActionFct(std::move(f));
+  }
+  //UAIH::ensureRegisterWithRunManager();
+  //    m_imp->m_rm->SetUserAction(ua);//directly on the run manager
 }
 
-void G4Launcher::Launcher::setUserEventAction(G4UserEventAction*ua)
+void G4Launcher::Launcher::setUserEventAction(std::function<G4UserEventAction*()> f)
 {
-  if (!m_imp->m_isinit_rm)
-    m_imp->error("setUserEventAction must only be called after init()");
-  if (!ua)
-    m_imp->error("Only call setUserEventAction with non-zero argument.");
+  namespace UAIH = G4Utils::UserActionInitHelper;
+
+  // if (!m_imp->m_isinit_rm)
+  //   m_imp->error("setUserEventAction must only be called after init()");
+  // if (!ua)
+  //   m_imp->error("Only call setUserEventAction with non-zero argument.");
   if (m_imp->m_output!="none")
-    G4DataCollect::installUserEventAction(ua);//via Griff
+    G4DataCollect::installUserEventAction(std::move(f));//via Griff
   else
-    m_imp->m_rm->SetUserAction(ua);//directly on the run manager
+    UAIH::addUserEventActionFct(std::move(f));
+  //UAIH::ensureRegisterWithRunManager();
+  //    m_imp->m_rm->SetUserAction(ua);//directly on the run manager
 }
 
 unsigned G4Launcher::Launcher::getMultiProcessing() const
@@ -1088,3 +1102,4 @@ void G4Launcher::Launcher::addResourceGuard( std::shared_ptr<ResourceGuard> rg )
   assert(m_imp);
   m_imp->m_resourceGuards.push_back(std::move(rg));
 }
+

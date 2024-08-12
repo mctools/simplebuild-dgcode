@@ -29,11 +29,19 @@ namespace G4DataCollectInternals {
     //Todo: user should be able to change mode on the fly, and even be able to skip writing of event entirely.
   }
 
-  DCSteppingAction::~DCSteppingAction()
+  void DCSteppingAction::shutdown()
   {
     delete m_stepFilter;
+    m_stepFilter = nullptr;
     delete m_stepKillFilter;
+    m_stepKillFilter = nullptr;
     delete m_mgr;
+    m_mgr = nullptr;
+  }
+
+  DCSteppingAction::~DCSteppingAction()
+  {
+    shutdown();
   }
 
   void DCSteppingAction::initMgr()
@@ -43,6 +51,7 @@ namespace G4DataCollectInternals {
       auto runmgr = G4RunManager::GetRunManager();
       if (!runmgr)
         throw std::runtime_error("Logic error: Griff DCSteppingAction should not initialise before G4RunManager is created.");
+      //fixme?:
       if (dynamic_cast<G4MTRunManager*>(G4RunManager::GetRunManager()))
         throw std::runtime_error("Griff Data collection detected usage of G4MTRunManager which is not supported!");
     }

@@ -2,6 +2,7 @@
 #define G4DataCollect_hh
 
 #include <string>
+#include <functional>
 
 namespace G4Interfaces { class StepFilterBase; }
 class G4UserEventAction;
@@ -33,8 +34,8 @@ public:
 
   static void installHooks(const char* outputFile, const char* mode = "FULL");
 
-  static void installUserSteppingAction(G4UserSteppingAction*);
-  static void installUserEventAction(G4UserEventAction*);
+  static void installUserSteppingAction(std::function<G4UserSteppingAction*()>);
+  static void installUserEventAction(std::function<G4UserEventAction*()>);
 
   //removes hooks again and closes output file:
   static void finish();

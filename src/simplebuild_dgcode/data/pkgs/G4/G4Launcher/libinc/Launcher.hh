@@ -2,6 +2,7 @@
 #define G4Launcher_Launcher_hh
 
 #include "Core/Types.hh"
+#include <functional>
 #include <memory>
 
 // This Launcher class wraps G4RunManager and takes care of most of the setup of
@@ -118,12 +119,11 @@ namespace G4Launcher {
     void setRndEvtMsgMode(const char * mode);
     const std::string& rndEvtMsgMode() const;//mode or empty if setRndEvtMsgMode never called
 
-    //To avoid conflicts with the GRIFF file hooks, register custom stepping and
-    //event actions here rather than with the run-manager. Note that you should
-    //only construct your action class instances *after* calling init() on the
-    //launcher:
-    void setUserSteppingAction(G4UserSteppingAction*);
-    void setUserEventAction(G4UserEventAction*);
+    //To avoid conflicts with the GRIFF file hooks, register factory functions
+    //for custom stepping and event actions here rather than with the
+    //run-manager.
+    void setUserSteppingAction(std::function<G4UserSteppingAction*()>);
+    void setUserEventAction(std::function<G4UserEventAction*()>);
 
     //Direct access to Geant4 commands:
     void cmd(const char*);//apply immediately

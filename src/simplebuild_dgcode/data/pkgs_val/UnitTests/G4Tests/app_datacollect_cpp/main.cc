@@ -69,10 +69,8 @@ int main(int argc,char**argv)
   if (testhooks)
   {
     launcher.init();
-    auto some_stepping_action= new SomeSteppingAction();
-    launcher.setUserSteppingAction(some_stepping_action);
-    auto some_event_action= new SomeEventAction();
-    launcher.setUserEventAction(some_event_action);
+    launcher.setUserSteppingAction([](){return new SomeSteppingAction;});
+    launcher.setUserEventAction([](){return new SomeEventAction;});
   }
 
 

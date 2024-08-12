@@ -4,7 +4,39 @@
 #include "G4Utils/Flush.hh"
 #include "CLHEP/Random/Random.h"
 #include "G4Interfaces/FrameworkGlobals.hh"
-#include "NCG4RngEngine.hh"
+// #include "NCG4RngEngine.hh"
+
+#include "CLHEP/Random/MixMaxRng.h"
+
+namespace {
+
+  void setMixMaxRNG64bitSeed( CLHEP::MixMaxRng& engine, std::uint64_t seed64bit )
+  {
+    std::uint32_t seed0 = seed64bit && 0xFFFFFFFF;
+    std::uint32_t seed1 = ( seed64bit >> 32 ) && 0xFFFFFFFF;
+    long seeds_long[2];
+    seeds_long[0] = static_cast<long>(seed0);
+    seeds_long[1] = static_cast<long>(seed1);
+    engine.setSeeds( &seeds_long[0], 2 );
+  }
+
+  std::uint64_t getMixMaxRNG64bitvalue( CLHEP::MixMaxRng& engine )
+  {
+    unsigned int i0( engine );
+    unsigned int i1( engine );
+    unsigned int i2( engine );
+    unsigned int i3( engine );
+    std::uint64_t result = i0;
+    result <<= 16;
+    result |= ( i1 & 0xFFFF );
+    result <<= 16;
+    result |= ( i2 & 0xFFFF );
+    result <<= 16;
+    result |= ( i3 & 0xFFFF );
+    return result;
+  }
+
+}
 
 class RndmSeedCB;
 static std::shared_ptr<RndmSeedCB> s_theRndmSeedCB = nullptr;
@@ -21,13 +53,22 @@ public:
       m_evtMsgLvl(l)
   {
     printf("%sInstalling xoroshiro128+ random generator (via NCrystal)\n",FrameworkGlobals::printPrefix());
-    m_engine = new NCG4RngEngine;
+    //m_engine = new NCG4RngEngine;
+    m_engine = new CLHEP::MixMaxRng;
     CLHEP::HepRandom::setTheEngine(m_engine);
-    m_engine->dgcode_set64BitSeed(23487653);//This seed will be used only during
-                                            //initialisation, so silently having it be the
-                                            //same in all jobs means that the "event seed"
-                                            //will be actually useful to reproduce those
-                                            //events.
+    setMixMaxRNG64bitSeed( *m_engine, 23487653 );//This seed will be used only
+                                                 //during initialisation, so
+                                                 //silently having it be the
+                                                 //same in all jobs means that
+                                                 //the "event seed" will be
+                                                 //actually useful to reproduce
+                                                 //those events.
+
+    // m_engine->dgcode_set64BitSeed(23487653);//This seed will be used only during
+    //                                         //initialisation, so silently having it be the
+    //                                         //same in all jobs means that the "event seed"
+    //                                         //will be actually useful to reproduce those
+    //                                         //events.
   }
   virtual void preGen()
   {
@@ -53,9 +94,11 @@ public:
     } else {
       //Generate a random seed for this event:
       assert(m_engine);
-      seed_to_use = m_engine->dgcode_genHighQuality64bitUint();
+      seed_to_use = getMixMaxRNG64bitvalue( *m_engine );
+      //seed_to_use = m_engine->dgcode_genHighQuality64bitUint();
     }
-    m_engine->dgcode_set64BitSeed(seed_to_use);
+    setMixMaxRNG64bitSeed( *m_engine, seed_to_use );
+    //m_engine->dgcode_set64BitSeed(seed_to_use);
     FrameworkGlobals::setCurrentEvtSeed(seed_to_use);
 
     if (m_evtMsgLvl!=RandomManager::EVTMSG_NEVER) {
@@ -83,7 +126,8 @@ public:
   }
 private:
   std::uint64_t m_nextseed;
-  NCG4RngEngine * m_engine = nullptr;
+  //  NCG4RngEngine * m_engine = nullptr;
+  CLHEP::MixMaxRng * m_engine = nullptr;
   unsigned m_evtcount;
   RandomManager::EVTMSGLEVEL m_evtMsgLvl;
 };
@@ -98,3 +142,4 @@ void RandomManager::attach(G4Interfaces::ParticleGenBase* pg)
 {
   pg->installPreGenCallBack(s_theRndmSeedCB);
 }
+///home/tkittel/scr/miniforge3/envs/sb/include/CLHEP/Random/MixMaxRng.h

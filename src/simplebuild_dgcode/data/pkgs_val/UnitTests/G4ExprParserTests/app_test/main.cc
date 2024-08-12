@@ -88,8 +88,9 @@ int main(int,char**) {
   launcher.setOutput("none");
   launcher.setPhysicsList("PL_Empty");
   launcher.cmd_postinit("/tracking/verbose 1");
+  launcher.initPhysicsList();
+  launcher.setUserSteppingAction([](){return new CustomStepAct("trk.trkid==1 && step.stepnbr > 2",
+                                                               "step.steplength/cm + pi*sin(step.edep/MeV) + 1e9*step.post.volcopyno/keV + 5*(step.post.volname_2=='World')")));
   launcher.init();
-  launcher.setUserSteppingAction(new CustomStepAct("trk.trkid==1 && step.stepnbr > 2",
-                                                   "step.steplength/cm + pi*sin(step.edep/MeV) + 1e9*step.post.volcopyno/keV + 5*(step.post.volname_2=='World')"));
   launcher.startSimulation(1);
 }

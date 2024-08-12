@@ -1,4 +1,4 @@
-package(USEPKG G4Interfaces GriffFormat)
+package(USEPKG G4Interfaces GriffFormat G4Utils)
 
 ######################################################################
 
