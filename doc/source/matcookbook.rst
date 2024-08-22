@@ -6,7 +6,7 @@ Materials cookbook
 On this page we provide a small "cookbook" of material strings suitable for many
 common use cases, in particular as regards materials for neutron detectors and
 other components at neutron instruments. The discussion below assumes that
-readers have first read with :ref:`the general remarks about material
+readers have first read :ref:`the general remarks about material
 definitions <sbmatdef>`.
 
 .. _sbmatsupportmats:
