@@ -3,7 +3,7 @@
 import os
 import sys
 import re
-import pipes
+import shlex
 
 queues = ['verylong','short','newlong', 'quark', 'neutronics','strange']
 
@@ -77,7 +77,7 @@ if name==None:
     if not name:
         name='generic_dgcode'
 
-cmd_quoted = ' '.join(pipes.quote(arg) for arg in args)
+cmd_quoted = ' '.join(shlex.quote(arg) for arg in args)
 
 rundir=os.path.abspath(rundir)
 import Core.System

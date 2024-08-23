@@ -1,6 +1,8 @@
 
 __doc__='module for chaining g4 simulation and griff analysis steps'
-import os,sys,pipes
+import os
+import sys
+import shlex
 from Core.System import mkdir_p,system
 import G4Utils.hash2seed
 
@@ -72,8 +74,8 @@ def chain(g4sim_exec_name,griffana_exec_name,griff_mode=None):
         mkdir_p(rundir)
         #os.chdir(rundir)
         fh=open(os.path.join(rundir,'run.sh'),'w')
-        fh.write('cd %s && \\\n'%pipes.quote(rundir))
-        fh.write(' '.join(pipes.quote(c) for c in cmd)+' >& output.log\n')
+        fh.write('cd %s && \\\n'%shlex.quote(rundir))
+        fh.write(' '.join(shlex.quote(c) for c in cmd)+' >& output.log\n')
         fh.write('ec=$?\n')
         fh.write('if [ -f output.log ]; then gzip output.log; fi\n')
         fh.write('exit $ec\n')
@@ -93,13 +95,13 @@ def chain(g4sim_exec_name,griffana_exec_name,griff_mode=None):
             setup_runscript(os.path.join(rundir,'runana_part%04i'%i),[griffana_exec_name,'../runsim_part%04i/sim*.griff'%i])
         setup_runscript(os.path.join(rundir,'runana'),['sb_simplehists_merge','-o','merged.shist','../runana_part*/*.shist'])
     def run(step):
-        ec=system(". %s/run.sh"%pipes.quote(os.path.join(rundir,step)))
+        ec=system(". %s/run.sh"%shlex.quote(os.path.join(rundir,step)))
         if ec!=0:
             print("ERROR: Failure at %s step"%step)
             sys.exit(ec if ec<127 else 127)
     def cleanup_sim(dirname):
         if do_cleanup:
-            ec=system("rm -f %s/sim*.griff"%pipes.quote(os.path.join(rundir,dirname)))
+            ec=system("rm -f %s/sim*.griff"%shlex.quote(os.path.join(rundir,dirname)))
             if ec!=0:
                 print("ERROR: Failure during cleanup")
                 sys.exit(ec if ec<127 else 127)
