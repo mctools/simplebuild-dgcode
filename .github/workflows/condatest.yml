@@ -72,17 +72,6 @@ jobs:
           sb -t --testexcerpts=100
           sbenv sb_core_extdeps --require-disabled Numpy matplotlib Geant4 ZLib
 
-      - name: Build and test release mode
-        id: build-and-test-release-mode
-        run: |
-          set -eux
-          test -f $CONDA_PREFIX/share/Geant4/data/NDL*/Elastic/CrossSection/13_27_Aluminum.z
-          geant4-config  --version
-          mkdir test_rel && cd test_rel
-          sb --init dgcode_val
-          sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended
-          sbenv sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4
-
       - name: Build-and-test-debug-mode
         id: build-and-test-debug-mode
         run: |
@@ -91,6 +80,17 @@ jobs:
           geant4-config  --version
           mkdir test_dbg && cd test_dbg
           sb --init dgcode_val DEBUG COMPACT
+          sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended
+          sbenv sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4
+
+      - name: Build and test release mode
+        id: build-and-test-release-mode
+        run: |
+          set -eux
+          test -f $CONDA_PREFIX/share/Geant4/data/NDL*/Elastic/CrossSection/13_27_Aluminum.z
+          geant4-config  --version
+          mkdir test_rel && cd test_rel
+          sb --init dgcode_val
           sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended
           sbenv sb_core_extdeps --require ZLib NCrystal Numpy matplotlib Geant4
 
