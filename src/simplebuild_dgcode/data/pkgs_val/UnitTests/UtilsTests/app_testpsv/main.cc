@@ -4,6 +4,8 @@
 #include <climits>
 #include <cstring>
 #include <functional>
+#include <stdexcept>
+#include <sstream>
 
 namespace {
   class SimpleRandGen {
@@ -86,13 +88,13 @@ namespace {
       v2.resize(v.size());
     Utils::PackSparseVector::read(v2,buf.read_function());
     if (v2.size()!=v.size()) {
-      printf("Unexpected vector length\n");
-      exit(1);
+      throw std::runtime_error("Unexpected vector length\n");
     }
     for (unsigned i = 0; i < v2.size(); ++i) {
       if (v2[i]!=v[i]) {
-        printf("Unexpected value (expected %g)!\n",v.at(i));
-        exit(1);
+        std::ostringstream ss;
+        ss << "Unexpected value (expected "<<v.at(i)<<")";
+        throw std::runtime_error(ss.str());
       }
     }
   }

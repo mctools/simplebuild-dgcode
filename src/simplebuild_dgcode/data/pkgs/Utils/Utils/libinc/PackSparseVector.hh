@@ -59,7 +59,7 @@ namespace Utils {
           //write out info regarding non-null elements
           std::size_t ival = (v[i]?i+1:i)-inonzero;//fixme: correct?
           while (inonzero) {
-            unsigned char k = std::min(inonzero,128);
+            unsigned char k = std::min<int>(inonzero,128);
             inonzero -= k;
             dataAcceptor(&k,1);
             //write out k elements, from ival to ival+k-1
