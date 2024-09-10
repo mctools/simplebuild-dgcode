@@ -3,6 +3,7 @@
 
 #include <osg/Group>
 #include <osg/MatrixTransform>
+#include "Core/Types.hh"
 
 namespace G4OSG {
   class Viewer;
