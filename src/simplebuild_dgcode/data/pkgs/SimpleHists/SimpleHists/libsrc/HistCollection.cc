@@ -21,7 +21,7 @@ SimpleHists::HistCollection::HistCollection( AutoSave_t, const std::string& file
 SimpleHists::HistCollection::~HistCollection()
 {
   if ( !m_autosavefilename.empty() ) {
-    saveToFile(m_autosavefilename,true);
+    saveToFile(m_autosavefilename,true); // cppcheck-suppress throwInNoexceptFunction
     std::cout<<"Saved SimpleHists collection to "<<m_autosavefilename<<std::endl;
   }
   clear();

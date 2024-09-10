@@ -19,7 +19,8 @@ SimpleHists::AutoBinHist1D::AutoBinHist1D(Hist1D* h, size_t nwait)
 
 SimpleHists::AutoBinHist1D::~AutoBinHist1D()
 {
-  if (!m_db.empty()) flush();
+  if (!m_db.empty()) flush(); // cppcheck-suppress throwInNoexceptFunction
+
 }
 
 void SimpleHists::AutoBinHist1D::autoFit( double percentile )
