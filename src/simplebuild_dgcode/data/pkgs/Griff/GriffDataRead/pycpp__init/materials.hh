@@ -13,7 +13,7 @@ namespace GDR_material {
         auto elem = m->getElement(i);
         l.append( py::cast( elem ) );
       }
-      return std::move(l);
+      return l;
     }
     py::object py_get_isotope_list( const Element*elem )
     {
@@ -23,7 +23,7 @@ namespace GDR_material {
       for ( unsigned i = 0; i < n; ++i ) {
         l.append( py::cast( elem->getIsotope(i) ) );
       }
-      return std::move(l);
+      return l;
     }
 
     //Due to lack of overloading, we add dump methods directly to the objects in python:
