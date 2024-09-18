@@ -16,5 +16,5 @@ dependencies:
   - openscenegraph
   - scipy
   - hdf5
-  - pysimplegui
+  - pysimplegui<5 #v5 is no longer open source
   - pip

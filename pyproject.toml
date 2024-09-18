@@ -40,7 +40,7 @@ all = [
     'pymatgen',
     'scipy',
     'pandas',
-    'PySimpleGUI'
+    'PySimpleGUI-4-foss'
 ]
 
 [project.urls]
