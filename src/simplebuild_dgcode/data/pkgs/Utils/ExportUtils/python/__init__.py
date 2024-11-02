@@ -131,20 +131,24 @@ class ExportMgr:
         f = self.__fixsrc(filename)
         self.__files_read.add(f)
         self.__files_readwgetlines.add(f)
+        test_log_file=filename.endswith('.log')
         makefile = filename.startswith('Makefile') or filename.endswith('.make')
         for i,l in enumerate(self.provide_lines(f)):
-            try:
-                if isinstance(l,bytes):
-                    l.decode('ascii')#py2
-                else:
-                    l.encode('ascii')#py3
-            except (UnicodeDecodeError,UnicodeEncodeError):
-                self.error("Output based on file %s is not pure ASCII in line %i (>>>> %s <<<<)"%(f,i+1,l.strip()))
+            if not test_log_file:
+                try:
+                    if isinstance(l,bytes):
+                        l.decode('ascii')#py2
+                    else:
+                        l.encode('ascii')#py3
+                except (UnicodeDecodeError,UnicodeEncodeError):
+                    self.error("Output based on file %s is not pure ASCII in line %i (>>>> %s <<<<)"%(f,i+1,l.strip()))
             if '\r' in l:
                 self.error("Non-unix line endings encountered in file %s (line %i)"%(f,i+1))
-            if '\t' in l and (not makefile or '\t' in l[1:]):
-                #tabs only allowed in makefiles at start of lines
-                self.error("TABs encountered in file %s (line %i)"%(f,i+1))
+            if '\t' in l:
+                if ( not test_log_file
+                     and (not makefile or '\t' in l[1:]) ):
+                    #tabs only allowed in test logs and in makefiles at start of lines
+                    self.error("TABs encountered in file %s (line %i)"%(f,i+1))
             yield l
 
     def verify_output_file_name(self,filename):
