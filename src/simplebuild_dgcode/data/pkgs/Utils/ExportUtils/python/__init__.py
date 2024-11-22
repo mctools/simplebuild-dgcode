@@ -285,7 +285,11 @@ class ExportMgr:
     def finalise_export(self,version_file,additional_changelog_file=None):
         """Finalise the export procedure by calling this function."""
 
-        for f in ('CHANGELOG','FILES','INSTALL','LICENSE','README'):
+        if not ( self.__fixdest('README') in self.__files_written
+                 or self.__fixdest('README.md') in self.__files_written ):
+            self.error('Output is missing recommended file (needs README or README.md)')
+
+        for f in ('CHANGELOG','FILES','INSTALL','LICENSE'):
             if not self.__fixdest(f) in self.__files_written:
                 self.error('Output is missing recommended file : "%s"\n'%f)
 
