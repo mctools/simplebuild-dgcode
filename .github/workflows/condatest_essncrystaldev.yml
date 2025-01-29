@@ -38,7 +38,7 @@ jobs:
         with:
           path: ./src_co
 
-      - name: Checkout
+      - name: Checkout mctools/ncrystal
         uses: actions/checkout@v4
         with:
           repository: mctools/ncrystal
@@ -72,15 +72,10 @@ jobs:
 
       #NCrystal needs extra packages:
       - name: Install extra conda pkgs
-        run: conda env update --file ./src_ncrystal/devel/reqs/conda_all.yml
-        #was: conda install --yes mpmath spglib gemmi ase pymatgen
+        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_combined.yml
 
-      - name: Hack simplebuild search path
-        run: |
-          set -eu
-          echo '' >> ./src_testproject/simplebuild.cfg
-          echo '[depend]' >> ./src_testproject/simplebuild.cfg
-          echo "search_path = [ '../src_ncrystal/devel/simplebuild' ]"  >> ./src_testproject/simplebuild.cfg
+      - name: Make ncrystaldynamic bundle discoverable
+        run: pip install -e ./src_ncrystal/devel/simplebuild/discovery
 
       - name: Build (release mode)
         id: build-release-mode
