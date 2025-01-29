@@ -7,9 +7,19 @@
 #include "G4Materials/CommonMaterials.hh"
 #include "G4Materials/ShieldingMaterials.hh"
 #include "G4NCrystalRel/G4NCrystal.hh"
-#include "NCrystal/internal/NCCfgTypes.hh"
-#include "NCrystal/internal/NCMath.hh"
-#include "NCrystal/NCFactImpl.hh"
+
+
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/cfgutils/NCCfgTypes.hh"
+#  include "NCrystal/internal/utils/NCMath.hh"
+#  include "NCrystal/factories/NCFactImpl.hh"
+#else
+#  include "NCrystal/internal/NCCfgTypes.hh"
+#  include "NCrystal/internal/NCMath.hh"
+#  include "NCrystal/NCFactImpl.hh"
+#endif
+
 #include "IdealGasBuilder/IdealGasBuilder.hh"
 #include "Units/Units.hh"
 #include "Core/FindData.hh"

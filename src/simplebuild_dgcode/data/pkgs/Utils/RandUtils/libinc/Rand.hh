@@ -1,7 +1,12 @@
 #ifndef RandUtils_Rand_hh
 #define RandUtils_Rand_hh
 
-#include "NCrystal/internal/NCRandUtils.hh"
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCRandUtils.hh"
+#else
+#  include "NCrystal/internal/NCRandUtils.hh"
+#endif
 
 namespace RandUtils {
 

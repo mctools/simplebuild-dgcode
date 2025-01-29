@@ -40,7 +40,13 @@
 #include <stdexcept>
 #include "launcher_impl_ts.hh"
 
-#include "NCrystal/internal/NCString.hh"
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCString.hh"
+#else
+#  include "NCrystal/internal/NCString.hh"
+#endif
+
 
 struct G4Launcher::Launcher::Imp {
   static Launcher *& singleTonLauncherPtr()

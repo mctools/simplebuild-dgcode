@@ -2,7 +2,14 @@
 #define G4Materials_NCG4Utils_hh
 
 class G4Material;
-#include "NCrystal/NCMatCfg.hh"
+
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/factories/NCMatCfg.hh"
+#else
+#  include "NCrystal/NCMatCfg.hh"
+#endif
+
 #include <vector>
 
 namespace NCG4Utils {

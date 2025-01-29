@@ -1,6 +1,10 @@
 #include "NCG4RngEngine.hh"
 
-#include "NCrystal/internal/NCString.hh"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCString.hh"
+#else
+#  include "NCrystal/internal/NCString.hh"
+#endif
 
 namespace NC = NCrystal;
 

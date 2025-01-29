@@ -21,7 +21,12 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "NCrystal/NCMatCfg.hh"
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/factories/NCMatCfg.hh"
+#else
+#  include "NCrystal/NCMatCfg.hh"
+#endif
 #include "G4Material.hh"
 
 namespace G4NCrystalRel {

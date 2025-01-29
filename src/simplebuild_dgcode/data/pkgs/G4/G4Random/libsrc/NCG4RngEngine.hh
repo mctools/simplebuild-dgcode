@@ -5,7 +5,12 @@
 //Xoroshiro128+ RNG.
 
 #include "CLHEP/Random/RandomEngine.h"
-#include "NCrystal/internal/NCRandUtils.hh"
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCRandUtils.hh"
+#else
+#  include "NCrystal/internal/NCRandUtils.hh"
+#endif
 
 class NCG4RngEngine final : public CLHEP::HepRandomEngine  {
 public:

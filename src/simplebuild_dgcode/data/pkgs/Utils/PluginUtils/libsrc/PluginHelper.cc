@@ -1,6 +1,14 @@
 #include "PluginUtils/PluginHelper.hh"
-#include "NCrystal/internal/NCFileUtils.hh"
-#include "NCrystal/internal/NCStrView.hh"
+
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCFileUtils.hh"
+#  include "NCrystal/internal/utils/NCStrView.hh"
+#else
+#  include "NCrystal/internal/NCFileUtils.hh"
+#  include "NCrystal/internal/NCStrView.hh"
+#endif
+
 #include <cstdlib>
 #include <fstream>
 

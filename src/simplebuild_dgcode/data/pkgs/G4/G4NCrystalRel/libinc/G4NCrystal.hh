@@ -34,14 +34,12 @@
 #ifndef G4NCrystalRel_MatHelper_hh
 #  include "G4NCrystalRel/G4NCMatHelper.hh"
 #endif
-#ifndef NCrystalRel_MatCfg_hh
+
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/factories/NCMatCfg.hh"
+#else
 #  include "NCrystal/NCMatCfg.hh"
 #endif
-#ifndef NCrystalRel_Version_hh
-#  include "NCrystal/NCVersion.hh"
-#endif
-//#ifndef NCrystal_hh
-//#  include "NCrystal/NCrystal.hh"
-//#endif
 
 #endif

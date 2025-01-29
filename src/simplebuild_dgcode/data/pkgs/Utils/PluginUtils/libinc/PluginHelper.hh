@@ -1,7 +1,13 @@
 #ifndef dgcode_PluginHelper_hh
 #define dgcode_PluginHelper_hh
 
-#include "NCrystal/internal/NCDynLoader.hh"
+
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCDynLoader.hh"
+#else
+#  include "NCrystal/internal/NCDynLoader.hh"
+#endif
 #include <memory>
 #include <string>
 #include <vector>

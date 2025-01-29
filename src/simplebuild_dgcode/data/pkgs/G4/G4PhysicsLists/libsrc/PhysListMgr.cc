@@ -1,5 +1,12 @@
 #include "G4PhysicsLists/PhysListMgr.hh"
-#include "NCrystal/internal/NCStrView.hh"
+
+#include "NCrystal/ncapi.h"
+#if NCRYSTAL_VERSION >= 3009080
+#  include "NCrystal/internal/utils/NCStrView.hh"
+#else
+#  include "NCrystal/internal/NCStrView.hh"
+#endif
+
 #include <cstdlib>
 #include "G4PhysListFactory.hh"
 #include "PluginUtils/PluginHelper.hh"

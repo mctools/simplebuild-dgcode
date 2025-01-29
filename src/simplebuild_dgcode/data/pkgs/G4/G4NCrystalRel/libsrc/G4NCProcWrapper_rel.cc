@@ -20,7 +20,7 @@
 
 #include "G4NCProcWrapper.hh"
 #include "G4NCrystalRel/G4NCManager.hh"
-#include "NCrystal/NCRNG.hh"
+#include "NCrystal/NCrystal.hh"
 
 #include "G4Step.hh"
 #include "G4StepPoint.hh"
