@@ -27,9 +27,9 @@
 #  include "NCrystal/factories/NCFactImpl.hh"
 #  include "NCrystal/misc/NCCompositionUtils.hh"
 #else
-#  include "NCrystal/interfaces/NCVersion.hh"
-#  include "NCrystal/factories/NCFactImpl.hh"
-#  include "NCrystal/misc/NCCompositionUtils.hh"
+#  include "NCrystal/NCVersion.hh"
+#  include "NCrystal/NCFactImpl.hh"
+#  include "NCrystal/NCCompositionUtils.hh"
 #endif
 
 #include "G4NistManager.hh"
