@@ -37,6 +37,14 @@ jobs:
         with:
           path: ./src_co
 
+      - name: Checkout mctools/ncrystal
+        uses: actions/checkout@v4
+        with:
+          repository: mctools/ncrystal
+          #FIXME: remove next line after ncrystal 4 is out:
+          ref: tk_reorder_pyproject
+          path: ./src_ncrystal
+
       - name: Checkout project repo
         env: # Or as an environment variable
           THEACCESSTOKEN: ${{ secrets.ACCESS_TOKEN_NCRYSTALDEV }}
@@ -63,7 +71,10 @@ jobs:
 
       #NCrystal needs extra packages:
       - name: Install extra conda pkgs
-        run: conda install --yes mpmath spglib gemmi ase pymatgen
+        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_combined.yml
+
+      - name: Make ncrystaldynamic bundle discoverable
+        run: pip install -e ./src_ncrystal/devel/simplebuild/discovery
 
       - name: Build (release mode)
         id: build-release-mode
