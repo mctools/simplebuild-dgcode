@@ -43,7 +43,7 @@ jobs:
         with:
           repository: mctools/ncrystal
           #FIXME: remove next line after ncrystal 4 is out:
-          ref: tk_reorder_pyproject
+          ref: tk_volatile
           path: ./src_ncrystal
 
       - name: Checkout project repo
@@ -73,6 +73,14 @@ jobs:
       #NCrystal needs extra packages:
       - name: Install extra conda pkgs
         run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_combined.yml
+
+      - name: Install ncrystal
+        run: |
+          set -eu
+          python3 -m pip install --no-deps --no-build-isolation ./src_ncrystal/ncrystal_core
+          python3 -m pip install --no-deps --no-build-isolation ./src_ncrystal/ncrystal_python
+          python3 -m pip install --no-deps --no-build-isolation ./src_ncrystal/ncrystal_metapkg
+          nctool --test
 
       - name: Make ncrystaldynamic bundle discoverable
         run: pip install -e ./src_ncrystal/devel/simplebuild/discovery

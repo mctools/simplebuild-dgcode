@@ -11,7 +11,7 @@ dependencies:
   - compilers
   - bash
   - simple-build-system>=1.2.6
-  - ncrystal
+#fixme: like this for now:  - ncrystal
   - mcpl
   - matplotlib
   - zlib
