@@ -71,49 +71,52 @@ PluginHelper::getAvailablePluginsByType( std::string plugin_type,
                                          LoadDescriptions load_descr )
 {
   //plugin_<plugintype>_<pluginkey>.txt
-  static const std::string pattern0 = []()
+
+  static const std::string sbld_data_dir = []()
   {
     static auto env_sbld_datadir = std::getenv( "SBLD_DATA_DIR" );
     if (!env_sbld_datadir)
       throw std::runtime_error("SBLD_DATA_DIR not set");
-    return std::string(env_sbld_datadir) + "/*/plugin_";
+    return std::string(env_sbld_datadir);
   }();
-  const std::string pattern_fn = std::string("plugin_")+plugin_type+"_";
 
-  //construct pattern:
-  std::string pattern = pattern0;
-  pattern += plugin_type;
-  pattern += "_*.txt";
+  const std::string pattern_fn = std::string("plugin_")+plugin_type+"_";
+  const std::string full_pattern_fn_to_prefix =
+    std::string("/") + pattern_fn + "*.txt";
 
   std::vector<PluginHelper::PluginInfo> res;
   std::vector<std::string> keys_seen; //{key,pkgname}
-  for ( auto& filepath : NCrystal::ncglob( pattern ) ) {
-    auto path_parts = NCrystal::StrView(filepath).split('/');
-    if ( path_parts.size() < 3 )
-      throw std::runtime_error("PluginHelper::getAvailablePluginsByType"
-                               "unexpected error on path split");
-    std::string pkgname = path_parts.at(path_parts.size()-2).to_string();
-    auto& fn = path_parts.back();
-    auto& fn_orig = path_parts.back();
-    if (!fn.startswith(pattern_fn)||!fn.endswith(".txt"))
-      throw std::runtime_error("PluginHelper::getAvailablePluginsByType"
-                               "unexpected error on filename processing");
-    fn = fn.substr(pattern_fn.size());
-    std::string plugin_key = fn.substr(0,fn.size()-4).to_string();
-    if (plugin_key.empty())
-      throw std::runtime_error(std::string("Invalid name of plugin file: ")
-                               +fn_orig.to_string());
 
-    res.emplace_back();
-    auto& p_info = res.back();
-    p_info.plugin_key = plugin_key;
-    keys_seen.push_back( plugin_key );
-    p_info.pkgname = pkgname;
-    if ( load_descr == LoadDescriptions::YES ) {
-      std::ifstream f_in(filepath);
-      std::stringstream f_buffer;
-      f_buffer << f_in.rdbuf();
-      p_info.description = NCrystal::trim2(f_buffer.str());
+  for ( auto& pkgdatadir : NCrystal::ncglob( sbld_data_dir + "/*" ) ) {
+    std::string pattern = pkgdatadir + full_pattern_fn_to_prefix;
+    for ( auto& filepath : NCrystal::ncglob( pattern ) ) {
+      auto path_parts = NCrystal::StrView(filepath).split('/');
+      if ( path_parts.size() < 3 )
+        throw std::runtime_error("PluginHelper::getAvailablePluginsByType"
+                                 "unexpected error on path split");
+      std::string pkgname = path_parts.at(path_parts.size()-2).to_string();
+      auto& fn = path_parts.back();
+      auto& fn_orig = path_parts.back();
+      if (!fn.startswith(pattern_fn)||!fn.endswith(".txt"))
+        throw std::runtime_error("PluginHelper::getAvailablePluginsByType"
+                                 "unexpected error on filename processing");
+      fn = fn.substr(pattern_fn.size());
+      std::string plugin_key = fn.substr(0,fn.size()-4).to_string();
+      if (plugin_key.empty())
+        throw std::runtime_error(std::string("Invalid name of plugin file: ")
+                                 +fn_orig.to_string());
+
+      res.emplace_back();
+      auto& p_info = res.back();
+      p_info.plugin_key = plugin_key;
+      keys_seen.push_back( plugin_key );
+      p_info.pkgname = pkgname;
+      if ( load_descr == LoadDescriptions::YES ) {
+        std::ifstream f_in(filepath);
+        std::stringstream f_buffer;
+        f_buffer << f_in.rdbuf();
+        p_info.description = NCrystal::trim2(f_buffer.str());
+      }
     }
   }
   std::sort( keys_seen.begin(), keys_seen.end() );
@@ -129,5 +132,4 @@ PluginHelper::getAvailablePluginsByType( std::string plugin_type,
       }
   }
   return res;
-
 }
