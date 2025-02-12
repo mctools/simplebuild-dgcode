@@ -42,8 +42,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: mctools/ncrystal
-          #FIXME: remove next line after ncrystal 4 is out:
-          ref: tk_volatile
           path: ./src_ncrystal
 
       - name: Checkout project repo
