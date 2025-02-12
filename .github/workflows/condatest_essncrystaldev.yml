@@ -72,7 +72,7 @@ jobs:
 
       #NCrystal needs extra packages:
       - name: Install extra conda pkgs
-        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_combined.yml
+        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
 
       - name: Install ncrystal
         run: |
