@@ -75,9 +75,7 @@ jobs:
       - name: Install ncrystal
         run: |
           set -eu
-          python3 -m pip install --no-deps --no-build-isolation ./src_ncrystal/ncrystal_core
-          python3 -m pip install --no-deps --no-build-isolation ./src_ncrystal/ncrystal_python
-          python3 -m pip install --no-deps --no-build-isolation ./src_ncrystal/ncrystal_metapkg
+          python3 -m pip install ncrystal
           nctool --test
 
       - name: Make ncrystaldynamic bundle discoverable
