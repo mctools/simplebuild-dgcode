@@ -63,6 +63,9 @@ jobs:
       - name: Install extra conda pkgs
         run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
 
+      - name: Install pymatgen conda pkg
+        run: conda install --name simplebuild_dgcode pymatgen
+
       - name: Install
         run: |
           set -eu
