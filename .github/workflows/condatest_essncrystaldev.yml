@@ -60,6 +60,10 @@ jobs:
           CACHED_NOARCH_DEF_PY_FILE: ./src_co/.github/resources/cached_noarch_definitions.py
           CONDA_ENV_FILE : ./src_co/.github/resources/conda-setup.yml
 
+      #NCrystal needs extra packages:
+      - name: Install extra conda pkgs
+        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
+
       - name: Install
         run: |
           set -eu
@@ -67,10 +71,6 @@ jobs:
           #For dev work: python3 -m pip install --no-deps ./src_co
           python3 -m pip install --no-deps ./src_co
           echo "sb --version: "$(sb --version)
-
-      #NCrystal needs extra packages:
-      - name: Install extra conda pkgs
-        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
 
       - name: Make ncrystaldynamic bundle discoverable
         run: pip install -e ./src_ncrystal/devel/simplebuild/discovery
