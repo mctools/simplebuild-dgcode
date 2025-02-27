@@ -72,12 +72,6 @@ jobs:
       - name: Install extra conda pkgs
         run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
 
-      - name: Install ncrystal
-        run: |
-          set -eu
-          python3 -m pip install ncrystal
-          nctool --test
-
       - name: Make ncrystaldynamic bundle discoverable
         run: pip install -e ./src_ncrystal/devel/simplebuild/discovery
 
