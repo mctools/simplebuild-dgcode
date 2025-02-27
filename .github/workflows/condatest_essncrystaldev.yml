@@ -80,7 +80,7 @@ jobs:
         run: |
           set -eu
           cd src_testproject
-          sb
+          sb -v
 
       - name: Launch unit tests (release mode)
         id: test-release-mode
