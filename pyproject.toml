@@ -21,23 +21,19 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-    'simple-build-system >= 1.2.6'
+    'simple-build-system >= 1.6.0'
 ]
 
 [project.optional-dependencies]
 recommended = [
     'numpy',
-    'ncrystal',
+    'ncrystal>=4.1.2',
     'matplotlib'
 ]
 all = [
     'numpy',
-    'ncrystal',
+    'ncrystal[all]>=4.1.2',
     'matplotlib',
-    'ase',
-    'gemmi',
-    'spglib',
-    'pymatgen',
     'scipy',
     'pandas',
     'PySimpleGUI-4-foss'
