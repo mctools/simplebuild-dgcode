@@ -13,7 +13,7 @@ def md5(fname):
 
 def print_md5sum(filename=None):
     m = hashlib.md5()
-    if filename == None:
+    if filename is None:
         #stdinput
         import fileinput
         for line in fileinput.input(mode='rb'):
