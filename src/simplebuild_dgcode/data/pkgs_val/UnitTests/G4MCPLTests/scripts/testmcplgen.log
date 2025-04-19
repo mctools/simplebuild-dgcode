@@ -19,7 +19,7 @@ G4Launcher::   -->   [str] material = "Vacuum"
 G4Launcher::   -->   [dbl] dimension_cm = 200
 G4Launcher:: Setting up particle generation:
 G4Launcher::   --> ParticleGenerator[G4MCPLPlugins/MCPLGen]:
-G4Launcher::   -->   [str] input_file = "MCPLTests/miscphys.mcpl.gz"
+G4Launcher::   -->   [str] input_file = "MCPLTestData/miscphys.mcpl.gz"
 G4Launcher::   -->   [str] input_filter = "(true)"
 G4Launcher::   -->   [dbl] dx_meter = 0.02
 G4Launcher::   -->   [dbl] dy_meter = 0

@@ -1,4 +1,4 @@
-#include "MCPL/mcpl.h"
+#include "mcpl.h"
 #include "MCPLExprParser/MCPLASTBuilder.hh"
 #include "ExprParser/ASTDebug.hh"
 #include "Core/File.hh"

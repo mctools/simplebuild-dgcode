@@ -1,4 +1,4 @@
-package(USEPKG MCPL MCPLExprParser SimpleHists)
+package( USEPKG MCPLExprParser SimpleHists USEEXT MCPL )
 
 ##########################################################
 

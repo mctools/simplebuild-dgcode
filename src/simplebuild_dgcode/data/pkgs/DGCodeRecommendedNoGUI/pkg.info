@@ -1,4 +1,4 @@
-package( USEPKG G4Launcher G4CollectFilters G4CustomPyGen G4GeantinoInserter G4GravityHelper G4GriffGen G4StdGenerators G4StdGeometries G4StepLimitHelper SimpleHists GriffFormat GriffDataRead G4DataCollect MCPL G4Materials USEEXT Numpy Geant4 ZLib NCrystal )
+package( USEPKG G4Launcher G4CollectFilters G4CustomPyGen G4GeantinoInserter G4GravityHelper G4GriffGen G4StdGenerators G4StdGeometries G4StepLimitHelper SimpleHists GriffFormat GriffDataRead G4DataCollect G4Materials USEEXT Numpy Geant4 ZLib NCrystal MCPL )
 
 ######################################################################
 

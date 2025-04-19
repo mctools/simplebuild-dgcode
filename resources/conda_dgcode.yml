@@ -6,8 +6,8 @@ dependencies:
   - compilers
   - bash
   - simple-build-dgcode >= 1.3.0
-  - ncrystal
-  - mcpl
+  - ncrystal >= 4.1.6
+  - mcpl >= 1.6.2
   - matplotlib
   - zlib
   - geant4>=11.1.3,<11.2.0

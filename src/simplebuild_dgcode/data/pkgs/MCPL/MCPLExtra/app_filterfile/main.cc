@@ -1,5 +1,5 @@
 #include "MCPLExprParser/MCPLASTBuilder.hh"
-#include "MCPL/mcpl.h"
+#include "mcpl.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstring>

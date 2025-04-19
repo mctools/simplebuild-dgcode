@@ -3,7 +3,7 @@
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
 #include "MCPLExprParser/MCPLASTBuilder.hh"
-#include "MCPL/mcpl.h"
+#include "mcpl.h"
 #include "Core/FindData.hh"
 #include "Units/Units.hh"
 #include "Core/String.hh"

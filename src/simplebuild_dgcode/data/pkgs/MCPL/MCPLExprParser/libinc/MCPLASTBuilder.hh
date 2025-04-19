@@ -2,7 +2,7 @@
 #define MCPLExprParser_MCPLASTBuilder_hh
 
 #include "ExprParser/ASTBuilder.hh"
-#include "MCPL/mcpl.h"
+#include "mcpl.h"
 
 namespace MCPLExprParser {
 

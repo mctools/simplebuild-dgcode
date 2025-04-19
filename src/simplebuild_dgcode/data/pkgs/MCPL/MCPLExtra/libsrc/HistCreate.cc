@@ -1,6 +1,6 @@
 #include "MCPLExtra/HistCreate.hh"
 #include "MCPLExprParser/MCPLASTBuilder.hh"
-#include "MCPL/mcpl.h"
+#include "mcpl.h"
 #include <sstream>
 #include <iomanip>
 #include "Utils/NeutronMath.hh"

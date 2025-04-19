@@ -1,7 +1,0 @@
-package(USEPKG MCPL)
-
-##########################################################
-
-MCPLTests involving files in the older format version 2.
-
-Primary author: thomas.kittelmann@ess.eu

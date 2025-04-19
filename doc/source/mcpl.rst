@@ -42,12 +42,9 @@ Inspecting MCPL files
 * If you need to, you can create custom C/C++ or Python code which opens an MCPL
   file and loops over the particles inside. You can find examples at the MCPL
   website `here <https://mctools.github.io/mcpl/usage_c/>`__ and `here
-  <https://mctools.github.io/mcpl/usage_python/>`__, but note that inside dgcode
-  you have to observe a few exceptions/rules with respect to the instructions at
-  the MCPL website. You will have to add ``MCPL`` to your package dependencies
-  in your ``pkg.info`` file, and in C/C++ the include statement for ``mcpl.h``
-  should be: ``#include "MCPL/mcpl.h"``, while in Python the import statement
-  should look like ``import MCPL``.
+  <https://mctools.github.io/mcpl/usage_python/>`__. In order to use MCPL inside
+  dgcode, you should add ``USEEXT MCPL`` to your package dependencies in your
+  ``pkg.info`` file.
 
 
 

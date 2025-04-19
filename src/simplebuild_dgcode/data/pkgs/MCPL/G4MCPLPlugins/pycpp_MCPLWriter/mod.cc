@@ -5,7 +5,7 @@
 #include "G4Interfaces/GeoConstructBase.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4ExprParser/G4SteppingASTBuilder.hh"
-#include "MCPL/mcpl.h"
+#include "mcpl.h"
 
 #include "G4VSensitiveDetector.hh"
 #include "G4Step.hh"

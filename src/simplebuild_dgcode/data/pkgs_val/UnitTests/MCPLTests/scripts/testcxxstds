@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-sb_mcpltests_stdcmp cxx

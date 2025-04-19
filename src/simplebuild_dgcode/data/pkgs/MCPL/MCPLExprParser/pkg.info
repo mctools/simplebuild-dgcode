@@ -1,4 +1,4 @@
-package(USEPKG MCPL ExprParser)
+package(USEPKG ExprParser USEEXT MCPL)
 
 ##########################################################
 

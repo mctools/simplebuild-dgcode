@@ -1,7 +1,0 @@
-package( USEPKG MCPLTests Utils USEEXT Numpy matplotlib )
-
-##########################################################
-
-Tests and examples of MPCL python module.
-
-Primary author: thomas.kittelmann@ess.eu

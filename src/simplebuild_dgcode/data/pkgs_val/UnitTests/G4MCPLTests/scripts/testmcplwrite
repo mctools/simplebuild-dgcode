@@ -3,4 +3,4 @@ sb_g4mcpltests_mcplwrite |sed 's#'"${G4NEUTRONHPDATA}"'#<G4NEUTRONHPDATA>#'
 if [ ${PIPESTATUS[0]} != 0 ]; then
     exit 1
 fi
-sb_mcpl_tool -j target.mcpl.gz && sb_mcpl_tool -j recordfwd.mcpl.gz
+mcpltool -j target.mcpl.gz && mcpltool -j recordfwd.mcpl.gz

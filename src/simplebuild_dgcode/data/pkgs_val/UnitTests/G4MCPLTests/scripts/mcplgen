@@ -9,7 +9,7 @@ geo.dimension_cm=200
 #Setup MCPL generator:
 import G4MCPLPlugins.MCPLGen as Gen
 gen = Gen.create()
-gen.input_file = "MCPLTests/miscphys.mcpl.gz"
+gen.input_file = "MCPLTestData/miscphys.mcpl.gz"
 #gen.input_filter = "(true)"
 gen.dx_meter = 0.02
 gen.roty_degree = 90

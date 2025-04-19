@@ -1,7 +1,0 @@
-package(USEPKG Utils)
-
-#############################################################
-
-Common utilities intended for code-exports (like NCrystal and MCPL).
-
-primary author: thomas.kittelmann@ess.eu

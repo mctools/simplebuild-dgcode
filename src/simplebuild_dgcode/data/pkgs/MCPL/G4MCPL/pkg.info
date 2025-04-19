@@ -1,4 +1,4 @@
-package(USEPKG MCPL USEEXT Geant4)
+package(USEEXT Geant4 MCPL )
 
 ##########################################################
 

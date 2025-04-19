@@ -1,4 +1,4 @@
-package(USEPKG G4Launcher G4MCPLPlugins MCPLTests G4StdGeometries G4StdGenerators)
+package(USEPKG G4Launcher G4MCPLPlugins MCPLTestData G4StdGeometries G4StdGenerators USEEXT MCPL)
 
 ##########################################################
 
