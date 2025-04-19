@@ -56,7 +56,6 @@ jobs:
         uses: ./src_co/.github/actions/setup
         with:
           PYTHON_VERSION: ${{ matrix.python }}
-          USE_MAMBA: true
           CACHED_NOARCH_DEF_PY_FILE: ./src_co/.github/resources/cached_noarch_definitions.py
           CONDA_ENV_FILE : ./src_co/.github/resources/conda-setup.yml
 
