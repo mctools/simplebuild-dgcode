@@ -997,10 +997,10 @@ G4Launcher:: Begin simulation of event 8 [seed 2062742952778366083]
 G4Launcher:: Begin simulation of event 9 [seed 690002459073390798]
 G4Launcher:: Begin simulation of event 10 [seed 7794004580558077429]
 G4Launcher:: Simulation done
-MCPL: Attempting to compress file target.mcpl with gzip
-MCPL: Succesfully compressed file into target.mcpl.gz
-MCPL: Attempting to compress file recordfwd.mcpl with gzip
-MCPL: Succesfully compressed file into recordfwd.mcpl.gz
+MCPL: Compressing file target.mcpl
+MCPL: Compressed file into target.mcpl.gz
+MCPL: Compressing file recordfwd.mcpl
+MCPL: Compressed file into recordfwd.mcpl.gz
 Opened MCPL file target.mcpl.gz:
 
   Basic info
