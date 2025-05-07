@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0","setuptools-git-versioning"]
+requires = ["setuptools>=74.0","setuptools-git-versioning"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools-git-versioning]
@@ -27,14 +27,14 @@ dependencies = [
 [project.optional-dependencies]
 recommended = [
     'numpy',
-    'ncrystal>=4.1.2',
-    'mcpl>=1.6.2',
+    'ncrystal>=4.1.6',
+    'mcpl>=2.0.0',
     'matplotlib'
 ]
 all = [
     'numpy',
-    'ncrystal[all]>=4.1.2',
-    'mcpl>=1.6.2',
+    'ncrystal[all]>=4.1.6',
+    'mcpl>=2.0.0',
     'matplotlib',
     'scipy',
     'pandas',
