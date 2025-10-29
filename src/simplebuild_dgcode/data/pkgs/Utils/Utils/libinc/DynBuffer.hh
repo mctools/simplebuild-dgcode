@@ -77,13 +77,13 @@ namespace Utils {
     DynBuffer( DynBuffer&& o )
     {
       this->swap( o );
-      o->clear_and_dealloc();
+      o.clear_and_dealloc();
     }
 
     DynBuffer& operator=( DynBuffer&& o )
     {
       this->swap( o );
-      o->clear_and_dealloc();
+      o.clear_and_dealloc();
       return *this;
     }
 
