@@ -140,9 +140,9 @@ Hist1D(nbins=5,xmin=0,xmax=10):
   content[ibin=3] : 0 +- 0
   content[ibin=4] : 4.3 +- 4.3
 Hist2D(nbinsx=4,xmin=-10,xmax=10,nbinsy=3,ymin=-12,ymax=13):
-  title      : <none>
-  xLabel     : <none>
-  yLabel     : <none>
+  title     : <none>
+  xLabel    : <none>
+  yLabel    : <none>
   comment    : <none>
   integral   : 21.7
   meanx      : 2.40461
@@ -280,9 +280,9 @@ Test normalisation:
     content[ibin=3] : 0 +- 0
     content[ibin=4] : 0 +- 0
 Hist2D(nbinsx=5,xmin=0,xmax=5,nbinsy=3,ymin=-2,ymax=2):
-  title      : A 2d hist
-  xLabel     : <none>
-  yLabel     : <none>
+  title     : A 2d hist
+  xLabel    : <none>
+  yLabel    : <none>
   comment    : <none>
   integral   : 0
   meanx      : <n/a>
@@ -315,9 +315,9 @@ Hist2D(nbinsx=5,xmin=0,xmax=5,nbinsy=3,ymin=-2,ymax=2):
   content[(ix,iy)=(4,1)] : 0
   content[(ix,iy)=(4,2)] : 0
 Hist2D(nbinsx=5,xmin=0,xmax=5,nbinsy=3,ymin=-2,ymax=2):
-  title      : A 2d hist
-  xLabel     : some xlabel
-  yLabel     : some ylabel
+  title     : A 2d hist
+  xLabel    : some xlabel
+  yLabel    : some ylabel
   comment    : some comment
   integral   : 13.2
   meanx      : 0.0378788
@@ -392,9 +392,9 @@ Selected 5 out of 5 histograms:
   => Now dumping histogram 1/5: hist2d_4 [hist2d_4]
 
      Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
-       title      : hist2d_4
-       xLabel     : <none>
-       yLabel     : <none>
+       title     : hist2d_4
+       xLabel    : <none>
+       yLabel    : <none>
        comment    : <none>
        integral   : 6000
        meanx      : 0.442841
@@ -816,9 +816,9 @@ Selected 5 out of 5 histograms:
   => Now dumping histogram 2/5: hist2d_5 [hist2d_5]
 
      Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
-       title      : hist2d_5
-       xLabel     : <none>
-       yLabel     : <none>
+       title     : hist2d_5
+       xLabel    : <none>
+       yLabel    : <none>
        comment    : <none>
        integral   : 0
        meanx      : <n/a>
@@ -1329,9 +1329,9 @@ Selected 5 out of 5 histograms:
   => Now dumping histogram 1/5: hist2d_4 [hist2d_4]
 
      Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
-       title      : hist2d_4
-       xLabel     : <none>
-       yLabel     : <none>
+       title     : hist2d_4
+       xLabel    : <none>
+       yLabel    : <none>
        comment    : <none>
        integral   : 6000
        meanx      : 0.442841
@@ -1753,9 +1753,9 @@ Selected 5 out of 5 histograms:
   => Now dumping histogram 2/5: hist2d_5 [hist2d_5]
 
      Hist2D(nbinsx=20,xmin=0,xmax=1,nbinsy=20,ymin=0,ymax=1):
-       title      : hist2d_5
-       xLabel     : <none>
-       yLabel     : <none>
+       title     : hist2d_5
+       xLabel    : <none>
+       yLabel    : <none>
        comment    : <none>
        integral   : 0
        meanx      : <n/a>
@@ -2289,9 +2289,9 @@ Hist1D(nbins=7,xmin=0,xmax=7):
   content[ibin=5] : 0 +- 0
   content[ibin=6] : 0 +- 0
 Hist2D(nbinsx=7,xmin=0,xmax=7,nbinsy=3,ymin=-1,ymax=2):
-  title      : Some test counts
-  xLabel     : a label
-  yLabel     : <none>
+  title     : Some test counts
+  xLabel    : a label
+  yLabel    : <none>
   comment    : <none>
   integral   : 10.2
   meanx      : 3
