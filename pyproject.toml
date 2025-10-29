@@ -21,20 +21,20 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-    'simple-build-system >= 1.7.0'
+    'simple-build-system >= 1.7.1'
 ]
 
 [project.optional-dependencies]
 recommended = [
     'numpy',
-    'ncrystal>=4.1.6',
-    'mcpl>=2.0.0',
+    'ncrystal>=4.2.10',
+    'mcpl>=2.2.4',
     'matplotlib'
 ]
 all = [
     'numpy',
-    'ncrystal[all]>=4.1.6',
-    'mcpl>=2.0.0',
+    'ncrystal[all]>=4.2.10',
+    'mcpl>=2.2.4',
     'matplotlib',
     'scipy',
     'pandas',
