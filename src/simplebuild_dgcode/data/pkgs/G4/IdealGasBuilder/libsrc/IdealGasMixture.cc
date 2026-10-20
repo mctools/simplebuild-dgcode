@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <map>
+#include <cmath>
 
 IdealGas::Mixture::Mixture(const char * formula)
   : m_by_mass_fractions(false)
@@ -202,7 +203,7 @@ G4Material * IdealGas::Mixture::buildMat(const char * name, double temp, double 
   double frac_tot = 0.0;
   for (auto it = element2density.begin();it!=element2density.end();++it)
     frac_tot += (it->second / density) * scale_e2d;
-  assert(std::abs<double>(frac_tot-1.0)<1.0e-10);
+  assert(std::abs(frac_tot-1.0)<1.0e-10);
 
   //Reorder in different map with element names as keys for reproducibility so
   //order of addElement calls won't depend on pointer sorting (at least not when

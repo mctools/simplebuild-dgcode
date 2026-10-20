@@ -10,6 +10,7 @@
 #include <osg/ShapeDrawable>
 #include <osg/Version>
 #include "G4OSG/BestUnit.hh"
+#include <cmath>
 
 G4OSG::EventHandler::EventHandler(Viewer*viewer)
   : osgGA::GUIEventHandler(),
@@ -358,7 +359,7 @@ bool G4OSG::EventHandler::handle(const osgGA::GUIEventAdapter& ea,
 
     case(osgGA::GUIEventAdapter::RELEASE):
       {
-        if (std::abs<double>(ea.getX()-m_push_x)>1.0e-5||std::abs<double>(ea.getY()-m_push_y)>1.0e-5)
+        if (std::abs(ea.getX()-m_push_x)>1.0e-5||std::abs(ea.getY()-m_push_y)>1.0e-5)
           return false;
         m_push_x=m_push_y=-1e99;
 

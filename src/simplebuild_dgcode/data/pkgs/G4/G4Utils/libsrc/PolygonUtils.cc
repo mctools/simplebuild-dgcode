@@ -1,5 +1,6 @@
 #include "G4Utils/PolygonUtils.hh"
 #include <cassert>
+#include <cmath>
 
 double G4Utils::area(const Polygon& p)
 {
@@ -77,7 +78,7 @@ void G4Utils::growPolygon(const Polygon& orig,Polygon& result,const std::vector<
 
     double det = normal_prev.x()*normal.y()-normal_prev.y()*normal.x();
 
-    bool almost_parallel = std::abs<double>(det)<tolerance;
+    bool almost_parallel = std::abs(det)<tolerance;
     if ( almost_parallel || (smooth_corners && det > 0) ) {
       //Must add extra points for more rounded corner:
       if (!almost_parallel)
