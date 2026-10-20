@@ -17,7 +17,7 @@ geo.boronThickness_micron = opt.boronthickness_micron
 launcher = G4Launcher()
 launcher.setGeo(geo)
 launcher.setParticleGun("neutron",0.025*units.eV,
-                      (0,0,-1.5*units.meter),
+                      (0,0,-1.0*units.mm),
                       (0,0,1))
 
 launcher.setOutput("none")
