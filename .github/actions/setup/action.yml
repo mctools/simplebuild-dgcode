@@ -28,7 +28,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/my-geant4-data-cache
-        key: geant4-data-packages
+        key: geant4-data-packages-${{ hashFiles(inputs.CACHED_NOARCH_DEF_PY_FILE) }}
 
     - name: Install Geant4 data packages
       if: steps.cache-geant4-data-packages.outputs.cache-hit != 'true'
