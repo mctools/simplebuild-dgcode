@@ -3,6 +3,7 @@ channels:
   - nodefaults
   - conda-forge
 dependencies:
+  - python
   - compilers
   - bash
   - simple-build-dgcode >= 1.3.0
