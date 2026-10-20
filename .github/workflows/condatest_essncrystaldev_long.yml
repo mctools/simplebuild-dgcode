@@ -33,12 +33,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: ./src_co
 
       - name: Checkout mctools/ncrystal
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: mctools/ncrystal
           path: ./src_ncrystal
@@ -103,7 +103,7 @@ jobs:
           sb -t -j4 --testexcerpts=100 --requirepkg='NCLongExtraTests,NCLongG4Tests,NCLongTests' --testfilter="${tmp}"
 
       - name: Setup tmate session for manual debugging
-        uses: mxschmitt/action-tmate@v3
+        uses: mxschmitt/action-tmate@35b54afac29c97fb54faba5b513f8fbd1882f113 # v3.24
         if: always() && inputs.manual-debugging == true && (steps.build-and-test-core-only.outcome != 'success' || steps.build-and-test-release-mode.outcome != 'success' || steps.build-and-test-debug-mode.outcome != 'success')
         with:
           limit-access-to-actor: true

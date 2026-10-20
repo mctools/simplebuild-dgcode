@@ -18,7 +18,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
       with:
         miniforge-version: latest
         channels: conda-forge
@@ -27,7 +27,7 @@ runs:
 
     - name: Retrieve cached Geant4 data packages
       id: cache-geant4-data-packages
-      uses: actions/cache@v3
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ~/my-geant4-data-cache
         key: geant4-data-packages-${{ hashFiles(inputs.CACHED_NOARCH_DEF_PY_FILE) }}

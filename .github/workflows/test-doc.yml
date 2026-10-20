@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout main repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
      #Since we need geant4 for the docs, we use the geant-data cache method from
      #condatest.yml, and then update afterwards:
