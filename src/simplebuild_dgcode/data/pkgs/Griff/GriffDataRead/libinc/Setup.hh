@@ -6,6 +6,7 @@
 #include "Utils/StringSort.hh"
 #include <string>
 #include <map>
+#include <cstdlib>
 
 class GriffDataReader;
 namespace GriffDataRead

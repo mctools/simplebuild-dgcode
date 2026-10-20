@@ -29,7 +29,7 @@ namespace EvtFile {
     DBEntryWriter( DBEntryWriter&& ) = delete;
     DBEntryWriter& operator=( DBEntryWriter&& ) = delete;
 
-    virtual ~DBEntryWriter();
+    ~DBEntryWriter();
 
     virtual std::uint16_t uniqueSubSectionID() const { return m_subSectionID; }
 
