@@ -13,7 +13,7 @@ int main(int,char**)
     "As of some one gently rapping, rapping at my chamber door."
     "`'Tis some visitor,' I muttered, `tapping at my chamber door -"
     "Only this, and nothing more.'";
-  const char * data = &(poem[0]);
+  const char * data = poem.c_str();
   const unsigned datalength = poem.size()+1;//include null char
   assert(datalength>200);
 

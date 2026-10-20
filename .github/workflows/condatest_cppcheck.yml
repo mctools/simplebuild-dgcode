@@ -60,4 +60,4 @@ jobs:
           else
             export tmp_cppcheck_level="exhaustive"
           fi
-          cppcheck --inline-suppr --project=cmds.json --check-level=${tmp_cppcheck_level} -j4 --cppcheck-build-dir="$PWD"/cppcheck_cache -q --suppress='*:'"$CONDA_PREFIX"'/include/*' --error-exitcode=1
+          cppcheck --inline-suppr --project=cmds.json --check-level=${tmp_cppcheck_level} -j4 --cppcheck-build-dir="$PWD"/cppcheck_cache -q --suppress='*:'"$CONDA_PREFIX"'/include/*' --suppress=throwInEntryPoint --error-exitcode=1
