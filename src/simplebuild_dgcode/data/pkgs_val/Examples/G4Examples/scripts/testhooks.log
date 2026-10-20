@@ -1,6 +1,6 @@
 
 **************************************************************
- Geant4 version Name: geant4-11-01-patch-03 [MT]   (10-November-2023)
+ Geant4 version Name: geant4-11-04-patch-03 [MT]   (01-October-2026)
                        Copyright : Geant4 Collaboration
                       References : NIM A 506 (2003), 250-303
                                  : IEEE-TNS 53 (2006), 270-278
@@ -31,7 +31,7 @@ G4Launcher::   -->   [dbl] fixed_y_meters = 0
 G4Launcher::   -->   [flg] randomize_y = no
 G4Launcher::   -->   [dbl] random_min_y_meters = 0
 G4Launcher::   -->   [dbl] random_max_y_meters = 0
-G4Launcher::   -->   [dbl] fixed_z_meters = -1.5
+G4Launcher::   -->   [dbl] fixed_z_meters = -0.001
 G4Launcher::   -->   [flg] randomize_z = no
 G4Launcher::   -->   [dbl] random_min_z_meters = 0
 G4Launcher::   -->   [dbl] random_max_z_meters = 0
@@ -95,7 +95,7 @@ Custom Hook Class parameters: [dbl] some_param_dbl = 23.3
 
 
 **************************************************************
- Geant4 version Name: geant4-11-01-patch-03 [MT]   (10-November-2023)
+ Geant4 version Name: geant4-11-04-patch-03 [MT]   (01-October-2026)
                        Copyright : Geant4 Collaboration
                       References : NIM A 506 (2003), 250-303
                                  : IEEE-TNS 53 (2006), 270-278
@@ -125,7 +125,7 @@ G4Launcher::   -->   [dbl] fixed_y_meters = 0
 G4Launcher::   -->   [flg] randomize_y = no
 G4Launcher::   -->   [dbl] random_min_y_meters = 0
 G4Launcher::   -->   [dbl] random_max_y_meters = 0
-G4Launcher::   -->   [dbl] fixed_z_meters = -1.5
+G4Launcher::   -->   [dbl] fixed_z_meters = -0.001
 G4Launcher::   -->   [flg] randomize_z = no
 G4Launcher::   -->   [dbl] random_min_z_meters = 0
 G4Launcher::   -->   [dbl] random_max_z_meters = 0
