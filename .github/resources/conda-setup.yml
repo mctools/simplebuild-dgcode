@@ -12,7 +12,7 @@ dependencies:
   - python-gil
   - compilers
   - bash
-  - simple-build-system>=1.7.0
+  - simple-build-system>=1.8.0
   - ncrystal>=4.1.6
   - mcpl>=2.0.0
   - matplotlib
