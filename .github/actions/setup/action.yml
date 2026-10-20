@@ -63,7 +63,7 @@ runs:
       run: |
         set -eux
         test -f ${CONDA_ENV_FILE}
-        cat ${CONDA_ENV_FILE} | sed "s/python/python=${{ inputs.PYTHON_VERSION }}/g" > actualenv.yml
+        cat ${CONDA_ENV_FILE} | sed "s/^  - python$/  - python=${{ inputs.PYTHON_VERSION }}/" > actualenv.yml
         cat actualenv.yml
       shell: bash
       env:

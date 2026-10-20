@@ -5,9 +5,11 @@ channels:
 dependencies:
   - python
 #The preceding line will be edited for python version in
-#.github/workflows/condatest.yml The rest should match
+#.github/actions/setup/action.yml. The rest should match
 #<reporoot>/resources/conda_dgcode.yml except that simple-build-dgcode itself
-#should be left out (and replaced with simple-build-system).
+#should be left out (and replaced with simple-build-system), and that we
+#here add python-gil to avoid free-threading python builds.
+  - python-gil
   - compilers
   - bash
   - simple-build-system>=1.7.0
