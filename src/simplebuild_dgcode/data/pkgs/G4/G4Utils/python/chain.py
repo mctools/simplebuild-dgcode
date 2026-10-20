@@ -33,7 +33,7 @@ def chain(g4sim_exec_name,griffana_exec_name,griff_mode=None):
 
     if '--helpsim' in args:
         ec=system("%s --help"%g4sim_exec_name)
-        sys.exit(127 if ec > 127 else ec)
+        sys.exit(min(ec, 127))
 
     chainmult=1
     for a in args:
@@ -48,7 +48,7 @@ def chain(g4sim_exec_name,griffana_exec_name,griff_mode=None):
     for a in ['-d','--dump','-p','-g','--viewer','--showphysicslists','--extrapars','--extra','-f']:
         if a in args:
             ec=system("%s %s --output=none"%(g4sim_exec_name,a))
-            sys.exit(127 if ec > 127 else ec)
+            sys.exit(min(ec, 127))
 
     do_cleanup=False
     if '--cleanup' in args:
@@ -98,13 +98,13 @@ def chain(g4sim_exec_name,griffana_exec_name,griff_mode=None):
         ec=system(". %s/run.sh"%shlex.quote(os.path.join(rundir,step)))
         if ec!=0:
             print("ERROR: Failure at %s step"%step)
-            sys.exit(ec if ec<127 else 127)
+            sys.exit(min(127, ec))
     def cleanup_sim(dirname):
         if do_cleanup:
             ec=system("rm -f %s/sim*.griff"%shlex.quote(os.path.join(rundir,dirname)))
             if ec!=0:
                 print("ERROR: Failure during cleanup")
-                sys.exit(ec if ec<127 else 127)
+                sys.exit(min(127, ec))
     run('runsample')
     if chainmult==1:
         run('runsim')

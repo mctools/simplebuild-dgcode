@@ -14,7 +14,7 @@ def jobid(jobdir):
     if not so.startswith('Submitted batch job'):
         return None
     so=so.split()
-    if not len(so)==4 or not so[3].isdigit():
+    if len(so) != 4 or not so[3].isdigit():
         return None
     return int(so[3])
 
@@ -33,9 +33,6 @@ def iscurrent(jobdir_or_jobid):
     #the states connected to jobs that are still "current" in the sense that
     #they didn't end (successfully or otherwise):
     ec=Sys.system('squeue  --job=%i --noheader -t PD,R,S,CG,CF > /dev/null'%jobdir_or_jobid)
-    if ec==0:
-        #job still in queue
-        return True
-    else:
-        return False
+    #job still in queue if ec==0:
+    return ec==0
 

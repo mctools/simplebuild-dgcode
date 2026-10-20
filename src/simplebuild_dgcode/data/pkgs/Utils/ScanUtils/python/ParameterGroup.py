@@ -1,4 +1,3 @@
-__metaclass__ = type#py2 backwards compatibility
 
 #utility class which can be used to add a number of named parameters and their
 #possible values and then generate all possible combinations of said parameters in a format suitable for the command line.
@@ -13,7 +12,7 @@ class ParameterGroup:
 
     def add(self,parname,parvalues,overwrite=False):
         if not overwrite and parname in self._pname2vals:
-            raise Exception('Attempting to set parameter name twice: %s'%parname)
+            raise ValueError('Attempting to set parameter name twice: %s'%parname)
         if not hasattr(parvalues,'__iter__'):
             parvalues=[parvalues]
         self._pname2vals[parname]=parvalues

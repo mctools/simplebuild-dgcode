@@ -17,11 +17,11 @@ def _strbytes2path(strbytes_path):
 #user/system cfg messing with the result (BUT I AM NOT 100% SURE THIS WORKS). We
 #also set GIT_OPTIONAL_LOCKS=0 instead of using --no-optional-locks, since the
 #functionality is not available in all git versions we want to support:
-_safe_git_cmd = '/usr/bin/env GIT_CONFIG=/dev/null GIT_OPTIONAL_LOCKS=0 git'.split()
-_safe_git_cmd_keepcfg = '/usr/bin/env GIT_OPTIONAL_LOCKS=0 git'.split()
+_safe_git_cmd = ['/usr/bin/env', 'GIT_CONFIG=/dev/null', 'GIT_OPTIONAL_LOCKS=0', 'git']
+_safe_git_cmd_keepcfg = ['/usr/bin/env', 'GIT_OPTIONAL_LOCKS=0', 'git']
 
 #Duplicated from .githooks/hooks.py:
-def git_status_iter(extra_args=[],staged_only=False,status_filter=''):
+def git_status_iter(extra_args=(),staged_only=False,status_filter=''):
     #We set GIT_CONFIG=/dev/null to avoid user/system cfg messing with the
     #result. We also set GIT_OPTIONAL_LOCKS=0 instead of using
     #--no-optional-locks, since the functionality is not available in all git
@@ -52,7 +52,7 @@ def _paths_and_workdirs( specific_paths ):
         yield ( pp if pp.is_dir() else pp.parent ), p
 
 def git_untracked_files_iter( specific_paths ):
-    cmd = _safe_git_cmd + 'ls-files --others -z -- DUMMY'.split();
+    cmd = _safe_git_cmd + ['ls-files', '--others', '-z', '--', 'DUMMY'];
     for workdir, checked_path in _paths_and_workdirs( specific_paths ):
         with Sys.changedir(workdir):
             cmd[-1] = str(checked_path)

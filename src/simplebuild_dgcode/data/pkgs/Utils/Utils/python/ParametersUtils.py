@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 def summarise_params(parambase_list,ignore_same=False):
     #prints out differences and returns names of parameters which are same or different
@@ -26,7 +25,7 @@ def summarise_params(parambase_list,ignore_same=False):
     for parname,valcount in par2valcount.items():
         if len(valcount)==1:
             same+=[parname]
-            parsamelines+=['     SAME %s = %s [%i]'%(parname,list(valcount.keys())[0],list(valcount.values())[0])]
+            parsamelines+=['     SAME %s = %s [%i]'%(parname,next(iter(valcount.keys())),next(iter(valcount.values())))]
         else:
             diff+=[parname]
             vclines=[]

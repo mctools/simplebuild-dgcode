@@ -33,7 +33,6 @@ PyAna.fpe.disableFPEDuringCall(_NavigationToolbar,'save_figure')
 _global_ax_count = [0]
 class MplCanvas(FigureCanvas):
     def _add_axis(self):
-        global _global_ax_count
         _global_ax_count[0] += 1
         self.ax = self.fig.add_subplot(111,label=f'MplCanvasSubPlot_{_global_ax_count[0]}')
         PyAna.fpe.disableFPEDuringCall(self.ax,'draw')#avoid annoying FPEs in matplotlib drawing code

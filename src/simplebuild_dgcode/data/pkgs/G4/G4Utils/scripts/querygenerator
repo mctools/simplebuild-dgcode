@@ -33,7 +33,6 @@ def detect_generator_examples():
     return gens
 
 def parse():
-    #
     progname=os.path.basename(sys.argv[0])
     epilog = None
     gens = detect_generator_examples()

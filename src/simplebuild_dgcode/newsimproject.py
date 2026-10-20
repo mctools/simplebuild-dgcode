@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import pathlib
 
 def determine_default_project_dir():

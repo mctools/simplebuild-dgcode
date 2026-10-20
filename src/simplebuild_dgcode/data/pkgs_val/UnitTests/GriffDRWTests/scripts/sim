@@ -18,7 +18,7 @@ class SphereUniformGen(G4CustomPyGen.GenBase):
         gun.set_type('gamma')
         gun.set_position(0,0,0)
         gun.set_energy(1*Units.units.MeV)
-        nsq = int(round(numpy.sqrt(self.npoints)))
+        nsq = round(numpy.sqrt(self.npoints))
         assert nsq*nsq==self.npoints,"npoints must be a square number"
         _costh = numpy.linspace(-1.,1.,nsq)
         _phi = numpy.linspace(0.,2*numpy.pi,nsq)

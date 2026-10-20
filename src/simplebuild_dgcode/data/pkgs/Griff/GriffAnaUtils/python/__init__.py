@@ -1,5 +1,4 @@
 """utilities for easy and efficient analysis of .griff data files containing results from Geant4 simulations"""
-from __future__ import absolute_import
 __author__='thomas.kittelmann@ess.eu'
 from . _init import *
 

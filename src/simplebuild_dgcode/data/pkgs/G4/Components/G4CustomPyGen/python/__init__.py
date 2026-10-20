@@ -1,4 +1,3 @@
-from __future__ import print_function
 __all__=['GenBase']
 import sys,os
 
@@ -7,7 +6,7 @@ class GenBase(_GenBaseCpp):
     def __init__(self):
 
         #Calling _GenBaseCpp __init__, so pybind11 exports the C++ class correctly:
-        super(GenBase,self).__init__()
+        super().__init__()
 
         #Make sure we generate a proper name based on class name and file where it is implemented:
         self.setName(self.__construct_name())

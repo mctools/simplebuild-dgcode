@@ -1,4 +1,3 @@
-from __future__ import division
 
 def vector_costheta(mom1,mom2):
     import math
@@ -25,5 +24,4 @@ def prettify_particlenames(s):
 def get_daughters_recursively(trk):
     for d in trk.daughters:
         yield d
-        for d2 in get_daughters_recursively(d):
-            yield d2
+        yield from get_daughters_recursively(d)

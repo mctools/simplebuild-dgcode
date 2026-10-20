@@ -111,7 +111,7 @@ linkcheck_ignore = [
 ]
 
 # -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output #noqa E501
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
@@ -169,18 +169,16 @@ def invoke( *args, **kwargs ):
     cmd = args[0]
     cmdstr = shlex.join( cmd )
     orig_check = kwargs.get('check')
-    if 'check' in kwargs:
-        del kwargs['check']
+    kwargs.pop('check', None)
     cwd = kwargs.get('cwd')
     assert cwd
     orig_capture_output = kwargs.get('capture_output')
     kwargs['capture_output'] = True
-    p = subprocess.run( *args, **kwargs )
-    if orig_check:
-        if p.returncode != 0 or p.stderr:
-            print(p.stderr.decode())
-            print(p.stdout.decode())
-            raise RuntimeError(f'Command in dir {cwd} failed!: {cmdstr}')
+    p = subprocess.run( *args, check=False, **kwargs )
+    if orig_check and (p.returncode != 0 or p.stderr):
+        print(p.stderr.decode())
+        print(p.stdout.decode())
+        raise RuntimeError(f'Command in dir {cwd} failed!: {cmdstr}')
     if p.stderr and (orig_check or orig_capture_output ):
             print(p.stderr.decode())
             print(p.stdout.decode())

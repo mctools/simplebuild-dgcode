@@ -78,7 +78,7 @@ def extract_neutron_xs(xsectfile,collapse_g4procs=True):
                                                bounds_error=False,
                                                fill_value=0.0,
                                                assume_sorted=True)
-        pdata_hadElas = [pdata for (pkey,pdata) in procs if pkey=='hadElastic'][0]
+        pdata_hadElas = next(pdata for (pkey,pdata) in procs if pkey=='hadElastic')
         pdatas_absn = [pdata for (pkey,pdata) in procs if pkey!='hadElastic']
 
         allE_abs = np.unique(np.concatenate(tuple(getE(pd) for pd in pdatas_absn),0))

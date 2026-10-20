@@ -61,7 +61,7 @@ def interactive_browser(filename,indices_and_keys=None,dpi=None):
         print("Launching command:",' '.join(cmd))
         p = subprocess.Popen([shlex.quote(e) for e in cmd],shell=False,
                              #stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                             preexec_fn=os.setsid)
+                             start_new_session=True)
         _sub_procs+=[p]
 
     #Fixme: leftover colours from old browser. Keeping here in case PySimpleGUI
@@ -72,7 +72,7 @@ def interactive_browser(filename,indices_and_keys=None,dpi=None):
     text_hlcol_1d=(0.3,0.3,1.0)
     text_hlcol_2d=(0.3,0.8,0.3)
     text_hlcol_counts=(0.8,0.3,0.3)
-    text_highlight_bbox={'facecolor':(0.2,0.2,0.5),  # noqa 841
+    text_highlight_bbox={'facecolor':(0.2,0.2,0.5),
                          'alpha':0.2,
                          'linewidth':0,
                          #'edgecolor':'black',
@@ -109,7 +109,7 @@ def interactive_browser(filename,indices_and_keys=None,dpi=None):
     totalwidth=85
 
     def determine_fontsize():
-        w, h = sg.Window.get_screen_size()
+        w, _h = sg.Window.get_screen_size()
         if w<1024:
             return 14
         if w<1400:
@@ -210,7 +210,6 @@ On your system, that file is located at:
         #print ('unused event: ',event,values)
 
     def kill_children():
-        global _sub_procs
         while _sub_procs:
             p=_sub_procs.pop()
             _terminate(p.pid)

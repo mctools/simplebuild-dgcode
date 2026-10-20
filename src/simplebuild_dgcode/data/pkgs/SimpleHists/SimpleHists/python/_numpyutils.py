@@ -1,4 +1,3 @@
-from __future__ import division
 __doc__='internal module for adding numpy compatible methods to SimpleHists'
 
 import numpy
@@ -14,7 +13,6 @@ def hcounts_bar_args(self,width=1.0,spacing=0.5):
     #not really needing numpy, but here anyway
     left=[]
     height=[]
-    width=width
     pos=0.0
     for c in self.counters:
         left+=[pos]
@@ -77,7 +75,7 @@ def h1d_errorband(self,ndev=1.0,clip_for_log=False):
     if clip_for_log:
         #epsilon above 0 for log-plots to avoid weird clipping issue
         clower=numpy.maximum(clower,1.0e-199)
-        cupper=numpy.maximum(cupper,clower)#
+        cupper=numpy.maximum(cupper,clower)
     return curvex,clower,cupper
 
 def h1d_curve(self):
@@ -121,7 +119,7 @@ def h2d_bar3d_args(self,cmap=None):
     dx,dy,dz = self.binwidthx * numpy.ones(elements),self.binwidthy * numpy.ones(elements),hist.T.flatten()
     res={'x':xpos, 'y':ypos, 'z':zpos, 'dx':dx, 'dy':dy, 'dz':dz}
     if cmap:
-        import matplotlib.colors as colors
+        from matplotlib import colors
         import matplotlib.pyplot as plt
         absz = abs(dz)
         fracs = absz/(absz.max() or 1.0)

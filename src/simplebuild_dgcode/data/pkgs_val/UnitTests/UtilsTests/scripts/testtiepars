@@ -23,7 +23,7 @@ for pt,va,vb,vc,vf in l:
     getattr(c,'addParameter%s'%pt)("cpar1",vc)
     c.addParameterString("cpar2","hello")
 
-    def dump(p):
+    def dump(p,a=a,b=b,c=c):
         print("Parameters %s:"%p)
         print()
         print("  A:")
@@ -51,7 +51,7 @@ for pt,va,vb,vc,vf in l:
     getattr(a,'addParameter%s'%pt)("par2",vb)
     getattr(a,'addParameter%s'%pt)("par3",vc)
 
-    def dump(p):
+    def dump(p,a=a):
         print("Parameters %s:"%p)
         print()
         print("  A:")

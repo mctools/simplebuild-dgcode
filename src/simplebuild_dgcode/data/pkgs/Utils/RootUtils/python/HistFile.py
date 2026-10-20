@@ -23,7 +23,7 @@ def writeObjectsToFile(filename,list_of_objects):
 
 def normalise_th1d_with_errors(h,percent=False):
     import math
-    assert isinstance(h,ROOT.TH1D) or isinstance(h,ROOT.TH1F)
+    assert isinstance(h, (ROOT.TH1D, ROOT.TH1F))
     n = h.GetEntries()#includes entries in over/underflow. Use h.Integral() to not include them.
     if not n:
         return
@@ -43,7 +43,7 @@ def copyhist(hist,rebin=1,normalise=False,changename=False):
     if rebin!=1:
         h.Rebin(rebin)
     if normalise:
-        normalise_th1d_with_errors(h,percent=True if normalise=='%' else False)
+        normalise_th1d_with_errors(h,percent=normalise=='%')
     return h
 
 __pause_continue=False

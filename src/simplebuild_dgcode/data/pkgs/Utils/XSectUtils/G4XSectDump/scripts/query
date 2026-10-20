@@ -46,8 +46,8 @@ opt_show = opt.show
 
 #############################################################
 #Define geometry and particle generation:
-import G4StdGeometries.GeoEmptyWorld as Geo # noqa E402
-import G4StdGenerators.FlexGen as Gen # noqa E402
+import G4StdGeometries.GeoEmptyWorld as Geo
+import G4StdGenerators.FlexGen as Gen
 geo = Geo.create()
 gen = Gen.create()
 geo.material = par_material
@@ -62,7 +62,7 @@ else:
 launcher = G4Launcher(geo,gen)
 launcher.setOutput('none')#no Griff
 launcher.setPhysicsList(par_physlist)
-import G4XSectDump.XSectSpy as spy # noqa E402
+import G4XSectDump.XSectSpy as spy
 launcher.postinit_hook(spy.installForOneFile)#just 1 file
 #just 1 event:
 sys.argv = [sys.argv[0],'-n','1']

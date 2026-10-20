@@ -59,7 +59,7 @@ class Mesh3DViewer:
             return
         if not self.__obj_img.contains(evt):
             return
-        x0,x1,y0,y1 = self.__extent(self.__axis)
+        _x0,_x1,_y0,_y1 = self.__extent(self.__axis)
         cellh,cellv = self.__cellinfos()
         nh,h0,h1 = cellh
         nv,v0,v1 = cellv
@@ -117,8 +117,8 @@ class Mesh3DViewer:
         assert self.__axis is not None
         n1d,x0,x1=self.__mesh.cellinfo[self.__axis]
         import math
-        i0 = max(0,int(math.floor((s0-x0)*n1d/(x1-x0))))
-        i1 = min(n1d-1,int(math.floor((s1-x0)*n1d/(x1-x0))))
+        i0 = max(0,math.floor((s0-x0)*n1d/(x1-x0)))
+        i1 = min(n1d-1,math.floor((s1-x0)*n1d/(x1-x0)))
         if s0==s1:
             i0,i1 = 0,n1d-1#double-click selects all
         self.__block()

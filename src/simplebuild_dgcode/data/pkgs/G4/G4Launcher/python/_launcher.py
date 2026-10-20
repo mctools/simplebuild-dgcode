@@ -126,7 +126,7 @@ def _configure_mcplwriter(launcher,cfgstr,parseerror):
         _display_mcpl_help()
     from G4MCPLPlugins.MCPLWriter import MCPLWriter
     if not hasattr(launcher,'_mcpl_outputs'):
-        setattr(launcher,'_mcpl_outputs',set())
+        launcher._mcpl_outputs = set()
     mcpl_fltr,mcpl_fn,flagexpr = None,None,None
     cfgstr=' %s '%cfgstr#catch ' where ' and ' to ' also in malformed strings starting with 'where ...'
     if ' to ' in cfgstr:
@@ -183,7 +183,7 @@ def _configure_mcplwriter(launcher,cfgstr,parseerror):
         elif cfg=='opt_pol': opt_pol = True
         elif cfg=='opt_userflags': opt_userflags = True
         elif cfg=='all_vols': mw.addVolume('*')
-        elif cfg=='where' or cfg=='to' or cfg.startswith('kill_') or cfg.startswith('on_vol_') or cfg.startswith('opt_') or cfg=='withflags':
+        elif cfg == 'where' or cfg == 'to' or cfg.startswith(('kill_', 'on_vol_', 'opt_')) or cfg == 'withflags':
             parseerror('Suspicious volume name "%s" indicates malformed option for --mcpl'%cfg)
         else:
             mw.addVolume(cfg)
@@ -206,7 +206,7 @@ def _configure_heatmap(launcher,cfgstr,parseerror):
         _display_heatmap_help()
     from G4HeatMap import HeatMapWriter
     if not hasattr(launcher,'_heatmap_outputs'):
-        setattr(launcher,'_heatmap_outputs',set())
+        launcher._heatmap_outputs = set()
     quantity,condition,filename = None,None,None
     cfgstr=' %s '%cfgstr#catch ' where ' and ' to ' also in malformed strings starting with 'where ...'
     binning = [200,200,200]
@@ -219,7 +219,7 @@ def _configure_heatmap(launcher,cfgstr,parseerror):
             import re
             filename,binning = filename.split(':',1)
             m = re.match(r'\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*', binning)
-            if not m or not len(m.groups(1))==3:
+            if not m or len(m.groups(1)) != 3:
                 parseerror('Malformed option for --heatmap: invalid binning')
             binning = [min(1000000000,max(1,int(e))) for e in m.groups(1)]
 

@@ -1,6 +1,6 @@
 __all__ = ['enableNeutronGravity']
 
-import G4GravityHelper.hooks as hooks
+from G4GravityHelper import hooks
 import G4StepLimitHelper.helper as slh
 import Units
 

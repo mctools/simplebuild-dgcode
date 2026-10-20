@@ -1,5 +1,4 @@
 """module for performing division of sets of values including errors (such as histograms)"""
-from __future__ import division
 
 import numpy
 
@@ -20,7 +19,7 @@ def divide_histograms(h1,h2):
     assert numpy.array_equal(bins,bins2)#not so efficient, but could catch stupid bugs.
     return divide(contents1,errors1,contents2,errors2)
 
-def plot_histogram_division(h1,h2,scale=1.0,axes=None,style=True,kwargs={}):
+def plot_histogram_division(h1,h2,scale=1.0,axes=None,style=True,kwargs=None):
     """In addition to performing histogram division, it also invokes errors.plot_errors on the result"""
     vals,errs = divide_histograms(h1,h2)
     from PyAnaUtils.errors import plot_errors

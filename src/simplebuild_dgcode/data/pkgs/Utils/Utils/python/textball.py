@@ -131,9 +131,7 @@ def filter_exclude_spurious_files( path ):
         return False
     if n.startswith('.') and n[-4:].startswith('.sw'):
         return False
-    if n == '.DS_Store' or n.startswith('vgcore.'):
-        return False
-    return True
+    return not (n == '.DS_Store' or n.startswith('vgcore.'))
 
 
 _normpath = lambda p : pathlib.Path(p).absolute().resolve()

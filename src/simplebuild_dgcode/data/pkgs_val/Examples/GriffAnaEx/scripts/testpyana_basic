@@ -21,10 +21,9 @@ while dr.loopEvents():
 
     for trk in dr.tracks:
         for seg in trk.segments:
-            if seg.volumeName()=="lv_targetbox":
-                if seg.eDep()>0:
-                    edep += seg.eDep()
-                    print("  segment of %s with edep starts at z=%g mm"%(trk.pdgName(),
-                                                                         seg.firstStep().preGlobalZ()/Units.units.mm))
+            if seg.volumeName()=="lv_targetbox" and seg.eDep()>0:
+                edep += seg.eDep()
+                print("  segment of %s with edep starts at z=%g mm"%(trk.pdgName(),
+                                                                     seg.firstStep().preGlobalZ()/Units.units.mm))
 
     print("Event had a total edep in the targetbox of %g MeV"%(edep/Units.units.MeV))

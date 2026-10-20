@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 """Convenience base class for making PyQt5-based GUI apps, supporting
 matplotlib widgets and layouts done with Qt designer
