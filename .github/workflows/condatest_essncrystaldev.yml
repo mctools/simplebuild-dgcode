@@ -61,10 +61,15 @@ jobs:
 
       #NCrystal needs extra packages:
       - name: Install extra conda pkgs
-        run: conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+          exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/05_install_extra_conda_pkgs.log") 2>&1
+          conda env update --name simplebuild_dgcode --file ./src_ncrystal/devel/reqs/conda_all_and_devel.yml
 
       - name: Install
         run: |
+          mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+          exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/06_install.log") 2>&1
           set -eu
           #For dev work: python3 -m pip install git+https://github.com/mctools/simplebuild@whateverbranchname
           #For dev work: python3 -m pip install --no-deps ./src_co
@@ -72,11 +77,16 @@ jobs:
           echo "sb --version: "$(sb --version)
 
       - name: Make ncrystaldynamic bundle discoverable
-        run: pip install -e ./src_ncrystal/devel/simplebuild/discovery
+        run: |
+          mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+          exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/07_make_ncrystaldynamic_bundle_discoverable.log") 2>&1
+          pip install -e ./src_ncrystal/devel/simplebuild/discovery
 
       - name: Build (release mode)
         id: build-release-mode
         run: |
+          mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+          exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/08_build_release_mode.log") 2>&1
           set -eu
           cd src_testproject
           sb -v
@@ -84,13 +94,48 @@ jobs:
       - name: Launch unit tests (release mode)
         id: test-release-mode
         run: |
+          mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+          exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/09_launch_unit_tests_release_mode.log") 2>&1
           set -eu
           cd src_testproject
           #NCLong* tests are run in a different workflow:
           sb -t --testexcerpts=100 --requirepkg=DGCodeRecommended,NCUtils,NCG4,NCTests,NCThreadVal,NCPerfVal --testfilter='!sb_nclong*'
+
+      - name: Upload logs
+        if: always()
+        uses: ./src_co/.github/actions/upload-logs
+        with:
+          name: ${{ matrix.os }}.${{ matrix.CC }}.python-${{ matrix.python }}
 
       - name: Setup tmate session for manual debugging
         uses: mxschmitt/action-tmate@35b54afac29c97fb54faba5b513f8fbd1882f113 # v3.24
         if: always() && inputs.manual-debugging == true && (steps.build-and-test-core-only.outcome != 'success' || steps.build-and-test-release-mode.outcome != 'success' || steps.build-and-test-debug-mode.outcome != 'success')
         with:
           limit-access-to-actor: true
+
+  collect_logs:
+    #Single job downloading all per-leg "ci-logs-*" artifacts above and
+    #bundling them into one tarball, so the logs of all legs can be
+    #downloaded with a single click:
+    name: Collect all CI logs
+    needs: [ build ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all per-leg logs
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ci-logs-*
+          path: all-ci-logs
+
+      - name: Bundle into a single tarball
+        run: |
+          mkdir -p all-ci-logs
+          tar -czf all-ci-logs-test-essncrystaldev-short-${{ github.sha }}.tar.gz all-ci-logs
+
+      - name: Upload combined log tarball
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: all-ci-logs-test-essncrystaldev-short-${{ github.sha }}
+          path: all-ci-logs-test-essncrystaldev-short-${{ github.sha }}.tar.gz
+          if-no-files-found: warn
