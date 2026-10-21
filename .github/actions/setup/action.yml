@@ -3,15 +3,12 @@ description: 'Setup conda environment for simplebuild_dgcode'
 inputs:
   PYTHON_VERSION:
     description: Python version to set up
-    type: string
     default: '3.11'
   CACHED_NOARCH_DEF_PY_FILE:
     description: Path to cached_noarch_definitions.py
-    type: string
     required: true
   CONDA_ENV_FILE:
     description: Path to conda .yml file
-    type: string
     required: true
 
 runs:
