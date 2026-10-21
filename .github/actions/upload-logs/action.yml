@@ -35,6 +35,10 @@ runs:
               -exec cp {} "${dest}/cmake/" \;
           fi
         done
+        #Sphinx linkcheck results (lists all broken links):
+        if [ -f doc/build/linkcheck/output.txt ]; then
+          cp doc/build/linkcheck/output.txt ci-logs/sphinx_linkcheck_output.txt
+        fi
         echo "CI_TIMING: $(date -u '+%Y-%m-%dT%H:%M:%SZ') -- logs gathered" >> ci-logs/timing.log
         du -sh ci-logs
 
