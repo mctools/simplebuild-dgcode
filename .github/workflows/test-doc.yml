@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout main repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
      #Since we need geant4 for the docs, we use the geant-data cache method from
      #condatest.yml, and then update afterwards:
@@ -28,16 +28,66 @@ jobs:
     - name: Update conda env for docs
       #NB: We do NOT add --prune in the next link, since
       #conda-setup_extra_for_docs.yml only contains the extra dependencies
-      run: conda env update --name simplebuild_dgcode --file ./.github/resources/conda-setup_extra_for_docs.yml
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/03_update_conda_env_for_docs.log") 2>&1
+        conda env update --name simplebuild_dgcode --file ./.github/resources/conda-setup_extra_for_docs.yml
 
     - name: Install self
-      run: python3 -mpip install .
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/04_install_self.log") 2>&1
+        python3 -mpip install .
 
     - name: Build documentation
       #NB: -W to turn warnings into errors:
-      run: make html SPHINXOPTS="-W"
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/05_build_documentation.log") 2>&1
+        make html SPHINXOPTS="-W"
       working-directory: ./doc/
 
     - name: Check HTML links
-      run: make linkcheck
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/06_check_html_links.log") 2>&1
+        make linkcheck
       working-directory: ./doc/
+
+    - name: Upload logs
+      if: always()
+      uses: ./.github/actions/upload-logs
+      with:
+        name: build-docs
+
+  collect_logs:
+    #Single job downloading all per-leg "ci-logs-*" artifacts above and
+    #bundling them into one tarball, so the logs of all legs can be
+    #downloaded with a single click:
+    name: Collect all CI logs
+    needs: [ build ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all per-leg logs
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ci-logs-*
+          path: all-ci-logs
+
+      - name: Bundle into a single tarball
+        env:
+          #For pull requests, github.sha is a temporary merge commit, so use
+          #the commit of the PR branch instead:
+          CI_LOGS_FULL_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          echo "CI_LOGS_SHA=${CI_LOGS_FULL_SHA:0:10}" >> "$GITHUB_ENV"
+          mkdir -p all-ci-logs
+          tar -czf all-ci-logs-build-docs-${CI_LOGS_FULL_SHA:0:10}.tar.gz all-ci-logs
+
+      - name: Upload combined log tarball
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: all-ci-logs-build-docs-${{ env.CI_LOGS_SHA }}
+          path: all-ci-logs-build-docs-${{ env.CI_LOGS_SHA }}.tar.gz
+          if-no-files-found: warn

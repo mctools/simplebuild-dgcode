@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+sb_g4examples_visexample --novis 5 |sed 's#'"${G4NEUTRONHPDATA}"'#<G4NEUTRONHPDATA>#'
+sb_g4examples_visexample -b 50 --novis 5 |sed 's#'"${G4NEUTRONHPDATA}"'#<G4NEUTRONHPDATA>#'

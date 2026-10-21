@@ -22,6 +22,10 @@
 #include "MultiProcessingMgr.hh"
 #include "G4Utils/Flush.hh"
 #include "G4RunManager.hh"
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 1100
+#  include "G4ThreadLocalSingleton.hh"
+#endif
 #include "G4UImanager.hh"
 #include "G4ParticleGun.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
@@ -78,7 +82,23 @@ struct G4Launcher::Launcher::Imp {
     if (std::string(FrameworkGlobals::printPrefix()).empty())
       FrameworkGlobals::setPrintPrefix("G4Launcher:: ");
   }
-  ~Imp(){ closeGriff(); delete m_physicsListProvider; delete m_vis; delete m_rm; }
+  ~Imp()
+  {
+    closeGriff();
+    delete m_physicsListProvider;
+    delete m_vis;
+    delete m_rm;
+#if G4VERSION_NUMBER >= 1100
+    //A sequential G4RunManager (unlike G4TaskRunManager) does not clear the
+    //G4ThreadLocalSingleton instances (e.g. the G4HadronicInteractionRegistry
+    //owning the hadronic models). They would then only be deleted during
+    //static destruction, after the mutexes used in ~G4Cache have already been
+    //destroyed. Since Geant4 11.2 this produces thousands of "Non-critical
+    //error: mutex lock failure in ~G4Cache<...>" messages from the ParticleHP
+    //models (see https://github.com/mctools/simplebuild-dgcode/issues/44).
+    G4ThreadLocalSingleton<void>::Clear();
+#endif
+  }
   void ensureCreateRM() {
     if (!m_rm) {
       //this->print("Creating G4RunManager");

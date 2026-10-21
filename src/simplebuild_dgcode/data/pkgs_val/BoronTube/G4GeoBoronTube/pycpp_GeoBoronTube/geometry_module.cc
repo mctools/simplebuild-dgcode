@@ -34,6 +34,7 @@ PYTHON_MODULE( mod )
 #include "G4IntersectionSolid.hh"
 #include "G4Transform3D.hh"
 #include "G4Vector3D.hh"
+#include <cmath>
 
 //As an example, we put a spherical sample in front of a box representing a
 //detector tube (using the Griff analysis to look for positions where neutrons
@@ -110,7 +111,7 @@ G4VPhysicalVolume* GeoBoronTube::Construct()
   const double incidence_angle = getParameterDouble("incidence_angle_deg")*Units::deg;
   const double incidence_pos = getParameterDouble("incidence_position_cm")*Units::cm;
 
-  double big_dimension = 1.1*(detbox_length+2*detbox_outer_radius+std::abs<double>(incidence_pos));
+  double big_dimension = 1.1*(detbox_length+2*detbox_outer_radius+std::abs(incidence_pos));
 
   G4Box* solidWorld = new G4Box(physVolName_World(), 2*big_dimension,2*big_dimension,2*big_dimension);
   auto worldvols = place(solidWorld,matWorld,0,0,0,0,colour_World());

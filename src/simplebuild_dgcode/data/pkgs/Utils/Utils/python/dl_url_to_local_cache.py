@@ -3,7 +3,7 @@ import os
 
 def _clean_expr(x):
     import re
-    return re.sub('\W|^(?=\d)','_', x)
+    return re.sub(r'\W|^(?=\d)','_', x)
 
 def dl_with_cache(url,cachedir=None):
     if '://' not in url:

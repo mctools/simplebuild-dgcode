@@ -18,7 +18,7 @@ geo.world_extra_margin_cm = 100
 gen = genmodule.create()
 gen.particleName = 'neutron'
 gen.neutron_wavelength_aangstrom = 4.4
-gen.fixed_z_meters = -1.9
+gen.fixed_z_meters = -1.0
 launcher = G4Launcher(geo,gen)
 launcher.setOutput('example','REDUCED')#Griff output
 launcher.go()

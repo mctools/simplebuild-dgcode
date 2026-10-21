@@ -76,7 +76,7 @@ class ScanLauncher:
                 #      '\n         therefore you are not supposed to alter the application while the scan script is running!')
                 #print("SKIPPED: Invoking simplebuild and installing to %s"%instdir)
                 instdir=os.environ.get('SBLD_INSTALL_PREFIX', None)
-                if not ec==0:
+                if ec != 0:
                     print("ERROR: Build or installation failed")
                     sys.exit(1)
             if opt.queue=='local':
@@ -206,14 +206,14 @@ def _parse(appname):
             parser.error('--launch requires --dir=DIR argument')
 
         opt.basedir=os.path.realpath(opt.basedir)
-        if not (opt.queue!='local' and opt.resubmit):
-            if not Core.System.isemptydir(opt.basedir):
-                if os.path.exists(opt.basedir):
-                    parser.error("Already exists and not an empty directory: %s"%opt.basedir)
-                if not os.path.exists(os.path.dirname(opt.basedir)):
-                    parser.error("Not found: %s"%os.path.dirname(opt.basedir))
-                if not os.path.isdir(os.path.dirname(opt.basedir)):
-                    parser.error("Not a directory: %s"%os.path.dirname(opt.basedir))
+        if ( not (opt.queue!='local' and opt.resubmit)
+             and not Core.System.isemptydir(opt.basedir) ):
+            if os.path.exists(opt.basedir):
+                parser.error("Already exists and not an empty directory: %s"%opt.basedir)
+            if not os.path.exists(os.path.dirname(opt.basedir)):
+                parser.error("Not found: %s"%os.path.dirname(opt.basedir))
+            if not os.path.isdir(os.path.dirname(opt.basedir)):
+                parser.error("Not a directory: %s"%os.path.dirname(opt.basedir))
         if not opt.queue in queues:
             parser.error('Queue \"%s\" not among valid options: \"%s\"'%(opt.queue,'", "'.join(queues)))
         if opt.queue=='local':

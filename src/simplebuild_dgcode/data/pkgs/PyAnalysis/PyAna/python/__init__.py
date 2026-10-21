@@ -1,5 +1,5 @@
 
-__all__ = ['math','os','sys','pathlib','numpy', 'matplotlib', 'np', 'mpl', 'plt','Units','units','ColourDashesHelper','lighten_colour','darken_colour','rainbow_colour','dgextras']
+__all__ = ['ColourDashesHelper', 'Units', 'darken_colour', 'dgextras', 'lighten_colour', 'math', 'matplotlib', 'mpl', 'np', 'numpy', 'os', 'pathlib', 'plt', 'rainbow_colour', 'sys', 'units']
 
 #1) Fix matplotlib backend:
 import os
@@ -108,7 +108,7 @@ def rainbow_colour(i,n):
     return cmap(i/(n-1.0) if n>1 else 1.0)
 
 class ColourDashesHelper:
-    def __init__(self,ncurves,dashes=[(),(5,2),(2,2)],cmap=None):
+    def __init__(self,ncurves,dashes=((),(5,2),(2,2)),cmap=None):
         num_styles = len(dashes)
         if not cmap:
             from matplotlib.pyplot import get_cmap

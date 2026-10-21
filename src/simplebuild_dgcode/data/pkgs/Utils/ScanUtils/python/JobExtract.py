@@ -1,4 +1,3 @@
-from __future__ import print_function
 def flatten_pars(setup):
     """Merge all geo/gen/filter/userdata/metadata/g4cmd info from GriffDataRead::Setup into a single dict (assume no clashes)"""
     if hasattr(setup,'_flatpars'):
@@ -17,7 +16,7 @@ def flatten_pars(setup):
     setup._flatpars = pars
     return pars
 
-def interesting_pars(setups,always=set(),never=set(),do_print=True):
+def interesting_pars(setups,always=frozenset(),never=frozenset(),do_print=True):
     """first parameter is a list of ScanLoader.ScanJob's or GriffDataRead.Setup's"""
     assert setups
     from GriffDataRead import Setup

@@ -128,7 +128,7 @@ def plot_file( filename,
     plt.title(title,fontsize=title_fontsize)
 
     if physlist:
-        _=r'$\mathtt{Geant4}$ with physics list $\mathtt{%s}$'%physlist.replace('_','\_')
+        _=r'$\mathtt{Geant4}$ with physics list $\mathtt{%s}$'%physlist.replace('_',r'\_')
         if is_ncrystal:
             _ += r' + $\mathrm{NCrystal}$'
         plt.suptitle(_)
@@ -180,7 +180,7 @@ def plot_file_cmp(filenames,mfp=False,save_fig=None,show=None,
 
     proctxt=' of the process %s'%xsectname if xsectname!='Total' else ''
     if title is not False:
-        plt.suptitle('Comparison of $\mathtt{Geant4}$ %s%s'%('Mean Free Path' if showMFP else 'Cross sections',proctxt))
+        plt.suptitle(r'Comparison of $\mathtt{Geant4}$ %s%s'%('Mean Free Path' if showMFP else 'Cross sections',proctxt))
 
     _plot_end(show,save_fig,versus_wavelength,showMFP,logx,logy,extra,mfpunit=mfpunit,softbrackets=softbrackets)
 

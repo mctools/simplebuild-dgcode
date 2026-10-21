@@ -7,21 +7,21 @@ _backend_ok = (_backend in ('tkagg','gtkagg','agg','macosx'))
 if _backend_ok and _backend=='gtkagg':
     #attempt to silence some useless/confusing warnings
     try:
-        import PyAnaMisc._fix_backend_gtk # noqa F401
+        import PyAnaMisc._fix_backend_gtk
     except ImportError:
         #perhaps PyAnaMisc package was not built, no biggie, users might get warnings.
         pass
 
-if _backend_ok and _backend=='tkagg':
-    if [float(n) for n in matplotlib.__version__.split('.',2)[:-1]]>=[1,5]:
-        #hide broken (warnings https://github.com/matplotlib/matplotlib/issues/7404/):
-        import warnings
-        warnings.filterwarnings("ignore",
-                                category=UserWarning,
-                                message=('Treat the new Tool classes introduced in v1.5 as experimental'+
-                                         ' for now, the API will likely change in version 2.1'))
+if ( _backend_ok and _backend=='tkagg'
+     and [float(n) for n in matplotlib.__version__.split('.',2)[:-1]]>=[1,5] ):
+    #hide broken (warnings https://github.com/matplotlib/matplotlib/issues/7404/):
+    import warnings
+    warnings.filterwarnings("ignore",
+                            category=UserWarning,
+                            message=('Treat the new Tool classes introduced in v1.5 as experimental'+
+                                     ' for now, the API will likely change in version 2.1'))
 
-from PyAnaMisc.fpe import standardMPLFixes as _standardMPLFixes # noqa E402
+from PyAnaMisc.fpe import standardMPLFixes as _standardMPLFixes
 _standardMPLFixes()
 
 def _ensure_backend_ok():

@@ -75,7 +75,6 @@ __ask_pdf=[None]
 def askPDF():
     """Checks for --pdf on commandline. If found, removes it from sys.argv,
     calls useAGG() and returns True. Otherwise returns False."""
-    global __ask_pdf
     import sys
     if '--pdf' in sys.argv[1:]:
         args=sys.argv[1:]

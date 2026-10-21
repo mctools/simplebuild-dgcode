@@ -1,6 +1,7 @@
 #include "Core/Types.hh"
 #include "Mesh/MeshFiller.hh"
 #include "MeshTests/_tempworkarounds2.hh"
+#include <cstdlib>
 
 namespace {
   template <class T> double expected_precision() { return 2.0e-12; }

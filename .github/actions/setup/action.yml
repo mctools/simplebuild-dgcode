@@ -3,36 +3,37 @@ description: 'Setup conda environment for simplebuild_dgcode'
 inputs:
   PYTHON_VERSION:
     description: Python version to set up
-    type: string
     default: '3.11'
   CACHED_NOARCH_DEF_PY_FILE:
     description: Path to cached_noarch_definitions.py
-    type: string
     required: true
   CONDA_ENV_FILE:
     description: Path to conda .yml file
-    type: string
     required: true
 
 runs:
   using: "composite"
   steps:
     - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
       with:
         miniforge-version: latest
+        channels: conda-forge
+        conda-remove-defaults: true
         activate-environment: simplebuild_dgcode
 
     - name: Retrieve cached Geant4 data packages
       id: cache-geant4-data-packages
-      uses: actions/cache@v3
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ~/my-geant4-data-cache
-        key: geant4-data-packages
+        key: geant4-data-packages-${{ hashFiles(inputs.CACHED_NOARCH_DEF_PY_FILE) }}
 
     - name: Install Geant4 data packages
       if: steps.cache-geant4-data-packages.outputs.cache-hit != 'true'
       run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_01_install_geant4_data_packages.log") 2>&1
         python3 ${NOARCHDEFPYFILE} --yml > ~/cached_noarch_definitions.yml
         conda config --show pkgs_dirs
         conda config --remove-key pkgs_dirs
@@ -48,12 +49,18 @@ runs:
         NOARCHDEFPYFILE: ${{ inputs.CACHED_NOARCH_DEF_PY_FILE }}
 
     - name: DEBUG list dir content
-      run: ls -l ~/my-geant4-data-cache
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_02_debug_list_dir_content.log") 2>&1
+        ls -l ~/my-geant4-data-cache
       shell: bash
 
     - name: Set Geant4 data packages source
       if: steps.cache-geant4-data-packages.outputs.cache-hit == 'true'
-      run: conda config --add pkgs_dirs ~/my-geant4-data-cache
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_03_set_geant4_data_packages_source.log") 2>&1
+        conda config --add pkgs_dirs ~/my-geant4-data-cache
       #run: conda config --add channels file://~/my-geant4-data-cache
       shell: bash -l {0}
       env:
@@ -61,9 +68,11 @@ runs:
 
     - name: Update conda-setup.yml with python version
       run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_04_update_conda_setup_yml_with_python_version.log") 2>&1
         set -eux
         test -f ${CONDA_ENV_FILE}
-        cat ${CONDA_ENV_FILE} | sed "s/python/python=${{ inputs.PYTHON_VERSION }}/g" > actualenv.yml
+        cat ${CONDA_ENV_FILE} | sed "s/^  - python$/  - python=${{ inputs.PYTHON_VERSION }}/" > actualenv.yml
         cat actualenv.yml
       shell: bash
       env:
@@ -71,12 +80,17 @@ runs:
 
     - name: Setup simplebuild_dgcode environment
       run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_05_setup_simplebuild_dgcode_environment.log") 2>&1
         conda config --show pkgs_dirs
         conda env update --verbose -n simplebuild_dgcode -f actualenv.yml
       shell: bash -el {0}
 
     - name: Verify that Geant4 data packages match the cached versions
-      run: python3 ${NOARCHDEFPYFILE} --verify-usage
+      run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_06_verify_that_geant4_data_packages_match_the_cached_versions.log") 2>&1
+        python3 ${NOARCHDEFPYFILE} --verify-usage
       shell: bash -el {0}
       env:
         CONDA_SOLVER: libmamba
@@ -84,6 +98,8 @@ runs:
 
     - name: Conda list
       run: |
+        mkdir -p "${GITHUB_WORKSPACE}/ci-logs"
+        exec > >(tee -a "${GITHUB_WORKSPACE}/ci-logs/00_setup_07_conda_list.log") 2>&1
         which python3
         python3 --version
         which cmake

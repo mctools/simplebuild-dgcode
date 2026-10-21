@@ -9,7 +9,7 @@ import numpy
 def createHist():
     h = sh.Hist1D(20,-0.2,2.0)
     n = 10000-1;
-    for i in range(0,n+1):
+    for i in range(n+1):
         x = - math.log(float(i if i else 1.0)/n)
         if x>1.0 and x<1.5:
             x -= 5.0

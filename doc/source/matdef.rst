@@ -160,7 +160,7 @@ Many more options exists, to see them all run:
 In case ``nctool`` does not exactly provide the plots you need, you might
 instead find it useful to simply investigate the material via the NCrystal
 Python API. A short example is found `here
-<https://github.com/mctools/ncrystal/blob/master/examples/ncrystal_example_py>`__,
+<https://github.com/mctools/ncrystal/blob/main/examples/ncrystal_example_py>`__,
 and Jupyter notebooks with much more details can be found `here
 <https://github.com/mctools/ncrystal-notebooks/tree/main>`__ (do not forget to
 scroll down and read the instructions).

@@ -66,7 +66,7 @@ def _parambase_setattr(self,name,val):
     elif self.hasParameterInt(name): self.setParameterInt(name,val)
     elif self.hasParameterBoolean(name): self.setParameterBoolean(name,val)
     elif self.hasParameterString(name):
-        if isinstance(val,list) or isinstance(val,set) or isinstance(val,tuple):
+        if isinstance(val, (list, set, tuple)):
             val=';'.join(val)
         self.setParameterString(name,val)
     else:

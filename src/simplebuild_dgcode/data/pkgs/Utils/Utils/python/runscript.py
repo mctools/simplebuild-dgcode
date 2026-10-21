@@ -11,10 +11,8 @@ def create_run_script(filename,cmd, simplebuildcfg = None, headerlines=None, ext
     fh=open(filename,'w')
     fh.write('#!/usr/bin/env bash\n')
     if headerlines:
-        for h in headerlines:
-            fh.write('#%s\n'%h)
-    for extra_line in (extra_prerun_lines or []):
-        fh.write('%s\n'%extra_line)
+        fh.writelines('#%s\n'%h for h in headerlines)
+    fh.writelines('%s\n'%extra_line for extra_line in (extra_prerun_lines or []))
     fh.write('touch state.run && \\\n')
     fh.write('export SIMPLEBUILD_CFG=%s && \\\n'%shlex.quote(str(simplebuildcfg)))
     fh.write('eval "$(sb --env-setup)" && \\\n')

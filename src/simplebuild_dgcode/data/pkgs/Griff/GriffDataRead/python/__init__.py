@@ -1,5 +1,4 @@
 """python module for package GriffDataRead"""
-from __future__ import absolute_import
 from . _init import *
 
 def _Track_daughter_iter(self):

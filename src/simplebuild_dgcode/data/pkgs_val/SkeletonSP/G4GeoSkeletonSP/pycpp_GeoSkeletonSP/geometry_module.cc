@@ -26,6 +26,7 @@ PYTHON_MODULE( mod )
 
 #include "G4Box.hh"
 #include "G4Orb.hh"
+#include <cmath>
 
 //As an example, we put a spherical sample in front of a box representing a
 //detector tube (using the Griff analysis to look for positions where neutrons
@@ -72,7 +73,7 @@ G4VPhysicalVolume* GeoSkeletonSP::Construct()
   auto mat_det = getMaterial("Vacuum");
 
   //World volume (must be big enough for the sample and detector to fit inside):
-  const double dz_world = 1.001 * ( std::abs<double>(sample_posz)
+  const double dz_world = 1.001 * ( std::abs(sample_posz)
                                     + sample_radius+det_depth+det_sample_dist );
   const double dxy_world = 1.001 * std::max<double>(0.5*det_size,sample_radius);
   auto worldvols = place( new G4Box("World", dxy_world, dxy_world, dz_world),

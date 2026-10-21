@@ -10,7 +10,7 @@ def check_geant4_datasets():
     n_ok = 0
     n_fail = 0
     for line in cl.stdout.splitlines():
-        name,envvar,path = line.decode().split()
+        name,_envvar,path = line.decode().split()
         path = pathlib.Path(path)
         if ( True and not path.is_dir()
              and path.name.startswith('G4')

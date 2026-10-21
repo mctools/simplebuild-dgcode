@@ -15,19 +15,19 @@ def errorbar_args(contents,errors, binedges,style=True):
                    'elinewidth':1 })
     return kw
 
-def plot_errors(contents,errors, binedges,axes=None,style=True,kwargs={}):
+def plot_errors(contents,errors, binedges,axes=None,style=True,kwargs=None):
     """do a call to axes.errorbar with the passed data reformated.
     If not passed an axes object, it will also create a figure and do plt.show()"""
     import matplotlib.pyplot as plt
 
     do_quick_plot = bool(axes==None)
     if do_quick_plot:
-        fig,axes = plt.subplots()
+        _fig,axes = plt.subplots()
     from PyAnaUtils.bins import bin_centers_and_widths
-    bin_centers,bin_widths = bin_centers_and_widths(binedges)
+    _bin_centers,_bin_widths = bin_centers_and_widths(binedges)
     args={}
     args.update(errorbar_args(contents,errors, binedges,style=style))
-    args.update(kwargs)
+    args.update(kwargs or {})
     #axes.errorbar(**errorbar_args(contents,errors, binedges))
     axes.errorbar(**args)
     if do_quick_plot:

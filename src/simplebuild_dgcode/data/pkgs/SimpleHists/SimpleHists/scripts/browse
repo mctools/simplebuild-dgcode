@@ -53,7 +53,7 @@ def parse_cmd_line():
     assert len(all_shist)+len(all_sel)==len(all_pos)
     if not all_shist:
         parser.error('Please specify an .shist file')
-    elif not len(all_shist)==1:
+    elif len(all_shist) != 1:
         parser.error('Please only specify a single .shist file')
     args.selection=all_sel
     args.infile=all_shist[0]

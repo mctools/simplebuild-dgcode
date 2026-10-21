@@ -89,7 +89,7 @@ for k,v in _:
    os.environ[k]=v
 
 t0 = time.monotonic()
-import G4XSectDump.query#import AFTER os.environ was modified above # noqa E402
+import G4XSectDump.query#import AFTER os.environ was modified above
 p=G4XSectDump.query.rung4_extract_collapsed_neutronxs(args.ELEMENT)
 print('Extraction took: %g seconds.'%(time.monotonic() - t0))
 

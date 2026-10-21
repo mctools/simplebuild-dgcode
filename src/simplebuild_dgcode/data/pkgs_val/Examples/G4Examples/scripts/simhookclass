@@ -14,7 +14,7 @@ geo.target_depth_cm = 0.01
 
 gen.particleName = 'neutron'
 gen.neutron_wavelength_aangstrom = 20.2
-gen.fixed_z_meters = -1.5
+gen.fixed_z_meters = -0.001
 
 
 launcher = G4Launcher(geo,gen)

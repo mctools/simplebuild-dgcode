@@ -4,7 +4,7 @@
 
 import pathlib
 import os
-import simplebuild.cfg as cfg
+from simplebuild import cfg
 pkgs = cfg.pkgs
 
 topdirs = cfg.dirs.pkgsearchpath
@@ -19,9 +19,7 @@ ignore_dirs = [ cfg.dirs.blddir,
 
 
 def is_valid_pkg_subdir(name):
-    return ( name in ('libinc','libsrc','python','scripts','data')
-             or name.startswith('app_')
-             or name.startswith('pycpp_') )
+    return ( name in ('libinc', 'libsrc', 'python', 'scripts', 'data') or name.startswith(('app_', 'pycpp_')) )
 def file_should_be_ignored(f):
     return ( f in ignore_dirs
              or any(fp in ignore_dirs for fp in f.parents) )

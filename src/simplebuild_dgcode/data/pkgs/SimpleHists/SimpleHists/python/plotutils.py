@@ -1,7 +1,7 @@
 from functools import reduce
 
 __doc__='module for plotting SimpleHists'
-__all__=['plot1d','plot2d','plot2d_lego','plotcounts','plot1d_overlay','overlay']
+__all__=['overlay', 'plot1d', 'plot1d_overlay', 'plot2d', 'plot2d_lego', 'plotcounts']
 
 #TODO: If we decide to suppress some warnings emitted through the warnings module, we could use:
 #import warnings
@@ -16,7 +16,7 @@ from SimpleHists._backend_test import _ensure_backend_ok
 import matplotlib
 import matplotlib.patches as mplp
 import matplotlib.pyplot as plt
-_interactive = not (matplotlib.get_backend().lower()=='agg')
+_interactive = matplotlib.get_backend().lower() != 'agg'
 
 def _col(cmap,i,n):
     assert i<n
@@ -223,9 +223,9 @@ class _hoverhandler1d:
         self._rect_bin=None
 
     def _hovertext(self,ibin):
-        return u'bin    : %i (%g \u2264 x %s %g)\ncontent: %g \u00b1 %g'%(ibin,
+        return 'bin    : %i (%g \u2264 x %s %g)\ncontent: %g \u00b1 %g'%(ibin,
                                                                       self._h.getBinLower(ibin),
-                                                                      u'\u2264' if ibin+1==self._h.nbins else '<',
+                                                                      '\u2264' if ibin+1==self._h.nbins else '<',
                                                                       self._h.getBinUpper(ibin),
                                                                       self._h.getBinContent(ibin),
                                                                       self._h.getBinError(ibin))
@@ -369,11 +369,11 @@ class _hoverhandlercounts:
 
     def _hovertext(self,icounter):
         c = self._counters[icounter]
-        t = u'display label : %s\naccess label  : %s\ncounts        : %g \u00b1 %g'%(c.displaylabel,c.label,c.value,c.error)
+        t = 'display label : %s\naccess label  : %s\ncounts        : %g \u00b1 %g'%(c.displaylabel,c.label,c.value,c.error)
         ig = self._h.getIntegral()
         if ig:
             #Simple error scaling assumes small errors and no uncertainty on the integral itself!
-            t+=u'\nrelative      : %g \u00b1 %g %%'%(c.value*100.0/ig,c.error*100.0/ig)
+            t+='\nrelative      : %g \u00b1 %g %%'%(c.value*100.0/ig,c.error*100.0/ig)
         if c.comment:
             t+='\ncomment: %s'%(_wrap(c.comment,40).replace('\n','\n         '))
         return t
@@ -445,9 +445,9 @@ class _hoverhandler2d:
         self._rect_bin=None
 
     def _hovertext(self,ix,iy):
-        tx=u'xbin    : %i (%g \u2264 x %s %g)'%(ix,self._h.getBinLowerX(ix),u'\u2264' if ix+1==self._h.nbinsx else '<',self._h.getBinUpperX(ix))
-        ty=u'ybin    : %i (%g \u2264 y %s %g)'%(iy,self._h.getBinLowerY(iy),u'\u2264' if iy+1==self._h.nbinsy else '<',self._h.getBinUpperY(iy))
-        return u'%s\n%s\ncontent: %g'%(tx,ty,self._h.getBinContent(ix,iy))
+        tx='xbin    : %i (%g \u2264 x %s %g)'%(ix,self._h.getBinLowerX(ix),'\u2264' if ix+1==self._h.nbinsx else '<',self._h.getBinUpperX(ix))
+        ty='ybin    : %i (%g \u2264 y %s %g)'%(iy,self._h.getBinLowerY(iy),'\u2264' if iy+1==self._h.nbinsy else '<',self._h.getBinUpperY(iy))
+        return '%s\n%s\ncontent: %g'%(tx,ty,self._h.getBinContent(ix,iy))
 
     def _update_rect_location(self,evt,ix,iy):
         if not self._rect:
@@ -534,7 +534,7 @@ class _keyhandler:
     def __call__(self,evt):
         #cf. http://matplotlib.org/users/navigation_toolbar.html#navigation-keyboard-shortcuts
         #we add q/quit (above), b/statbox, F1/ctrl-h/info (todo)
-        if not evt.name=='key_press_event' or not evt.key:
+        if evt.name != 'key_press_event' or not evt.key:
             return
         key=evt.key.lower()
         needdraw=True
@@ -606,7 +606,7 @@ def statsText(hist1d):
         elif medianbin==hist1d.nbins:
             mediantext = 'overflow'
         else:
-            mediantext = u'%g \u00b1 %g'%(hist1d.getBinCenter(medianbin),0.5*hist1d.getBinWidth())
+            mediantext = '%g \u00b1 %g'%(hist1d.getBinCenter(medianbin),0.5*hist1d.getBinWidth())
         stats+=[('median',mediantext)]
         stats+=[('min','%g'%hist1d.minfilled)]
         stats+=[('max','%g'%hist1d.maxfilled)]
@@ -654,7 +654,7 @@ def plot1d(hist,show=True,statbox=True,statbox_exactcorner=False,figure=None,axe
 
     linewidths=[0,1,2]
     #state-tracking: use list of int rather than int to ensure sharing
-    icol=[3]#
+    icol=[3]
     ilw=[0]
     imode=[0]
     iestyle=[0]
@@ -816,7 +816,7 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
 
     #adhoc attempt at expanding y-axis a bit if there is a chance that counter
     #display labels will clash with title:
-    ymin, ymax = ax.get_ylim()
+    _ymin, ymax = ax.get_ylim()
     if hist.maxcontent>0 and ymax>0 and hist.maxcontent/ymax > 0.95:
         ax.set_ylim(0.0,ymax*1.05)
 
@@ -848,7 +848,7 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
 
     linewidths=[0,1,2]
     #state-tracking: use list of int rather than int to ensure sharing
-    icol=[3]#
+    icol=[3]
     ilw=[0]
     imode=[0]
     iestyle=[0]
@@ -962,10 +962,9 @@ def plotcounts(hist,show=True,statbox=False,statbox_exactcorner=False,figure=Non
     return fig,ax
 
 def _mpl_get_cmap( arg ):
-    if hasattr(matplotlib,'colormaps'):
-        if hasattr(matplotlib.colormaps,'get_cmap'):
-            #Recommended since matplotlib 3.7:
-            return matplotlib.colormaps.get_cmap( arg )
+    if hasattr(matplotlib,'colormaps') and hasattr(matplotlib.colormaps,'get_cmap'):
+        #Recommended since matplotlib 3.7:
+        return matplotlib.colormaps.get_cmap( arg )
     #Deprecated in matplotlib 3.7:
     return matplotlib.cm.get_cmap(arg)
 
@@ -986,13 +985,13 @@ def _mpl_register_cmap(name, cmap, fail_if_present = True ):
         matplotlib.colormaps.register(name=name,cmap=cmap,force=True)
     else:
         #deprecated? at least it stopped working.
-        plt.register_cmap(name=name,cname=cname)
+        plt.register_cmap(name=name,cmap=cmap)
 
 def plot2d_lego(hist,show=True,cmap=None):
     _ensure_backend_ok()
     if not cmap:
         cmap = 'plasma' if _has_cmap('plasma') else 'spectral'
-    from mpl_toolkits.mplot3d import Axes3D # noqa F401
+    from mpl_toolkits.mplot3d import Axes3D
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     fig.subplots_adjust(left=0.03,right=0.97,bottom=0.07,top=0.98)
@@ -1009,7 +1008,7 @@ def plot2d_lego(hist,show=True,cmap=None):
     return fig,ax
 
 def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figure=None,axes=None,aspect='auto',
-           extra_imshow_args={},extra_colorbar_args={}):
+           extra_imshow_args=None,extra_colorbar_args=None):
     _ensure_backend_ok()
     from mpl_toolkits.axes_grid1 import make_axes_locatable
 
@@ -1066,7 +1065,7 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
     assert cmap in cmaps
     interpolation='nearest'
 
-    tmp.update(extra_imshow_args)
+    tmp.update(extra_imshow_args or {})
     im = plt.imshow(interpolation=interpolation,cmap=cmap,aspect=aspect,**tmp)
     ax.set_title(hist.title)#not making dragable (center seems to be always the right choice)
     ax.set_xlabel(hist.xlabel,picker=True)#todo: should snap to center/right ...
@@ -1077,7 +1076,7 @@ def plot2d(hist,show=True,cmap=None,statbox=False,statbox_exactcorner=False,figu
     if hist.empty():
         im.set_clim(0.0,1.0)
 
-    plt.colorbar(im, cax=cax, **extra_colorbar_args)#,ticks=[])
+    plt.colorbar(im, cax=cax, **(extra_colorbar_args or {}))#,ticks=[])
 
     ig = hist.integral
     stats=[('integral','%g'%ig)]
@@ -1239,7 +1238,7 @@ def overlay(hists,labels,colors=None,
         if 'alpha' in extra_args and isinstance(extra_args['alpha'],float):
             alpha_errors *= extra_args['alpha']
         zorder_errors = None
-        if 'zorder' in extra_args and (isinstance(extra_args['zorder'],float) or isinstance(extra_args['zorder'],int)):
+        if 'zorder' in extra_args and isinstance(extra_args['zorder'],(float,int)):
             zorder_errors = extra_args['zorder']-0.01
         if 'color' not in extra_args:
             extra_args['color']=col

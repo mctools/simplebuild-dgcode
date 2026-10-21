@@ -12,7 +12,6 @@ def disableFPEDuringCall(obj,fctname):
 
 __standardFixesDone = [False]
 def standardMPLFixes():
-    global __standardFixesDone
     if __standardFixesDone[0]:
         return
     __standardFixesDone[0] = True

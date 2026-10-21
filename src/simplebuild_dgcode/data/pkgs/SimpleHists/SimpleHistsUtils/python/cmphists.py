@@ -28,7 +28,6 @@ def cmphists(histograms_in,
 
     """
     global __ihist
-    global __html
     __ihist+=1
     assert histograms_in
 

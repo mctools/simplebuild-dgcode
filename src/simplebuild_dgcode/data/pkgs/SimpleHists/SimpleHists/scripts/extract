@@ -20,7 +20,7 @@ def parse_cmd_line():
     all_shist=[a for a in all_pos if a.endswith('.shist')]
     all_sel=[a for a in all_pos if not a.endswith('.shist')]
     assert len(all_shist)+len(all_sel)==len(all_pos)
-    if not len(all_shist)==2:
+    if len(all_shist) != 2:
         parser.error('Please specify exactly two .shist files: one existing source file and one target file')
     args.selection=all_sel
     args.source=all_shist[0]

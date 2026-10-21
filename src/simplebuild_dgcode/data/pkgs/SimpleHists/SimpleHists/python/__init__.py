@@ -1,7 +1,12 @@
-__metaclass__ = type#py2 backwards compatibility
 __doc__='python module for package SimpleHists'
-__all__=['Hist1D','Hist2D','HistBase','HistCollection',
-         'histTypeOfData','deserialise']
+__all__=[
+    'Hist1D',
+    'Hist2D',
+    'HistBase',
+    'HistCollection',
+    'deserialise',
+    'histTypeOfData',
+]
 
 ###############################################################################
 # 1) Include hist classes etc. from the compiled C++ module:
@@ -78,7 +83,7 @@ if 'SIMPLEHISTS_SILENT_PLOTFAIL' in _environ:
     _noninteractive = True
 
 if (not _noninteractive) and matplotlib:
-    import SimpleHists.plotutils as plotutils
+    from SimpleHists import plotutils
     Hist1D.plot = plotutils.plot1d
     Hist1D.overlay = plotutils.plot1d_overlay
     Hist2D.plot = plotutils.plot2d
@@ -151,7 +156,7 @@ class _countgetter:
         return res
     def __getattr__(self,k):
         if k[0]=='_':
-            return super(_countgetter,self).__getattr__(k)
+            return super().__getattr__(k)
         return self._hc.getCounter(k)
 
 HistCounts.c = property(lambda self: _countgetter(self))

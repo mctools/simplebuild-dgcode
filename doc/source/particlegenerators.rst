@@ -21,6 +21,14 @@ its initial state, which typically means choosing:
 * Position (must be within the *world volume* of the simulation geometry)
 * Direction
 
+.. note::
+    Older Geant4 versions silently tolerated primary particles starting outside
+    the world volume, and would simply transport them into the world. This is
+    no longer the case since Geant4 11.4.3, where such a simulation will abort
+    (or even crash). So if you see a crash at the very first step of an event,
+    make sure your generator positions are inside the world volume of your
+    geometry.
+
 Other parameters which can be set, but often are not, are:
 
 * Weight (normally only different from 1 when some clever setup involving event

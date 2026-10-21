@@ -6,6 +6,7 @@
 #include <osg/AutoTransform>
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "G4OSG/BestUnit.hh"
+#include <cmath>
 
 G4OSG::MeasurementPoints::MeasurementPoints(G4OSG::Viewer*v,osg::Group* sceneHook)
   : m_isAttached(false),
@@ -209,9 +210,9 @@ void G4OSG::MeasurementPoints::updateInfo()
           //or distance info:
           double dotp = pt1.normal * pt2.normal;
           double costh = dotp / (pt1.normal.length()*pt2.normal.length());
-          if (std::abs<double>(costh) < 1.0-1.0e-5) {
+          if (std::abs(costh) < 1.0-1.0e-5) {
             //non-parallel surfaces
-            printf("### %s-%s surface angle: %.10g deg\n",col1,col2,acos(std::abs<double>(costh))*180/M_PI);
+            printf("### %s-%s surface angle: %.10g deg\n",col1,col2,acos(std::abs(costh))*180/M_PI);
           } else {
             //parallel surfaces
             printf("### %s-%s surfaces are parallel!\n",col1,col2);
@@ -219,7 +220,7 @@ void G4OSG::MeasurementPoints::updateInfo()
             //p1+n1*d intersects the (p2,n2) plane:
             double d = (v2-v1) * pt2.normal/ dotp;
             //The distance is then:
-            double dist = std::abs<double>(d * pt1.normal.length());
+            double dist = std::abs(d * pt1.normal.length());
             if (pt1.volHandle!=pt2.volHandle||dist>1.0e-3) {
               std::string diststr = G4OSG::BestUnit(dist, "Length");
               printf("### %s-%s dist between surface planes: %s\n",col1,col2,diststr.c_str());
