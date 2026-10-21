@@ -6,11 +6,12 @@ on:
     - cron: '30 8 * * 1'  # 8:30 every Monday
 
   workflow_dispatch:
-    inputs:
-      manual-debugging:
-        type: boolean
-        description: Launch manual debugging tmate session on failure
-        default: false
+    #Disabled along with the tmate step below:
+    #inputs:
+    #  manual-debugging:
+    #    type: boolean
+    #    description: Launch manual debugging tmate session on failure
+    #    default: false
 
 # Workflow which pip installs the source code in a conda environment and checks that both bundles build
 # and runs tests in both release and debug mode.
@@ -80,11 +81,12 @@ jobs:
         with:
           name: ${{ matrix.os }}.${{ matrix.CC }}.python-${{ matrix.python }}
 
-      - name: Setup tmate session for manual debugging
-        uses: mxschmitt/action-tmate@35b54afac29c97fb54faba5b513f8fbd1882f113 # v3.24
-        if: always() && inputs.manual-debugging == true && (steps.build-and-test-core-only.outcome != 'success' || steps.build-and-test-release-mode.outcome != 'success' || steps.build-and-test-debug-mode.outcome != 'success')
-        with:
-          limit-access-to-actor: true
+      #Disabled for now (re-enable together with the manual-debugging input above):
+      #- name: Setup tmate session for manual debugging
+      #  uses: mxschmitt/action-tmate@35b54afac29c97fb54faba5b513f8fbd1882f113 # v3.24
+      #  if: always() && inputs.manual-debugging == true && (steps.build-and-test-core-only.outcome != 'success' || steps.build-and-test-release-mode.outcome != 'success' || steps.build-and-test-debug-mode.outcome != 'success')
+      #  with:
+      #    limit-access-to-actor: true
 
   collect_logs:
     #Single job downloading all per-leg "ci-logs-*" artifacts above and
