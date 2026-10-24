@@ -2,7 +2,7 @@
 // Declaration of our geometry module: //
 /////////////////////////////////////////
 
-#include "G4Interfaces/GeoConstructPyExport.hh"
+#include "G4Interfaces/GeoConstructToPy.hh"
 
 class GeoSlab final : public G4Interfaces::GeoConstructBase
 {
@@ -13,7 +13,7 @@ public:
   bool validateParameters() override;
 };
 
-PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoSlab>(mod,"GeoSlab"); }
+SBLDPY_MODULE( _GeoSlab ) { G4Interfaces::geoToPy<GeoSlab>( m ); }
 
 ////////////////////////////////////////////
 // Implementation of our geometry module: //

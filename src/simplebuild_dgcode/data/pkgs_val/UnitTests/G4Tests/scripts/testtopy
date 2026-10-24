@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+
+# Test components provided by sbldpy modules (see G4Interfaces/ToPy.py), alone
+# and mixed with components from the older pybind11 based modules.
+
+import sys
+
+def simulate( geomodname, genmodname ):
+    import importlib
+    import G4Launcher
+    geo = importlib.import_module( geomodname ).create()
+    gen = importlib.import_module( genmodname ).create()
+    launcher = G4Launcher( geo, gen )
+    launcher.setOutput( 'none' )
+    launcher.setSeed( 123 )
+    sys.argv[1:] = [ '-n', '5' ]
+    launcher.go()
+
+if len( sys.argv ) == 4 and sys.argv[1] == 'simulate':
+    simulate( sys.argv[2], sys.argv[3] )
+    raise SystemExit
+
+import G4StdGeometries.GeoSlab#sbldpy
+import G4StdGenerators.SimpleGen#sbldpy
+import G4Interfaces.ToPy
+
+geo = G4StdGeometries.GeoSlab.create()
+gen = G4StdGenerators.SimpleGen.create()
+assert isinstance( geo, G4Interfaces.ToPy.Component )
+assert repr( geo ).startswith( '<geo ' ) and repr( gen ).startswith( '<gen ' )
+print( 'names:', geo.getName(), gen.getName() )
+pars = geo.getParameterTypes()
+print( 'geo parameters:', sorted( pars.items() ) )
+assert set( pars ) == set( geo.getParameterList() ) and set( pars ) <= set( dir( geo ) )
+assert set( geo.asDict() ) == set( pars )
+
+#Attribute access:
+gen.particleName = 'gamma'
+gen.fixed_energy_eV = 1234.5
+gen.fixed_x_meters = 1
+assert gen.particleName == 'gamma' and gen.fixed_energy_eV == 1234.5 and gen.fixed_x_meters == 1.0
+assert gen.getParameterString( 'particleName' ) == 'gamma' and gen.hasParameterDouble( 'fixed_energy_eV' )
+assert not gen.hasParameterInt( 'fixed_energy_eV' )
+gen.something_else = 17#not a parameter, just a Python attribute
+assert gen.something_else == 17
+try:
+    _ = gen.nonexisting
+except AttributeError:
+    pass
+else:
+    raise AssertionError( 'expected AttributeError' )
+try:
+    gen.setParameterDouble( 'fixed_energy_eV', 'notanumber' )
+except TypeError:
+    pass
+else:
+    raise AssertionError( 'expected TypeError' )
+
+#Command line parameters:
+args = [ 'fixed_energy_eV=10', 'unrelated=1', 'particleName=neutron' ]
+gen.swallowCmdLine( args )
+assert args == [ 'unrelated=1' ] and gen.fixed_energy_eV == 10.0 and gen.particleName == 'neutron'
+gen.dump( 'SimpleGen>> ' )
+
+#Components of the wrong kind are rejected by the launcher:
+import G4Launcher
+launcher = G4Launcher()
+try:
+    launcher.setGeo( gen )
+except RuntimeError as e:
+    print( 'Error as expected:', e )
+else:
+    raise AssertionError( 'expected error' )
+
+#Simulations mixing components from sbldpy and pybind11 based modules:
+import subprocess
+for geomod, genmod in [ ( 'G4StdGeometries.GeoSlab', 'G4StdGenerators.ProfiledBeamGen' ),
+                        ( 'G4StdGeometries.GeoEmptyWorld', 'G4StdGenerators.SimpleGen' ) ]:
+    res = subprocess.run( [ sys.executable, __file__, 'simulate', geomod, genmod ],
+                          capture_output = True, text = True, check = False )
+    if res.returncode != 0:
+        print( res.stdout, res.stderr )
+        raise SystemExit( 'Simulation with %s and %s failed'%( geomod, genmod ) )
+    print( 'Simulation with %s and %s OK'%( geomod, genmod ) )
+print( 'All OK' )
