@@ -19,6 +19,16 @@ from . import _components as _c
 
 __all__ = [ 'Component', 'component_creator' ]
 
+#FIXME: As a temporary migration measure, the Python interface of the Component
+#class below (including parameters as attributes and swallowCmdLine) is to a
+#large extent duplicated from the legacy pybind11 based code in
+#Utils/python/ParametersBase.py (which adds those methods to the
+#Utils._ParametersBase.ParametersBase class). It is duplicated rather than
+#shared, so this module does not depend on any pybind11 based modules. When
+#support for the pybind11 based components is removed, the legacy code in
+#Utils/python/ParametersBase.py should be removed as well (and any fixes in
+#the meantime should be applied to both places).
+
 def _boolify_string( s ):
     assert s != '' and s is not None#this is for strings with content
     if s.lower() in ['y','yes','1','true','on']:
