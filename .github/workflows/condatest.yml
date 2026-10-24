@@ -58,6 +58,18 @@ jobs:
           set -eux
           #For dev work: python3 -m pip install git+https://github.com/mctools/simplebuild@whateverbranchname
           #For dev work: python3 -m pip install --no-deps ./src_co
+          #TEMPORARY: Use simplebuild from its sbldpy branch (needed for pymod_*
+          #support), until a simplebuild release supports it. The release tags
+          #are fetched from upstream to get a proper version number:
+          git clone --quiet --branch sbldpy https://github.com/tkittel/simplebuild "${RUNNER_TEMP}/sbldpy_simplebuild"
+          git -C "${RUNNER_TEMP}/sbldpy_simplebuild" fetch --quiet --tags https://github.com/mctools/simplebuild
+          "${CONDA_EXE}" remove --yes --force --prefix "${CONDA_PREFIX}" simple-build-system
+          python3 -m pip install --no-deps "${RUNNER_TEMP}/sbldpy_simplebuild"
+          #The conda package also installs the shell snippet as an activation script
+          #(needed e.g. for the environment to be set up after "sb" commands):
+          mkdir -p "${CONDA_PREFIX}/etc/conda/activate.d"
+          cp "${RUNNER_TEMP}/sbldpy_simplebuild/src/_simple_build_system/data/resources/shellrc_snippet.sh" \
+             "${CONDA_PREFIX}/etc/conda/activate.d/simple-build-system_activate.sh"
           python3 -m pip install --no-deps ./src_co
           echo "sb --version: "$(sb --version)
 

@@ -75,6 +75,12 @@ jobs:
            #For dev work do these two lines instead:
            #  python3 -m pip install git+https://github.com/mctools/simplebuild@tk_volatile
            #  python3 -m pip install --no-deps ./src
+           #TEMPORARY: Use simplebuild from its sbldpy branch (needed for pymod_*
+           #support), until a simplebuild release supports it. The release tags
+           #are fetched from upstream to get a proper version number:
+           git clone --quiet --branch sbldpy https://github.com/tkittel/simplebuild "${RUNNER_TEMP}/sbldpy_simplebuild"
+           git -C "${RUNNER_TEMP}/sbldpy_simplebuild" fetch --quiet --tags https://github.com/mctools/simplebuild
+           python3 -m pip install "${RUNNER_TEMP}/sbldpy_simplebuild"
            python3 -m pip install ./src
            echo "sb --version:"
            sb --version
