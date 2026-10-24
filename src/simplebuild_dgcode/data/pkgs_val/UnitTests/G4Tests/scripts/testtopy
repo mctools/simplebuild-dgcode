@@ -5,19 +5,23 @@
 
 import sys
 
-def simulate( geomodname, genmodname ):
+def simulate( geomodname, genmodname, filtermodname = None ):
     import importlib
     import G4Launcher
     geo = importlib.import_module( geomodname ).create()
     gen = importlib.import_module( genmodname ).create()
     launcher = G4Launcher( geo, gen )
-    launcher.setOutput( 'none' )
+    if filtermodname:
+        launcher.setOutput( 'testtopy_filtered.griff', 'REDUCED' )
+        launcher.setFilter( importlib.import_module( filtermodname ).create() )
+    else:
+        launcher.setOutput( 'none' )
     launcher.setSeed( 123 )
     sys.argv[1:] = [ '-n', '5' ]
     launcher.go()
 
-if len( sys.argv ) == 4 and sys.argv[1] == 'simulate':
-    simulate( sys.argv[2], sys.argv[3] )
+if len( sys.argv ) in ( 4, 5 ) and sys.argv[1] == 'simulate':
+    simulate( *sys.argv[2:] )
     raise SystemExit
 
 import G4StdGeometries.GeoSlab#sbldpy
@@ -72,14 +76,18 @@ except RuntimeError as e:
 else:
     raise AssertionError( 'expected error' )
 
-#Simulations mixing components from sbldpy and pybind11 based modules:
+#Simulations mixing components from sbldpy and pybind11 based modules (the
+#G4Tests.Legacy* modules are pybind11 based):
 import subprocess
-for geomod, genmod in [ ( 'G4StdGeometries.GeoSlab', 'G4StdGenerators.ProfiledBeamGen' ),
-                        ( 'G4StdGeometries.GeoEmptyWorld', 'G4StdGenerators.SimpleGen' ) ]:
-    res = subprocess.run( [ sys.executable, __file__, 'simulate', geomod, genmod ],
+for mods in [ ( 'G4StdGeometries.GeoSlab', 'G4Tests.LegacySimpleGen' ),
+              ( 'G4Tests.LegacyGeoTest', 'G4StdGenerators.SimpleGen' ),
+              ( 'G4Tests.LegacyGeoTest', 'G4Tests.LegacySimpleGen', 'G4CollectFilters.StepFilterPrimary' ),
+              ( 'G4StdGeometries.GeoSlab', 'G4StdGenerators.SimpleGen', 'G4Tests.LegacyStepFilterPrimary' ) ]:
+    descr = ' and '.join( mods )
+    res = subprocess.run( [ sys.executable, __file__, 'simulate', *mods ],
                           capture_output = True, text = True, check = False )
     if res.returncode != 0:
         print( res.stdout, res.stderr )
-        raise SystemExit( 'Simulation with %s and %s failed'%( geomod, genmod ) )
-    print( 'Simulation with %s and %s OK'%( geomod, genmod ) )
+        raise SystemExit( 'Simulation with %s failed'%descr )
+    print( 'Simulation with %s OK'%descr )
 print( 'All OK' )
