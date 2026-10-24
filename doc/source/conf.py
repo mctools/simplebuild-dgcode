@@ -108,6 +108,14 @@ linkcheck_ignore = [
     #These have cert issues, but not in my browser (?!?):
     'https://indico.esss.lu.se/event/335/attachments/2549/3795/dgcode_tutorial_june2015.pdf',
     'https://indico.esss.lu.se/event/617/',
+    #TEMPORARY: Links to the sbldpy documentation of simplebuild (published with
+    #the first simplebuild release supporting sbldpy), and to files not yet
+    #present on the main branch of simplebuild-dgcode:
+    r'https://mctools\.github\.io/simplebuild/sbldpy\.html.*',
+    r'https://github\.com/mctools/simplebuild-dgcode/(blob|tree)/main/src/simplebuild_dgcode/data/pkgs(_val)?/.*/pymod_.*',
+    r'https://github\.com/mctools/simplebuild-dgcode/(blob|tree)/main/src/simplebuild_dgcode/data/pkgs/G4/G4Interfaces/libinc/ComponentFromPy\.hh',
+    r'https://github\.com/mctools/simplebuild-dgcode/(blob|tree)/main/src/simplebuild_dgcode/data/pkgs/Griff/GriffFormat/python/dumpfile\.py',
+    r'https://github\.com/mctools/simplebuild-dgcode/(blob|tree)/main/src/simplebuild_dgcode/data/pkgs/Griff/G4DataCollect/python/__init__\.py',
 ]
 
 # -- Options for HTML output -------------------------------------------------
