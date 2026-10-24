@@ -3,7 +3,7 @@
 // Declaration of our geometry module: //
 /////////////////////////////////////////
 
-#include "G4Interfaces/GeoConstructPyExport.hh"
+#include "G4Interfaces/GeoConstructToPy.hh"
 #include "G4B10Common/GeoB10Base.hh"
 
 namespace {
@@ -20,10 +20,7 @@ namespace {
   };
 }
 
-PYTHON_MODULE( mod )
-{
-  GeoConstructPyExport::exportGeo<GeoBoronTube>(mod, "GeoBoronTube");
-}
+SBLDPY_MODULE( _GeoBoronTube ) { G4Interfaces::geoToPy<GeoBoronTube>( m ); }
 
 ////////////////////////////////////////////
 // Implementation of our geometry module: //

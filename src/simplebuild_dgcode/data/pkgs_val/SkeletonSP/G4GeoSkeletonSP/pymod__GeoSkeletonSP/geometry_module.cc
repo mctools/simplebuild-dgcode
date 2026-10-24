@@ -4,7 +4,7 @@
 // Declaration of our geometry module: //
 /////////////////////////////////////////
 
-#include "G4Interfaces/GeoConstructPyExport.hh"
+#include "G4Interfaces/GeoConstructToPy.hh"
 
 namespace {
   class GeoSkeletonSP final : public G4Interfaces::GeoConstructBase {
@@ -15,10 +15,7 @@ namespace {
   };
 }
 
-PYTHON_MODULE( mod )
-{
-  GeoConstructPyExport::exportGeo<GeoSkeletonSP>(mod, "GeoSkeletonSP");
-}
+SBLDPY_MODULE( _GeoSkeletonSP ) { G4Interfaces::geoToPy<GeoSkeletonSP>( m ); }
 
 ////////////////////////////////////////////
 // Implementation of our geometry module: //

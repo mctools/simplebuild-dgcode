@@ -2,7 +2,7 @@
 // Declaration of our geometry module: //
 /////////////////////////////////////////
 
-#include "G4Interfaces/GeoConstructPyExport.hh"
+#include "G4Interfaces/GeoConstructToPy.hh"
 
 class GeoEmptyWorld final : public G4Interfaces::GeoConstructBase
 {
@@ -12,7 +12,7 @@ public:
   G4VPhysicalVolume* Construct() override;
 };
 
-PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoEmptyWorld>(mod, "GeoEmptyWorld"); }
+SBLDPY_MODULE( _GeoEmptyWorld ) { G4Interfaces::geoToPy<GeoEmptyWorld>( m ); }
 
 ////////////////////////////////////////////
 // Implementation of our geometry module: //

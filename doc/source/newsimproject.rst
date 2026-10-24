@@ -83,7 +83,7 @@ that for technical reasons the links below points to files in a project called
 "SkeletonSP" instead of "TriCorder", but apart from the naming there is no
 difference:
 
-:sbpkg:`TriCorder/G4GeoTriCorder/pycpp_GeoTriCorder/geometry_module.cc<G4GeoSkeletonSP/pycpp_GeoSkeletonSP/geometry_module.cc>`:
+:sbpkg:`TriCorder/G4GeoTriCorder/pymod__GeoTriCorder/geometry_module.cc<G4GeoSkeletonSP/pymod__GeoSkeletonSP/geometry_module.cc>`:
    The implementation of the simulation geometry, including definition of
    modifiable parameters.
 

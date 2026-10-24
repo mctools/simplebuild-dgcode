@@ -303,7 +303,7 @@ def run_tricorder_cmds():
 
 
     tc_geomod = ( pkgroot/'TriCorder'/'G4GeoTriCorder'/
-                  'pycpp_GeoTriCorder'/'geometry_module.cc')
+                  'pymod__GeoTriCorder'/'geometry_module.cc')
     tc_geomod_txt = read_text_remove_comments( tc_geomod, '//' )
     for e in ('getParameterMaterial','getMaterial','place',
               '"material_lab"','"material_sample"',

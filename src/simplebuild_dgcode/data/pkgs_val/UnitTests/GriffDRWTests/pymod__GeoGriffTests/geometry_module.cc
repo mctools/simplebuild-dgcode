@@ -1,4 +1,4 @@
-#include "G4Interfaces/GeoConstructPyExport.hh"
+#include "G4Interfaces/GeoConstructToPy.hh"
 #include "G4Box.hh"
 #include "G4Orb.hh"
 
@@ -10,7 +10,7 @@ public:
   G4VPhysicalVolume* Construct() override;
 };
 
-PYTHON_MODULE( mod ) { GeoConstructPyExport::exportGeo<GeoGriffTests>(mod, "GeoGriffTests"); }
+SBLDPY_MODULE( _GeoGriffTests ) { G4Interfaces::geoToPy<GeoGriffTests>( m ); }
 
 G4VPhysicalVolume* GeoGriffTests::Construct()
 {
