@@ -71,10 +71,17 @@ of ``G4Interfaces/StepFilterPyExport.hh`` and
 ``StepFilterPyExport::exportFilter``).
 
 The objects created by such modules are instances of the Python class
-``G4Interfaces.ToPy.Component``, which provides the same methods as the
-pybind11 based objects. One difference is that they are not instances of the
+``G4Interfaces.ToPy.Component``, which provides the same methods for accessing,
+tying and exposing parameters as the pybind11 based objects (and they can be
+used together with those). One difference is that they are not instances of the
 pybind11 based classes, so code which checks the type of these objects (e.g.
-with ``isinstance(geo,G4Interfaces.GeoConstructBase)``) must be updated.
+with ``isinstance(geo,G4Interfaces.GeoConstructBase)``) must be updated. In
+particular, pybind11 based code of your own (in ``pycpp_*`` folders) which
+receives such objects from Python must use
+``G4Interfaces::componentFromPy<G4Interfaces::GeoConstructBase>(o)`` from
+:sbpkg:`G4Interfaces/ComponentFromPy.hh<G4Interfaces/libinc/ComponentFromPy.hh>`
+(which supports both kinds of objects) rather than e.g.
+``py::cast<G4Interfaces::GeoConstructBase*>(o)``.
 
 Other modules
 =============
