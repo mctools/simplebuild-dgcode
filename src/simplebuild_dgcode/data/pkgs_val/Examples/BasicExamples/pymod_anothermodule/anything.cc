@@ -1,4 +1,4 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 #include <iostream>
 
 namespace {
@@ -8,7 +8,7 @@ namespace {
   }
 }
 
-PYTHON_MODULE( mod )
+SBLDPY_MODULE( anothermodule )
 {
-  mod.def("somecppfunc", &somecppfunc, "This is some C++ function");
+  m.def( "somecppfunc", &somecppfunc, "This is some C++ function" );
 }
