@@ -82,7 +82,7 @@ namespace G4Launcher_py {
   {
     T* res = getComponent<T>( o );
     if ( !res )
-      throw std::runtime_error(std::string("Ojbect of invalid type passed to .")+fctname+"(..)");
+      throw std::runtime_error(std::string("Object of invalid type passed to .")+fctname+"(..)");
     return res;
   }
 
