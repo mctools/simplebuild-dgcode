@@ -4,6 +4,7 @@
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/StepFilterBase.hh"
 #include "G4Interfaces/PhysListProviderBase.hh"
+#include "G4Interfaces/ComponentHandles.hh"
 #include "G4RunManager.hh"
 #include "G4UserSteppingAction.hh"
 #include "G4UserEventAction.hh"
@@ -60,36 +61,52 @@ namespace G4Launcher_py {
     launcher.addPostGenHook(shptr_cb);
   }
 
+  //Components (geometries, generators and step filters) are either objects
+  //from the pybind11 based modules, or objects from sbldpy based modules (see
+  //G4Interfaces/GeoConstructToPy.hh), which have a _g4handle attribute
+  //referring to the component in the table in G4Interfaces:
+  template <class T>
+  T* getComponent( py::handle o )
+  {
+    if ( py::hasattr( o, "_g4handle" ) ) {
+      auto& c = G4Interfaces::getComponent( py::cast<std::int64_t>( o.attr("_g4handle") ) );
+      return dynamic_cast<T*>( &c );
+    }
+    if ( py::isinstance<T>( o ) )
+      return py::cast<T*>( o );
+    return nullptr;
+  }
+
+  template <class T>
+  T* getComponentOrThrow( py::object o, const char * fctname )
+  {
+    T* res = getComponent<T>( o );
+    if ( !res )
+      throw std::runtime_error(std::string("Ojbect of invalid type passed to .")+fctname+"(..)");
+    return res;
+  }
+
   void Launcher_setGeo( G4Launcher::Launcher& launcher, py::object o )
   {
-    if ( !py::isinstance<G4Interfaces::GeoConstructBase>( o ) )
-      throw std::runtime_error("Ojbect of invalid type passed to .setGeo(..)");
-    launcher.setGeo(py::cast<G4Interfaces::GeoConstructBase*>( o ));
+    launcher.setGeo(getComponentOrThrow<G4Interfaces::GeoConstructBase>( o, "setGeo" ));
     Launcher_addResourceGuard( launcher, o );
   }
 
   void Launcher_setGen( G4Launcher::Launcher& launcher, py::object o )
   {
-    if ( !py::isinstance<G4Interfaces::ParticleGenBase>( o ) )
-      throw std::runtime_error("Ojbect of invalid type passed to .setGen(..)");
-    launcher.setGen(py::cast<G4Interfaces::ParticleGenBase*>( o ));
+    launcher.setGen(getComponentOrThrow<G4Interfaces::ParticleGenBase>( o, "setGen" ));
     Launcher_addResourceGuard( launcher, o );
   }
 
   void Launcher_setFilter( G4Launcher::Launcher& launcher, py::object o )
   {
-    if ( !py::isinstance<G4Interfaces::StepFilterBase>( o ) )
-      throw std::runtime_error("Ojbect of invalid type passed to .setFilter(..)");
-    launcher.setFilter(py::cast<G4Interfaces::StepFilterBase*>( o ));
+    launcher.setFilter(getComponentOrThrow<G4Interfaces::StepFilterBase>( o, "setFilter" ));
     Launcher_addResourceGuard( launcher, o );
   }
 
-
   void Launcher_setKillFilter( G4Launcher::Launcher& launcher, py::object o )
   {
-    if ( !py::isinstance<G4Interfaces::StepFilterBase>( o ) )
-      throw std::runtime_error("Ojbect of invalid type passed to .setKillFilter(..)");
-    launcher.setKillFilter(py::cast<G4Interfaces::StepFilterBase*>( o ));
+    launcher.setKillFilter(getComponentOrThrow<G4Interfaces::StepFilterBase>( o, "setKillFilter" ));
     Launcher_addResourceGuard( launcher, o );
   }
 
@@ -100,22 +117,22 @@ namespace G4Launcher_py {
     G4Interfaces::ParticleGenBase* gen(nullptr);
     G4Interfaces::StepFilterBase* filter(nullptr);
     for( auto& e : args ) {
-      if ( py::isinstance<G4Interfaces::GeoConstructBase>( e ) ) {
+      if ( auto p = getComponent<G4Interfaces::GeoConstructBase>( e ) ) {
         if ( geo )
           throw std::runtime_error("Too many geometry objects passed to Launcher.");
-        geo = py::cast<G4Interfaces::GeoConstructBase*>( e );
+        geo = p;
         continue;
       }
-      if ( py::isinstance<G4Interfaces::ParticleGenBase>( e ) ) {
+      if ( auto p = getComponent<G4Interfaces::ParticleGenBase>( e ) ) {
         if ( gen )
           throw std::runtime_error("Too many particle generator objects passed to Launcher.");
-        gen = py::cast<G4Interfaces::ParticleGenBase*>( e );
+        gen = p;
         continue;
       }
-      if ( py::isinstance<G4Interfaces::StepFilterBase>( e ) ) {
+      if ( auto p = getComponent<G4Interfaces::StepFilterBase>( e ) ) {
         if ( filter )
           throw std::runtime_error("Too many step filter objects passed to Launcher.");
-        filter = py::cast<G4Interfaces::StepFilterBase*>( e );
+        filter = p;
         continue;
       }
       //error:
