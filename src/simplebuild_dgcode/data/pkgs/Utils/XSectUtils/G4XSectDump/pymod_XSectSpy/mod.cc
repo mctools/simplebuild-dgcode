@@ -1,4 +1,4 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 #include "XSectSpySteppingAction.hh"
 #include "G4Launcher/Launcher.hh"
 
@@ -24,10 +24,10 @@ namespace {
   }
 }
 
-PYTHON_MODULE( mod )
+SBLDPY_MODULE( XSectSpy )
 {
-  mod.def("install",&spyG4XSect);
-  mod.def("installForOneFile",&spyOneG4XSect);
-  mod.def("lastWrittenFile",&XSectSpySteppingAction::lastWrittenFile);
-  mod.def("lastG4MaterialPrinted",&XSectSpySteppingAction::lastG4MaterialPrinted);
+  m.def( "install", &spyG4XSect );
+  m.def( "installForOneFile", &spyOneG4XSect );
+  m.def( "lastWrittenFile", []() { return std::string( XSectSpySteppingAction::lastWrittenFile() ); } );
+  m.def( "lastG4MaterialPrinted", []() { return std::string( XSectSpySteppingAction::lastG4MaterialPrinted() ); } );
 }

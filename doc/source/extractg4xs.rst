@@ -160,7 +160,7 @@ length based randomisation). These are the only kinds of cross sections
 extracted by the mechanism discussed on the present page. Other non-discrete
 processes such as decay and steady energy loss due to ionisation are
 ignored. For the details, refer to the implementation in
-:sbpkg:`XSectSpySteppingAction.hh<G4XSectDump/pycpp_XSectSpy/XSectSpySteppingAction.hh>`.
+:sbpkg:`XSectSpySteppingAction.hh<G4XSectDump/pymod_XSectSpy/XSectSpySteppingAction.hh>`.
 
 
 .. |image1| image:: images/xsects_discreteprocs_neutron__NCrystal::stdlib::Al_sg225.ncmat__QGSP_BIC_HP_EMZ.xsect.png

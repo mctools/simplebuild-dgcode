@@ -1,5 +1,5 @@
-#ifndef pycpp_XSectSpy_XSectSpySteppingAction_hh
-#define pycpp_XSectSpy_XSectSpySteppingAction_hh
+#ifndef pymod_XSectSpy_XSectSpySteppingAction_hh
+#define pymod_XSectSpy_XSectSpySteppingAction_hh
 
 #define protected public
 #include "G4VDiscreteProcess.hh"

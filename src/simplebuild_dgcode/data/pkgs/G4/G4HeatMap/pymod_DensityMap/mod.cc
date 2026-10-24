@@ -1,23 +1,25 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 #include "G4Utils/GeoUtils.hh"
 #include "Mesh/Mesh.hh"
 #include "G4TransportationManager.hh"
 #include "G4Navigator.hh"
 #include "G4Material.hh"
-#include "G4SystemOfUnits.hh"
+#include "CLHEP/Units/SystemOfUnits.h"
 
 #include "RandUtils/Rand.hh"//Use dedicated random stream, don't disturb G4 random stream
+#include <cassert>
+#include <cstdint>
 
 void py_createDensityMap(const std::string& outfile,
                          const std::string& comments,
-                         long nsample_per_cell,
-                         long nx, long ny, long nz)
+                         std::int64_t nsample_per_cell,
+                         std::int64_t nx, std::int64_t ny, std::int64_t nz)
 {
   auto tm = G4TransportationManager::GetTransportationManager();
   assert(tm);
   G4Navigator* nav = tm->GetNavigatorForTracking();
   assert(nav);
-  long n[3] = {nx, ny, nz};
+  long n[3] = {static_cast<long>(nx), static_cast<long>(ny), static_cast<long>(nz)};
   double lw[3];
   double up[3];
   G4Utils::autodetect_world_extent(lw,up);
@@ -56,7 +58,8 @@ void py_createDensityMap(const std::string& outfile,
   mesh.saveToFile(outfile);
 }
 
-PYTHON_MODULE( mod )
+SBLDPY_MODULE( DensityMap )
 {
-  mod.def("create_density_map",&py_createDensityMap);
+  m.def( "create_density_map", &py_createDensityMap,
+         { "outfile", "comments", "nsample_per_cell", "nx", "ny", "nz" } );
 }
