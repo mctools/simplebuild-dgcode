@@ -176,6 +176,38 @@ class Component:
     def __dir__( self ):
         return dir( self.__class__ ) + self.getParameterList()
 
+    def tieParameters( self, name, other, other_name = None ):
+        """Tie a parameter to a parameter on another component (or, if called
+        with two parameter names, tie two parameters on this component)."""
+        if other_name is None:
+            _c.tie_parameters_local( self._g4handle, name, other )
+        elif isinstance( other, Component ):
+            _c.tie_parameters( self._g4handle, name, other._g4handle, other_name )
+        else:
+            self._legacy_object().tieParameters( name, other, other_name )
+
+    def exposeParameter( self, other_name, other, new_name = '' ):
+        """Expose a parameter from another component, possibly with a new name."""
+        if isinstance( other, Component ):
+            _c.expose_parameter( self._g4handle, other_name, other._g4handle, new_name )
+        else:
+            self._legacy_object().exposeParameter( other_name, other, new_name )
+
+    def exposeParameters( self, other, prefix = '', tieOnClash = False ):
+        """Expose all parameters from another component, possibly with a prefix
+        on the new names."""
+        if isinstance( other, Component ):
+            _c.expose_parameters( self._g4handle, other._g4handle, prefix, bool( tieOnClash ) )
+        else:
+            self._legacy_object().exposeParameters( other, prefix, tieOnClash )
+
+    def _legacy_object( self ):
+        """Object referring to this component, of the classes in the legacy
+        pybind11 based modules (only used when interacting with objects from
+        those modules)."""
+        from G4Interfaces._init import _legacy_component
+        return _legacy_component( self._g4handle )
+
     def __repr__( self ):
         return '<%s %s (component handle %i)>'%( _c.kind( self._g4handle ), self.getName(), self._g4handle )
 

@@ -5,6 +5,7 @@
 #include "G4Interfaces/StepFilterBase.hh"
 #include "G4Interfaces/PhysListProviderBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
+#include "G4Interfaces/ComponentHandles.hh"
 #include "G4Utils/GenUtils.hh"
 
 namespace{
@@ -43,6 +44,23 @@ namespace{
     py::object pgb_randisotropic(G4Interfaces::ParticleGenBase*) {
       G4ThreeVector isodir = G4Utils::randIsotropicDirection();
       return py::make_tuple(isodir.x(),isodir.y(),isodir.z());
+    }
+
+    //Object of the pybind11 based classes above, referring to a component
+    //created by an sbldpy based module (given its handle, see
+    //G4Interfaces/python/ToPy.py). Components in the table in
+    //G4Interfaces/ComponentHandles.hh are never deleted, so no ownership is
+    //needed:
+    py::object legacy_component( std::int64_t handle ) {
+      auto& c = G4Interfaces::getComponent( handle );
+      const auto ref = py::return_value_policy::reference;
+      if ( auto p = dynamic_cast<G4Interfaces::GeoConstructBase*>( &c ) )
+        return py::cast( p, ref );
+      if ( auto p = dynamic_cast<G4Interfaces::ParticleGenBase*>( &c ) )
+        return py::cast( p, ref );
+      if ( auto p = dynamic_cast<G4Interfaces::StepFilterBase*>( &c ) )
+        return py::cast( p, ref );
+      return py::cast( &c, ref );
     }
 
   }
@@ -98,5 +116,7 @@ PYTHON_MODULE( mod )
   mod.def("isChild",&FrameworkGlobals::isChild);
   mod.def("mpID",&FrameworkGlobals::mpID);
   mod.def("nProcs",&FrameworkGlobals::nProcs);
+
+  mod.def("_legacy_component",&G4Interfaces_py::legacy_component);
 
 }

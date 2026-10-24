@@ -4,7 +4,7 @@
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/StepFilterBase.hh"
 #include "G4Interfaces/PhysListProviderBase.hh"
-#include "G4Interfaces/ComponentHandles.hh"
+#include "G4Interfaces/ComponentFromPy.hh"
 #include "G4RunManager.hh"
 #include "G4UserSteppingAction.hh"
 #include "G4UserEventAction.hh"
@@ -63,24 +63,11 @@ namespace G4Launcher_py {
 
   //Components (geometries, generators and step filters) are either objects
   //from the pybind11 based modules, or objects from sbldpy based modules (see
-  //G4Interfaces/GeoConstructToPy.hh), which have a _g4handle attribute
-  //referring to the component in the table in G4Interfaces:
-  template <class T>
-  T* getComponent( py::handle o )
-  {
-    if ( py::hasattr( o, "_g4handle" ) ) {
-      auto& c = G4Interfaces::getComponent( py::cast<std::int64_t>( o.attr("_g4handle") ) );
-      return dynamic_cast<T*>( &c );
-    }
-    if ( py::isinstance<T>( o ) )
-      return py::cast<T*>( o );
-    return nullptr;
-  }
-
+  //G4Interfaces/ComponentFromPy.hh):
   template <class T>
   T* getComponentOrThrow( py::object o, const char * fctname )
   {
-    T* res = getComponent<T>( o );
+    T* res = G4Interfaces::componentFromPy<T>( o );
     if ( !res )
       throw std::runtime_error(std::string("Object of invalid type passed to .")+fctname+"(..)");
     return res;
@@ -117,19 +104,19 @@ namespace G4Launcher_py {
     G4Interfaces::ParticleGenBase* gen(nullptr);
     G4Interfaces::StepFilterBase* filter(nullptr);
     for( auto& e : args ) {
-      if ( auto p = getComponent<G4Interfaces::GeoConstructBase>( e ) ) {
+      if ( auto p = G4Interfaces::componentFromPy<G4Interfaces::GeoConstructBase>( e ) ) {
         if ( geo )
           throw std::runtime_error("Too many geometry objects passed to Launcher.");
         geo = p;
         continue;
       }
-      if ( auto p = getComponent<G4Interfaces::ParticleGenBase>( e ) ) {
+      if ( auto p = G4Interfaces::componentFromPy<G4Interfaces::ParticleGenBase>( e ) ) {
         if ( gen )
           throw std::runtime_error("Too many particle generator objects passed to Launcher.");
         gen = p;
         continue;
       }
-      if ( auto p = getComponent<G4Interfaces::StepFilterBase>( e ) ) {
+      if ( auto p = G4Interfaces::componentFromPy<G4Interfaces::StepFilterBase>( e ) ) {
         if ( filter )
           throw std::runtime_error("Too many step filter objects passed to Launcher.");
         filter = p;

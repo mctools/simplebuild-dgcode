@@ -100,4 +100,13 @@ SBLDPY_MODULE( _components )
          { "handle" } );
   m.def( "parameter_list_string", []( Handle h ) { Utils::ParametersBase::ParameterList l; getComponent( h ).getParameterListString( l ); return join_list( l ); },
          { "handle" } );
+  //Tying and exposing parameters between components:
+  m.def( "tie_parameters", []( Handle h, const std::string& n, Handle o, const std::string& on ) { getComponent( h ).tieParameters( n, &getComponent( o ), on ); },
+         { "handle", "name", "other_handle", "other_name" } );
+  m.def( "tie_parameters_local", []( Handle h, const std::string& n1, const std::string& n2 ) { getComponent( h ).tieParameters( n1, n2 ); },
+         { "handle", "name1", "name2" } );
+  m.def( "expose_parameter", []( Handle h, const std::string& on, Handle o, const std::string& nn ) { getComponent( h ).exposeParameter( on, &getComponent( o ), nn ); },
+         { "handle", "other_name", "other_handle", "new_name" } );
+  m.def( "expose_parameters", []( Handle h, Handle o, const std::string& prefix, bool tieOnClash ) { getComponent( h ).exposeParameters( &getComponent( o ), prefix, tieOnClash ); },
+         { "handle", "other_handle", "prefix", "tieOnClash" } );
 }

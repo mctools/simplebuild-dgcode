@@ -66,6 +66,34 @@ gen.swallowCmdLine( args )
 assert args == [ 'unrelated=1' ] and gen.fixed_energy_eV == 10.0 and gen.particleName == 'neutron'
 gen.dump( 'SimpleGen>> ' )
 
+#Tying and exposing parameters, between sbldpy based components and also with
+#pybind11 based components:
+import G4Tests.LegacySimpleGen
+geo2 = G4StdGeometries.GeoSlab.create()
+g1 = G4StdGenerators.SimpleGen.create()
+g2 = G4StdGenerators.SimpleGen.create()
+legacygen = G4Tests.LegacySimpleGen.create()
+g1.tieParameters( 'fixed_energy_eV', g2, 'fixed_energy_eV' )
+g2.fixed_energy_eV = 7.0
+assert g1.fixed_energy_eV == 7.0
+g1.exposeParameter( 'target_depth_cm', geo2, 'geo_depth_cm' )
+g1.geo_depth_cm = 0.5
+assert geo2.target_depth_cm == 0.5
+legacygen.exposeParameter( 'target_width_cm', geo2, 'geo_width_cm' )
+legacygen.geo_width_cm = 33.0
+assert geo2.target_width_cm == 33.0
+g1.exposeParameter( 'particleName', legacygen, 'legacy_particleName' )
+g1.legacy_particleName = 'gamma'
+assert legacygen.particleName == 'gamma'
+g2.exposeParameters( legacygen, 'L_' )
+assert 'L_particleName' in g2.getParameterList() and g2.L_particleName == 'gamma'
+g2.tieParameters( 'L_fixed_energy_eV', 'fixed_energy_eV' )
+assert legacygen.fixed_energy_eV == 7.0
+legacygen.tieParameters( 'fixed_energy_eV', g1, 'fixed_energy_eV' )
+g1.fixed_energy_eV = 9.0
+assert legacygen.fixed_energy_eV == 9.0 and g2.fixed_energy_eV == 9.0
+print( 'Tying and exposing parameters OK' )
+
 #Components of the wrong kind are rejected by the launcher:
 import G4Launcher
 launcher = G4Launcher()
