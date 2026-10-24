@@ -10,4 +10,6 @@ sb_griffformat_dumpfile -u grifftests.griff
 if [ $? != 0 ]; then
     exit 1
 fi
-sb_griffdrwtests_ana grifftests.griff|uniq -c
+#Reformat the counts from uniq -c to the same width on all platforms (the
+#width differs between e.g. Linux and macOS):
+sb_griffdrwtests_ana grifftests.griff|uniq -c|awk '{c=$1; sub(/^ *[0-9]+ /,""); printf "%7d %s\n", c, $0}'
