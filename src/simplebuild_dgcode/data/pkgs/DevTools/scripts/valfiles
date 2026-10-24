@@ -19,7 +19,7 @@ ignore_dirs = [ cfg.dirs.blddir,
 
 
 def is_valid_pkg_subdir(name):
-    return ( name in ('libinc', 'libsrc', 'python', 'scripts', 'data') or name.startswith(('app_', 'pycpp_')) )
+    return ( name in ('libinc', 'libsrc', 'python', 'scripts', 'data') or name.startswith(('app_', 'pycpp_', 'pymod_')) )
 def file_should_be_ignored(f):
     return ( f in ignore_dirs
              or any(fp in ignore_dirs for fp in f.parents) )
