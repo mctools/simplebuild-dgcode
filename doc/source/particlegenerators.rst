@@ -340,7 +340,7 @@ Generating from Griff files
 ---------------------------
 
 It is possible to use :ref:`Griff <sbgriff>` files as a source of particles, by
-using the :sbpkg:`G4GriffGen.GriffGen<G4GriffGen/pycpp_GriffGen/mod.cc>`
+using the :sbpkg:`G4GriffGen.GriffGen<G4GriffGen/pymod__GriffGen/mod.cc>`
 generator module:
 
 .. code-block:: python
