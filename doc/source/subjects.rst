@@ -26,3 +26,4 @@ the search feature of the site.
    extractg4xs.rst
    scans.rst
    simplehists.rst
+   pymod.rst
