@@ -1,5 +1,5 @@
 #include "G4MCPL/G4MCPLUserFlags.hh"
-#include "G4Interfaces/ParticleGenPyExport.hh"
+#include "G4Interfaces/ParticleGenToPy.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
 #include "MCPLExprParser/MCPLASTBuilder.hh"
@@ -8,10 +8,12 @@
 #include "Units/Units.hh"
 #include "Core/String.hh"
 #include "G4ParticleGun.hh"
+#include "G4Event.hh"
 #include "CLHEP/Geometry/Vector3D.h"
 #include "CLHEP/Geometry/Transform3D.h"
 #include <map>
 #include <stdexcept>
+#include <cassert>
 #include "G4ParticleTable.hh"
 #include "G4IonTable.hh"
 
@@ -310,7 +312,4 @@ void MCPLGen::gen(G4Event* evt)
 }
 
 
-PYTHON_MODULE( mod )
-{
-  ParticleGenPyExport::exportGen<MCPLGen>(mod,"MCPLGen");
-}
+SBLDPY_MODULE( _MCPLGen ) { G4Interfaces::genToPy<MCPLGen>( m ); }

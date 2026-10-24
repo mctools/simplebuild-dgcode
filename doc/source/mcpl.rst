@@ -53,7 +53,7 @@ MCPL files as simulation input
 
 As documented :ref:`here <sbparticlegen>`, MCPL files are easily used as input
 to your Geant4 simulation by using the
-:sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pycpp_MCPLGen/mod.cc>` module in
+:sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pymod__MCPLGen/mod.cc>` module in
 your :ref:`sim script <sbsimscript>`:
 
 .. code-block:: python
