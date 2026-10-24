@@ -10,6 +10,13 @@
 #include "G4Interfaces/ComponentHandles.hh"
 #include <type_traits>
 
+//For easier migration of code from the corresponding *PyExport.hh headers
+//used in pycpp_* folders, we include the same Geant4 headers as those (and
+//cassert, which used to be included indirectly):
+#include "G4Event.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
+#include <cassert>
+
 namespace G4Interfaces {
 
   //Defines the function create_handle() in an sbldpy module, which creates a
