@@ -70,6 +70,30 @@ or ``G4Interfaces/StepFilterToPy.hh`` and ``G4Interfaces::filterToPy`` (instead
 of ``G4Interfaces/StepFilterPyExport.hh`` and
 ``StepFilterPyExport::exportFilter``).
 
+If the pybind11 based module added extra methods to the Python objects, like:
+
+.. code-block:: c++
+
+  PYTHON_MODULE( mod )
+  {
+    GeoConstructPyExport::exportGeo<GeoMyStuff>(mod, "GeoMyStuff")
+      .def("detectorArea",&GeoMyStuff::detectorArea);
+  }
+
+the same can be achieved with:
+
+.. code-block:: c++
+
+  SBLDPY_MODULE( _GeoMyStuff )
+  {
+    G4Interfaces::geoToPy<GeoMyStuff>( m )
+      .def( "detectorArea", &GeoMyStuff::detectorArea );
+  }
+
+The methods must be member functions of the class, taking and returning values
+of the types supported by sbldpy (except that any integer type can be used,
+and that parameters can be of type float).
+
 The objects created by such modules are instances of the Python class
 ``G4Interfaces.ToPy.Component``, which provides the same methods for accessing,
 tying and exposing parameters as the pybind11 based objects (and they can be

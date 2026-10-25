@@ -252,10 +252,30 @@ class Component:
             else:
                 iarg += 1
 
+def _make_method( name, f ):
+    def method( self, *args, **kwargs ):
+        return f( self._g4handle, *args, **kwargs )
+    method.__name__ = name
+    method.__doc__ = f.__doc__
+    return method
+
 def component_creator( create_handle ):
     """Returns create() function for components provided by an sbldpy module
-    (given the create_handle function of the module)."""
+    (given the create_handle function of the module). Any functions named
+    _method_<name> in the module (see G4Interfaces/ComponentToPy.hh) are added
+    as methods <name> to the component objects, by creating them as instances
+    of a subclass of Component."""
+    import sys
+    mod = sys.modules[ create_handle.__module__ ]
+    methods = dict( ( k[len('_method_'):], _make_method( k[len('_method_'):], getattr( mod, k ) ) )
+                    for k in dir( mod ) if k.startswith( '_method_' ) )
+    cls = Component
+    if methods:
+        cls = type( 'Component', ( Component, ), methods )
+        cls.__module__ = mod.__name__
+        for k, m in methods.items():
+            m.__qualname__ = 'Component.%s'%k
     def create():
         """Create new component"""
-        return Component( create_handle() )
+        return cls( create_handle() )
     return create

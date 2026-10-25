@@ -60,6 +60,26 @@ except TypeError:
 else:
     raise AssertionError( 'expected TypeError' )
 
+#Extra methods (see G4Interfaces/ComponentToPy.hh):
+import G4Tests.GeoTest
+gt = G4Tests.GeoTest.create()
+gt2 = G4Tests.GeoTest.create()
+assert isinstance( gt, G4Interfaces.ToPy.Component ) and type( gt ) is type( gt2 )
+assert type( gt ) is not type( geo ) and not hasattr( geo, 'worldVolume_m3' )
+assert 'worldVolume_m3' in dir( gt ) and gt.worldVolume_m3.__doc__ == 'World volume in cubic meters'
+gt.worldExtent_meters = 2.0
+assert gt.worldVolume_m3() == 128.0 and gt2.worldVolume_m3() == 16.0
+assert gt.label( 'abc', -3, 0.5 ) == 'abc:-3:0.500000' and gt.label( n = 4, prefix = 'x', x = 2 ) == 'x:4:2.000000'
+assert gt.incrementCounter( 2 ) == 2 and gt.incrementCounter( step = 3 ) == 5 and gt2.incrementCounter( 1 ) == 1
+for badval in ( -1, 2**40 ):
+    try:
+        gt.incrementCounter( badval )
+    except IndexError:
+        pass
+    else:
+        raise AssertionError( 'expected IndexError' )
+print( 'Extra methods OK' )
+
 #Command line parameters:
 args = [ 'fixed_energy_eV=10', 'unrelated=1', 'particleName=neutron' ]
 gen.swallowCmdLine( args )

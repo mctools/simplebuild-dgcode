@@ -7,7 +7,7 @@
 
 #include "sbldpy/sbldpy.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
-#include "G4Interfaces/ComponentHandles.hh"
+#include "G4Interfaces/ComponentToPy.hh"
 #include <type_traits>
 
 //For easier migration of code from the corresponding *PyExport.hh headers
@@ -25,13 +25,17 @@ namespace G4Interfaces {
   //Usage:
   //
   //  SBLDPY_MODULE( _MyClass ) { G4Interfaces::genToPy<MyClass>( m ); }
+  //
+  //Extra methods can be added to the Python objects via the returned helper
+  //object (see G4Interfaces/ComponentToPy.hh).
 
   template <class T>
-  void genToPy( sbldpy::Module& m )
+  ComponentToPy<T> genToPy( sbldpy::Module& m )
   {
     static_assert( std::is_base_of_v<ParticleGenBase,T>, "Class must derive from G4Interfaces::ParticleGenBase" );
     m.def( "create_handle", []() { return registerComponent( new T ); },
            "Create a new particle generator and return its handle" );
+    return ComponentToPy<T>( m, "particle generator" );
   }
 
 }
