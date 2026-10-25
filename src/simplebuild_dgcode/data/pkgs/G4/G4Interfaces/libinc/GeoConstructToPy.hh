@@ -29,12 +29,12 @@ namespace G4Interfaces {
   //object (see G4Interfaces/ComponentToPy.hh).
 
   template <class T>
-  ComponentToPy<T> geoToPy( sbldpy::Module& m )
+  ComponentToPy<T> geoToPy( sbldpy::Module& mod )
   {
     static_assert( std::is_base_of_v<GeoConstructBase,T>, "Class must derive from G4Interfaces::GeoConstructBase" );
-    m.def( "create_handle", []() { return registerComponent( new T ); },
+    mod.def( "create_handle", []() { return registerComponent( new T ); },
            "Create a new geometry and return its handle" );
-    return ComponentToPy<T>( m, "geometry" );
+    return ComponentToPy<T>( mod, "geometry" );
   }
 
 }

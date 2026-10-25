@@ -29,12 +29,12 @@ namespace G4Interfaces {
   //object (see G4Interfaces/ComponentToPy.hh).
 
   template <class T>
-  ComponentToPy<T> filterToPy( sbldpy::Module& m )
+  ComponentToPy<T> filterToPy( sbldpy::Module& mod )
   {
     static_assert( std::is_base_of_v<StepFilterBase,T>, "Class must derive from G4Interfaces::StepFilterBase" );
-    m.def( "create_handle", []() { return registerComponent( new T ); },
+    mod.def( "create_handle", []() { return registerComponent( new T ); },
            "Create a new step filter and return its handle" );
-    return ComponentToPy<T>( m, "step filter" );
+    return ComponentToPy<T>( mod, "step filter" );
   }
 
 }

@@ -30,12 +30,12 @@ namespace G4Interfaces {
   //object (see G4Interfaces/ComponentToPy.hh).
 
   template <class T>
-  ComponentToPy<T> genToPy( sbldpy::Module& m )
+  ComponentToPy<T> genToPy( sbldpy::Module& mod )
   {
     static_assert( std::is_base_of_v<ParticleGenBase,T>, "Class must derive from G4Interfaces::ParticleGenBase" );
-    m.def( "create_handle", []() { return registerComponent( new T ); },
+    mod.def( "create_handle", []() { return registerComponent( new T ); },
            "Create a new particle generator and return its handle" );
-    return ComponentToPy<T>( m, "particle generator" );
+    return ComponentToPy<T>( mod, "particle generator" );
   }
 
 }

@@ -1,3 +1,6 @@
+//Test that "using CLHEP::m;" etc. from G4SystemOfUnits.hh does not trigger
+//-Wshadow warnings in the headers below or in SBLDPY_MODULE:
+#include "G4SystemOfUnits.hh"
 #include "G4Interfaces/GeoConstructToPy.hh"
 #include "G4Tests/GeoTest.hh"
 

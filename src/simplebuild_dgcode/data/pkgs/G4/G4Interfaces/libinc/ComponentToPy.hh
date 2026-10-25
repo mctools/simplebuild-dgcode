@@ -68,7 +68,7 @@ namespace G4Interfaces {
   template <class T>
   class ComponentToPy {
   public:
-    ComponentToPy( sbldpy::Module& m, const char * what ) : m_m(m), m_what(what) {}
+    ComponentToPy( sbldpy::Module& mod, const char * what ) : m_m(mod), m_what(what) {}
 
     template<class R, class C, class... A>
     ComponentToPy& def( const char * name, R (C::*f)( A... ),
