@@ -1,10 +1,197 @@
 __doc__="Geant4 launcher"
-from . _init import *
-def _extrapars(self):
-    if not hasattr(self,'_extrapars_obj'):
-        self._extrapars_obj = LauncherExtraPars()
-    return self._extrapars_obj
-Launcher._extrapars = _extrapars
+from . import _impl
+from G4Interfaces.ToPy import Component as _Component
+
+_the_launcher = [ None ]
+
+def _component_handle( o ):
+    """Handle of component in the table in G4Interfaces/ComponentHandles.hh, or
+    None if o is not a component"""
+    h = getattr( o, '_g4handle', None )
+    if h is not None:
+        return h
+    #Temporary support for components from pybind11 based modules:
+    from G4Interfaces._init import _register_legacy_component
+    return _register_legacy_component( o )
+
+def _cppobject_handle( o, what ):
+    h = getattr( o, '_g4objhandle', None )
+    if h is None:
+        raise TypeError( '%s requires a G4Interfaces.ToPy.CppObject object'%what )
+    return h
+
+def _create_hook_method( name ):
+    def f( self, hook ):
+        if getattr( hook, '_g4objhandle', None ) is not None:
+            getattr( _impl, name + 'Obj' )( hook._g4objhandle )
+        else:
+            if not callable( hook ):
+                raise TypeError( 'hooks must be callable' )
+            getattr( _impl, name )( hook )
+    f.__name__ = name
+    f.__doc__ = ( 'Add hook (a Python callable or a G4Interfaces.ToPy.CppObject'
+                  ' object of kind HookFct)' )
+    return f
+
+def _delegate( name ):
+    f = getattr( _impl, name )
+    def method( self, *args ):
+        return f( *args )
+    method.__name__ = name
+    return method
+
+class Launcher:
+    """Geant4 launcher. Only one instance can be created, which can afterwards
+    be accessed with G4Launcher.getTheLauncher()."""
+
+    def __init__( self, *args ):
+        """Arguments can contain a geometry, generator, and/or a Griff step
+        filter. Alternatively set them later with the .setGeo/.setGen/.setFilter
+        methods."""
+        comps = {}
+        for e in args:
+            h = _component_handle( e )
+            kind = _component_kind( h ) if h is not None else None
+            if kind not in ( 'geo', 'gen', 'filter' ):
+                raise RuntimeError( 'Unknown argument for Launcher: "%s"'%e )
+            if kind in comps:
+                raise RuntimeError( 'Too many %s objects passed to Launcher.'
+                                    %dict( geo = 'geometry', gen = 'particle generator',
+                                           filter = 'step filter' )[kind] )
+            comps[kind] = e
+        _impl.create()
+        _the_launcher[0] = self
+        #Make sure the launcher is shut down (deleting the run manager and
+        #closing output files) at exit, if not done already:
+        import atexit
+        atexit.register( _impl.shutdown )
+        self._geo, self._gen, self._filter, self._killfilter = None, None, None, None
+        self._resources = []
+        if 'geo' in comps:
+            self.setGeo( comps['geo'] )
+        if 'gen' in comps:
+            self.setGen( comps['gen'] )
+        if 'filter' in comps:
+            self.setFilter( comps['filter'] )
+
+    def _set_component( self, setter, attr, o ):
+        h = _component_handle( o )
+        if h is None:
+            raise RuntimeError( 'Object of invalid type passed to .%s(..)'%setter )
+        getattr( _impl, setter )( h )
+        setattr( self, attr, o )
+        self._resources.append( o )
+
+    def setGeo( self, geo ):
+        """Set the geometry"""
+        self._set_component( 'setGeo', '_geo', geo )
+
+    def setGen( self, gen ):
+        """Set the particle generator"""
+        self._set_component( 'setGen', '_gen', gen )
+
+    def setFilter( self, flt ):
+        """Set the filter for which steps are written to Griff files"""
+        self._set_component( 'setFilter', '_filter', flt )
+
+    def setKillFilter( self, flt ):
+        """Set a filter which also kills steps to prevent further simulation"""
+        self._set_component( 'setKillFilter', '_killfilter', flt )
+
+    def getGeo( self ):
+        return self._geo
+
+    def getGen( self ):
+        return self._gen
+
+    def getFilter( self ):
+        return self._filter
+
+    def setVis( self, visengine = 'OGL' ):
+        _impl.setVis( visengine )
+
+    def startSession( self ):
+        _impl.startSession()
+
+    def setParticleGun( self, particle, eKin, pos, momdir ):
+        """Use a single particle gun as generator. The particle can be given as
+        a pdg code or a name, and pos and momdir as tuples of three numbers."""
+        if isinstance( particle, str ):
+            _impl.setParticleGunName( particle, eKin, tuple( pos ), tuple( momdir ) )
+        else:
+            _impl.setParticleGunPDG( particle, eKin, tuple( pos ), tuple( momdir ) )
+
+    def setOutput( self, filename, mode = 'FULL' ):
+        """Target Griff file. Use "none" to disable Griff output (mode must be
+        FULL, REDUCED or MINIMAL)"""
+        _impl.setOutput( filename, mode )
+
+    def setSeed( self, seed ):
+        """Set random seed (unsigned 64 bit integer)"""
+        seed = int( seed )
+        if not ( 0 <= seed < 2**64 ):
+            raise ValueError( 'seed must be in the range 0..2^64-1' )
+        _impl.setSeed( seed >> 32, seed & 0xFFFFFFFF )
+
+    def setUserSteppingAction( self, stepact ):
+        """Set stepping action (a G4Interfaces.ToPy.CppObject object, created after init())"""
+        _impl.setUserSteppingAction( _cppobject_handle( stepact, 'setUserSteppingAction' ) )
+
+    def setUserEventAction( self, evtact ):
+        """Set event action (a G4Interfaces.ToPy.CppObject object, created after init())"""
+        _impl.setUserEventAction( _cppobject_handle( evtact, 'setUserEventAction' ) )
+
+    def addPreGenHook( self, hook ):
+        """Add hook (a G4Interfaces.ToPy.CppObject object) called before generating events"""
+        _impl.addPreGenHook( _cppobject_handle( hook, 'addPreGenHook' ) )
+
+    def addPostGenHook( self, hook ):
+        """Add hook (a G4Interfaces.ToPy.CppObject object) called after generating events"""
+        _impl.addPostGenHook( _cppobject_handle( hook, 'addPostGenHook' ) )
+
+    addPrePreInitHook = _create_hook_method( 'addPrePreInitHook' )
+    addPreInitHook = _create_hook_method( 'addPreInitHook' )
+    addPostInitHook = _create_hook_method( 'addPostInitHook' )
+    addPostSimHook = _create_hook_method( 'addPostSimHook' )
+    addPostMPHook = _create_hook_method( 'addPostMPHook' )
+    prepreinit_hook = addPrePreInitHook
+    preinit_hook = addPreInitHook
+    postinit_hook = addPostInitHook
+    postsim_hook = addPostSimHook
+    postmp_hook = addPostMPHook
+
+    def _addResourceGuard( self, o ):
+        self._resources.append( o )
+
+    def _shutdown( self ):
+        _impl.shutdown()
+        self._resources = []
+
+    def _extrapars( self ):
+        if not hasattr( self, '_extrapars_obj' ):
+            self._extrapars_obj = _Component( _impl.extrapars_create() )
+        return self._extrapars_obj
+
+for _n in ( 'setMultiProcessing', 'startSimulation', 'setRndEvtMsgMode', 'rndEvtMsgMode',
+            'setPhysicsList', 'hasPhysicsListProvider', 'closeOutput', 'noRandomSetup',
+            'getSeed', 'cmd', 'cmd_preinit', 'cmd_postinit', 'init', 'initVis',
+            'getMultiProcessing', 'GetNoRandomSetup', 'getOutputFile', 'getOutputMode',
+            'getVis', 'getPhysicsList', 'getPrintPrefix', 'allowMultipleSettings',
+            'addHist', 'setUserData', 'allowFPE', 'dumpGDML', 'preInitDone', 'rmIsInit' ):
+    setattr( Launcher, _n, _delegate( _n ) )
+del _n
+
+def _component_kind( h ):
+    from G4Interfaces._components import kind
+    return kind( h )
+
+def getTheLauncher():
+    """Access already instantiated Launcher object (None if not created)"""
+    return _the_launcher[0]
+
+g4version = _impl.g4version
+g4versionstr = _impl.g4versionstr
+
 Launcher._keepalive = []
 
 def _create_f(n):
@@ -12,7 +199,8 @@ def _create_f(n):
         ep=self._extrapars()
         if n.startswith('get'):
             ep.swallowCmdLine()#fixme, locking will give issues!!
-        return getattr(ep,n)(*a,**kw)
+            return getattr(ep,n)(*a,**kw)
+        return getattr(_impl,'extrapars_add_'+n[len('addParameter'):].lower())(ep._g4handle,*a,**kw)
     f.__name__=n
     return f
 for l in ('addParameter%s','getParameter%s'):

@@ -52,6 +52,11 @@ class Component:
     def getName( self ):
         return _c.get_name( self._g4handle )
 
+    def unlimited( self ):
+        """For particle generators, whether they can generate an unlimited number
+        of events"""
+        return _c.unlimited( self._g4handle )
+
     def dump( self, prefix = '' ):
         _c.dump( self._g4handle, prefix )
 

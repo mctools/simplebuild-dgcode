@@ -137,3 +137,10 @@ following differences compared to pybind11:
   and wrap the resulting handles in ``G4Interfaces.ToPy.CppObject`` objects
   on the Python side. For an example, see
   :sbpkg:`G4Tests.CppObjTest<G4Tests/pymod__CppObjTest/mod.cc>`.
+* The launcher is an sbldpy based module, and Python's global interpreter lock
+  (GIL) is released while it runs a simulation. Therefore, if C++ code of your
+  own in ``pycpp_*`` modules calls Python code (or otherwise uses Python
+  objects) during a simulation, for instance from a particle generator, it
+  must first acquire the GIL by adding the line ``py::gil_scoped_acquire
+  gil;`` at the beginning of the functions in question. Python code called
+  via sbldpy callbacks (like launcher hooks) does not need this.

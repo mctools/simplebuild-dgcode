@@ -1,310 +1,190 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 #include "G4Launcher/Launcher.hh"
 #include "G4Interfaces/GeoConstructBase.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/StepFilterBase.hh"
-#include "G4Interfaces/PhysListProviderBase.hh"
-#include "G4Interfaces/ComponentFromPy.hh"
+#include "G4Interfaces/ComponentHandles.hh"
 #include "G4Interfaces/CppObjectHandles.hh"
-#include "G4RunManager.hh"
-#include "G4UserSteppingAction.hh"
-#include "G4UserEventAction.hh"
+#include "Utils/ParametersBase.hh"
+#include "G4ThreeVector.hh"
 #include "G4Version.hh"
+#include <cstdint>
+#include <limits>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+
+//Compiled part of the G4Launcher Python module (see G4Launcher/_launcher.py,
+//which provides the actual Python interface). Since the launcher is a
+//singleton, the functions here operate on the launcher returned by
+//G4Launcher::Launcher::getTheLauncher(). Components are referred to by their
+//handles in the table in G4Interfaces/ComponentHandles.hh, and user actions and
+//hooks by their handles in the table in G4Interfaces/CppObjectHandles.hh.
 
 namespace G4Launcher_py {
 
-  namespace {
-    class PyObjResourceGuard : public G4Launcher::Launcher::ResourceGuard {
-    public:
-      PyObjResourceGuard( py::object o ) : m_o(o) {}
-    private:
-      py::object m_o;
-    };
+  using Launcher = G4Launcher::Launcher;
+  using Handle = std::int64_t;
+  using Vect = std::tuple<double,double,double>;
+
+  Launcher& launcher()
+  {
+    auto l = Launcher::getTheLauncher();
+    if ( !l )
+      throw std::runtime_error("G4Launcher not created");
+    return *l;
   }
 
-  void Launcher_addResourceGuard( G4Launcher::Launcher& l, py::object o )
+  unsigned toUnsigned( std::int64_t n )
   {
-    l.addResourceGuard( std::make_shared<PyObjResourceGuard>( o ) );
+    if ( n < 0 || n > std::numeric_limits<unsigned>::max() )
+      throw std::out_of_range("number out of range");
+    return static_cast<unsigned>( n );
   }
 
-  std::string Launcher_rndEvtMsgMode(G4Launcher::Launcher& l)
+  std::string str( const char * s )
   {
-    return l.rndEvtMsgMode();
+    return s ? std::string( s ) : std::string();
   }
 
-  G4ThreeVector pytuple2g4vect(const py::tuple&t)
+  G4ThreeVector toG4Vect( const Vect& v )
   {
-    if ( py::len(t) != 3 )
-      throw std::runtime_error("pytuple2g4vect got tuple of invalid length.");
-    assert(py::len(t)==3);
-
-    double x,y,z;
-    try {
-      x = t[0].cast<double>();
-      y = t[1].cast<double>();
-      z = t[2].cast<double>();
-    } catch ( py::cast_error& ) {
-      throw std::runtime_error("pytuple2g4vect got tuple of invalid content (must be floats).");
-    }
-    return G4ThreeVector(x,y,z);
+    return G4ThreeVector( std::get<0>(v), std::get<1>(v), std::get<2>(v) );
   }
 
-  //C++ objects (user actions and hooks) can also be G4Interfaces.ToPy.CppObject
-  //objects from sbldpy based modules, referring to objects in the table in
-  //G4Interfaces/CppObjectHandles.hh by a _g4objhandle attribute:
-  bool isCppObject( py::handle o )
-  {
-    return py::hasattr( o, "_g4objhandle" );
-  }
-  std::int64_t cppObjectHandle( py::handle o )
-  {
-    return py::cast<std::int64_t>( o.attr("_g4objhandle") );
-  }
-
-  void Launcher_addPreGenHook( G4Launcher::Launcher& launcher, py::object o )
-  {
-    if ( isCppObject( o ) ) {
-      launcher.addPreGenHook( G4Interfaces::claimPreGenHook( cppObjectHandle( o ) ) );
-      return;
-    }
-    auto cb = py::cast<G4Interfaces::PreGenCallBack*>( o );
-    assert( cb != nullptr );
-    std::shared_ptr<G4Interfaces::PreGenCallBack> shptr_cb = cb->shared_from_this();
-    launcher.addPreGenHook(shptr_cb);
-  }
-  void Launcher_addPostGenHook( G4Launcher::Launcher& launcher, py::object o )
-  {
-    if ( isCppObject( o ) ) {
-      launcher.addPostGenHook( G4Interfaces::claimPostGenHook( cppObjectHandle( o ) ) );
-      return;
-    }
-    auto cb = py::cast<G4Interfaces::PostGenCallBack*>( o );
-    assert( cb != nullptr );
-    std::shared_ptr<G4Interfaces::PostGenCallBack> shptr_cb = cb->shared_from_this();
-    launcher.addPostGenHook(shptr_cb);
-  }
-  void Launcher_setUserSteppingAction( G4Launcher::Launcher& launcher, py::object o )
-  {
-    if ( isCppObject( o ) )
-      launcher.setUserSteppingAction( G4Interfaces::claimUserSteppingAction( cppObjectHandle( o ) ) );
-    else
-      launcher.setUserSteppingAction( py::cast<G4UserSteppingAction*>( o ) );
-  }
-  void Launcher_setUserEventAction( G4Launcher::Launcher& launcher, py::object o )
-  {
-    if ( isCppObject( o ) )
-      launcher.setUserEventAction( G4Interfaces::claimUserEventAction( cppObjectHandle( o ) ) );
-    else
-      launcher.setUserEventAction( py::cast<G4UserEventAction*>( o ) );
-  }
-
-  //Components (geometries, generators and step filters) are either objects
-  //from the pybind11 based modules, or objects from sbldpy based modules (see
-  //G4Interfaces/ComponentFromPy.hh):
   template <class T>
-  T* getComponentOrThrow( py::object o, const char * fctname )
+  T* component( Handle h, const char * fctname )
   {
-    T* res = G4Interfaces::componentFromPy<T>( o );
-    if ( !res )
+    auto p = dynamic_cast<T*>( &G4Interfaces::getComponent( h ) );
+    if ( !p )
       throw std::runtime_error(std::string("Object of invalid type passed to .")+fctname+"(..)");
-    return res;
+    return p;
   }
 
-  void Launcher_setGeo( G4Launcher::Launcher& launcher, py::object o )
+  void create()
   {
-    launcher.setGeo(getComponentOrThrow<G4Interfaces::GeoConstructBase>( o, "setGeo" ));
-    Launcher_addResourceGuard( launcher, o );
+    new Launcher;//Never deleted, due to singleton nature of G4Launcher (released by shutdown).
   }
 
-  void Launcher_setGen( G4Launcher::Launcher& launcher, py::object o )
-  {
-    launcher.setGen(getComponentOrThrow<G4Interfaces::ParticleGenBase>( o, "setGen" ));
-    Launcher_addResourceGuard( launcher, o );
-  }
+  //Python callables as hooks:
+  class PyHook : public G4Interfaces::HookFct {
+  public:
+    PyHook( sbldpy::Callback<void()> cb ) : m_cb( std::move( cb ) ) {}
+    void operator()() override { m_cb(); }
+  private:
+    sbldpy::Callback<void()> m_cb;
+  };
 
-  void Launcher_setFilter( G4Launcher::Launcher& launcher, py::object o )
-  {
-    launcher.setFilter(getComponentOrThrow<G4Interfaces::StepFilterBase>( o, "setFilter" ));
-    Launcher_addResourceGuard( launcher, o );
-  }
+  using AddHookFct = void (Launcher::*)( Launcher::HookFctPtr );
+  template <AddHookFct f>
+  void addPyHook( sbldpy::Callback<void()> cb ) { ( launcher().*f )( std::make_shared<PyHook>( std::move( cb ) ) ); }
+  template <AddHookFct f>
+  void addObjHook( Handle h ) { ( launcher().*f )( G4Interfaces::claimHookFct( h ) ); }
 
-  void Launcher_setKillFilter( G4Launcher::Launcher& launcher, py::object o )
-  {
-    launcher.setKillFilter(getComponentOrThrow<G4Interfaces::StepFilterBase>( o, "setKillFilter" ));
-    Launcher_addResourceGuard( launcher, o );
-  }
-
-
-  G4Launcher::Launcher* Launcher_pyinit( py::list args )
-  {
-    G4Interfaces::GeoConstructBase* geo(nullptr);
-    G4Interfaces::ParticleGenBase* gen(nullptr);
-    G4Interfaces::StepFilterBase* filter(nullptr);
-    for( auto& e : args ) {
-      if ( auto p = G4Interfaces::componentFromPy<G4Interfaces::GeoConstructBase>( e ) ) {
-        if ( geo )
-          throw std::runtime_error("Too many geometry objects passed to Launcher.");
-        geo = p;
-        continue;
-      }
-      if ( auto p = G4Interfaces::componentFromPy<G4Interfaces::ParticleGenBase>( e ) ) {
-        if ( gen )
-          throw std::runtime_error("Too many particle generator objects passed to Launcher.");
-        gen = p;
-        continue;
-      }
-      if ( auto p = G4Interfaces::componentFromPy<G4Interfaces::StepFilterBase>( e ) ) {
-        if ( filter )
-          throw std::runtime_error("Too many step filter objects passed to Launcher.");
-        filter = p;
-        continue;
-      }
-      //error:
-      std::ostringstream ss;
-      ss<<"Unknown argument for Launcher: \""<< py::cast<std::string>(py::str(e))<<"\"";
-      throw std::runtime_error(ss.str());
-    }
-    return new G4Launcher::Launcher( geo, gen, filter );//Returning new object, due to singleton nature of G4Launcher.
-  }
-
-  void Launcher_setParticleGun1(G4Launcher::Launcher& l,int pdgcode, double eKin,
-                                const py::tuple& pos,const py::tuple& momdir)
-  {
-    l.setParticleGun(pdgcode,eKin,pytuple2g4vect(pos),pytuple2g4vect(momdir));
-  }
-  void Launcher_setParticleGun2(G4Launcher::Launcher& l,const char* particleName, double eKin,
-                                const py::tuple& pos,const py::tuple& momdir)
-  {
-    l.setParticleGun(particleName,eKin,pytuple2g4vect(pos),pytuple2g4vect(momdir));
-  }
-
-  void Launcher_setOutput_1arg(G4Launcher::Launcher& l,const char* filename) { l.setOutput(filename); }
-  void Launcher_setVis_0args(G4Launcher::Launcher& l) { l.setVis(); }
-  void Launcher_startSession_0args(G4Launcher::Launcher& l) { l.startSession(); }
-
-  namespace {
-    class HookWrapper : public G4Launcher::Launcher::HookFct {
-    public:
-      HookWrapper(py::object o) : m_o(o) {}
-    virtual ~HookWrapper() {}
-      virtual void operator()() { m_o(); }
-    private:
-      py::object m_o;
-    };
-  }
-  //Hooks can be Python callables or HookFct objects from sbldpy based modules:
-  G4Launcher::Launcher::HookFctPtr toHookFct( py::object f )
-  {
-    if ( isCppObject( f ) )
-      return G4Interfaces::claimHookFct( cppObjectHandle( f ) );
-    return std::make_shared<HookWrapper>(f);
-  }
-  void HookFct_addPrePreInitHook(G4Launcher::Launcher&l,py::object f) { l.addPrePreInitHook(toHookFct(f)); }
-  void HookFct_addPreInitHook(G4Launcher::Launcher&l,py::object f) { l.addPreInitHook(toHookFct(f)); }
-  void HookFct_addPostInitHook(G4Launcher::Launcher&l,py::object f) { l.addPostInitHook(toHookFct(f)); }
-  void HookFct_addPostSimHook(G4Launcher::Launcher&l,py::object f) { l.addPostSimHook(toHookFct(f)); }
-  void HookFct_addPostMPHook(G4Launcher::Launcher&l,py::object f) { l.addPostMPHook(toHookFct(f)); }
-  int g4version() { return G4VERSION_NUMBER; }
-  const char* g4versionstr() { return G4Version.c_str(); }
-
+  //Extra parameters defined on the launcher from Python:
   class LauncherExtraPars : public Utils::ParametersBase {
   public:
-    //To be called in the constructor of derived classes, defining which parameters are available:
-    void pyaddPD(const std::string&n, double defval) { addParameterDouble(n,defval); }
-    void pyaddPI(const std::string&n, int defval) { addParameterInt(n,defval); }
-    void pyaddPB(const std::string&n, bool defval) { addParameterBoolean(n,defval); }
-    void pyaddPS(const std::string&n, const std::string& defval) { addParameterString(n,defval); }
+    using Utils::ParametersBase::addParameterDouble;
+    using Utils::ParametersBase::addParameterInt;
+    using Utils::ParametersBase::addParameterBoolean;
+    using Utils::ParametersBase::addParameterString;
   };
+
+  LauncherExtraPars& extraPars( Handle h )
+  {
+    return G4Interfaces::getComponentAs<LauncherExtraPars>( h, "LauncherExtraPars" );
+  }
+
+  int toInt( std::int64_t n )
+  {
+    if ( n < std::numeric_limits<int>::min() || n > std::numeric_limits<int>::max() )
+      throw std::out_of_range("integer out of range");
+    return static_cast<int>( n );
+  }
+
 }
 
-PYTHON_MODULE( mod )
+SBLDPY_MODULE( _impl )
 {
-  pyextra::pyimport("G4Interfaces");
-  pyextra::pyimport("Utils.ParametersBase");
+  using namespace G4Launcher_py;
+  using G4Launcher_py::Launcher;
 
-  //We could expose G4RunManager, G4UserSteppingAction and G4UserEventAction as
-  //well (at least register_ptr so it can be passed around on the python side)
-  //... update: can't find register_ptr anymore, so here is a very basic
-  //declaration of at least the stepping and event actions:
-  py::class_<G4UserSteppingAction>(mod,"G4UserSteppingAction")
-    ;
-  py::class_<G4UserEventAction>(mod,"G4UserEventAction")
-    ;
-  mod.def("g4version",G4Launcher_py::g4version);
-  mod.def("g4versionstr",G4Launcher_py::g4versionstr);
-  py::class_<G4Launcher_py::LauncherExtraPars,Utils::ParametersBase>(mod,"LauncherExtraPars")
-    .def(py::init<>())
-    .def("addParameterBoolean",&G4Launcher_py::LauncherExtraPars::pyaddPB)
-    .def("addParameterInt",&G4Launcher_py::LauncherExtraPars::pyaddPI)
-    .def("addParameterString",&G4Launcher_py::LauncherExtraPars::pyaddPS)
-    .def("addParameterDouble",&G4Launcher_py::LauncherExtraPars::pyaddPD)
-    ;
+  m.def( "g4version", []() -> std::int64_t { return G4VERSION_NUMBER; } );
+  m.def( "g4versionstr", []() { return std::string( G4Version ); } );
 
-  py::class_<G4Launcher::Launcher>(mod,"Launcher",py::dynamic_attr())//py::dynamic_attr to allow py-layer to add attributes (in _launcher.py)
-    .def(py::init(&G4Launcher_py::Launcher_pyinit),py::return_value_policy::reference)
-    .def("setGeo",&G4Launcher_py::Launcher_setGeo)
-    .def("setGen",&G4Launcher_py::Launcher_setGen)
-    .def("setFilter",&G4Launcher_py::Launcher_setFilter)
-    .def("setKillFilter",&G4Launcher_py::Launcher_setKillFilter)
-    .def("setMultiProcessing",&G4Launcher::Launcher::setMultiProcessing)
-    .def("getRunManager",&G4Launcher::Launcher::getRunManager,py::return_value_policy::reference)
-    .def("setVis",&G4Launcher::Launcher::setVis)
-    .def("setVis",&G4Launcher_py::Launcher_setVis_0args)
-    .def("startSession",&G4Launcher::Launcher::startSession)
-    .def("startSession",&G4Launcher_py::Launcher_startSession_0args)
-    .def("startSimulation",&G4Launcher::Launcher::startSimulation)
-    .def("setRndEvtMsgMode",&G4Launcher::Launcher::setRndEvtMsgMode)
-    .def("rndEvtMsgMode",&G4Launcher_py::Launcher_rndEvtMsgMode)
-    .def("setPhysicsList",&G4Launcher::Launcher::setPhysicsList)
-    .def("setPhysicsListProvider",&G4Launcher::Launcher::setPhysicsListProvider)
-    .def("hasPhysicsListProvider",&G4Launcher::Launcher::hasPhysicsListProvider)
-    .def("setParticleGun",&G4Launcher_py::Launcher_setParticleGun1)
-    .def("setParticleGun",&G4Launcher_py::Launcher_setParticleGun2)
-    .def("setOutput",&G4Launcher::Launcher::setOutput)
-    .def("setOutput",&G4Launcher_py::Launcher_setOutput_1arg)
-    .def("closeOutput",&G4Launcher::Launcher::closeOutput)
-    .def("noRandomSetup",&G4Launcher::Launcher::noRandomSetup)
-    .def("setSeed",&G4Launcher::Launcher::setSeed)
-    .def("setUserSteppingAction",&G4Launcher_py::Launcher_setUserSteppingAction)
-    .def("setUserEventAction",&G4Launcher_py::Launcher_setUserEventAction)
-    .def("cmd",&G4Launcher::Launcher::cmd)
-    .def("cmd_preinit",&G4Launcher::Launcher::cmd_preinit)
-    .def("cmd_postinit",&G4Launcher::Launcher::cmd_postinit)
-    .def("init",&G4Launcher::Launcher::init)
-    .def("initVis",&G4Launcher::Launcher::initVis)
-    .def("getMultiProcessing",&G4Launcher::Launcher::getMultiProcessing)
-    .def("GetNoRandomSetup",&G4Launcher::Launcher::GetNoRandomSetup)
-    .def("getSeed",&G4Launcher::Launcher::getSeed)
-    .def("getOutputFile",&G4Launcher::Launcher::getOutputFile)
-    .def("getOutputMode",&G4Launcher::Launcher::getOutputMode)
-    .def("getVis",&G4Launcher::Launcher::getVis)
-    .def("getGeo",&G4Launcher::Launcher::getGeo,py::return_value_policy::reference)
-    .def("getGen",&G4Launcher::Launcher::getGen,py::return_value_policy::reference)
-    .def("getFilter",&G4Launcher::Launcher::getFilter,py::return_value_policy::reference)
-    .def("getPhysicsList",&G4Launcher::Launcher::getPhysicsList)
-    .def("getPrintPrefix",&G4Launcher::Launcher::getPrintPrefix)
-    .def("allowMultipleSettings",&G4Launcher::Launcher::allowMultipleSettings)
-    .def("addHist",&G4Launcher::Launcher::addHist)
-    .def("setUserData",&G4Launcher::Launcher::setUserData)
-    .def("allowFPE",&G4Launcher::Launcher::allowFPE)
-    .def("dumpGDML",&G4Launcher::Launcher::dumpGDML)
-    .def("preInitDone",&G4Launcher::Launcher::preInitDone)
-    .def("rmIsInit",&G4Launcher::Launcher::rmIsInit)
-    .def("addPrePreInitHook",&G4Launcher_py::HookFct_addPrePreInitHook)
-    .def("addPreInitHook",&G4Launcher_py::HookFct_addPreInitHook)
-    .def("addPostInitHook",&G4Launcher_py::HookFct_addPostInitHook)
-    .def("addPostSimHook",&G4Launcher_py::HookFct_addPostSimHook)
-    .def("addPostMPHook",&G4Launcher_py::HookFct_addPostMPHook)
-    .def("prepreinit_hook",&G4Launcher_py::HookFct_addPrePreInitHook)
-    .def("preinit_hook",&G4Launcher_py::HookFct_addPreInitHook)
-    .def("postinit_hook",&G4Launcher_py::HookFct_addPostInitHook)
-    .def("postsim_hook",&G4Launcher_py::HookFct_addPostSimHook)
-    .def("postmp_hook",&G4Launcher_py::HookFct_addPostMPHook)
-    .def("addPreGenHook",&G4Launcher_py::Launcher_addPreGenHook)
-    .def("addPostGenHook",&G4Launcher_py::Launcher_addPostGenHook)
-    .def("_addResourceGuard",&G4Launcher_py::Launcher_addResourceGuard)
-    .def("_shutdown",&G4Launcher::Launcher::shutdown)
-    ;
+  m.def( "create", &create );
+  m.def( "exists", []() { return Launcher::getTheLauncher() != nullptr; } );
+  m.def( "setGeo", []( Handle h ) { launcher().setGeo( component<G4Interfaces::GeoConstructBase>( h, "setGeo" ) ); } );
+  m.def( "setGen", []( Handle h ) { launcher().setGen( component<G4Interfaces::ParticleGenBase>( h, "setGen" ) ); } );
+  m.def( "setFilter", []( Handle h ) { launcher().setFilter( component<G4Interfaces::StepFilterBase>( h, "setFilter" ) ); } );
+  m.def( "setKillFilter", []( Handle h ) { launcher().setKillFilter( component<G4Interfaces::StepFilterBase>( h, "setKillFilter" ) ); } );
+  m.def( "setMultiProcessing", []( std::int64_t n ) { launcher().setMultiProcessing( toUnsigned( n ) ); } );
+  m.def( "setVis", []( const std::string& e ) { launcher().setVis( e.c_str() ); } );
+  m.def( "startSession", []() { launcher().startSession(); } );
+  m.def( "startSimulation", []( std::int64_t n ) { launcher().startSimulation( toUnsigned( n ) ); } );
+  m.def( "setRndEvtMsgMode", []( const std::string& mode ) { launcher().setRndEvtMsgMode( mode.c_str() ); } );
+  m.def( "rndEvtMsgMode", []() { return launcher().rndEvtMsgMode(); } );
+  m.def( "setPhysicsList", []( const std::string& pl ) { launcher().setPhysicsList( pl.c_str() ); } );
+  m.def( "hasPhysicsListProvider", []() { return launcher().hasPhysicsListProvider(); } );
+  m.def( "setParticleGunPDG", []( std::int64_t pdg, double ekin, Vect pos, Vect dir )
+  {
+    launcher().setParticleGun( toInt( pdg ), ekin, toG4Vect( pos ), toG4Vect( dir ) );
+  } );
+  m.def( "setParticleGunName", []( const std::string& name, double ekin, Vect pos, Vect dir )
+  {
+    launcher().setParticleGun( name.c_str(), ekin, toG4Vect( pos ), toG4Vect( dir ) );
+  } );
+  m.def( "setOutput", []( const std::string& fn, const std::string& mode ) { launcher().setOutput( fn.c_str(), mode.c_str() ); } );
+  m.def( "closeOutput", []() { launcher().closeOutput(); } );
+  m.def( "noRandomSetup", []() { launcher().noRandomSetup(); } );
+  //Seeds are passed as two 32 bit numbers, to support the full range of 64 bit
+  //unsigned integers:
+  m.def( "setSeed", []( std::int64_t hi, std::int64_t lo )
+  {
+    const std::int64_t max32 = 0xFFFFFFFF;
+    if ( hi < 0 || hi > max32 || lo < 0 || lo > max32 )
+      throw std::out_of_range("invalid seed");
+    launcher().setSeed( ( static_cast<std::uint64_t>( hi ) << 32 ) | static_cast<std::uint64_t>( lo ) );
+  } );
+  m.def( "getSeed", []() { return launcher().getSeed(); } );
+  m.def( "setUserSteppingAction", []( Handle h ) { launcher().setUserSteppingAction( G4Interfaces::claimUserSteppingAction( h ) ); } );
+  m.def( "setUserEventAction", []( Handle h ) { launcher().setUserEventAction( G4Interfaces::claimUserEventAction( h ) ); } );
+  m.def( "addPreGenHook", []( Handle h ) { launcher().addPreGenHook( G4Interfaces::claimPreGenHook( h ) ); } );
+  m.def( "addPostGenHook", []( Handle h ) { launcher().addPostGenHook( G4Interfaces::claimPostGenHook( h ) ); } );
+  m.def( "cmd", []( const std::string& c ) { launcher().cmd( c.c_str() ); } );
+  m.def( "cmd_preinit", []( const std::string& c ) { launcher().cmd_preinit( c.c_str() ); } );
+  m.def( "cmd_postinit", []( const std::string& c ) { launcher().cmd_postinit( c.c_str() ); } );
+  m.def( "init", []() { launcher().init(); } );
+  m.def( "initVis", []() { launcher().initVis(); } );
+  m.def( "getMultiProcessing", []() { return launcher().getMultiProcessing(); } );
+  m.def( "GetNoRandomSetup", []() { return launcher().GetNoRandomSetup(); } );
+  m.def( "getOutputFile", []() { return str( launcher().getOutputFile() ); } );
+  m.def( "getOutputMode", []() { return str( launcher().getOutputMode() ); } );
+  m.def( "getVis", []() { return str( launcher().getVis() ); } );
+  m.def( "getPhysicsList", []() { return str( launcher().getPhysicsList() ); } );
+  m.def( "getPrintPrefix", []() { return str( launcher().getPrintPrefix() ); } );
+  m.def( "allowMultipleSettings", []() { launcher().allowMultipleSettings(); } );
+  m.def( "addHist", []( const std::string& c ) { launcher().addHist( c.c_str() ); } );
+  m.def( "setUserData", []( const std::string& k, const std::string& v ) { launcher().setUserData( k.c_str(), v.c_str() ); } );
+  m.def( "allowFPE", []() { launcher().allowFPE(); } );
+  m.def( "dumpGDML", []( const std::string& fn ) { launcher().dumpGDML( fn.c_str() ); } );
+  m.def( "preInitDone", []() { return launcher().preInitDone(); } );
+  m.def( "rmIsInit", []() { return launcher().rmIsInit(); } );
+  m.def( "addPrePreInitHook", &addPyHook<&Launcher::addPrePreInitHook> );
+  m.def( "addPreInitHook", &addPyHook<&Launcher::addPreInitHook> );
+  m.def( "addPostInitHook", &addPyHook<&Launcher::addPostInitHook> );
+  m.def( "addPostSimHook", &addPyHook<&Launcher::addPostSimHook> );
+  m.def( "addPostMPHook", &addPyHook<&Launcher::addPostMPHook> );
+  m.def( "addPrePreInitHookObj", &addObjHook<&Launcher::addPrePreInitHook> );
+  m.def( "addPreInitHookObj", &addObjHook<&Launcher::addPreInitHook> );
+  m.def( "addPostInitHookObj", &addObjHook<&Launcher::addPostInitHook> );
+  m.def( "addPostSimHookObj", &addObjHook<&Launcher::addPostSimHook> );
+  m.def( "addPostMPHookObj", &addObjHook<&Launcher::addPostMPHook> );
+  m.def( "shutdown", []() { launcher().shutdown(); } );
 
-  mod.def("getTheLauncher",&G4Launcher::Launcher::getTheLauncher,py::return_value_policy::reference);
+  m.def( "extrapars_create", []() { return G4Interfaces::registerComponent( new LauncherExtraPars ); } );
+  m.def( "extrapars_add_double", []( Handle h, const std::string& n, double v ) { extraPars( h ).addParameterDouble( n, v ); } );
+  m.def( "extrapars_add_int", []( Handle h, const std::string& n, std::int64_t v ) { extraPars( h ).addParameterInt( n, toInt( v ) ); } );
+  m.def( "extrapars_add_boolean", []( Handle h, const std::string& n, bool v ) { extraPars( h ).addParameterBoolean( n, v ); } );
+  m.def( "extrapars_add_string", []( Handle h, const std::string& n, const std::string& v ) { extraPars( h ).addParameterString( n, v ); } );
 }

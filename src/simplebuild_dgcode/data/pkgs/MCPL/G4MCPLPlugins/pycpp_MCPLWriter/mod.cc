@@ -1,4 +1,5 @@
 #include "Core/Python.hh"
+#include "G4Interfaces/ComponentFromPy.hh"
 
 #include "G4MCPL/G4MCPLUserFlags.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
@@ -518,10 +519,10 @@ namespace G4MCPLWriter {
       auto pygen = launcher.attr("getGen")();
       const G4Interfaces::GeoConstructBase* geo(0);
       const G4Interfaces::ParticleGenBase* gen(0);
-      if (pygeo)
-        geo = pygeo.cast<const G4Interfaces::GeoConstructBase*>();
-      if (pygen)
-        gen = pygen.cast<const G4Interfaces::ParticleGenBase*>();
+      if (!pygeo.is_none())
+        geo = G4Interfaces::componentFromPy<G4Interfaces::GeoConstructBase>( pygeo );
+      if (!pygen.is_none())
+        gen = G4Interfaces::componentFromPy<G4Interfaces::ParticleGenBase>( pygen );
       std::string geo_name(geo ? geo->getName() : std::string("<unknown>"));
       std::string gen_name(gen ? gen->getName() : std::string("<unknown>"));
       {

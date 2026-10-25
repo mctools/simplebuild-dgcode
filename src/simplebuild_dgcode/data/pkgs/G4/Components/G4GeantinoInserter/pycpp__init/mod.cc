@@ -1,4 +1,5 @@
 #include "Core/Python.hh"
+#include "G4Interfaces/CppObjectHandles.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4ParticleGun.hh"
 #include "G4ParticleTable.hh"
@@ -66,10 +67,9 @@ namespace G4GeantinoInserter {
     if (!pylauncher)
       throw std::runtime_error("G4GeantinoInserter.install called before G4Launcher object was created");
     //Create our call-back and register it:
-    pyextra::pyimport("G4Interfaces");
-    auto cb = std::make_shared<PostGenCB>();
-    std::shared_ptr<G4Interfaces::PostGenCallBack> cb_base = cb;
-    py::object pycb = py::cast(cb_base);//,py::return_value_policy::copy);
+    //Pass the hook as a G4Interfaces.ToPy.CppObject object (see G4Interfaces/CppObjectHandles.hh):
+    std::shared_ptr<G4Interfaces::PostGenCallBack> cb = std::make_shared<PostGenCB>();
+    py::object pycb = pyextra::pyimport("G4Interfaces.ToPy").attr("CppObject")( G4Interfaces::registerObject( cb ) );
     pylauncher.attr("addPostGenHook")(pycb);
   }
 }

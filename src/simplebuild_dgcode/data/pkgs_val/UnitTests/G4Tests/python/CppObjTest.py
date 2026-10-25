@@ -1,4 +1,4 @@
-#Test module for G4Interfaces.ToPy.CppObject (see the testcppobjects script)
+#Test module for G4Interfaces.ToPy.CppObject (see the testlauncherpy script)
 from G4Interfaces.ToPy import CppObject as _CppObject
 from . import _CppObjTest as _m
 

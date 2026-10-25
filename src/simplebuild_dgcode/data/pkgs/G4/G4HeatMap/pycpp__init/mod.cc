@@ -1,4 +1,5 @@
 #include "Core/Python.hh"
+#include "G4Interfaces/CppObjectHandles.hh"
 #include "Mesh/Mesh.hh"
 #include "G4ExprParser/G4SteppingASTBuilder.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
@@ -122,8 +123,9 @@ namespace DMWriter {
       G4UserSteppingAction* stepact = m_theInstance;
       G4UserEventAction * evtact = new HeatMapEventAction;
       py::object pylauncher = pyextra::pyimport("G4Launcher").attr("getTheLauncher")();
-      py::object py_stepact = py::cast(stepact);
-      py::object py_evtact = py::cast(evtact);
+      //Pass the actions as G4Interfaces.ToPy.CppObject objects (see G4Interfaces/CppObjectHandles.hh):
+      py::object py_stepact = pyextra::pyimport("G4Interfaces.ToPy").attr("CppObject")( G4Interfaces::registerObject( stepact ) );
+      py::object py_evtact = pyextra::pyimport("G4Interfaces.ToPy").attr("CppObject")( G4Interfaces::registerObject( evtact ) );
       pylauncher.attr("setUserSteppingAction")(py_stepact);
       pylauncher.attr("setUserEventAction")(py_evtact);
     }

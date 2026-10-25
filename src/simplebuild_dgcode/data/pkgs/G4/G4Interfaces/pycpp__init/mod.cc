@@ -63,6 +63,21 @@ namespace{
       return py::cast( &c, ref );
     }
 
+    //Register a component from a pybind11 based module in the table in
+    //G4Interfaces/ComponentHandles.hh and return its handle, so it can be
+    //passed to sbldpy based code like the G4Launcher module (returns None for
+    //other objects). The caller must keep the Python object alive. This is a
+    //temporary measure for as long as pybind11 based components are supported:
+    py::object register_legacy_component( py::handle o ) {
+      if ( py::isinstance<G4Interfaces::GeoConstructBase>( o ) )
+        return py::cast( G4Interfaces::registerComponent( py::cast<G4Interfaces::GeoConstructBase*>( o ) ) );
+      if ( py::isinstance<G4Interfaces::ParticleGenBase>( o ) )
+        return py::cast( G4Interfaces::registerComponent( py::cast<G4Interfaces::ParticleGenBase*>( o ) ) );
+      if ( py::isinstance<G4Interfaces::StepFilterBase>( o ) )
+        return py::cast( G4Interfaces::registerComponent( py::cast<G4Interfaces::StepFilterBase*>( o ) ) );
+      return py::none();
+    }
+
   }
 }
 //todo: expose some of the FrameworkGlobals here??
@@ -118,5 +133,6 @@ PYTHON_MODULE( mod )
   mod.def("nProcs",&FrameworkGlobals::nProcs);
 
   mod.def("_legacy_component",&G4Interfaces_py::legacy_component);
+  mod.def("_register_legacy_component",&G4Interfaces_py::register_legacy_component);
 
 }

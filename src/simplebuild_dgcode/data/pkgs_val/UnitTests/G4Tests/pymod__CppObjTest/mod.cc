@@ -7,7 +7,7 @@
 
 //Module providing one C++ object of each kind supported by
 //G4Interfaces/CppObjectHandles.hh, counting how often they are invoked (see
-//the testcppobjects script).
+//the testlauncherpy script).
 
 namespace {
   struct Counts {

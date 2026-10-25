@@ -59,6 +59,8 @@ SBLDPY_MODULE( _components )
   m.def( "object_is_claimed", &G4Interfaces::objectIsClaimed,
          "Whether a C++ object in the table in G4Interfaces/CppObjectHandles.hh was already used", { "handle" } );
   m.def( "get_name", &get_name, { "handle" } );
+  m.def( "unlimited", []( Handle h ) { return G4Interfaces::getComponentAs<G4Interfaces::ParticleGenBase>( h, "particle generator" ).unlimited(); },
+         "Whether a particle generator can generate an unlimited number of events", { "handle" } );
   m.def( "dump", []( Handle h, const std::string& prefix ) { getComponent( h ).dump( prefix.c_str() ); },
          { "handle", "prefix" } );
   m.def( "dump_nolock", []( Handle h, const std::string& prefix ) { getComponent( h ).dumpNoLock( prefix.c_str() ); },
