@@ -328,7 +328,7 @@ class SegmentIterator:
     def __iter__( self ):
         sf = self._segmentFilters
         for trk in self._trkIter:
-            for seg in trk._segs:
+            for seg in trk._sg():
                 if not sf or _passes( sf, seg ):
                     yield seg
 

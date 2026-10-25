@@ -53,6 +53,7 @@ _trk_unpack = _s_trk.unpack_from
 _seg_unpack = _s_seg.unpack_from
 _step_unpack = _s_step.unpack_from
 _u32_unpack = _s_u32.unpack_from
+_daughter_structs = {}#cache of struct objects for daughter lists
 
 #Sub-section IDs of the shared "database" data (see GriffFormat/Format.hh):
 _DB_TOUCHABLES, _DB_VOLNAMES, _DB_MATERIALS, _DB_ELEMENTS, _DB_ISOTOPES = 100, 110, 120, 130, 140
@@ -455,7 +456,7 @@ class Step:
     def getTrack( self ):
         return self._dr._tracks[self._it]
     def getSegment( self ):
-        return self._dr._tracks[self._it]._segs[self._is]
+        return self._dr._tracks[self._it]._sg()[self._is]
     def iStep( self ):
         return self._i
     def getNextStep( self ):
@@ -564,10 +565,10 @@ class Segment:
     def iSegment( self ):
         return self._i
     def getNextSegment( self ):
-        s = self.getTrack()._segs
+        s = self.getTrack()._sg()
         return s[self._i+1] if self._i + 1 < len( s ) else None
     def getPreviousSegment( self ):
-        return self.getTrack()._segs[self._i-1] if self._i else None
+        return self.getTrack()._sg()[self._i-1] if self._i else None
     def nextWasFiltered( self ):
         return bool( self._v[2] & 0x20000000 )
     def startTime( self ):
@@ -649,10 +650,23 @@ class Segment:
 class Track:
     """Track of a particle (see GriffDataRead/Track.hh)"""
 
-    __slots__ = ( '_daughters', '_dr', '_segs', '_v' )
+    __slots__ = ( '_daughters', '_dr', '_it', '_segs', '_v' )
 
-    def __init__( self, dr, v, daughters ):
-        self._dr, self._v, self._daughters, self._segs = dr, v, daughters, None
+    def __init__( self, dr, it, v, daughters ):
+        self._dr, self._it, self._v, self._daughters, self._segs = dr, it, v, daughters, None
+
+    def _sg( self ):
+        #Segments are decoded when first needed:
+        s = self._segs
+        if s is None:
+            s = self._segs = self._dr._loadSegments( self )
+        return s
+
+    def _firstSegValues( self ):
+        s = self._segs
+        if s is not None:
+            return s[0]._v
+        return self._dr._firstSegValues( self )
 
     def getDataReader( self ):
         return self._dr
@@ -672,22 +686,25 @@ class Track:
     def daughters( self ):
         return ( self._dr.getTrackByID( d ) for d in self._daughters )
     def nSegments( self ):
-        return len( self._segs )
+        return self._v[5]
     def getSegment( self, i ):
-        return self._segs[i]
+        return self._sg()[i]
     @property
     def segments( self ):
-        return iter( self._segs )
+        s = self._segs
+        if s is None:
+            s = self._segs = self._dr._loadSegments( self )
+        return iter( s )
     def segmentBegin( self ):
-        return self._segs[0]
+        return self._sg()[0]
     def firstSegment( self ):
-        return self._segs[0]
+        return self._sg()[0]
     def lastSegment( self ):
-        return self._segs[-1]
+        return self._sg()[-1]
     def firstStep( self ):
-        return self._segs[0].firstStep()
+        return self._sg()[0].firstStep()
     def lastStep( self ):
-        return self._segs[-1].lastStep()
+        return self._sg()[-1].lastStep()
     def weight( self ):
         return self._v[2]
     def isPrimary( self ):
@@ -695,9 +712,9 @@ class Track:
     def isSecondary( self ):
         return self._v[4] != 0
     def startTime( self ):
-        return self._segs[0]._v[0]
+        return self._firstSegValues()[0]
     def startEKin( self ):
-        return self._segs[0]._v[1]
+        return self._firstSegValues()[1]
     def creatorProcess( self ):
         return self._dr._strings[_DB_PROCNAMES][self._v[3]]
     def pdgCode( self ):
@@ -737,7 +754,7 @@ class Track:
         for i, d in enumerate( self._daughters ):
             s += ' daug%i=%i'%( i, d )
         s += ' nsegm=%i w=%f primary=%i secondary=%i t0[ms]=%f ekin0[keV]=%f pdg=%i proc=%s'%(
-            len( self._segs ), self._v[2], self.isPrimary(), self.isSecondary(), self.startTime()/ut,
+            self._v[5], self._v[2], self.isPrimary(), self.isSecondary(), self.startTime()/ut,
             self.startEKin()/ue, self._v[1], self.creatorProcess() )
         if dumpPDGInfo:
             nuclearMagneton = ( _c.h_Planck/( 4*_c.pi ) )/( _c.proton_mass_c2/_c.c_squared )
@@ -1157,28 +1174,57 @@ class GriffDataReader:
         data = self._briefdata()
         pos = _SIZE_TRKHDR
         tracks = []
-        for _ in range( self._hdr[2] ):
+        dstructs = _daughter_structs
+        for it in range( self._hdr[2] ):
             v = _trk_unpack( data, pos )
             nd = v[6]
             pos += _SIZE_TRK
-            daughters = _struct.unpack_from( '<%ii'%nd, data, pos ) if nd else ()
-            pos += 4 * nd
-            tracks.append( Track( self, v, daughters ) )
-        for it, trk in enumerate( tracks ):
-            segs = []
-            for i in range( trk._v[5] ):
-                v = _seg_unpack( data, pos )
-                segs.append( Segment( self, it, v, i ) )
-                pos += _SIZE_SEG
-                if v[2] & 0x20000000:
-                    pos += _SIZE_SEG_EXTRA#extra info since filtering took place
-            pos += _SIZE_SEG_EXTRA#extra info for the last segment
-            trk._segs = segs
-        if pos != len( data ):
-            raise RuntimeError( 'Inconsistent track data in Griff file' )
+            if nd:
+                s = dstructs.get( nd )
+                if s is None:
+                    s = dstructs[nd] = _struct.Struct( '<%ii'%nd )
+                daughters = s.unpack_from( data, pos )
+                pos += 4 * nd
+            else:
+                daughters = ()
+            tracks.append( Track( self, it, v, daughters ) )
         self._tracks = tracks
+        self._segdatastart = pos#segment data follows the track data
+        self._segoffsets = None
         self._contiguous = all( t._v[0] == i + 1 for i, t in enumerate( tracks ) )
         return tracks
+
+    def _segOffsets( self ):
+        #Offsets of the first segment of each track (found by only looking at the
+        #flags of each segment, which indicate if extra data follows):
+        offsets = self._segoffsets
+        if offsets is None:
+            data, pos = self._brief, self._segdatastart
+            offsets = []
+            u32 = _u32_unpack
+            for trk in self._tracks:
+                offsets.append( pos )
+                for _ in range( trk._v[5] ):
+                    pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA if u32( data, pos + 16 )[0] & 0x20000000
+                             else _SIZE_SEG )
+                pos += _SIZE_SEG_EXTRA#extra info for the last segment
+            if pos != len( data ):
+                raise RuntimeError( 'Inconsistent track data in Griff file' )
+            self._segoffsets = offsets
+        return offsets
+
+    def _firstSegValues( self, trk ):
+        return _seg_unpack( self._brief, self._segOffsets()[trk._it] )
+
+    def _loadSegments( self, trk ):
+        data, pos = self._brief, self._segOffsets()[trk._it]
+        it = trk._it
+        segs = []
+        for i in range( trk._v[5] ):
+            v = _seg_unpack( data, pos )
+            segs.append( Segment( self, it, v, i ) )
+            pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA ) if v[2] & 0x20000000 else _SIZE_SEG
+        return segs
 
     def _trks( self ):
         t = self._tracks
