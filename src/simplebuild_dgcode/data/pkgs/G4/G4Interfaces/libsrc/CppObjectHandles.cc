@@ -27,6 +27,7 @@ namespace G4Interfaces {
     struct Entry {
       Kind kind;
       void * rawptr = nullptr;//for the user actions
+      void (*rawdeleter)( void* ) = nullptr;
       std::shared_ptr<void> sharedptr;//for the hooks
       bool claimed = false;
     };
@@ -34,6 +35,13 @@ namespace G4Interfaces {
     struct ObjectTable {
       std::mutex mtx;
       std::vector<Entry> entries;
+      ~ObjectTable()
+      {
+        //Delete unclaimed user actions (hooks are deleted by their shared_ptr):
+        for ( auto it = entries.rbegin(); it != entries.rend(); ++it )
+          if ( it->rawptr )
+            it->rawdeleter( it->rawptr );
+      }
     };
 
     ObjectTable& objectTable()
@@ -87,11 +95,13 @@ namespace G4Interfaces {
       return e;
     }
 
-    Entry rawEntry( Kind k, void * p )
+    template<class T>
+    Entry rawEntry( Kind k, T * p )
     {
       Entry e;
       e.kind = k;
       e.rawptr = p;
+      e.rawdeleter = []( void * ptr ) { delete static_cast<T*>( ptr ); };
       return e;
     }
 

@@ -70,11 +70,11 @@ namespace{
     //temporary measure for as long as pybind11 based components are supported:
     py::object register_legacy_component( py::handle o ) {
       if ( py::isinstance<G4Interfaces::GeoConstructBase>( o ) )
-        return py::cast( G4Interfaces::registerComponent( py::cast<G4Interfaces::GeoConstructBase*>( o ) ) );
+        return py::cast( G4Interfaces::registerUnownedComponent( py::cast<G4Interfaces::GeoConstructBase*>( o ) ) );
       if ( py::isinstance<G4Interfaces::ParticleGenBase>( o ) )
-        return py::cast( G4Interfaces::registerComponent( py::cast<G4Interfaces::ParticleGenBase*>( o ) ) );
+        return py::cast( G4Interfaces::registerUnownedComponent( py::cast<G4Interfaces::ParticleGenBase*>( o ) ) );
       if ( py::isinstance<G4Interfaces::StepFilterBase>( o ) )
-        return py::cast( G4Interfaces::registerComponent( py::cast<G4Interfaces::StepFilterBase*>( o ) ) );
+        return py::cast( G4Interfaces::registerUnownedComponent( py::cast<G4Interfaces::StepFilterBase*>( o ) ) );
       return py::none();
     }
 

@@ -27,7 +27,8 @@ namespace G4Interfaces {
   //
   //The table owns each registered object until it is claimed, which can only
   //happen once and only for the kind of object it was registered as. Objects
-  //which are never claimed are never deleted. Example (in a pymod_* module):
+  //which are never claimed are deleted when the table itself is destroyed at
+  //exit. Example (in a pymod_* module):
   //
   //  m.def( "create_stepact", []() { return G4Interfaces::registerObject( new MySteppingAction ); } );
   //

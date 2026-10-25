@@ -181,3 +181,4 @@ G4Launcher:: Begin simulation of event 8 [seed 12041582812102220051]
 G4Launcher:: Begin simulation of event 9 [seed 14426664432972020249]
 G4Launcher:: Begin simulation of event 10 [seed 5039506889794497565]
 G4Launcher:: Simulation done
+ExampleHookClass::destructor
