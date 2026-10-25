@@ -1,6 +1,6 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 
-#include "G4SystemOfUnits.hh"
+#include "CLHEP/Units/SystemOfUnits.h"
 #include "G4UniformGravityField.hh"
 #include "G4FieldManager.hh"
 #include "G4TransportationManager.hh"
@@ -49,19 +49,19 @@ public:
 
     G4MagIntegratorStepper* stepper = new G4ClassicalRK4(equation,8);
 
-    G4double minStep           = 0.01*mm;
+    G4double minStep           = 0.01*CLHEP::mm;
 
     G4ChordFinder* chordFinder =
         new G4ChordFinder((G4MagneticField*)fField,minStep,stepper);
 
     // parameters taken from the G4 example "filed6"
-    G4double deltaChord        = 3.0*mm;
+    G4double deltaChord        = 3.0*CLHEP::mm;
     chordFinder->SetDeltaChord( deltaChord );
 
-    G4double deltaOneStep      = 0.01*mm;
+    G4double deltaOneStep      = 0.01*CLHEP::mm;
     fieldManager->SetAccuraciesWithDeltaOneStep(deltaOneStep);
 
-    G4double deltaIntersection = 0.1*mm;
+    G4double deltaIntersection = 0.1*CLHEP::mm;
     fieldManager->SetDeltaIntersection(deltaIntersection);
 
     G4TransportationManager* transportManager =
@@ -70,8 +70,8 @@ public:
     G4PropagatorInField* fieldPropagator =
         transportManager->GetPropagatorInField();
 
-    G4double epsMin            = 2.5e-7*mm;
-    G4double epsMax            = 0.05*mm;
+    G4double epsMin            = 2.5e-7*CLHEP::mm;
+    G4double epsMax            = 0.05*CLHEP::mm;
 
     fieldPropagator->SetMinimumEpsilonStep(epsMin);
     fieldPropagator->SetMaximumEpsilonStep(epsMax);
@@ -85,12 +85,10 @@ private:
 
 
 
-PYTHON_MODULE( mod )
+SBLDPY_MODULE( hooks )
 {
-  py::class_<NeutronGravity>(mod, "NeutronGravity")
-    .def("setDir", &NeutronGravity::setDir)
-    .def("set", &NeutronGravity::set)
-    ;
-
+  m.add_class<NeutronGravity>("NeutronGravity")
+    .def_init<>()
+    .def("setDir", &NeutronGravity::setDir, { "x", "y", "z" })
+    .def("set", &NeutronGravity::set);
 }
-

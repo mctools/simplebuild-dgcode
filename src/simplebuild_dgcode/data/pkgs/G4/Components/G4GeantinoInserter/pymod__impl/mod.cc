@@ -1,4 +1,4 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 #include "G4Interfaces/CppObjectHandles.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4ParticleGun.hh"
@@ -60,21 +60,13 @@ namespace G4GeantinoInserter {
     }
   };
 
-  void install()
-  {
-    //Get launcher:
-    py::object pylauncher = pyextra::pyimport("G4Launcher").attr("getTheLauncher")();
-    if (!pylauncher)
-      throw std::runtime_error("G4GeantinoInserter.install called before G4Launcher object was created");
-    //Create our call-back and register it:
-    //Pass the hook as a G4Interfaces.ToPy.CppObject object (see G4Interfaces/CppObjectHandles.hh):
-    std::shared_ptr<G4Interfaces::PostGenCallBack> cb = std::make_shared<PostGenCB>();
-    py::object pycb = pyextra::pyimport("G4Interfaces.ToPy").attr("CppObject")( G4Interfaces::registerObject( cb ) );
-    pylauncher.attr("addPostGenHook")(pycb);
-  }
 }
 
-PYTHON_MODULE( mod )
+SBLDPY_MODULE( _impl )
 {
-  mod.def("install",&G4GeantinoInserter::install);
+  m.def( "create_hook", []() -> std::int64_t
+  {
+    std::shared_ptr<G4Interfaces::PostGenCallBack> cb = std::make_shared<G4GeantinoInserter::PostGenCB>();
+    return G4Interfaces::registerObject( cb );
+  }, "Create the post-generation hook (as a handle, see G4GeantinoInserter/__init__.py)" );
 }
