@@ -48,9 +48,10 @@ namespace{
 
     //Object of the pybind11 based classes above, referring to a component
     //created by an sbldpy based module (given its handle, see
-    //G4Interfaces/python/ToPy.py). Components in the table in
-    //G4Interfaces/ComponentHandles.hh are never deleted, so no ownership is
-    //needed:
+    //G4Interfaces/python/ToPy.py). The returned object does not own the
+    //component, which is owned by the table in
+    //G4Interfaces/ComponentHandles.hh (or by Geant4 after being handed over
+    //to it), so it must only be used while the component is alive:
     py::object legacy_component( std::int64_t handle ) {
       auto& c = G4Interfaces::getComponent( handle );
       const auto ref = py::return_value_policy::reference;
