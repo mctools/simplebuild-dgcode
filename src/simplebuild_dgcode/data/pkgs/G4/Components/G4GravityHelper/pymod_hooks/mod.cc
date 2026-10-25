@@ -71,7 +71,7 @@ public:
         transportManager->GetPropagatorInField();
 
     G4double epsMin            = 2.5e-7*CLHEP::mm;
-    G4double epsMax            = 0.05*CLHEP::mm;
+    G4double epsMax            = 0.005*CLHEP::mm;
 
     fieldPropagator->SetMinimumEpsilonStep(epsMin);
     fieldPropagator->SetMaximumEpsilonStep(epsMax);
