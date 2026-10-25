@@ -1,5 +1,5 @@
-#include "Core/Python.hh"
-#include "G4Interfaces/ComponentFromPy.hh"
+#include "sbldpy/sbldpy.hh"
+#include "G4Interfaces/ComponentHandles.hh"
 
 #include "G4MCPL/G4MCPLUserFlags.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
@@ -95,6 +95,10 @@ namespace G4MCPLWriter {
     }
 
     const std::string& filename() const { return m_filename; }
+
+    //Called (via MCPLWriter::postmp) from a postmp hook, which is only invoked
+    //in the parent process of multi-process jobs:
+    void mergeIfNeeded() { if (m_om) m_om->merge(); }
 
     void addChild(MCPLSensitiveDetector*child) {
       if (m_child_sd==child)
@@ -269,12 +273,8 @@ namespace G4MCPLWriter {
       if (m_opt_writeuserflags) mcpl_enable_userflags(m_f);
       if (m_opt_universalweight) mcpl_enable_universal_weight(m_f,m_opt_universalweight);
 
-      if (FrameworkGlobals::isForked()&&FrameworkGlobals::isParent()) {
-        m_om = new MCPLOutputMerger(this);
-        py::object pylauncher = pyextra::pyimport("G4Launcher").attr("getTheLauncher")();
-        py::object pyhook = py::cast(m_om);
-        pylauncher.attr("postmp_hook")(pyhook);
-      }
+      if (FrameworkGlobals::isForked()&&FrameworkGlobals::isParent())
+        m_om = new MCPLOutputMerger(this);//used by mergeIfNeeded()
     }
 
     std::string m_filename;
@@ -364,7 +364,12 @@ namespace G4MCPLWriter {
       else
         m_vols.insert(lvname);
     }
-    void inithook() {
+    //Geometry and generator are given by their handles in the table in
+    //G4Interfaces/ComponentHandles.hh (or 0 if not available):
+    void inithook( std::int64_t geo_handle, std::int64_t gen_handle ) {
+
+      m_geo = geo_handle ? &G4Interfaces::getComponentAs<G4Interfaces::GeoConstructBase>( geo_handle, "geometry" ) : nullptr;
+      m_gen = gen_handle ? &G4Interfaces::getComponentAs<G4Interfaces::ParticleGenBase>( gen_handle, "particle generator" ) : nullptr;
 
       if (m_vols.empty()&&!m_vols_all)
         throw std::runtime_error("MCPLWriter: No volumes added!");
@@ -436,10 +441,14 @@ namespace G4MCPLWriter {
 
     }
 
+    void postmp() { if (m_sd) m_sd->mergeIfNeeded(); }
+
   private:
     std::set<std::string> m_vols;
     bool m_vols_all;
     MCPLSensitiveDetector * m_sd;
+    const G4Interfaces::GeoConstructBase* m_geo = nullptr;
+    const G4Interfaces::ParticleGenBase* m_gen = nullptr;
     std::vector<std::pair<std::string,std::string>> createCommentsAndBlobs() const
     {
       std::vector<std::pair<std::string,std::string>> out;
@@ -513,16 +522,8 @@ namespace G4MCPLWriter {
         out.emplace_back("comment",tmp.str());
       }
 
-      auto mod = pyextra::pyimport("G4Launcher");//must work since we use it in inithook()
-      auto launcher = mod.attr("getTheLauncher")();
-      auto pygeo = launcher.attr("getGeo")();
-      auto pygen = launcher.attr("getGen")();
-      const G4Interfaces::GeoConstructBase* geo(0);
-      const G4Interfaces::ParticleGenBase* gen(0);
-      if (!pygeo.is_none())
-        geo = G4Interfaces::componentFromPy<G4Interfaces::GeoConstructBase>( pygeo );
-      if (!pygen.is_none())
-        gen = G4Interfaces::componentFromPy<G4Interfaces::ParticleGenBase>( pygen );
+      const G4Interfaces::GeoConstructBase* geo = m_geo;
+      const G4Interfaces::ParticleGenBase* gen = m_gen;
       std::string geo_name(geo ? geo->getName() : std::string("<unknown>"));
       std::string gen_name(gen ? gen->getName() : std::string("<unknown>"));
       {
@@ -622,26 +623,31 @@ namespace G4MCPLWriter {
 
 }
 
-PYTHON_MODULE( mod )
-{
-  using namespace G4MCPLWriter;
-
-  py::class_<MCPLWriter,std::shared_ptr<MCPLWriter>>(mod,"MCPLWriter")
-    .def( py::init<const char*>() )
-    .def("addVolume",&MCPLWriter::addVolume)
-    .def("setFilter",&MCPLWriter::setFilter)
-    .def("setUserFlags",&MCPLWriter::setUserFlags)
-    .def("setWriteOnVolExit",&MCPLWriter::setWriteOnVolExit)
-    .def("setWriteDoublePrecision",&MCPLWriter::setWriteDoublePrecision)
-    .def("setWritePolarisation",&MCPLWriter::setWritePolarisation)
-    .def("setWriteUserFlags",&MCPLWriter::setWriteUserFlags)
-    .def("setUniversalWeight",&MCPLWriter::setUniversalWeight)
-    .def("setKillStrategy",&MCPLWriter::setKillStrategyFromString)
-    .def("inithook",&MCPLWriter::inithook)
-    ;
-
-  py::class_<MCPLOutputMerger>(mod,"_MCPLOutputMerger")
-    .def("__call__",&MCPLOutputMerger::merge)
-    ;
+namespace G4MCPLWriter {
+  //Copyable holder class, used by G4MCPLPlugins/MCPLWriter.py:
+  class PyMCPLWriter {
+  public:
+    PyMCPLWriter( const std::string& filename ) : m_w( std::make_shared<MCPLWriter>( filename.c_str() ) ) {}
+    MCPLWriter& w() { return *m_w; }
+  private:
+    std::shared_ptr<MCPLWriter> m_w;
+  };
 }
 
+SBLDPY_MODULE( _MCPLWriter )
+{
+  using G4MCPLWriter::PyMCPLWriter;
+  m.add_class<PyMCPLWriter>("MCPLWriter")
+    .def_init<const std::string&>( { "filename" } )
+    .def("addVolume",[]( PyMCPLWriter& o, const std::string& v ) { o.w().addVolume( v.c_str() ); }, { "lvname" } )
+    .def("setFilter",[]( PyMCPLWriter& o, const std::string& e ) { o.w().setFilter( e.c_str() ); }, { "expr" } )
+    .def("setUserFlags",[]( PyMCPLWriter& o, const std::string& e ) { o.w().setUserFlags( e.c_str() ); }, { "expr" } )
+    .def("setWriteOnVolExit",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteOnVolExit( b ); }, { "b" } )
+    .def("setWriteDoublePrecision",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteDoublePrecision( b ); }, { "b" } )
+    .def("setWritePolarisation",[]( PyMCPLWriter& o, bool b ) { o.w().setWritePolarisation( b ); }, { "b" } )
+    .def("setWriteUserFlags",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteUserFlags( b ); }, { "b" } )
+    .def("setUniversalWeight",[]( PyMCPLWriter& o, double w ) { o.w().setUniversalWeight( w ); }, { "w" } )
+    .def("setKillStrategy",[]( PyMCPLWriter& o, const std::string& ks ) { o.w().setKillStrategyFromString( ks.c_str() ); }, { "ks" } )
+    .def("inithook",[]( PyMCPLWriter& o, std::int64_t geo, std::int64_t gen ) { o.w().inithook( geo, gen ); }, { "geo_handle", "gen_handle" } )
+    .def("postmp",[]( PyMCPLWriter& o ) { o.w().postmp(); } );
+}
