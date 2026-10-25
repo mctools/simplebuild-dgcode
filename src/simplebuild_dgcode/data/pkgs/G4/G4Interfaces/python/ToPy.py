@@ -159,7 +159,7 @@ class Component:
         raise AttributeError( "%s has no '%s' attribute"%( self.__class__.__name__, name ) )
 
     def __getattr__( self, name ):
-        if name.startswith( '__' ):
+        if name.startswith( ( '__', '_g4' ) ):
             raise AttributeError( name )
         return self.getParameter( name )
 
