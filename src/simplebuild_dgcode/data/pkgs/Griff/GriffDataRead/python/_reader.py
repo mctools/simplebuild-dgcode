@@ -1201,11 +1201,11 @@ class GriffDataReader:
         if offsets is None:
             data, pos = self._brief, self._segdatastart
             offsets = []
-            u32 = _u32_unpack
             for trk in self._tracks:
                 offsets.append( pos )
                 for _ in range( trk._v[5] ):
-                    pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA if u32( data, pos + 16 )[0] & 0x20000000
+                    #Test bit 0x20000000 of the (little endian) flags at offset 16:
+                    pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA if data[ pos + 19 ] & 0x20
                              else _SIZE_SEG )
                 pos += _SIZE_SEG_EXTRA#extra info for the last segment
             if pos != len( data ):
@@ -1217,10 +1217,14 @@ class GriffDataReader:
         return _seg_unpack( self._brief, self._segOffsets()[trk._it] )
 
     def _loadSegments( self, trk ):
-        data, pos = self._brief, self._segOffsets()[trk._it]
-        it = trk._it
+        #NB: Most tracks have very few segments, so per-track overhead matters.
+        it, data = trk._it, self._brief
+        pos = ( self._segoffsets or self._segOffsets() )[it]
+        n = trk._v[5]
+        if n == 1:
+            return [ Segment( self, it, _seg_unpack( data, pos ), 0 ) ]
         segs = []
-        for i in range( trk._v[5] ):
+        for i in range( n ):
             v = _seg_unpack( data, pos )
             segs.append( Segment( self, it, v, i ) )
             pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA ) if v[2] & 0x20000000 else _SIZE_SEG
