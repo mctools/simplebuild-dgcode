@@ -1,4 +1,4 @@
-#include "Core/Python.hh"
+#include "sbldpy/sbldpy.hh"
 #include "G4Interfaces/CppObjectHandles.hh"
 #include "Mesh/Mesh.hh"
 #include "G4ExprParser/G4SteppingASTBuilder.hh"
@@ -12,10 +12,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <memory>
+#include <tuple>
 
 // HeatMapWriter is the user visible class which will be instantiated by the user
-// on the python side and has its "inithook" method hooked into the framework by
-// the user. Several of these can exist in case the user desires several meshes written.
+// on the python side (see G4HeatMap/__init__.py) and has its "inithook" method
+// hooked into the framework by the user. Several of these can exist in case the user desires several meshes written.
 //
 // A single HeatMapSteppingAction is used to hook into Geant4 and distribute
 // G4Steps to all of these writers.
@@ -29,7 +30,10 @@ namespace DMWriter {
   class HeatMapSteppingAction : public G4UserSteppingAction
   {
   public:
-    static void registerWriter( HeatMapWriterPtr );
+    //Returns handles of new user actions (see G4Interfaces/CppObjectHandles.hh)
+    //to be installed, or zeros if they were already created:
+    using ActionHandles = std::tuple<std::int64_t,std::int64_t>;
+    static ActionHandles registerWriter( HeatMapWriterPtr );
     virtual void UserSteppingAction(const G4Step* step);
     static void beginEvt();
     static double stat_nevts() { assert(m_theInstance); return m_theInstance->m_meshstat_nevts; }
@@ -73,7 +77,8 @@ namespace DMWriter {
 
     virtual void processG4Step(const G4Step* step, double weight);
     virtual ~HeatMapWriter() = default;
-    void inithook();
+    //Returns handles of user actions to install (see registerWriter):
+    HeatMapSteppingAction::ActionHandles inithook();
     void setComments(const char *);
     void setFilterExpression(const char *);
     void setQuantityExpression(const char *);
@@ -116,18 +121,14 @@ namespace DMWriter {
     ++(m_theInstance->m_meshstat_nevts);
   }
 
-  void HeatMapSteppingAction::registerWriter( HeatMapWriterPtr writer )
+  HeatMapSteppingAction::ActionHandles HeatMapSteppingAction::registerWriter( HeatMapWriterPtr writer )
   {
+    ActionHandles res{ 0, 0 };
     if (!m_theInstance) {
       m_theInstance = new HeatMapSteppingAction;
       G4UserSteppingAction* stepact = m_theInstance;
       G4UserEventAction * evtact = new HeatMapEventAction;
-      py::object pylauncher = pyextra::pyimport("G4Launcher").attr("getTheLauncher")();
-      //Pass the actions as G4Interfaces.ToPy.CppObject objects (see G4Interfaces/CppObjectHandles.hh):
-      py::object py_stepact = pyextra::pyimport("G4Interfaces.ToPy").attr("CppObject")( G4Interfaces::registerObject( stepact ) );
-      py::object py_evtact = pyextra::pyimport("G4Interfaces.ToPy").attr("CppObject")( G4Interfaces::registerObject( evtact ) );
-      pylauncher.attr("setUserSteppingAction")(py_stepact);
-      pylauncher.attr("setUserEventAction")(py_evtact);
+      res = ActionHandles{ G4Interfaces::registerObject( stepact ), G4Interfaces::registerObject( evtact ) };
     }
     for ( auto& e : m_theInstance->m_heatmapwriters ) {
       if ( e == writer )
@@ -136,6 +137,7 @@ namespace DMWriter {
         throw std::runtime_error("Attempting to register two HeatMapWriters writing to the same file");
     }
     m_theInstance->m_heatmapwriters.push_back( writer );
+    return res;
   }
 
   void HeatMapSteppingAction::UserSteppingAction(const G4Step* step)
@@ -238,17 +240,14 @@ namespace DMWriter {
                           reinterpret_cast<const double(&)[3]>(pos1) );
   }
 
-  void HeatMapWriter::inithook() {
+  HeatMapSteppingAction::ActionHandles HeatMapWriter::inithook() {
 
     delayedInitIfNeeded();
 
-    //register to get g4 stepping callbacks and a ensure_write_file call after G4 loop:
-    HeatMapSteppingAction::registerWriter(this->shared_from_this());
-    //Register a merge callback (will only ever get invoked in parent proc in true MP jobs):
-    py::object pylauncher = pyextra::pyimport("G4Launcher").attr("getTheLauncher")();
-
-    py::cpp_function py_merge_function( [this](){ this->merge(); } );
-    pylauncher.attr("postmp_hook")( py_merge_function );
+    //register to get g4 stepping callbacks and a ensure_write_file call after G4
+    //loop (the Python side installs the actions and registers a merge callback,
+    //see G4HeatMap/__init__.py):
+    return HeatMapSteppingAction::registerWriter(this->shared_from_this());
   }
 
   void HeatMapWriter::setComments(const char * c)
@@ -357,18 +356,44 @@ namespace DMWriter {
   }
 }
 
-PYTHON_MODULE( mod )
+namespace DMWriter {
+
+  //Copyable holder class (HeatMapWriter must be owned by a shared_ptr):
+  class PyHeatMapWriter {
+  public:
+    PyHeatMapWriter( std::shared_ptr<HeatMapWriter> w ) : m_w( std::move( w ) ) {}
+    PyHeatMapWriter( const std::string& filename,
+                     std::int64_t nx, double xlow, double xup,
+                     std::int64_t ny, double ylow, double yup,
+                     std::int64_t nz, double zlow, double zup )
+      : m_w( std::make_shared<HeatMapWriter>( filename.c_str(), nx, xlow, xup, ny, ylow, yup, nz, zlow, zup ) )
+    {
+    }
+    HeatMapSteppingAction::ActionHandles inithook() { return m_w->inithook(); }
+    void merge() { m_w->merge(); }
+    void setQuantity( const std::string& e ) { m_w->setQuantityExpression( e.c_str() ); }
+    void setFilter( const std::string& e ) { m_w->setFilterExpression( e.c_str() ); }
+    void setComments( const std::string& c ) { m_w->setComments( c.c_str() ); }
+  private:
+    std::shared_ptr<HeatMapWriter> m_w;
+  };
+
+}
+
+SBLDPY_MODULE( _impl )
 {
-  py::class_<DMWriter::HeatMapWriter,
-             std::shared_ptr<DMWriter::HeatMapWriter> >(mod,"HeatMapWriter")
-    .def(py::init<const char*,long,double,double,long,double,double,long,double,double>(),
-         py::arg("filename"),py::arg("nx"),py::arg("xlow"),py::arg("xup"),py::arg("ny"),
-         py::arg("ylow"),py::arg("yup"),py::arg("nz"),py::arg("zlow"),py::arg("zup"))
-    .def(py::init<const char *, long, long, long>(),
-         py::arg("filename"),py::arg("nx"),py::arg("ny"),py::arg("nz"))
-    .def("inithook",&DMWriter::HeatMapWriter::inithook)
-    .def("setQuantity",&DMWriter::HeatMapWriter::setQuantityExpression)
-    .def("setFilter",&DMWriter::HeatMapWriter::setFilterExpression)
-    .def("setComments",&DMWriter::HeatMapWriter::setComments)
-    ;
+  using DMWriter::PyHeatMapWriter;
+  m.add_class<PyHeatMapWriter>("HeatMapWriter")
+    .def_init<const std::string&,std::int64_t,double,double,std::int64_t,double,double,std::int64_t,double,double>(
+      { "filename", "nx", "xlow", "xup", "ny", "ylow", "yup", "nz", "zlow", "zup" } )
+    .def("inithook",&PyHeatMapWriter::inithook,
+         "Register writer, returning handles of user actions to install (zeros if already installed)")
+    .def("merge",&PyHeatMapWriter::merge)
+    .def("setQuantity",&PyHeatMapWriter::setQuantity,{ "expression" })
+    .def("setFilter",&PyHeatMapWriter::setFilter,{ "expression" })
+    .def("setComments",&PyHeatMapWriter::setComments,{ "comments" });
+  m.def("create_auto",[]( const std::string& filename, std::int64_t nx, std::int64_t ny, std::int64_t nz )
+  {
+    return PyHeatMapWriter( std::make_shared<DMWriter::HeatMapWriter>( filename.c_str(), nx, ny, nz ) );
+  },"Create HeatMapWriter with limits based on the extent of the geometry",{ "filename", "nx", "ny", "nz" } );
 }
