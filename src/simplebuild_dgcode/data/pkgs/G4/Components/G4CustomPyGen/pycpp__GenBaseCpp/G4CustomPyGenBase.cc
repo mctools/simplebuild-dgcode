@@ -1,5 +1,9 @@
 #include "G4CustomPyGenBase.hh"
 
+//NB: The methods below which use Python objects acquire the GIL, since they can
+//be called from code which is itself called from Python without the GIL (in
+//particular from G4Launcher, which is an sbldpy based module).
+
 G4CustomPyGen::GenBaseCpp::GenBaseCpp()
   : ParticleGenBase("_tmpname_"),//Name will be changed on python side
     m_gunwrapper(0),
@@ -10,6 +14,7 @@ G4CustomPyGen::GenBaseCpp::GenBaseCpp()
 
 G4CustomPyGen::GenBaseCpp::~GenBaseCpp()
 {
+  py::gil_scoped_acquire gil;
   //release refs by assigning to None:
   m_gunwrapper_pyobj = py::object();
   m_pyfct_validatePars = py::object();
@@ -20,6 +25,7 @@ G4CustomPyGen::GenBaseCpp::~GenBaseCpp()
 
 void G4CustomPyGen::GenBaseCpp::init()
 {
+  py::gil_scoped_acquire gil;
   m_gunwrapper = new G4GunWrapper;
   m_gunwrapper_pyobj = py::cast(m_gunwrapper);
   assert(getNameStr()!="_tmpname_");
@@ -29,6 +35,7 @@ void G4CustomPyGen::GenBaseCpp::init()
 
 void G4CustomPyGen::GenBaseCpp::gen( G4Event * evt )
 {
+  py::gil_scoped_acquire gil;
   assert(m_pyfct_genEvt);
   m_gunwrapper->setEvent(evt);
   m_pyfct_genEvt(m_gunwrapper_pyobj);
@@ -43,6 +50,7 @@ void G4CustomPyGen::GenBaseCpp::gen( G4Event * evt )
 
 bool G4CustomPyGen::GenBaseCpp::validateParameters()
 {
+  py::gil_scoped_acquire gil;
   if (m_pyfct_validatePars) {
     py::object res = m_pyfct_validatePars();
     return res.cast<bool>();
