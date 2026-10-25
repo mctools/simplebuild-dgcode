@@ -5,6 +5,7 @@
 #include "G4Interfaces/StepFilterBase.hh"
 #include "G4Interfaces/PhysListProviderBase.hh"
 #include "G4Interfaces/ComponentFromPy.hh"
+#include "G4Interfaces/CppObjectHandles.hh"
 #include "G4RunManager.hh"
 #include "G4UserSteppingAction.hh"
 #include "G4UserEventAction.hh"
@@ -48,17 +49,53 @@ namespace G4Launcher_py {
     return G4ThreeVector(x,y,z);
   }
 
-  void Launcher_addPreGenHook( G4Launcher::Launcher& launcher, G4Interfaces::PreGenCallBack * cb )
+  //C++ objects (user actions and hooks) can also be G4Interfaces.ToPy.CppObject
+  //objects from sbldpy based modules, referring to objects in the table in
+  //G4Interfaces/CppObjectHandles.hh by a _g4objhandle attribute:
+  bool isCppObject( py::handle o )
   {
+    return py::hasattr( o, "_g4objhandle" );
+  }
+  std::int64_t cppObjectHandle( py::handle o )
+  {
+    return py::cast<std::int64_t>( o.attr("_g4objhandle") );
+  }
+
+  void Launcher_addPreGenHook( G4Launcher::Launcher& launcher, py::object o )
+  {
+    if ( isCppObject( o ) ) {
+      launcher.addPreGenHook( G4Interfaces::claimPreGenHook( cppObjectHandle( o ) ) );
+      return;
+    }
+    auto cb = py::cast<G4Interfaces::PreGenCallBack*>( o );
     assert( cb != nullptr );
     std::shared_ptr<G4Interfaces::PreGenCallBack> shptr_cb = cb->shared_from_this();
     launcher.addPreGenHook(shptr_cb);
   }
-  void Launcher_addPostGenHook( G4Launcher::Launcher& launcher, G4Interfaces::PostGenCallBack * cb )
+  void Launcher_addPostGenHook( G4Launcher::Launcher& launcher, py::object o )
   {
+    if ( isCppObject( o ) ) {
+      launcher.addPostGenHook( G4Interfaces::claimPostGenHook( cppObjectHandle( o ) ) );
+      return;
+    }
+    auto cb = py::cast<G4Interfaces::PostGenCallBack*>( o );
     assert( cb != nullptr );
     std::shared_ptr<G4Interfaces::PostGenCallBack> shptr_cb = cb->shared_from_this();
     launcher.addPostGenHook(shptr_cb);
+  }
+  void Launcher_setUserSteppingAction( G4Launcher::Launcher& launcher, py::object o )
+  {
+    if ( isCppObject( o ) )
+      launcher.setUserSteppingAction( G4Interfaces::claimUserSteppingAction( cppObjectHandle( o ) ) );
+    else
+      launcher.setUserSteppingAction( py::cast<G4UserSteppingAction*>( o ) );
+  }
+  void Launcher_setUserEventAction( G4Launcher::Launcher& launcher, py::object o )
+  {
+    if ( isCppObject( o ) )
+      launcher.setUserEventAction( G4Interfaces::claimUserEventAction( cppObjectHandle( o ) ) );
+    else
+      launcher.setUserEventAction( py::cast<G4UserEventAction*>( o ) );
   }
 
   //Components (geometries, generators and step filters) are either objects
@@ -155,11 +192,18 @@ namespace G4Launcher_py {
       py::object m_o;
     };
   }
-  void HookFct_addPrePreInitHook(G4Launcher::Launcher&l,py::object f) { l.addPrePreInitHook(std::make_shared<HookWrapper>(f)); }
-  void HookFct_addPreInitHook(G4Launcher::Launcher&l,py::object f) { l.addPreInitHook(std::make_shared<HookWrapper>(f)); }
-  void HookFct_addPostInitHook(G4Launcher::Launcher&l,py::object f) { l.addPostInitHook(std::make_shared<HookWrapper>(f)); }
-  void HookFct_addPostSimHook(G4Launcher::Launcher&l,py::object f) { l.addPostSimHook(std::make_shared<HookWrapper>(f)); }
-  void HookFct_addPostMPHook(G4Launcher::Launcher&l,py::object f) { l.addPostMPHook(std::make_shared<HookWrapper>(f)); }
+  //Hooks can be Python callables or HookFct objects from sbldpy based modules:
+  G4Launcher::Launcher::HookFctPtr toHookFct( py::object f )
+  {
+    if ( isCppObject( f ) )
+      return G4Interfaces::claimHookFct( cppObjectHandle( f ) );
+    return std::make_shared<HookWrapper>(f);
+  }
+  void HookFct_addPrePreInitHook(G4Launcher::Launcher&l,py::object f) { l.addPrePreInitHook(toHookFct(f)); }
+  void HookFct_addPreInitHook(G4Launcher::Launcher&l,py::object f) { l.addPreInitHook(toHookFct(f)); }
+  void HookFct_addPostInitHook(G4Launcher::Launcher&l,py::object f) { l.addPostInitHook(toHookFct(f)); }
+  void HookFct_addPostSimHook(G4Launcher::Launcher&l,py::object f) { l.addPostSimHook(toHookFct(f)); }
+  void HookFct_addPostMPHook(G4Launcher::Launcher&l,py::object f) { l.addPostMPHook(toHookFct(f)); }
   int g4version() { return G4VERSION_NUMBER; }
   const char* g4versionstr() { return G4Version.c_str(); }
 
@@ -221,8 +265,8 @@ PYTHON_MODULE( mod )
     .def("closeOutput",&G4Launcher::Launcher::closeOutput)
     .def("noRandomSetup",&G4Launcher::Launcher::noRandomSetup)
     .def("setSeed",&G4Launcher::Launcher::setSeed)
-    .def("setUserSteppingAction",&G4Launcher::Launcher::setUserSteppingAction)
-    .def("setUserEventAction",&G4Launcher::Launcher::setUserEventAction)
+    .def("setUserSteppingAction",&G4Launcher_py::Launcher_setUserSteppingAction)
+    .def("setUserEventAction",&G4Launcher_py::Launcher_setUserEventAction)
     .def("cmd",&G4Launcher::Launcher::cmd)
     .def("cmd_preinit",&G4Launcher::Launcher::cmd_preinit)
     .def("cmd_postinit",&G4Launcher::Launcher::cmd_postinit)

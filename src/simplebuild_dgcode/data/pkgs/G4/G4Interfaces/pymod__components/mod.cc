@@ -1,5 +1,6 @@
 #include "sbldpy/sbldpy.hh"
 #include "G4Interfaces/ComponentHandles.hh"
+#include "G4Interfaces/CppObjectHandles.hh"
 #include "G4Interfaces/GeoBase.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/StepFilterBase.hh"
@@ -53,6 +54,10 @@ SBLDPY_MODULE( _components )
   m.doc( "Access to framework components (geometries, generators and step filters)"
          " created by sbldpy modules, via their handles." );
   m.def( "kind", &kind, "Kind of component (geo, gen, filter or other)", { "handle" } );
+  m.def( "object_kind", []( Handle h ) { return std::string( G4Interfaces::objectKind( h ) ); },
+         "Kind of C++ object in the table in G4Interfaces/CppObjectHandles.hh", { "handle" } );
+  m.def( "object_is_claimed", &G4Interfaces::objectIsClaimed,
+         "Whether a C++ object in the table in G4Interfaces/CppObjectHandles.hh was already used", { "handle" } );
   m.def( "get_name", &get_name, { "handle" } );
   m.def( "dump", []( Handle h, const std::string& prefix ) { getComponent( h ).dump( prefix.c_str() ); },
          { "handle", "prefix" } );

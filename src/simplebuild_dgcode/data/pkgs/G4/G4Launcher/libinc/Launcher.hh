@@ -2,6 +2,7 @@
 #define G4Launcher_Launcher_hh
 
 #include "Core/Types.hh"
+#include "G4Interfaces/CppObjectHandles.hh"
 #include <memory>
 
 // This Launcher class wraps G4RunManager and takes care of most of the setup of
@@ -176,11 +177,7 @@ namespace G4Launcher {
     //Add callbacks allowing a high degree of customisation (Launcher will
     //assume ownership of the registered hookfct objects).
 
-    class HookFct {
-    public:
-      virtual ~HookFct(){};
-      virtual void operator()() = 0;
-    };
+    using HookFct = G4Interfaces::HookFct;//see G4Interfaces/CppObjectHandles.hh
     using HookFctPtr = std::shared_ptr<HookFct>;
 
     void addPrePreInitHook(HookFctPtr);

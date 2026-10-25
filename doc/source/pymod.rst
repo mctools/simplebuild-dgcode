@@ -126,3 +126,14 @@ following differences compared to pybind11:
   module directly provides the ``__init__.py`` file of the package, so if you
   also have a ``python/__init__.py`` file, use a private module (e.g.
   ``pymod__impl/``) instead.
+* Objects of C++ classes can not be passed between sbldpy modules. For
+  Geant4 user actions (``G4UserSteppingAction`` and ``G4UserEventAction``)
+  and hooks (``G4Interfaces::PreGenCallBack``,
+  ``G4Interfaces::PostGenCallBack`` and ``G4Interfaces::HookFct``), which are
+  typically passed to the launcher (e.g. with
+  ``launcher.setUserSteppingAction(obj)``), register the objects with
+  ``G4Interfaces::registerObject`` from
+  :sbpkg:`G4Interfaces/CppObjectHandles.hh<G4Interfaces/libinc/CppObjectHandles.hh>`,
+  and wrap the resulting handles in ``G4Interfaces.ToPy.CppObject`` objects
+  on the Python side. For an example, see
+  :sbpkg:`G4Tests.CppObjTest<G4Tests/pymod__CppObjTest/mod.cc>`.

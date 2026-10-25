@@ -17,7 +17,7 @@ The Python module of a component typically just contains:
 
 from . import _components as _c
 
-__all__ = [ 'Component', 'component_creator' ]
+__all__ = [ 'Component', 'CppObject', 'component_creator' ]
 
 #FIXME: As a temporary migration measure, the Python interface of the Component
 #class below (including parameters as attributes and swallowCmdLine) is to a
@@ -279,3 +279,25 @@ def component_creator( create_handle ):
         """Create new component"""
         return cls( create_handle() )
     return create
+
+class CppObject:
+    """C++ object (a Geant4 user action or a hook), created by an sbldpy module
+    and referred to by a handle (see G4Interfaces/CppObjectHandles.hh). Such
+    objects can be passed to for instance G4Launcher methods like
+    setUserSteppingAction or addPostGenHook. Each object can only be used once."""
+
+    __slots__ = ( '_g4objhandle', )
+
+    def __init__( self, handle ):
+        self._g4objhandle = handle
+
+    def kind( self ):
+        """Kind of object (e.g. "G4UserSteppingAction" or "PostGenCallBack")"""
+        return _c.object_kind( self._g4objhandle )
+
+    def isUsed( self ):
+        """Whether the object was already used (it can only be used once)"""
+        return _c.object_is_claimed( self._g4objhandle )
+
+    def __repr__( self ):
+        return '<C++ object %s%s>'%( self.kind(), ' (used)' if self.isUsed() else '' )
