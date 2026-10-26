@@ -1,4 +1,4 @@
-package(USEPKG GriffDataRead)
+package(USEPKG GriffDataRead USEEXT Numpy)
 
 ######################################################################
 
