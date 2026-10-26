@@ -19,6 +19,7 @@ is looked up in the C++ reader, and cached.
 
 import struct as _struct
 import os as _os
+import weakref as _weakref
 import numpy as _np
 from . import _impl
 from math import copysign as _copysign
@@ -690,7 +691,10 @@ class Track:
         return self._dr._firstSegValues( self )
 
     def getDataReader( self ):
-        return self._dr
+        dr = self._dr._owner()
+        if dr is None:
+            raise RuntimeError( 'GriffDataReader of the track no longer exists' )
+        return dr
     def trackID( self ):
         return self._v[0]
     def parentID( self ):
@@ -796,24 +800,15 @@ class Track:
 _openMsg = [ True ]
 _impl.set_open_msg( False )#(the message is printed here instead)
 
-class GriffDataReader:
-    """Reader of .griff files (see GriffDataRead/GriffDataReader.hh). The input
-    file name can contain wildcards, or a list of files can be given. Use
-    nloops > 1 to loop through the files several times (0 means forever). The
-    data of each event is unpacked into a buffer of buffer_mb megabytes (an
-    error is raised for events which do not fit), which also determines the
-    size of the buffers used by the iterators in the GriffAnaUtils module."""
+class _ReaderImpl:
+    """Implementation of the GriffDataReader, owned by it. The objects of the
+    events (and the cached shared data) refer to this object, which refers back
+    to the GriffDataReader only with a weak reference. When the GriffDataReader
+    is deleted, this object is closed (releasing the C++ reader, the buffer, and
+    the caches), so the reader is freed without the garbage collector."""
 
-    @staticmethod
-    def setOpenMsg( b ):
-        """Enable/disable the message printed when opening a file"""
-        _openMsg[0] = bool( b )
-
-    @staticmethod
-    def openMsg():
-        return _openMsg[0]
-
-    def __init__( self, inputFiles, nloops = 1, buffer_mb = 20 ):
+    def __init__( self, inputFiles, nloops, buffer_mb, owner ):
+        self._owner = owner#weak reference to the GriffDataReader
         import glob
         patterns = [ inputFiles ] if isinstance( inputFiles, ( str, _os.PathLike ) ) else list( inputFiles )
         files = []
@@ -893,6 +888,16 @@ class GriffDataReader:
     # Navigation         #
     ######################
 
+    def _close( self ):
+        #Release everything (objects from the events can no longer be used):
+        self._clearEvent()
+        self._h = ( 0, ) * 13
+        self._r = None#(the C++ reader must be deleted before the buffer)
+        self._buf = self._mv = None
+        self._strings = self._db = self._pdefs = None
+        self._touchables = self._volnames = None
+        self._lastSetup = self._cachedMetaData = None
+
     def _clearEvent( self ):
         self._tracks = None
         self._brief = None
@@ -911,7 +916,7 @@ class GriffDataReader:
                 fn = self._files[fileidx]
                 if fn != self._openedFile:
                     self._openedFile = fn
-                    if self.openMsg():
+                    if _openMsg[0]:
                         print( 'GriffDataReader opened file %s'%_os.path.basename( fn ) )
             if not self._allowSetupChange:
                 self._checkSetupConsistency()
@@ -1169,3 +1174,59 @@ class GriffDataReader:
     def allowSetupChange( self ):
         """Allow events from different setups (by default an error is raised)"""
         self._allowSetupChange = True
+
+class GriffDataReader:
+    """Reader of .griff files (see GriffDataRead/GriffDataReader.hh). The input
+    file name can contain wildcards, or a list of files can be given. Use
+    nloops > 1 to loop through the files several times (0 means forever). The
+    data of each event is unpacked into a buffer of buffer_mb megabytes (an
+    error is raised for events which do not fit), which also determines the
+    size of the buffers used by the iterators in the GriffAnaUtils module."""
+
+    @staticmethod
+    def setOpenMsg( b ):
+        """Enable/disable the message printed when opening a file"""
+        _openMsg[0] = bool( b )
+
+    @staticmethod
+    def openMsg():
+        return _openMsg[0]
+
+    def __init__( self, inputFiles, nloops = 1, buffer_mb = 20 ):
+        self._c = None
+        c = _ReaderImpl( inputFiles, nloops, buffer_mb, _weakref.ref( self ) )
+        self._c = c
+        #For the GriffAnaUtils module:
+        self._rh = c._rh
+        self._buffer_mb = c._buffer_mb
+        self._trks = c._trks
+
+    def __del__( self ):
+        if self._c is not None:
+            self._c._close()
+
+    @property
+    def tracks( self ):
+        """Iterate over all tracks in the event"""
+        return self._c.tracks
+
+    @property
+    def primaryTracks( self ):
+        """Iterate over the primary tracks in the event"""
+        return self._c.primaryTracks
+
+def _add_delegates():
+    def mk( name ):
+        f = getattr( _ReaderImpl, name )
+        def fct( self, *args ):
+            return f( self._c, *args )
+        fct.__name__ = fct.__qualname__ = name
+        fct.__doc__ = f.__doc__
+        return fct
+    for name in ( 'eventActive', 'goToFirstEvent', 'goToNextFile', 'goToNextEvent', 'skipEvents',
+                  'loopEvents', 'loopCount', 'seekEventByIndexInCurrentFile', 'eventIndexInCurrentFile',
+                  'runNumber', 'eventNumber', 'currentEventVersion', 'seed', 'seedStr', 'eventStorageMode',
+                  'eventStorageModeStr', 'eventCheckSum', 'verifyEventDataIntegrity', 'nTracks', 'getTrack',
+                  'hasTrackID', 'getTrackByID', 'nPrimaryTracks', 'setupChanged', 'setup', 'allowSetupChange' ):
+        setattr( GriffDataReader, name, mk( name ) )
+_add_delegates()
