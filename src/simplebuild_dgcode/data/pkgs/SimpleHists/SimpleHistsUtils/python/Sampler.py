@@ -2,6 +2,10 @@
 
 from ._sampler import Sampler as _Sampler
 
+def _serialised( hist ):
+    import numpy
+    return numpy.frombuffer( hist.serialise(), dtype = numpy.uint8 )
+
 class Sampler:
     """Sampler of values distributed like the contents of a Hist1D histogram
     (optionally scaled by scalefact). Call with a random number in [0,1)."""
@@ -9,10 +13,10 @@ class Sampler:
     __slots__ = ( '_s', )
 
     def __init__( self, hist, scalefact = 1.0 ):
-        self._s = _Sampler( hist.serialise(), scalefact )
+        self._s = _Sampler( _serialised( hist ), scalefact )
 
     def reinit( self, hist, scalefact = 1.0 ):
-        self._s.reinit( hist.serialise(), scalefact )
+        self._s.reinit( _serialised( hist ), scalefact )
 
     def sample( self, rand ):
         return self._s.sample( rand )

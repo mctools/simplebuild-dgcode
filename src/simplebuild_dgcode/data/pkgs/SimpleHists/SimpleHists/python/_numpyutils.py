@@ -103,7 +103,7 @@ def h1d_fill(self,*args):
             if not isinstance(args[1],numpy.ndarray) or not args[1].flags['FORC'] or args[1].dtype!=float:
                 raise TypeError("Array filling must use numpy float arrays with contiguous memory")
             assert args[1].itemsize==8
-        self._rawfillFromBuffer(*[a.data for a in args])
+        self._rawfillFromBuffer(*args)
     else:
         #try single entry fill
         self._rawfill(*args)
@@ -163,7 +163,7 @@ def h2d_fill(self,*args):
                 raise TypeError("Array filling must use numpy float arrays with contiguous memory")
                 assert a.itemsize==8
     if nnp:
-        self._rawfillFromBuffer(*[a.data for a in args])
+        self._rawfillFromBuffer(*args)
     else:
         #try scalar entry fill
         self._rawfill(*args)

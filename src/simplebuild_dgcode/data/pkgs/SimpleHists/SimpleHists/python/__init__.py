@@ -23,6 +23,11 @@ def _to_bytes( data ):
         data = data.encode( 'latin-1' )
     return bytes( data )
 
+def _to_u8array( data ):
+    #Serialised data as numpy array (as needed by the _impl module):
+    import numpy
+    return numpy.frombuffer( _to_bytes( data ), dtype = numpy.uint8 )
+
 def _wrap( h ):
     """Python histogram object for the given _impl.Hist object"""
     cls = _histclasses[h.hist_type()]
@@ -99,16 +104,16 @@ class HistBase:
 
 def histTypeOfData( serialised_data ):
     """Type of histogram in serialised data (1: Hist1D, 2: Hist2D, 3: HistCounts)"""
-    return chr( _impl.hist_type_of_data( _to_bytes( serialised_data ) ) )
+    return chr( _impl.hist_type_of_data( _to_u8array( serialised_data ) ) )
 
 def deserialise( serialised_data ):
     """Create histogram from serialised data"""
-    return _wrap( _impl.Hist.deserialise( _to_bytes( serialised_data ) ) )
+    return _wrap( _impl.Hist.deserialise( _to_u8array( serialised_data ) ) )
 
 deserialiseAndManage = deserialise
 
 def _check_serialised( data, histtype ):
-    data = _to_bytes( data )
+    data = _to_u8array( data )
     if _impl.hist_type_of_data( data ) != histtype:
         raise ValueError( 'Serialised data is not of the right histogram type' )
     return data
