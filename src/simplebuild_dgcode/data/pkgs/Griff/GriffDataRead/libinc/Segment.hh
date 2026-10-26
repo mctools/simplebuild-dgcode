@@ -65,6 +65,7 @@ namespace GriffDataRead {
     //////////////////////////////////////////////////////
 
   private:
+    friend struct ExpertAccess;
     const Touchable& getTouchable() const;
     int32_t rawStepIdx() const;
     void setupSteps() const;

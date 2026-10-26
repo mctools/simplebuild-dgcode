@@ -83,8 +83,8 @@ namespace GriffAnaUtils_py {
 
   //Iterator of any type, filling a buffer owned by the Python code (which
   //keeps it alive) with the number of selected objects followed by their
-  //indices: track index for tracks, (track index, segment index) for
-  //segments, and (track index, segment index, step index) for steps.
+  //indices: track index for tracks, the index of the segment in the event for
+  //segments, and (index of the segment in the event, step index) for steps.
   class Iterator {
   public:
     Iterator( std::int64_t kind, std::int64_t handle, sbldpy::NumpyView<std::int32_t> buffer )
@@ -149,6 +149,7 @@ namespace GriffAnaUtils_py {
       if ( !dr.eventActive() )
         return;
       const GriffDataRead::Track * trkBegin = dr.trackBegin();
+      const GriffDataRead::Segment * seg0 = dr.nTracks() ? trkBegin->segmentBegin() : nullptr;
       auto write = [&out,outE]( std::int64_t v )
       {
         if ( out == outE )
@@ -164,16 +165,13 @@ namespace GriffAnaUtils_py {
       } else if ( m_segIter ) {
         m_segIter->reset();
         while ( auto seg = m_segIter->next() ) {
-          write( seg->getTrack() - trkBegin );
-          write( seg->iSegment() );
+          write( seg - seg0 );
           ++n;
         }
       } else {
         m_stepIter->reset();
         while ( auto step = m_stepIter->next() ) {
-          auto seg = step->getSegment();
-          write( seg->getTrack() - trkBegin );
-          write( seg->iSegment() );
+          write( step->getSegment() - seg0 );
           write( step->iStep() );
           ++n;
         }

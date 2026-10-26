@@ -18,6 +18,11 @@ namespace GriffDataRead {
   struct ExpertAccess {
     static unsigned fileIndex( const GriffDataReader& dr ) { return dr.m_fileIdx; }
 
+    //Raw data of the objects (in the event buffer):
+    static const char * rawData( const Track& t ) { return t.m_data; }
+    static const char * rawData( const Segment& s ) { return s.m_data; }
+    static const char * rawData( const Step& s ) { return s.m_data; }
+
     static const std::string& dbString( GriffDataReader& dr, std::int64_t subsect, std::int64_t idx )
     {
       namespace F = GriffFormat;
@@ -36,9 +41,6 @@ namespace GriffDataRead {
       }
     }
 
-    //All touchables loaded so far, starting at the given index. For each, the
-    //depth is followed by the copy number and indices of the volume name,
-    //physical volume name and material for each depth:
     //All volume names loaded so far, starting at the given index (separated
     //by null characters):
     static std::string volumeNames( GriffDataReader& dr, std::int64_t start )
@@ -53,6 +55,9 @@ namespace GriffDataRead {
       return res;
     }
 
+    //All touchables loaded so far, starting at the given index. For each, the
+    //depth is followed by the copy number and indices of the volume name,
+    //physical volume name and material for each depth:
     static sbldpy::NumpyCopy<std::int64_t> touchables( GriffDataReader& dr, std::int64_t start )
     {
       std::vector<std::int64_t> res;
@@ -176,12 +181,39 @@ namespace GriffDataRead_py {
     }
   }
 
+  //Layout of the tables of decoded data, written in a separate buffer when
+  //requested. The header (64 bit integers) gives the number of tracks and the
+  //offset of their records, the number of segments and the offset of their
+  //records, and the number of steps (-1 if not decoded), the offset of their
+  //records and the offset of the (first step index, number of steps) pairs of
+  //the segments:
+  enum : std::size_t { TBL_NTRACKS, TBL_TRACKS, TBL_NSEGMENTS, TBL_SEGMENTS,
+                       TBL_NSTEPS, TBL_STEPS, TBL_SEGSTEPS, TBL_NENTRIES };
+  constexpr std::size_t TBL_HDR_BYTES = 64;
+  static_assert( TBL_NENTRIES * sizeof(std::int64_t) <= TBL_HDR_BYTES );
+  //Records (all little endian, see python/_reader.py):
+  // * Track (56 bytes): The 28 bytes of the stored track record (id, pdg code,
+  //   weight, creator process, parent id, number of segments, number of
+  //   daughters), followed by the index of its first segment, the offset of
+  //   its daughter list in the brief data, the track index (4 byte unsigned
+  //   integers), and the start time and kinetic energy (doubles).
+  // * Segment (64 bytes): The 48 bytes of the stored segment record including
+  //   its end time and kinetic energy, followed by the track index, the
+  //   segment index on the track, and the index of the segment in the event (4
+  //   byte unsigned integers), and 4 bytes of padding.
+  // * Step (168 bytes): The 152 bytes of the stored step record including its
+  //   post-step point, followed by the track index, segment index and step
+  //   index (4 byte unsigned integers), and 4 bytes of padding.
+  constexpr std::size_t REC_TRACK = 56, REC_SEGMENT = 64, REC_STEP = 168;
+  constexpr std::size_t RAW_TRACK = 28, RAW_SEGMENT = 48, RAW_STEP = 152;
+
   class Reader {
   public:
-    Reader( const std::string& files, std::int64_t nloops, sbldpy::NumpyView<std::uint8_t> buffer )
-      : m_buf( buffer )
+    Reader( const std::string& files, std::int64_t nloops, sbldpy::NumpyView<std::uint8_t> buffer,
+            sbldpy::NumpyView<std::uint8_t> tables )
+      : m_buf( buffer ), m_tbl( tables )
     {
-      if ( m_buf.size() < HDR_BYTES )
+      if ( m_buf.size() < HDR_BYTES || m_tbl.size() < TBL_HDR_BYTES )
         throw std::length_error( "buffer too small" );
       std::vector<std::string> filelist;
       std::size_t pos = 0;
@@ -245,6 +277,21 @@ namespace GriffDataRead_py {
       return res;
     }
 
+    //Write the tables of tracks and segments of the current event:
+    void decodeTracks()
+    {
+      checkActive();
+      withBufferHint( [this]{ actualDecodeTracks(); } );
+    }
+
+    //Write the table of steps of the current event (requires the tables of
+    //tracks and segments):
+    void decodeSteps()
+    {
+      checkActive();
+      withBufferHint( [this]{ actualDecodeSteps(); } );
+    }
+
     //Lookups in the shared data of the current file:
     std::string dbString( std::int64_t subsect, std::int64_t idx )
     {
@@ -254,7 +301,102 @@ namespace GriffDataRead_py {
 
   private:
     sbldpy::NumpyView<std::uint8_t> m_buf;//owned by the Python code
+    sbldpy::NumpyView<std::uint8_t> m_tbl;//owned by the Python code
     std::unique_ptr<GriffDataReader> m_dr;
+
+    std::int64_t * tbl() { return reinterpret_cast<std::int64_t*>( m_tbl.data() ); }
+    char * tblCheck( std::size_t offset, std::size_t n )
+    {
+      if ( offset > m_tbl.size() || n > m_tbl.size() - offset )
+        throw std::length_error( "Event data does not fit in the buffer" );
+      return reinterpret_cast<char*>( m_tbl.data() ) + offset;
+    }
+    static void put32( char * dest, std::uint32_t v ) { std::memcpy( dest, &v, sizeof(v) ); }
+
+    void actualDecodeTracks()
+    {
+      auto t = tbl();
+      std::memset( t, 0, TBL_HDR_BYTES );
+      t[TBL_NSTEPS] = -1;
+      const std::size_t ntrk = m_dr->nTracks();
+      const GriffDataRead::Track * trkBegin = m_dr->trackBegin();
+      const GriffDataRead::Segment * seg0 = ntrk ? trkBegin->segmentBegin() : nullptr;
+      std::size_t nseg = 0;
+      for ( std::size_t i = 0; i < ntrk; ++i )
+        nseg += trkBegin[i].nSegments();
+      const char * brief = m_dr->getRawFileReader()->getBriefData();
+      const std::size_t trkoff = TBL_HDR_BYTES;
+      const std::size_t segoff = trkoff + REC_TRACK * ntrk;
+      char * trec = tblCheck( trkoff, REC_TRACK * ntrk + REC_SEGMENT * nseg );
+      char * srec = trec + REC_TRACK * ntrk;
+      for ( std::size_t i = 0; i < ntrk; ++i ) {
+        const auto& trk = trkBegin[i];
+        const char * raw = ExpertAccess::rawData( trk );
+        const auto segB = trk.segmentBegin();
+        const auto segE = trk.segmentEnd();
+        std::memcpy( trec, raw, RAW_TRACK );
+        put32( trec + 28, static_cast<std::uint32_t>( segB - seg0 ) );
+        put32( trec + 32, static_cast<std::uint32_t>( raw + RAW_TRACK - brief ) );
+        put32( trec + 36, static_cast<std::uint32_t>( i ) );
+        std::memcpy( trec + 40, ExpertAccess::rawData( *segB ), 16 );//start time and energy
+        trec += REC_TRACK;
+        std::uint32_t iseg = 0;
+        for ( auto seg = segB; seg != segE; ++seg ) {
+          std::memcpy( srec, ExpertAccess::rawData( *seg ), RAW_SEGMENT );
+          put32( srec + 48, static_cast<std::uint32_t>( i ) );
+          put32( srec + 52, iseg++ );
+          put32( srec + 56, static_cast<std::uint32_t>( seg - seg0 ) );
+          put32( srec + 60, 0 );
+          srec += REC_SEGMENT;
+        }
+      }
+      t[TBL_NTRACKS] = static_cast<std::int64_t>( ntrk );
+      t[TBL_TRACKS] = static_cast<std::int64_t>( trkoff );
+      t[TBL_NSEGMENTS] = static_cast<std::int64_t>( nseg );
+      t[TBL_SEGMENTS] = static_cast<std::int64_t>( segoff );
+    }
+
+    void actualDecodeSteps()
+    {
+      auto t = tbl();
+      const std::size_t ntrk = static_cast<std::size_t>( t[TBL_NTRACKS] );
+      const std::size_t nseg = static_cast<std::size_t>( t[TBL_NSEGMENTS] );
+      if ( ntrk != m_dr->nTracks() )
+        throw std::logic_error( "tracks must be decoded before steps" );
+      const std::size_t segstepoff = ( t[TBL_SEGMENTS] + REC_SEGMENT * nseg + 7 ) & ~std::size_t(7);
+      const std::size_t stepoff = segstepoff + 8 * nseg;
+      char * ssrec = tblCheck( segstepoff, 8 * nseg );
+      std::size_t nsteps = 0;
+      const GriffDataRead::Track * trkBegin = m_dr->trackBegin();
+      for ( std::size_t i = 0; i < ntrk; ++i ) {
+        const auto& trk = trkBegin[i];
+        std::uint32_t iseg = 0;
+        for ( auto seg = trk.segmentBegin(); seg != trk.segmentEnd(); ++seg, ++iseg ) {
+          std::int32_t rawstep;
+          std::memcpy( &rawstep, ExpertAccess::rawData( *seg ) + 20, sizeof(rawstep) );
+          const std::size_t first = nsteps;
+          if ( rawstep >= 0 ) {
+            std::uint32_t istep = 0;
+            const auto stepE = seg->stepEnd();
+            for ( auto step = seg->stepBegin(); step != stepE; ++step ) {
+              char * rec = tblCheck( stepoff + REC_STEP * nsteps, REC_STEP );
+              std::memcpy( rec, ExpertAccess::rawData( *step ), RAW_STEP );
+              put32( rec + 152, static_cast<std::uint32_t>( i ) );
+              put32( rec + 156, iseg );
+              put32( rec + 160, istep++ );
+              put32( rec + 164, 0 );
+              ++nsteps;
+            }
+          }
+          put32( ssrec, static_cast<std::uint32_t>( first ) );
+          put32( ssrec + 4, static_cast<std::uint32_t>( nsteps - first ) );
+          ssrec += 8;
+        }
+      }
+      t[TBL_NSTEPS] = static_cast<std::int64_t>( nsteps );
+      t[TBL_STEPS] = static_cast<std::int64_t>( stepoff );
+      t[TBL_SEGSTEPS] = static_cast<std::int64_t>( segstepoff );
+    }
     std::int64_t m_handle = 0;
     std::int64_t m_serial = 0;
 
@@ -311,7 +453,10 @@ SBLDPY_MODULE( _impl )
   using GriffDataRead_py::Reader;
   using GriffDataRead::ExpertAccess;
   m.add_class<Reader>( "Reader" )
-    .def_init<std::string,std::int64_t,sbldpy::NumpyView<std::uint8_t>>( { "files", "nloops", "buffer" } )
+    .def_init<std::string,std::int64_t,sbldpy::NumpyView<std::uint8_t>,
+              sbldpy::NumpyView<std::uint8_t>>( { "files", "nloops", "buffer", "tables" } )
+    .def( "decode_tracks", &Reader::decodeTracks )
+    .def( "decode_steps", &Reader::decodeSteps )
     .def( "handle", &Reader::handle )
     .def( "go_to_first_event", &Reader::goToFirstEvent )
     .def( "go_to_next_event", &Reader::goToNextEvent )

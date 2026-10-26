@@ -79,14 +79,14 @@ class ITrackFilter( IFilter ):
     def filter( self, trk ):
         if not self._cf:
             raise NotImplementedError
-        return self._cf.filter_track( trk._dr._rh, trk._it )
+        return self._cf.filter_track( trk[12]._rh, trk[9] )
 
 class ISegmentFilter( IFilter ):
     _kind = _SEGMENT
     def filter( self, segment ):
         if not self._cf:
             raise NotImplementedError
-        return self._cf.filter_segment( segment._dr._rh, segment._it, segment._i )
+        return self._cf.filter_segment( segment[11]._rh, segment[8], segment[9] )
     def associatedTrackFilter( self ):
         return None
 
@@ -95,7 +95,7 @@ class IStepFilter( IFilter ):
     def filter( self, step ):
         if not self._cf:
             raise NotImplementedError
-        return self._cf.filter_step( step._dr._rh, step._it, step._is, step._i )
+        return self._cf.filter_step( step[31]._rh, step[28], step[29], step[30] )
     def associatedSegmentFilter( self ):
         return None
     def associatedTrackFilter( self ):
@@ -135,7 +135,7 @@ class TrackFilter_Descendant( ITrackFilter ):
     def __init__( self ):
         self._cf = _impl.track_filter_descendant()
     def setAncestor( self, trk, includeAncestor = True ):
-        self._cf.descendant_set_ancestor( trk._dr._rh, trk._it, bool( includeAncestor ) )
+        self._cf.descendant_set_ancestor( trk[12]._rh, trk[9], bool( includeAncestor ) )
 
 class TrackFilter_Primary( ITrackFilter ):
     """Select primary tracks"""
@@ -266,13 +266,15 @@ class _Iterator:
                     self.addFilter( af )
         return f
 
+    _nidx = 1#number of indices per object
+
     def _indices( self ):
         #Indices of the selected objects in the current event:
         if not self._dr.eventActive():
             return []
         self._it.fill()
         buf = self._buf
-        return buf[1:1+int( buf[0] )*( self._kind + 1 )].tolist()
+        return buf[1:1+int( buf[0] )*self._nidx].tolist()
 
 class TrackIterator( _Iterator ):
     """Iterates over the tracks of the current event passing all filters"""
@@ -282,10 +284,9 @@ class TrackIterator( _Iterator ):
         idx = self._indices()
         trks = self._dr._trks()
         tf = self._pyfilters[_TRACK]
-        for i in idx:
-            trk = trks[i]
-            if not tf or _passes( tf, trk ):
-                yield trk
+        if not tf:
+            return iter( [ trks[i] for i in idx ] )
+        return ( trks[i] for i in idx if _passes( tf, trks[i] ) )
 
 class SegmentIterator( _Iterator ):
     """Iterates over the segments of the current event passing all filters"""
@@ -293,41 +294,37 @@ class SegmentIterator( _Iterator ):
     _what = 'track or segment'
     def __iter__( self ):
         idx = self._indices()
+        if not idx:
+            return iter( () )
         trks = self._dr._trks()
+        segs = trks[0][12]._allSegments()
         tf, sf, _ = self._pyfilters
-        itrk, segs = -1, None
-        for k in range( 0, len( idx ), 2 ):
-            if idx[k] != itrk:
-                itrk = idx[k]
-                trk = trks[itrk]
-                segs = trk._sg() if ( not tf or _passes( tf, trk ) ) else None
-            if segs is not None:
-                seg = segs[idx[k+1]]
-                if not sf or _passes( sf, seg ):
-                    yield seg
+        if not tf and not sf:
+            return iter( [ segs[g] for g in idx ] )
+        return ( segs[g] for g in idx
+                 if ( not tf or _passes( tf, trks[segs[g][8]] ) ) and ( not sf or _passes( sf, segs[g] ) ) )
 
 class StepIterator( _Iterator ):
     """Iterates over the steps of the current event passing all filters"""
     _kind = _STEP
     _what = 'track, segment or step'
+    _nidx = 2
     def __iter__( self ):
         idx = self._indices()
+        if not idx:
+            return iter( () )
         trks = self._dr._trks()
+        c = trks[0][12]
+        segs = c._allSegments()
+        steps = c._allsteps
+        if steps is None:
+            steps = c._loadSteps()
+        segsteps = c._segsteps
         tf, sf, stf = self._pyfilters
-        itrk = iseg = -1
-        segs = steps = None
-        for k in range( 0, len( idx ), 3 ):
-            if idx[k] != itrk:
-                itrk, iseg = idx[k], -1
-                trk = trks[itrk]
-                segs = trk._sg() if ( not tf or _passes( tf, trk ) ) else None
-            if segs is None:
-                continue
-            if idx[k+1] != iseg:
-                iseg = idx[k+1]
-                seg = segs[iseg]
-                steps = seg._steps() if ( not sf or _passes( sf, seg ) ) else None
-            if steps is not None:
-                step = steps[idx[k+2]]
-                if not stf or _passes( stf, step ):
-                    yield step
+        sel = [ steps[segsteps[idx[k]][0]+idx[k+1]] for k in range( 0, len( idx ), 2 ) ]
+        if not tf and not sf and not stf:
+            return iter( sel )
+        return ( st for st in sel
+                 if ( not tf or _passes( tf, trks[st[28]] ) )
+                 and ( not sf or _passes( sf, segs[trks[st[28]][7]+st[29]] ) )
+                 and ( not stf or _passes( stf, st ) ) )

@@ -84,6 +84,7 @@ namespace GriffDataRead {
     const char* stepStatusCStr() const;
 
   private:
+    friend struct ExpertAccess;
     std::uint32_t stepStatus_raw() const;
     const Segment * m_segment;
     const char * m_data;

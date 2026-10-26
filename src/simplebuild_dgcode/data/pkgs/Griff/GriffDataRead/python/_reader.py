@@ -35,31 +35,23 @@ __all__ = [ 'Element', 'FilterParams', 'GenParams', 'GeoParams', 'GriffDataReade
 #the reader moves to another event):
 _s_bufhdr = _struct.Struct('<13q')
 _FULLSIZE_OFFSET = 4 * 8
-#Data layouts (all little endian):
+#Header of the brief data (all little endian):
 _s_trkhdr = _struct.Struct('<QIII')#seed, metadata index, ntracks, mode
-_s_trk = _struct.Struct('<iifIiII')#id, pdg, weight, creator process, parent id, nsegments, ndaughters
-#Segment record (32 bytes) followed by the end time and energy (16 bytes),
-#which are either stored separately (for the last segment on a track or when
-#the next segment was filtered), or are the start values of the next segment:
-_s_seg = _struct.Struct('<ddIiffdd')
-#Step record (84 bytes: pre-step part of 68 bytes and other data of 16
-#bytes) followed by the post-step part of 68 bytes, which is either stored
-#separately (for the last step of a segment), or is the pre-step part of the
-#next step:
-_s_step = _struct.Struct('<5d6fI3fI5d6fI')
+#Tables of decoded data, written by the _impl module in a separate buffer (see
+#pymod__impl/mod.cc for the layouts): Header (number of tracks, offset of track
+#records, number of segments, offset of segment records, number of steps,
+#offset of step records, offset of the step ranges of the segments) and the
+#fixed size records:
+_s_tblhdr = _struct.Struct('<7q')
+_s_trkrec = _struct.Struct('<iifIiIIIIIdd')
+_s_segrec = _struct.Struct('<ddIiffddIII4x')
+_s_steprec = _struct.Struct('<5d6fI3fI5d6fIIII4x')
+_s_segsteps = _struct.Struct('<II')#first step index and number of steps
+assert ( _s_trkrec.size, _s_segrec.size, _s_steprec.size ) == ( 56, 64, 168 )
 _s_u16 = _struct.Struct('<H')
 _s_u32 = _struct.Struct('<I')
-_SIZE_TRKHDR = 20
-_SIZE_TRK = 28
-_SIZE_SEG = 32
-_SIZE_SEG_EXTRA = 16
-_SIZE_STEPHDR = 8
-_SIZE_STEP = 84
-_trk_unpack = _s_trk.unpack_from
-_seg_unpack = _s_seg.unpack_from
-_step_unpack = _s_step.unpack_from
 _u32_unpack = _s_u32.unpack_from
-_daughter_structs = {}#cache of struct objects for daughter lists
+_tnew = tuple.__new__
 
 #Sub-section IDs of the shared "database" data (see GriffFormat/Format.hh):
 _DB_TOUCHABLES, _DB_VOLNAMES, _DB_MATERIALS, _DB_ELEMENTS, _DB_ISOTOPES = 100, 110, 120, 130, 140
@@ -456,103 +448,109 @@ class Setup:
 # Event data                                                                   #
 ################################################################################
 
-class Step:
+#The objects of the events are tuples of the values in the decoded records
+#written by the _impl module (see pymod__impl/mod.cc), followed by the reader
+#implementation object. They are created directly from the records (without
+#calling __init__) for efficiency.
+
+class Step( tuple ):
     """Step on a segment (see GriffDataRead/Step.hh)"""
+    #Values: 0-27 the stored step record, 28 track index, 29 segment index, 30
+    #step index, 31 reader implementation.
 
-    __slots__ = ( '_dr', '_i', '_is', '_it', '_v' )
-
-    def __init__( self, dr, it, iseg, v, i ):
-        self._dr, self._it, self._is, self._v, self._i = dr, it, iseg, v, i
+    __slots__ = ()
 
     def getTrack( self ):
-        return self._dr._tracks[self._it]
+        return self[31]._tracks[self[28]]
     def getSegment( self ):
-        return self._dr._tracks[self._it]._sg()[self._is]
+        t = self[31]._tracks[self[28]]
+        return self[31]._allSegments()[t[7]+self[29]]
     def iStep( self ):
-        return self._i
+        return self[30]
     def getNextStep( self ):
         s = self.getSegment()._steps()
-        return s[self._i+1] if self._i + 1 < len( s ) else None
+        i = self[30] + 1
+        return s[i] if i < len( s ) else None
     def getPreviousStep( self ):
-        return self.getSegment()._steps()[self._i-1] if self._i else None
+        return self.getSegment()._steps()[self[30]-1] if self[30] else None
     def eDep( self ):
-        return self._v[12]
+        return self[12]
     def eDepNonIonising( self ):
-        return self._v[13]
+        return self[13]
     def stepLength( self ):
-        return self._v[14]
+        return self[14]
     def stepStatus( self ):
-        return self._v[15]
+        return self[15]
     def stepStatusStr( self ):
-        return _stepstatus[self._v[15]]
+        return _stepstatus[self[15]]
     def preGlobalX( self ):
-        return self._v[0]
+        return self[0]
     def preGlobalY( self ):
-        return self._v[1]
+        return self[1]
     def preGlobalZ( self ):
-        return self._v[2]
+        return self[2]
     def preGlobal( self ):
-        return self._v[0:3]
+        return self[0:3]
     def preTime( self ):
-        return self._v[3]
+        return self[3]
     def preEKin( self ):
-        return abs( self._v[4] )
+        return abs( self[4] )
     def preAtVolEdge( self ):
         #NB: The sign of the stored energy indicates if the point is at an edge:
-        return _copysign( 1.0, self._v[4] ) < 0
+        return _copysign( 1.0, self[4] ) < 0
     def preLocalX( self ):
-        return self._v[5]
+        return self[5]
     def preLocalY( self ):
-        return self._v[6]
+        return self[6]
     def preLocalZ( self ):
-        return self._v[7]
+        return self[7]
     def preLocal( self ):
-        return self._v[5:8]
+        return self[5:8]
     def preMomentumX( self ):
-        return self._v[8]
+        return self[8]
     def preMomentumY( self ):
-        return self._v[9]
+        return self[9]
     def preMomentumZ( self ):
-        return self._v[10]
+        return self[10]
     def preMomentum( self ):
-        return self._v[8:11]
+        return self[8:11]
     def preProcessDefinedStep( self ):
-        return self._dr._strings[_DB_PROCNAMES][self._v[11]]
+        return self[31]._strings[_DB_PROCNAMES][self[11]]
     def postGlobalX( self ):
-        return self._v[16]
+        return self[16]
     def postGlobalY( self ):
-        return self._v[17]
+        return self[17]
     def postGlobalZ( self ):
-        return self._v[18]
+        return self[18]
     def postGlobal( self ):
-        return self._v[16:19]
+        return self[16:19]
     def postTime( self ):
-        return self._v[19]
+        return self[19]
     def postEKin( self ):
-        return abs( self._v[20] )
+        return abs( self[20] )
     def postAtVolEdge( self ):
-        return _copysign( 1.0, self._v[20] ) < 0
+        return _copysign( 1.0, self[20] ) < 0
     def postLocalX( self ):
-        return self._v[21]
+        return self[21]
     def postLocalY( self ):
-        return self._v[22]
+        return self[22]
     def postLocalZ( self ):
-        return self._v[23]
+        return self[23]
     def postLocal( self ):
-        return self._v[21:24]
+        return self[21:24]
     def postMomentumX( self ):
-        return self._v[24]
+        return self[24]
     def postMomentumY( self ):
-        return self._v[25]
+        return self[25]
     def postMomentumZ( self ):
-        return self._v[26]
+        return self[26]
     def postMomentum( self ):
-        return self._v[24:27]
+        return self[24:27]
     def postProcessDefinedStep( self ):
-        return self._dr._strings[_DB_PROCNAMES][self._v[27]]
+        return self[31]._strings[_DB_PROCNAMES][self[27]]
 
     def dump( self ):
-        v, ue, ut, ul = self._v, _u.keV, _u.ms, _u.mm
+        v, ue, ut, ul = self, _u.keV, _u.ms, _u.mm
         print( ( '[step(units:ms,mm,keV): edep=%f edepnonion=%f stepLength=%f stepStatus=%s t0=%f t1=%f'
                  ' ekin0=%f ekin1=%f x0=%f y0=%f z0=%f x1=%f y1=%f z1=%f lx0=%f ly0=%f lz0=%f lx1=%f ly1=%f lz1=%f'
                  ' edge0=%i edge1=%i px0=%f py0=%f pz0=%f px1=%f py1=%f pz1=%f proc0=%s proc1=%s]' )%(
@@ -563,104 +561,117 @@ class Step:
                      v[8]/ue, v[9]/ue, v[10]/ue, v[24]/ue, v[25]/ue, v[26]/ue,
                      self.preProcessDefinedStep(), self.postProcessDefinedStep() ), end = '' )
 
-class Segment:
+class Segment( tuple ):
     """Segment of a track inside a given volume (see GriffDataRead/Segment.hh)"""
+    #Values: 0 start time, 1 start energy, 2 flags and touchable index, 3 step
+    #data offset (or minus the number of steps in MINIMAL mode), 4 energy
+    #deposition, 5 non-ionising energy deposition, 6 end time, 7 end energy, 8
+    #track index, 9 segment index on track, 10 segment index in event, 11
+    #reader implementation.
 
-    __slots__ = ( '_dr', '_i', '_it', '_stepcache', '_v' )
-
-    def __init__( self, dr, it, v, i ):
-        self._dr, self._it, self._v, self._i, self._stepcache = dr, it, v, i, None
+    __slots__ = ()
 
     def getTrack( self ):
-        return self._dr._tracks[self._it]
+        return self[11]._tracks[self[8]]
     def iSegment( self ):
-        return self._i
+        return self[9]
     def getNextSegment( self ):
-        s = self.getTrack()._sg()
-        return s[self._i+1] if self._i + 1 < len( s ) else None
+        t = self[11]._tracks[self[8]]
+        return self[11]._allSegments()[self[10]+1] if self[9] + 1 < t[5] else None
     def getPreviousSegment( self ):
-        return self.getTrack()._sg()[self._i-1] if self._i else None
+        return self[11]._allSegments()[self[10]-1] if self[9] else None
     def nextWasFiltered( self ):
-        return bool( self._v[2] & 0x20000000 )
+        return bool( self[2] & 0x20000000 )
     def startTime( self ):
-        return self._v[0]
+        return self[0]
     def endTime( self ):
-        return self._v[6]
+        return self[6]
     def startEKin( self ):
-        return self._v[1]
+        return self[1]
     def endEKin( self ):
-        return self._v[7]
+        return self[7]
     def eDep( self ):
-        return self._v[4]
+        return self[4]
     def eDepNonIonising( self ):
-        return self._v[5]
+        return self[5]
     def startAtVolumeBoundary( self ):
-        return bool( self._v[2] & 0x40000000 )
+        return bool( self[2] & 0x40000000 )
     def endAtVolumeBoundary( self ):
-        return bool( self._v[2] & 0x80000000 )
+        return bool( self[2] & 0x80000000 )
 
     def _touchable( self ):
         try:
-            return self._dr._touchables[self._v[2] & 0x1FFFFFFF]
+            return self[11]._touchables[self[2] & 0x1FFFFFFF]
         except IndexError:
-            return self._dr._loadTouchables( self._v[2] & 0x1FFFFFFF )
+            return self[11]._loadTouchables( self[2] & 0x1FFFFFFF )
     def volumeDepthStored( self ):
         return len( self._touchable().info )
     def volumeName( self, idepth = 0 ):
         i = self._touchable().info[idepth][1]
         try:
-            return self._dr._volnames[i]
+            return self[11]._volnames[i]
         except IndexError:
-            return self._dr._loadVolNames( i )
+            return self[11]._loadVolNames( i )
     def physicalVolumeName( self, idepth = 0 ):
         i = self._touchable().info[idepth][2]
         try:
-            return self._dr._volnames[i]
+            return self[11]._volnames[i]
         except IndexError:
-            return self._dr._loadVolNames( i )
+            return self[11]._loadVolNames( i )
     def volumeCopyNumber( self, idepth = 0 ):
         return self._touchable().info[idepth][0]
     def material( self, idepth = 0 ):
-        return self._dr._db[_DB_MATERIALS][self._touchable().info[idepth][3]]
+        return self[11]._db[_DB_MATERIALS][self._touchable().info[idepth][3]]
     def isInWorldVolume( self ):
         return self.volumeDepthStored() == 1
     def inSameVolume( self, other ):
-        return ( self._v[2] & 0x1FFFFFFF ) == ( other._v[2] & 0x1FFFFFFF )
+        return ( self[2] & 0x1FFFFFFF ) == ( other[2] & 0x1FFFFFFF )
 
     def _steps( self ):
-        s = self._stepcache
-        if s is None:
-            s = self._stepcache = self._dr._loadSteps( self )
-        return s
+        c = self[11]
+        steps = c._allsteps
+        if steps is None:
+            steps = c._loadSteps()
+        a, n = c._segsteps[self[10]]
+        return steps[a:a+n]
     def nStepsOriginal( self ):
-        raw = self._v[3]
+        raw = self[3]
         if raw < 0:
             return -raw
-        return _u32_unpack( self._dr._fulldata(), raw )[0]
+        return _u32_unpack( self[11]._fulldata(), raw )[0]
     def nStepsStored( self ):
-        return len( self._steps() )
+        if self[3] < 0:
+            return 0
+        c = self[11]
+        if c._allsteps is None:
+            c._loadSteps()
+        return c._segsteps[self[10]][1]
     def hasStepInfo( self ):
-        return self._v[3] >= 0
+        return self[3] >= 0
     def getStep( self, i ):
         return self._steps()[i]
     def stepBegin( self ):
         return self._steps()[0]
     def firstStep( self ):
-        return self._steps()[0]
+        c = self[11]
+        steps = c._allsteps
+        if steps is None:
+            steps = c._loadSteps()
+        a, n = c._segsteps[self[10]]
+        if not n:
+            raise IndexError( 'segment has no steps' )
+        return steps[a]
     def lastStep( self ):
         return self._steps()[-1]
     @property
     def steps( self ):
-        s = self._stepcache
-        if s is None:
-            s = self._stepcache = self._dr._loadSteps( self )
-        return iter( s )
+        return iter( self._steps() )
     def segmentLength( self ):
-        return sum( s._v[14] for s in self._steps() )
+        return sum( s[14] for s in self._steps() )
 
     def dump( self ):
         ue, ut = _u.keV, _u.ms
-        v = self._v
+        v = self
         s = ( '[segment(units:ms,keV): t0=%f t1=%f ekin0=%f ekin1=%f edep=%f edepnonion=%f edge0=%i edge1=%i' )%(
             v[0]/ut, v[6]/ut, v[1]/ue, v[7]/ue, v[4]/ue, v[5]/ue, self.startAtVolumeBoundary(),
             self.endAtVolumeBoundary() )
@@ -669,89 +680,95 @@ class Segment:
                                       self.material( i ).getName(), self.volumeCopyNumber( i ) )
         print( s + ']', end = '' )
 
-class Track:
+class Track( tuple ):
     """Track of a particle (see GriffDataRead/Track.hh)"""
+    #Values: 0 track id, 1 pdg code, 2 weight, 3 creator process, 4 parent id,
+    #5 number of segments, 6 number of daughters, 7 index of first segment in
+    #event, 8 offset of daughter list in brief data, 9 track index, 10 start
+    #time, 11 start energy, 12 reader implementation.
 
-    __slots__ = ( '_daughters', '_dr', '_it', '_segs', '_v' )
-
-    def __init__( self, dr, it, v, daughters ):
-        self._dr, self._it, self._v, self._daughters, self._segs = dr, it, v, daughters, None
+    __slots__ = ()
 
     def _sg( self ):
-        #Segments are decoded when first needed:
-        s = self._segs
-        if s is None:
-            s = self._segs = self._dr._loadSegments( self )
-        return s
-
-    def _firstSegValues( self ):
-        s = self._segs
-        if s is not None:
-            return s[0]._v
-        return self._dr._firstSegValues( self )
+        segs = self[12]._allsegs
+        if segs is None:
+            segs = self[12]._allSegments()
+        a = self[7]
+        return segs[a:a+self[5]]
+    def _daughters( self ):
+        n = self[6]
+        if not n:
+            return ()
+        return _struct.unpack_from( '<%ii'%n, self[12]._brief, self[8] )
 
     def getDataReader( self ):
-        dr = self._dr._owner()
+        dr = self[12]._owner()
         if dr is None:
             raise RuntimeError( 'GriffDataReader of the track no longer exists' )
         return dr
     def trackID( self ):
-        return self._v[0]
+        return self[0]
     def parentID( self ):
-        return self._v[4]
+        return self[4]
     def getParent( self ):
-        return self._dr.getTrackByID( self._v[4] ) if self._v[4] else None
+        return self[12].getTrackByID( self[4] ) if self[4] else None
     def nDaughters( self ):
-        return len( self._daughters )
+        return self[6]
     def getDaughterID( self, i ):
-        return self._daughters[i]
+        return self._daughters()[i]
     def getDaughter( self, i ):
-        return self._dr.getTrackByID( self._daughters[i] )
+        return self[12].getTrackByID( self._daughters()[i] )
     @property
     def daughters( self ):
-        return ( self._dr.getTrackByID( d ) for d in self._daughters )
+        return ( self[12].getTrackByID( d ) for d in self._daughters() )
     def nSegments( self ):
-        return self._v[5]
+        return self[5]
     def getSegment( self, i ):
-        return self._sg()[i]
+        if not 0 <= i < self[5]:
+            raise IndexError( 'segment index out of range' )
+        segs = self[12]._allsegs
+        if segs is None:
+            segs = self[12]._allSegments()
+        return segs[self[7]+i]
     @property
     def segments( self ):
-        s = self._segs
-        if s is None:
-            s = self._segs = self._dr._loadSegments( self )
-        return iter( s )
+        segs = self[12]._allsegs
+        if segs is None:
+            segs = self[12]._allSegments()
+        a = self[7]
+        return iter( segs[a:a+self[5]] )
     def segmentBegin( self ):
-        return self._sg()[0]
+        return self.getSegment( 0 )
     def firstSegment( self ):
-        return self._sg()[0]
+        return self.getSegment( 0 )
     def lastSegment( self ):
-        return self._sg()[-1]
+        return self.getSegment( self[5] - 1 )
     def firstStep( self ):
-        return self._sg()[0].firstStep()
+        return self.getSegment( 0 ).firstStep()
     def lastStep( self ):
-        return self._sg()[-1].lastStep()
+        return self.getSegment( self[5] - 1 ).lastStep()
     def weight( self ):
-        return self._v[2]
+        return self[2]
     def isPrimary( self ):
-        return self._v[4] == 0
+        return self[4] == 0
     def isSecondary( self ):
-        return self._v[4] != 0
+        return self[4] != 0
     def startTime( self ):
-        return self._firstSegValues()[0]
+        return self[10]
     def startEKin( self ):
-        return self._firstSegValues()[1]
+        return self[11]
     def creatorProcess( self ):
-        return self._dr._strings[_DB_PROCNAMES][self._v[3]]
+        return self[12]._strings[_DB_PROCNAMES][self[3]]
     def pdgCode( self ):
-        return self._v[1]
+        return self[1]
     def _pdef( self ):
-        return self._dr._pdefs[self._v[1]]
+        return self[12]._pdefs[self[1]]
     def pdgName( self ):
-        return self._dr._strings[_DB_PDGNAMES][self._pdef().nameIdx]
+        return self[12]._strings[_DB_PDGNAMES][self._pdef().nameIdx]
     def pdgType( self ):
-        return self._dr._strings[_DB_PDGTYPES][self._pdef().typeIdx]
+        return self[12]._strings[_DB_PDGTYPES][self._pdef().typeIdx]
     def pdgSubType( self ):
-        return self._dr._strings[_DB_PDGSUBTYPES][self._pdef().subTypeIdx]
+        return self[12]._strings[_DB_PDGSUBTYPES][self._pdef().subTypeIdx]
     def mass( self ):
         return self._pdef().mass
     def width( self ):
@@ -775,12 +792,12 @@ class Track:
 
     def dump( self, dumpPDGInfo = False ):
         ue, ut = _u.keV, _u.ms
-        s = '[track(units:ms,keV): id=%i parent=%i'%( self._v[0], self._v[4] )
-        for i, d in enumerate( self._daughters ):
+        s = '[track(units:ms,keV): id=%i parent=%i'%( self[0], self[4] )
+        for i, d in enumerate( self._daughters() ):
             s += ' daug%i=%i'%( i, d )
         s += ' nsegm=%i w=%f primary=%i secondary=%i t0[ms]=%f ekin0[keV]=%f pdg=%i proc=%s'%(
-            self._v[5], self._v[2], self.isPrimary(), self.isSecondary(), self.startTime()/ut,
-            self.startEKin()/ue, self._v[1], self.creatorProcess() )
+            self[5], self[2], self.isPrimary(), self.isSecondary(), self.startTime()/ut,
+            self.startEKin()/ue, self[1], self.creatorProcess() )
         if dumpPDGInfo:
             nuclearMagneton = ( _c.h_Planck/( 4*_c.pi ) )/( _c.proton_mass_c2/_c.c_squared )
             s += ( ' name=%s type=%s subtype=%s mass=%f width=%f charge=%f lifeTime=%f atomicNumber=%i'
@@ -830,13 +847,16 @@ class _ReaderImpl:
         self._buffer_mb = float( buffer_mb )
         self._buf = _np.empty( int( self._buffer_mb * 1024 * 1024 ), dtype = _np.uint8 )
         self._mv = memoryview( self._buf )
+        self._tbl = _np.empty( int( self._buffer_mb * 1024 * 1024 ), dtype = _np.uint8 )
+        self._tmv = memoryview( self._tbl )
+        self._c1 = ( self, )#appended to the values of the objects
         self._allowSetupChange = False
         self._cachedMetaData = None#(fileIdx, metadata index, metadata map) for consistency checks
         self._lastSetup = None#(fileIdx, metadata index, Setup object) for setup() and setupChanged()
         self._dbFileIdx = None
         self._openedFile = None
         self._clearEvent()
-        self._r = _impl.Reader( '\n'.join( files ), nloops, self._buf )
+        self._r = _impl.Reader( '\n'.join( files ), nloops, self._buf, self._tbl )
         self._rh = self._r.handle()#handle of the C++ reader (for the GriffAnaUtils module)
         self._newEvent( True )
 
@@ -893,13 +913,17 @@ class _ReaderImpl:
         self._clearEvent()
         self._h = ( 0, ) * 13
         self._r = None#(the C++ reader must be deleted before the buffer)
-        self._buf = self._mv = None
+        self._buf = self._mv = self._tbl = self._tmv = self._c1 = None
         self._strings = self._db = self._pdefs = None
         self._touchables = self._volnames = None
         self._lastSetup = self._cachedMetaData = None
 
     def _clearEvent( self ):
         self._tracks = None
+        self._allsegs = None
+        self._allsteps = None
+        self._segsteps = None
+        self._contiguous = None
         self._brief = None
         self._full = None
         self._hdr = None
@@ -1036,83 +1060,49 @@ class _ReaderImpl:
         return self._hdr[2]
 
     def _loadTracks( self ):
-        data = self._briefdata()
-        pos = _SIZE_TRKHDR
-        tracks = []
-        dstructs = _daughter_structs
-        for it in range( self._hdr[2] ):
-            v = _trk_unpack( data, pos )
-            nd = v[6]
-            pos += _SIZE_TRK
-            if nd:
-                s = dstructs.get( nd )
-                if s is None:
-                    s = dstructs[nd] = _struct.Struct( '<%ii'%nd )
-                daughters = s.unpack_from( data, pos )
-                pos += 4 * nd
-            else:
-                daughters = ()
-            tracks.append( Track( self, it, v, daughters ) )
-        self._tracks = tracks
-        self._segdatastart = pos#segment data follows the track data
-        self._segoffsets = None
-        self._contiguous = all( t._v[0] == i + 1 for i, t in enumerate( tracks ) )
+        self._briefdata()
+        self._r.decode_tracks()
+        ntrk, trkoff, nseg, segoff = _s_tblhdr.unpack_from( self._tbl, 0 )[0:4]
+        c1 = self._c1
+        tracks = self._tracks = [ _tnew( Track, v + c1 )
+                                  for v in _s_trkrec.iter_unpack( self._tmv[trkoff:trkoff+56*ntrk] ) ]
+        self._segtbl = ( nseg, segoff )
         return tracks
 
-    def _segOffsets( self ):
-        #Offsets of the first segment of each track (found by only looking at the
-        #flags of each segment, which indicate if extra data follows):
-        offsets = self._segoffsets
-        if offsets is None:
-            data, pos = self._brief, self._segdatastart
-            offsets = []
-            for trk in self._tracks:
-                offsets.append( pos )
-                for _ in range( trk._v[5] ):
-                    #Test bit 0x20000000 of the (little endian) flags at offset 16:
-                    pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA if data[ pos + 19 ] & 0x20
-                             else _SIZE_SEG )
-                pos += _SIZE_SEG_EXTRA#extra info for the last segment
-            if pos != len( data ):
-                raise RuntimeError( 'Inconsistent track data in Griff file' )
-            self._segoffsets = offsets
-        return offsets
-
-    def _firstSegValues( self, trk ):
-        return _seg_unpack( self._brief, self._segOffsets()[trk._it] )
-
-    def _loadSegments( self, trk ):
-        #NB: Most tracks have very few segments, so per-track overhead matters.
-        it, data = trk._it, self._brief
-        pos = ( self._segoffsets or self._segOffsets() )[it]
-        n = trk._v[5]
-        if n == 1:
-            return [ Segment( self, it, _seg_unpack( data, pos ), 0 ) ]
-        segs = []
-        for i in range( n ):
-            v = _seg_unpack( data, pos )
-            segs.append( Segment( self, it, v, i ) )
-            pos += ( _SIZE_SEG + _SIZE_SEG_EXTRA ) if v[2] & 0x20000000 else _SIZE_SEG
+    def _allSegments( self ):
+        #All segments of the event (decoded when first needed):
+        segs = self._allsegs
+        if segs is None:
+            if self._tracks is None:
+                self._loadTracks()
+            nseg, segoff = self._segtbl
+            c1 = self._c1
+            segs = self._allsegs = [ _tnew( Segment, v + c1 )
+                                     for v in _s_segrec.iter_unpack( self._tmv[segoff:segoff+64*nseg] ) ]
         return segs
+
+    def _loadSteps( self ):
+        #All steps of the event:
+        if self._tracks is None:
+            self._loadTracks()
+        self._r.decode_steps()
+        _, _, nseg, _, nstep, stepoff, segstepoff = _s_tblhdr.unpack_from( self._tbl, 0 )
+        tmv, c1 = self._tmv, self._c1
+        self._segsteps = list( _s_segsteps.iter_unpack( tmv[segstepoff:segstepoff+8*nseg] ) )
+        steps = self._allsteps = [ _tnew( Step, v + c1 )
+                                   for v in _s_steprec.iter_unpack( tmv[stepoff:stepoff+168*nstep] ) ]
+        return steps
 
     def _trks( self ):
         t = self._tracks
         return t if t is not None else self._loadTracks()
 
-    def _loadSteps( self, seg ):
-        raw = seg._v[3]
-        if raw < 0:
-            return ()#MINIMAL mode
-        data = self._full
-        if data is None:
-            data = self._fulldata()
-        n = _u32_unpack( data, raw + 4 )[0]
-        it, iseg = seg._it, seg._i
-        pos = raw + _SIZE_STEPHDR
-        if n == 1:
-            return ( Step( self, it, iseg, _step_unpack( data, pos ), 0 ), )
-        return [ Step( self, it, iseg, _step_unpack( data, p ), k )
-                 for k, p in enumerate( range( pos, pos + _SIZE_STEP * n, _SIZE_STEP ) ) ]
+    def _isContiguous( self ):
+        #True if the track ids are 1, 2, 3, ... (i.e. no tracks were filtered):
+        c = self._contiguous
+        if c is None:
+            c = self._contiguous = all( t[0] == i + 1 for i, t in enumerate( self._trks() ) )
+        return c
 
     def getTrack( self, i ):
         return self._trks()[i]
@@ -1121,13 +1111,13 @@ class _ReaderImpl:
         t = self._trks()
         if not t or trkid < 1:
             return False
-        if not self._contiguous:
+        if not self._isContiguous():
             raise RuntimeError( 'hasTrackID not implemented yet for all filtered events' )
         return trkid <= len( t )
 
     def getTrackByID( self, trkid ):
         t = self._trks()
-        if not self._contiguous:
+        if not self._isContiguous():
             raise RuntimeError( 'getTrackByID not implemented yet for all filtered events' )
         return t[trkid-1]
 
@@ -1143,7 +1133,7 @@ class _ReaderImpl:
     def primaryTracks( self ):
         """Iterate over the primary tracks in the event"""
         for t in self._trks():
-            if t._v[4] != 0:
+            if t[4] != 0:
                 break#all primary tracks are at the beginning
             yield t
 
@@ -1200,6 +1190,10 @@ class GriffDataReader:
         self._rh = c._rh
         self._buffer_mb = c._buffer_mb
         self._trks = c._trks
+        #For efficiency, the methods of the implementation are called directly
+        #(the delegating methods of the class are only used for documentation):
+        for name in _delegated:
+            setattr( self, name, getattr( c, name ) )
 
     def __del__( self ):
         if self._c is not None:
@@ -1215,6 +1209,12 @@ class GriffDataReader:
         """Iterate over the primary tracks in the event"""
         return self._c.primaryTracks
 
+_delegated = ( 'eventActive', 'goToFirstEvent', 'goToNextFile', 'goToNextEvent', 'skipEvents',
+               'loopEvents', 'loopCount', 'seekEventByIndexInCurrentFile', 'eventIndexInCurrentFile',
+               'runNumber', 'eventNumber', 'currentEventVersion', 'seed', 'seedStr', 'eventStorageMode',
+               'eventStorageModeStr', 'eventCheckSum', 'verifyEventDataIntegrity', 'nTracks', 'getTrack',
+               'hasTrackID', 'getTrackByID', 'nPrimaryTracks', 'setupChanged', 'setup', 'allowSetupChange' )
+
 def _add_delegates():
     def mk( name ):
         f = getattr( _ReaderImpl, name )
@@ -1223,10 +1223,6 @@ def _add_delegates():
         fct.__name__ = fct.__qualname__ = name
         fct.__doc__ = f.__doc__
         return fct
-    for name in ( 'eventActive', 'goToFirstEvent', 'goToNextFile', 'goToNextEvent', 'skipEvents',
-                  'loopEvents', 'loopCount', 'seekEventByIndexInCurrentFile', 'eventIndexInCurrentFile',
-                  'runNumber', 'eventNumber', 'currentEventVersion', 'seed', 'seedStr', 'eventStorageMode',
-                  'eventStorageModeStr', 'eventCheckSum', 'verifyEventDataIntegrity', 'nTracks', 'getTrack',
-                  'hasTrackID', 'getTrackByID', 'nPrimaryTracks', 'setupChanged', 'setup', 'allowSetupChange' ):
+    for name in _delegated:
         setattr( GriffDataReader, name, mk( name ) )
 _add_delegates()
