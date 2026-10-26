@@ -37,6 +37,9 @@ namespace EvtFile {
       return *(m_db[i]);
     }
 
+    //Number of entries loaded so far:
+    std::size_t size() const { return m_db.size(); }
+
     //For the data loading framework:
     virtual subsectid_type uniqueSubSectionID() const { return m_subSectionID; }
     virtual void load(const char*&);

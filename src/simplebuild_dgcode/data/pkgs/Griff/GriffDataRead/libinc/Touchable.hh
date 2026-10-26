@@ -22,6 +22,7 @@ namespace GriffDataRead {
     const Material * material(unsigned idepth,GriffDataReader*dr) const;
 
   private:
+    friend struct ExpertAccess;
     friend class EvtFile::DBEntryReader<Touchable>;
     Touchable(const char*&data);
 

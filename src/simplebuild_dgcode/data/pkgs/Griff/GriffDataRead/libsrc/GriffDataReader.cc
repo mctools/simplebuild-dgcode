@@ -205,6 +205,8 @@ void GriffDataReader::initFile(unsigned i)
     m_fr = nullptr;
   }
   m_fr = new(&(m_mempool_filereader[0])) EvtFile::FileReader(GriffFormat::Format::getFormat(),m_inputFiles[i].c_str(),&m_dbmgr);
+  if (m_extbuf)
+    m_fr->setExternalBuffer( m_extbuf, m_extbuf_size, m_extbuf_offset );
   bool ok = m_fr->init();
   if (!ok || m_fr->bad()) {
     printf("GriffDataReader::ERROR Trouble while opening file %s : %s\n",m_inputFiles[i].c_str(),m_fr->bad_reason());
@@ -383,6 +385,17 @@ GriffDataRead::Setup* GriffDataReader::setup()
   m_lastAccessedMetaDataIdx.first = mdidx;
   m_lastAccessedMetaDataIdx.second = m_fileIdx;
   return m_setup;
+}
+
+void GriffDataReader::setExternalEventBuffer( char * buf, std::size_t size, std::size_t offset )
+{
+  //Data already loaded refer to the previous buffer:
+  clearEvent();
+  m_extbuf = buf;
+  m_extbuf_size = size;
+  m_extbuf_offset = offset;
+  if (m_fr)
+    m_fr->setExternalBuffer( buf, size, offset );
 }
 
 std::string GriffDataReader::seedStr() const

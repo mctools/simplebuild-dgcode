@@ -5,6 +5,7 @@
 #include "Utils/ProgressiveHash.hh"
 #include "ZLibUtils/Compress.hh"
 #include <limits>
+#include <stdexcept>
 #include <cassert>
 
 namespace EvtFile {
@@ -291,14 +292,42 @@ namespace EvtFile {
     return;
   }
 
+  void FileReader::setExternalBuffer( char * buf, std::size_t size, std::size_t offset )
+  {
+    if ( buf && offset > size )
+      throw std::length_error("EvtFile::FileReader::setExternalBuffer: offset exceeds buffer size");
+    m_extbuf = buf;
+    m_extbuf_size = buf ? size : 0;
+    m_extbuf_offset = buf ? offset : 0;
+    m_briefdata_isloaded = false;
+    m_fulldata_isloaded = false;
+  }
+
+  std::size_t FileReader::fullDataOffset() const
+  {
+    assert(eventActive());
+    //8 byte aligned offset following the brief data:
+    std::size_t res = m_extbuf_offset + nBytesBriefData();
+    return ( res + 7 ) & ~std::size_t(7);
+  }
+
   const char* FileReader::getBriefData() {
     assert(isInit());
     if (m_briefdata_isloaded)
-      return m_section_briefdata.data();
+      return m_extbuf ? m_extbuf + m_extbuf_offset : m_section_briefdata.data();
     assert(eventActive() && "getBriefData() called when not eventActive()");
     unsigned n(nBytesBriefData());
+    char * dest;
+    if (m_extbuf) {
+      if ( n > m_extbuf_size - m_extbuf_offset )
+        throw std::length_error("EvtFile::FileReader: Event data does not fit in the buffer");
+      dest = m_extbuf + m_extbuf_offset;
+    } else {
+      if (n)
+        m_section_briefdata.resize_without_init(n);
+      dest = m_section_briefdata.data();
+    }
     if (n) {
-      m_section_briefdata.resize_without_init(nBytesBriefData());
       assert(m_currentEventInfo!=nullptr);
       std::streampos pos = m_currentEventInfo->evtPosInFile;
       pos+=EVTFILE_EVENT_HEADER_BYTES;
@@ -308,32 +337,49 @@ namespace EvtFile {
         m_bad=true;
         return 0;
       }
-      read(m_section_briefdata.data(),n);
+      read(dest,n);
       if (m_is.fail()) {
         m_bad=true;
         return 0;
       }
     }
     m_briefdata_isloaded=true;
-    return m_section_briefdata.data();
+    return dest;
   }
 
   const char* FileReader::getFullData() {
     assert(isInit());
 
     if (m_fulldata_isloaded)
-      return m_section_fulldata.data();
+      return m_extbuf ? m_extbuf + fullDataOffset() : m_section_fulldata.data();
 
     assert(eventActive() && "getFullData() called when not eventActive()");
 
     unsigned n(nBytesFullDataOnDisk());
     m_fulldata_size = n;
+    char * extdest = nullptr;
+    std::size_t extcapacity = 0;
+    if (m_extbuf) {
+      const std::size_t offset = fullDataOffset();
+      if ( offset > m_extbuf_size )
+        throw std::length_error("EvtFile::FileReader: Event data does not fit in the buffer");
+      extdest = m_extbuf + offset;
+      extcapacity = m_extbuf_size - offset;
+    }
     if (n) {
-      //read compressed data:
-      if (m_fulldata_compressed)
+      //read (compressed) data:
+      char * dest;
+      if (m_fulldata_compressed) {
         m_section_fulldata_compressed.resize_without_init(n);
-      else
+        dest = m_section_fulldata_compressed.data();
+      } else if (extdest) {
+        if ( n > extcapacity )
+          throw std::length_error("EvtFile::FileReader: Event data does not fit in the buffer");
+        dest = extdest;
+      } else {
         m_section_fulldata.resize_without_init(n);
+        dest = m_section_fulldata.data();
+      }
       assert(m_currentEventInfo!=nullptr);
       std::streampos pos = m_currentEventInfo->evtPosInFile;
       pos+=EVTFILE_EVENT_HEADER_BYTES;
@@ -344,10 +390,7 @@ namespace EvtFile {
         m_bad=true;
         return 0;
       }
-      if (m_fulldata_compressed)
-        read(m_section_fulldata_compressed.data(),n);
-      else
-        read(m_section_fulldata.data(),n);
+      read(dest,n);
       if (m_is.fail()) {
         m_bad=true;
         return 0;
@@ -355,14 +398,22 @@ namespace EvtFile {
       if (m_fulldata_compressed) {
         //uncompress:
         assert(n>sizeof(std::uint32_t));
-        ZLibUtils::decompressToBufferNew(m_section_fulldata_compressed.data(), n, m_section_fulldata);
-        if ( m_section_fulldata.size() >= std::numeric_limits<unsigned>::max() )
-          throw std::runtime_error("full data section size exceeds unsigned integer limits");
-        m_fulldata_size = static_cast<unsigned>(m_section_fulldata.size());
+        if (extdest) {
+          try {
+            m_fulldata_size = static_cast<unsigned>( ZLibUtils::decompressToFixedBuffer( dest, n, extdest, extcapacity ) );
+          } catch ( std::length_error& ) {
+            throw std::length_error("EvtFile::FileReader: Event data does not fit in the buffer");
+          }
+        } else {
+          ZLibUtils::decompressToBufferNew(dest, n, m_section_fulldata);
+          if ( m_section_fulldata.size() >= std::numeric_limits<unsigned>::max() )
+            throw std::runtime_error("full data section size exceeds unsigned integer limits");
+          m_fulldata_size = static_cast<unsigned>(m_section_fulldata.size());
+        }
       }
     }
     m_fulldata_isloaded=true;
-    return m_section_fulldata.data();
+    return extdest ? extdest : m_section_fulldata.data();
   }
 
   bool FileReader::verifyEventDataIntegrity()

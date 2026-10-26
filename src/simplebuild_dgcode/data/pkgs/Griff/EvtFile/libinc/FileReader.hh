@@ -116,6 +116,17 @@ namespace EvtFile {
     unsigned nBytesSharedDataInEvent() const { return m_currentEventInfo->sectionSize_database; }
     void getSharedDataInEvent(std::vector<char>&);//Will reload data and place in vector (will be resized)
 
+    //Optionally place the event data in an external buffer of fixed size (e.g.
+    //one owned by Python code) instead of in internal buffers: The brief data
+    //is placed at the given offset in the buffer, and the (uncompressed) full
+    //data right after it, at the offset given by fullDataOffset(). A
+    //std::length_error is thrown when loading event data which does not fit
+    //in the buffer. Any event data already loaded must be loaded again:
+    void setExternalBuffer( char * buf, std::size_t size, std::size_t offset );
+    bool hasExternalBuffer() const { return m_extbuf != nullptr; }
+    //Offset of the full data in the external buffer (for the current event):
+    std::size_t fullDataOffset() const;
+
   private:
 
 
@@ -145,6 +156,9 @@ namespace EvtFile {
     Utils::DynBuffer<char> m_section_fulldata_compressed;
     bool m_briefdata_isloaded;
     bool m_fulldata_isloaded;
+    char * m_extbuf = nullptr;
+    std::size_t m_extbuf_size = 0;
+    std::size_t m_extbuf_offset = 0;
 
     void initEventAtIndex(unsigned idx);
     struct EventInfo {
