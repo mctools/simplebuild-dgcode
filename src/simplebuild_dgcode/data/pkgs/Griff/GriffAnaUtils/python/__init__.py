@@ -1,13 +1,20 @@
 """utilities for easy and efficient analysis of .griff data files containing results from Geant4 simulations"""
 __author__='thomas.kittelmann@ess.eu'
 
-#Pure Python implementation of the iterators and filters of the GriffAnaUtils
-#package (see the C++ classes in GriffAnaUtils/libinc/*.hh). Filters are
-#created with the create(..) methods and added to iterators with addFilter(..)
-#(which returns the filter, for convenience). Each iterator yields the
-#selected objects in the current event of the GriffDataReader.
+#The iterators and filters of the GriffAnaUtils package (see the C++ classes in
+#GriffAnaUtils/libinc/*.hh). Filters are created with the create(..) methods
+#and added to iterators with addFilter(..) (which returns the filter, for
+#convenience). Each iterator yields the selected objects in the current event
+#of the GriffDataReader.
+#
+#The iterators and the provided filters are implemented in C++ (in the _impl
+#module), and only the selected objects are created in Python. Custom filters
+#can be implemented in Python by deriving from ITrackFilter, ISegmentFilter or
+#IStepFilter and implementing the filter(..) method. They are applied (in
+#Python) to the objects selected by the other filters.
 
-import struct as _struct
+import numpy as _np
+from . import _impl
 
 __all__ = [ 'IFilter',
             'ISegmentFilter',
@@ -26,34 +33,39 @@ __all__ = [ 'IFilter',
             'TrackFilter_Primary',
             'TrackIterator' ]
 
-_DBL_MAX = 1.7976931348623157e308
-
-def _to_float32( x ):
-    #Thresholds are stored as single precision floats in the C++ classes:
-    return _struct.unpack( '<f', _struct.pack( '<f', x ) )[0]
+_TRACK, _SEGMENT, _STEP = 0, 1, 2
 
 class IFilter:
     """Base class of all filters"""
+    #Defaults (also for custom filters not calling IFilter.__init__):
+    _cf = None#C++ filter (for the provided filters)
+    _negated = False
+    _enabled = True
     def __init__( self ):
-        self._negated = False
-        self._enabled = True
+        pass
     @classmethod
     def create( cls, *args ):
         return cls( *args )
     def setNegated( self, n = True ):
-        self._negated = bool( n )
+        if self._cf:
+            self._cf.set_negated( bool( n ) )
+        else:
+            self._negated = bool( n )
     def toggleNegation( self ):
-        self._negated = not self._negated
+        self.setNegated( not self.negated() )
     def negated( self ):
-        return self._negated
+        return self._cf.negated() if self._cf else self._negated
     def enabled( self ):
-        return self._enabled
+        return self._cf.enabled() if self._cf else self._enabled
     def setEnabled( self, b = True ):
-        old, self._enabled = self._enabled, bool( b )
+        old = self.enabled()
+        if self._cf:
+            self._cf.set_enabled( bool( b ) )
+        else:
+            self._enabled = bool( b )
         return old
     def setDisabled( self, b = True ):
-        old, self._enabled = not self._enabled, not b
-        return old
+        return not self.setEnabled( not b )
     #Reference counting is not needed in Python (kept for compatibility):
     def ref( self ):
         pass
@@ -63,28 +75,31 @@ class IFilter:
         return 1
 
 class ITrackFilter( IFilter ):
+    _kind = _TRACK
     def filter( self, trk ):
-        raise NotImplementedError
+        if not self._cf:
+            raise NotImplementedError
+        return self._cf.filter_track( trk._dr._rh, trk._it )
 
 class ISegmentFilter( IFilter ):
+    _kind = _SEGMENT
     def filter( self, segment ):
-        raise NotImplementedError
+        if not self._cf:
+            raise NotImplementedError
+        return self._cf.filter_segment( segment._dr._rh, segment._it, segment._i )
     def associatedTrackFilter( self ):
         return None
 
 class IStepFilter( IFilter ):
+    _kind = _STEP
     def filter( self, step ):
-        raise NotImplementedError
+        if not self._cf:
+            raise NotImplementedError
+        return self._cf.filter_step( step._dr._rh, step._it, step._is, step._i )
     def associatedSegmentFilter( self ):
         return None
     def associatedTrackFilter( self ):
         return None
-
-def _passes( filters, o ):
-    for f in filters:
-        if f._enabled and f.filter( o ) == f._negated:
-            return False
-    return True
 
 ################################################################################
 # Track filters                                                                #
@@ -94,84 +109,49 @@ class TrackFilter_PDGCode( ITrackFilter ):
     """Select tracks with given PDG codes (by default the signs must match,
     call setUnsigned() to ignore signs)"""
     def __init__( self, *codes ):
-        super().__init__()
-        self._unsigned = False
-        self._positive, self._negative, self._abs = set(), set(), set()
+        self._cf = _impl.track_filter_pdgcode()
         self.addCodes( *codes )
     def addCode( self, c ):
-        c = int( c )
-        ( self._negative if c < 0 else self._positive ).add( c )
-        self._abs.add( abs( c ) )
+        self._cf.pdg_add_code( int( c ) )
         return self
     def addCodes( self, *codes ):
         for c in codes:
             self.addCode( c )
         return self
     def setUnsigned( self ):
-        self._unsigned = True
+        self._cf.pdg_set_unsigned( True )
         return self
     def setSigned( self ):
-        self._unsigned = False
+        self._cf.pdg_set_unsigned( False )
         return self
     def isUnsigned( self ):
-        return self._unsigned
+        return self._cf.pdg_is_unsigned()
     def isSigned( self ):
-        return not self._unsigned
-    def filter( self, trk ):
-        c = trk.pdgCode()
-        if self._unsigned:
-            return abs( c ) in self._abs
-        return c in ( self._negative if c < 0 else self._positive )
+        return not self.isUnsigned()
 
 class TrackFilter_Descendant( ITrackFilter ):
     """Select descendants of a given track (setAncestor must be called in each
     event)"""
     def __init__( self ):
-        super().__init__()
-        self._ancestor = None
-        self._includeAncestor = True
-        self._eventTracks = None
+        self._cf = _impl.track_filter_descendant()
     def setAncestor( self, trk, includeAncestor = True ):
-        self._ancestor = trk
-        self._includeAncestor = bool( includeAncestor )
-        self._eventTracks = trk.getDataReader()._trks()#identifies the event
-    def filter( self, trk ):
-        a = self._ancestor
-        if a is None or a.getDataReader()._tracks is not self._eventTracks:
-            raise RuntimeError( 'TrackFilter_Descendant ERROR: setAncestor must be invoked each event before filter is used!!' )
-        aid = a.trackID()
-        if trk.trackID() == aid:
-            return self._includeAncestor
-        while True:
-            pid = trk.parentID()
-            if pid == 0:
-                return False
-            if pid == aid:
-                return True
-            trk = trk.getParent()
+        self._cf.descendant_set_ancestor( trk._dr._rh, trk._it, bool( includeAncestor ) )
 
 class TrackFilter_Primary( ITrackFilter ):
     """Select primary tracks"""
-    def filter( self, trk ):
-        return trk.isPrimary()
+    def __init__( self ):
+        self._cf = _impl.track_filter_primary()
 
 class TrackFilter_Charged( ITrackFilter ):
     """Select charged tracks (optionally only negative or positive ones)"""
     def __init__( self ):
-        super().__init__()
-        self._allowNegative = True
-        self._allowPositive = True
+        self._cf = _impl.track_filter_charged()
     def setNegativeOnly( self ):
-        self._allowNegative, self._allowPositive = True, False
+        self._cf.charged_negative_only()
         return self
     def setPositiveOnly( self ):
-        self._allowNegative, self._allowPositive = False, True
+        self._cf.charged_positive_only()
         return self
-    def filter( self, trk ):
-        q = trk.charge()
-        if not q:
-            return False
-        return self._allowNegative if q < 0 else self._allowPositive
 
 ################################################################################
 # Segment filters                                                              #
@@ -182,175 +162,172 @@ class SegmentFilter_Volume( ISegmentFilter ):
     mother and grandmother volumes). Names are those of logical volumes,
     unless setPhysical() is called."""
     def __init__( self, volumeName, motherVolumeName = None, grandMotherVolumeName = None ):
-        super().__init__()
-        self._names = [ volumeName ]
-        if motherVolumeName:
-            self._names.append( motherVolumeName )
-            if grandMotherVolumeName:
-                self._names.append( grandMotherVolumeName )
-        self._logical = True
+        if grandMotherVolumeName and not motherVolumeName:
+            raise ValueError( 'grandMotherVolumeName requires motherVolumeName' )
+        self._cf = _impl.segment_filter_volume( volumeName, motherVolumeName or '',
+                                                grandMotherVolumeName or '' )
     def setPhysical( self ):
-        self._logical = False
+        self._cf.volume_set_physical( True )
         return self
     def setLogical( self ):
-        self._logical = True
+        self._cf.volume_set_physical( False )
         return self
     def isPhysical( self ):
-        return not self._logical
+        return self._cf.volume_is_physical()
     def isLogical( self ):
-        return self._logical
-    def filter( self, segment ):
-        name = segment.volumeName if self._logical else segment.physicalVolumeName
-        names = self._names
-        if names[0] != name( 0 ):
-            return False
-        if len( names ) == 1:
-            return True
-        if len( names ) > segment.volumeDepthStored():
-            return False
-        return all( names[i] == name( i ) for i in range( 1, len( names ) ) )
+        return not self.isPhysical()
 
 class SegmentFilter_EnergyDeposition( ISegmentFilter ):
     """Select segments with an energy deposition above a threshold"""
     def __init__( self, threshold ):
-        super().__init__()
-        self._threshold = _to_float32( threshold )
-    def filter( self, segment ):
-        return segment.eDep() > self._threshold
+        self._cf = _impl.segment_filter_edep( threshold )
 
 class SegmentFilter_EKin( ISegmentFilter ):
     """Select segments with kinetic energies in given ranges"""
     def __init__( self ):
-        super().__init__()
-        self._minStart, self._maxStart = -1.0, _DBL_MAX
-        self._minEnd, self._maxEnd = -1.0, _DBL_MAX
-    #NB: The C++ class has a bug in setMinStartEKin/setMaxStartEKin (setting
-    #the end values), which is reproduced here for consistency:
+        self._cf = _impl.segment_filter_ekin()
     def setMinStartEKin( self, e ):
-        self._minEnd = e
+        self._cf.ekin_set( 0, e )
         return self
     def setMaxStartEKin( self, e ):
-        self._maxEnd = e
+        self._cf.ekin_set( 1, e )
         return self
     def setMinEndEKin( self, e ):
-        self._minEnd = e
+        self._cf.ekin_set( 2, e )
         return self
     def setMaxEndEKin( self, e ):
-        self._maxEnd = e
+        self._cf.ekin_set( 3, e )
         return self
-    def filter( self, segment ):
-        pre = segment.startEKin()
-        if pre < self._minStart or pre > self._maxStart:
-            return False
-        post = segment.endEKin()
-        return not ( post < self._minEnd or post > self._maxEnd )
 
 ################################################################################
 # Step filters                                                                 #
 ################################################################################
 
 class StepFilter_EnergyDeposition( IStepFilter ):
-    """Select steps with an energy deposition above a threshold"""
+    """Select steps with an energy deposition above a threshold (associated
+    segment filters are handled internally by the iterators)"""
     def __init__( self, threshold ):
-        super().__init__()
-        self._threshold = threshold
-        self._segmFilter = None
-    def filter( self, step ):
-        return step.eDep() > self._threshold
-    def associatedSegmentFilter( self ):
-        if self._segmFilter is None:
-            self._segmFilter = SegmentFilter_EnergyDeposition( self._threshold )
-        return self._segmFilter
+        self._cf = _impl.step_filter_edep( threshold )
 
 class StepFilter_EKin( IStepFilter ):
     """Select steps with kinetic energies in given ranges"""
     def __init__( self ):
-        super().__init__()
-        self._minPre, self._maxPre = -1.0, _DBL_MAX
-        self._minPost, self._maxPost = -1.0, _DBL_MAX
+        self._cf = _impl.step_filter_ekin()
     def setMinPreEKin( self, e ):
-        self._minPre = e
+        self._cf.ekin_set( 0, e )
         return self
     def setMaxPreEKin( self, e ):
-        self._maxPre = e
+        self._cf.ekin_set( 1, e )
         return self
     def setMinPostEKin( self, e ):
-        self._minPost = e
+        self._cf.ekin_set( 2, e )
         return self
     def setMaxPostEKin( self, e ):
-        self._maxPost = e
+        self._cf.ekin_set( 3, e )
         return self
-    def filter( self, step ):
-        pre = step.preEKin()
-        if pre < self._minPre or pre > self._maxPre:
-            return False
-        post = step.postEKin()
-        return not ( post < self._minPost or post > self._maxPost )
 
 ################################################################################
 # Iterators                                                                    #
 ################################################################################
 
-class TrackIterator:
-    """Iterates over the tracks of the current event passing all filters"""
+def _passes( filters, o ):
+    for f in filters:
+        if f.enabled() and f.filter( o ) == f.negated():
+            return False
+    return True
+
+class _Iterator:
+    _kind = None
+    _what = None
+
     def __init__( self, dr ):
         self._dr = dr
-        self._trackFilters = []
+        #Buffer filled by the C++ iterator for each event (with the number of
+        #selected objects followed by their indices):
+        self._buf = _np.empty( max( 1, int( dr._buffer_mb * 1024 * 1024 ) // 4 ), dtype = _np.int32 )
+        self._it = _impl.Iterator( self._kind, dr._rh, self._buf )
+        self._pyfilters = ( [], [], [] )#custom filters (per kind)
+
     def addFilter( self, f ):
-        if not isinstance( f, ITrackFilter ):
-            raise TypeError( 'Only track filters can be added to a TrackIterator' )
-        self._trackFilters.append( f )
+        if not isinstance( f, IFilter ) or getattr( f, '_kind', None ) is None or f._kind > self._kind:
+            raise TypeError( 'Only %s filters can be added to a %s'%( self._what, self.__class__.__name__ ) )
+        if f._cf:
+            self._it.add_filter( f._cf )
+        else:
+            self._pyfilters[f._kind].append( f )
+            #Associated filters of custom filters:
+            if f._kind == _STEP:
+                for af in ( f.associatedSegmentFilter(), f.associatedTrackFilter() ):
+                    if af:
+                        self.addFilter( af )
+            elif f._kind == _SEGMENT:
+                af = f.associatedTrackFilter()
+                if af:
+                    self.addFilter( af )
         return f
-    def __iter__( self ):
+
+    def _indices( self ):
+        #Indices of the selected objects in the current event:
         if not self._dr.eventActive():
-            return
-        tf = self._trackFilters
-        for trk in self._dr._trks():
+            return []
+        self._it.fill()
+        buf = self._buf
+        return buf[1:1+int( buf[0] )*( self._kind + 1 )].tolist()
+
+class TrackIterator( _Iterator ):
+    """Iterates over the tracks of the current event passing all filters"""
+    _kind = _TRACK
+    _what = 'track'
+    def __iter__( self ):
+        idx = self._indices()
+        trks = self._dr._trks()
+        tf = self._pyfilters[_TRACK]
+        for i in idx:
+            trk = trks[i]
             if not tf or _passes( tf, trk ):
                 yield trk
 
-class SegmentIterator:
+class SegmentIterator( _Iterator ):
     """Iterates over the segments of the current event passing all filters"""
-    def __init__( self, dr ):
-        self._trkIter = TrackIterator( dr )
-        self._segmentFilters = []
-    def addFilter( self, f ):
-        if isinstance( f, ITrackFilter ):
-            self._trkIter.addFilter( f )
-        elif isinstance( f, ISegmentFilter ):
-            self._segmentFilters.append( f )
-            tf = f.associatedTrackFilter()
-            if tf:
-                self._trkIter.addFilter( tf )
-        else:
-            raise TypeError( 'Only track or segment filters can be added to a SegmentIterator' )
-        return f
+    _kind = _SEGMENT
+    _what = 'track or segment'
     def __iter__( self ):
-        sf = self._segmentFilters
-        for trk in self._trkIter:
-            for seg in trk._sg():
+        idx = self._indices()
+        trks = self._dr._trks()
+        tf, sf, _ = self._pyfilters
+        itrk, segs = -1, None
+        for k in range( 0, len( idx ), 2 ):
+            if idx[k] != itrk:
+                itrk = idx[k]
+                trk = trks[itrk]
+                segs = trk._sg() if ( not tf or _passes( tf, trk ) ) else None
+            if segs is not None:
+                seg = segs[idx[k+1]]
                 if not sf or _passes( sf, seg ):
                     yield seg
 
-class StepIterator:
+class StepIterator( _Iterator ):
     """Iterates over the steps of the current event passing all filters"""
-    def __init__( self, dr ):
-        self._segIter = SegmentIterator( dr )
-        self._stepFilters = []
-    def addFilter( self, f ):
-        if isinstance( f, IStepFilter ):
-            self._stepFilters.append( f )
-            sf, tf = f.associatedSegmentFilter(), f.associatedTrackFilter()
-            if sf:
-                self._segIter.addFilter( sf )
-            if tf:
-                self._segIter.addFilter( tf )
-        else:
-            self._segIter.addFilter( f )
-        return f
+    _kind = _STEP
+    _what = 'track, segment or step'
     def __iter__( self ):
-        stf = self._stepFilters
-        for seg in self._segIter:
-            for step in seg._steps():
+        idx = self._indices()
+        trks = self._dr._trks()
+        tf, sf, stf = self._pyfilters
+        itrk = iseg = -1
+        segs = steps = None
+        for k in range( 0, len( idx ), 3 ):
+            if idx[k] != itrk:
+                itrk, iseg = idx[k], -1
+                trk = trks[itrk]
+                segs = trk._sg() if ( not tf or _passes( tf, trk ) ) else None
+            if segs is None:
+                continue
+            if idx[k+1] != iseg:
+                iseg = idx[k+1]
+                seg = segs[iseg]
+                steps = seg._steps() if ( not sf or _passes( sf, seg ) ) else None
+            if steps is not None:
+                step = steps[idx[k+2]]
                 if not stf or _passes( stf, step ):
                     yield step
