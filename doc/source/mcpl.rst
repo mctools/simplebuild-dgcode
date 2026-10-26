@@ -92,7 +92,7 @@ per-particle info to the stored particles (MCPL "user flags"). Run with the flag
 Finally, it is of course also possible to configure MCPL writing using Python
 code inside your :ref:`sim script <sbsimscript>`, rather than using command-line
 options, by using the
-:sbpkg:`G4MCPLPlugins.MCPLWriter<G4MCPLPlugins/pycpp_MCPLWriter/mod.cc>`
+:sbpkg:`G4MCPLPlugins.MCPLWriter<G4MCPLPlugins/python/MCPLWriter.py>`
 module. See an example :sbpkg:`here <G4MCPLTests/scripts/mcplwrite>` for how to
 use it.
 
