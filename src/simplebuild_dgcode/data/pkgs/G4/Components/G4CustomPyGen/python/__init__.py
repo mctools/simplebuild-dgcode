@@ -1,5 +1,6 @@
 __all__=['GenBase']
 import sys,os
+import numpy as _np
 
 from G4Interfaces.ToPy import Component as _Component
 from . import _impl
@@ -94,7 +95,7 @@ class G4PyGun:
                 self.fire()
         elif self._nfired:
             raise RuntimeError('implementation error: Custom python generator aborted current event *after* it fired!')
-        res = self._particles
+        res = _np.array( self._particles, dtype = _np.float64 )
         self._particles = []
         self._nfired = 0
         return res
