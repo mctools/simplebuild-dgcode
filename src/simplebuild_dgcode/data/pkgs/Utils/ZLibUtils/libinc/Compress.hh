@@ -2,6 +2,7 @@
 #define Utils_Compress_hh
 
 #include "Utils/DynBuffer.hh"
+#include <cstddef>
 
 namespace ZLibUtils {
   //Will perform zlib compression on indata and places it in output. Note that
@@ -18,6 +19,11 @@ namespace ZLibUtils {
                          unsigned& outdataLength );
   void decompressToBufferNew( const char* indata, unsigned indataLength,
                               Utils::DynBuffer<char>& output );
+
+  //Decompress into a buffer of fixed size, returning the size of the
+  //decompressed data (throws std::length_error if it does not fit):
+  std::size_t decompressToFixedBuffer( const char* indata, unsigned indataLength,
+                                       char* output, std::size_t capacity );
 }
 
 #endif
