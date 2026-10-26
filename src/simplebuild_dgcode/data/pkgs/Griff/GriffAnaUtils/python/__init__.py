@@ -15,6 +15,8 @@ __author__='thomas.kittelmann@ess.eu'
 
 import numpy as _np
 from . import _impl
+from GriffDataRead import _reader as _GDR
+_segrec_unpack = _GDR._s_segrec.unpack_from
 
 __all__ = [ 'IFilter',
             'ISegmentFilter',
@@ -95,7 +97,7 @@ class IStepFilter( IFilter ):
     def filter( self, step ):
         if not self._cf:
             raise NotImplementedError
-        return self._cf.filter_step( step[31]._rh, step[28], step[29], step[30] )
+        return self._cf.filter_step( step[2]._rh, *step._ids() )
     def associatedSegmentFilter( self ):
         return None
     def associatedTrackFilter( self ):
@@ -296,13 +298,23 @@ class SegmentIterator( _Iterator ):
         idx = self._indices()
         if not idx:
             return iter( () )
-        trks = self._dr._trks()
-        segs = trks[0][12]._allSegments()
+        c = self._dr._c
+        segs = c._allsegs
+        if segs is None:
+            nseg, segoff = ( c._tables or c._decodeTables() )[2:4]
+            if 4 * len( idx ) > nseg:
+                segs = c._allSegments()#most segments are selected
+        if segs is not None:
+            sel = [ segs[g] for g in idx ]
+        else:
+            #Only decode the selected segments:
+            up, tmv, c1, tnew, Segment = _segrec_unpack, c._tmv, c._c1, tuple.__new__, _GDR.Segment
+            sel = [ tnew( Segment, up( tmv, segoff + 64 * g ) + c1 ) for g in idx ]
         tf, sf, _ = self._pyfilters
         if not tf and not sf:
-            return iter( [ segs[g] for g in idx ] )
-        return ( segs[g] for g in idx
-                 if ( not tf or _passes( tf, trks[segs[g][8]] ) ) and ( not sf or _passes( sf, segs[g] ) ) )
+            return iter( sel )
+        return ( s for s in sel
+                 if ( not tf or _passes( tf, s.getTrack() ) ) and ( not sf or _passes( sf, s ) ) )
 
 class StepIterator( _Iterator ):
     """Iterates over the steps of the current event passing all filters"""
@@ -313,18 +325,24 @@ class StepIterator( _Iterator ):
         idx = self._indices()
         if not idx:
             return iter( () )
-        trks = self._dr._trks()
-        c = trks[0][12]
-        segs = c._allSegments()
-        steps = c._allsteps
-        if steps is None:
-            steps = c._loadSteps()
+        c = self._dr._c
+        if c._segsteps is None:
+            c._decodeSteps()
         segsteps = c._segsteps
+        steps = c._allsteps
+        if steps is None and 4 * len( idx ) > 2 * c._nsteps:
+            steps = c._allSteps()#most steps are selected
+        if steps is not None:
+            sel = [ steps[segsteps[idx[k]][0]+idx[k+1]] for k in range( 0, len( idx ), 2 ) ]
+        else:
+            #Only create the selected steps:
+            tmv, a, tnew, Step = c._tmv, c._stepoff, tuple.__new__, _GDR.Step
+            sel = [ tnew( Step, ( tmv, a + 168 * ( segsteps[idx[k]][0] + idx[k+1] ), c ) )
+                    for k in range( 0, len( idx ), 2 ) ]
         tf, sf, stf = self._pyfilters
-        sel = [ steps[segsteps[idx[k]][0]+idx[k+1]] for k in range( 0, len( idx ), 2 ) ]
         if not tf and not sf and not stf:
             return iter( sel )
         return ( st for st in sel
-                 if ( not tf or _passes( tf, trks[st[28]] ) )
-                 and ( not sf or _passes( sf, segs[trks[st[28]][7]+st[29]] ) )
+                 if ( not tf or _passes( tf, st.getTrack() ) )
+                 and ( not sf or _passes( sf, st.getSegment() ) )
                  and ( not stf or _passes( stf, st ) ) )

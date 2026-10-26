@@ -17,6 +17,7 @@ namespace GriffDataRead {
   //Access to private data of the reader (declared as friend in the headers):
   struct ExpertAccess {
     static unsigned fileIndex( const GriffDataReader& dr ) { return dr.m_fileIdx; }
+    static EvtFile::index_type metaDataIdx( const GriffDataReader& dr ) { return dr.metaDataIdx(); }
 
     //Raw data of the objects (in the event buffer):
     static const char * rawData( const Track& t ) { return t.m_data; }
@@ -162,8 +163,11 @@ namespace GriffDataRead_py {
   //event data follows the header:
   enum : std::size_t { HDR_ACTIVE, HDR_BRIEF_OFFSET, HDR_BRIEF_SIZE, HDR_FULL_OFFSET,
                        HDR_FULL_SIZE, HDR_RUN, HDR_EVENT, HDR_FILE_INDEX, HDR_EVENT_INDEX,
-                       HDR_LOOP_COUNT, HDR_CHECKSUM, HDR_VERSION, HDR_SERIAL, HDR_NENTRIES };
-  constexpr std::size_t HDR_BYTES = 128;
+                       HDR_LOOP_COUNT, HDR_CHECKSUM, HDR_VERSION, HDR_SERIAL,
+                       //From the header of the brief data:
+                       HDR_NTRACKS, HDR_METADATA_INDEX, HDR_MODE, HDR_SEED,
+                       HDR_NENTRIES };
+  constexpr std::size_t HDR_BYTES = 192;
   static_assert( HDR_NENTRIES * sizeof(std::int64_t) <= HDR_BYTES );
 
   using GriffDataRead::ExpertAccess;
@@ -437,6 +441,11 @@ namespace GriffDataRead_py {
       //The brief data is always needed:
       if ( !fr->getBriefData() )
         throw std::runtime_error( "Problems encountered while reading event data" );
+      h[HDR_NTRACKS] = m_dr->nTracks();
+      h[HDR_METADATA_INDEX] = static_cast<std::int64_t>( ExpertAccess::metaDataIdx( *m_dr ) );
+      h[HDR_MODE] = static_cast<std::int64_t>( m_dr->eventStorageMode() );
+      const std::uint64_t seed = m_dr->seed();
+      std::memcpy( &h[HDR_SEED], &seed, sizeof(seed) );//(unsigned)
     }
     std::int64_t fileIndex();
   };
