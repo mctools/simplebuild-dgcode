@@ -6,6 +6,7 @@ __all__=[
     'HistCollection',
     'HistCounts',
     'deserialise',
+    'histFromHandle',
     'histTypeOfData',
 ]
 
@@ -47,6 +48,12 @@ class HistBase:
 
     def __init__( self, h ):
         object.__setattr__( self, '_h', h )
+
+    def handle( self ):
+        """Handle of the C++ histogram, which can be passed to C++ code in other
+        modules (see SimpleHists/Handles.hh). It is valid as long as this
+        object exists."""
+        return self._h.handle()
 
     def getTitle( self ):
         return self._h.get_title()
@@ -111,6 +118,11 @@ def deserialise( serialised_data ):
     return _wrap( _impl.Hist.deserialise( _to_u8array( serialised_data ) ) )
 
 deserialiseAndManage = deserialise
+
+def histFromHandle( handle ):
+    """Python histogram for a C++ histogram registered by C++ code with
+    SimpleHists::registerHist (taking over the registration)"""
+    return _wrap( _impl.Hist.from_handle( int( handle ) ) )
 
 def _check_serialised( data, histtype ):
     data = _to_u8array( data )
@@ -433,105 +445,116 @@ _histclasses = { 0x01 : Hist1D, 0x02 : Hist2D, 0x03 : HistCounts }
 
 class HistCollection:
     """Collection of histograms with unique keys, which can be saved to and
-    loaded from .shist files."""
+    loaded from .shist files (see SimpleHists/HistCollection.hh, which
+    implements it)."""
 
     def __init__( self, filename = None ):
-        self._hists = {}
         if filename is not None:
             if hasattr( filename, '__fspath__' ):
                 filename = filename.__fspath__()
-            c = _impl.Collection.load( filename )
-            keys = c.keys()
-            for k in ( keys.split( '\n' ) if keys else [] ):
-                self._hists[k] = _wrap( c.take( k ) )
-
-    def _add( self, h, key ):
-        _impl.check_key( key )
-        if key in self._hists:
             _sys.stdout.flush()
-            print( 'HistCollection ERROR duplicate key "%s"'%key, flush = True )
-            raise RuntimeError( 'HistCollection duplicate key' )
-        self._hists[key] = h
-        return h
+            self._c = _impl.Collection.load( filename )
+        else:
+            self._c = _impl.Collection.create()
+        self._cache = {}#key -> Python histogram object (to always return the same)
+
+    @classmethod
+    def fromHandle( cls, handle ):
+        """Python collection for a C++ collection registered by C++ code with
+        SimpleHists::registerCollection (taking over the registration)"""
+        o = cls.__new__( cls )
+        o._c = _impl.Collection.from_handle( int( handle ) )
+        o._cache = {}
+        return o
+
+    def handle( self ):
+        """Handle of the C++ collection, which can be passed to C++ code in
+        other modules (see SimpleHists/Handles.hh). It is valid as long as this
+        object exists."""
+        return self._c.handle()
+
+    def _cached( self, key, h ):
+        o = self._cache[key] = _wrap( h )
+        return o
 
     def book1D( self, *args ):
         """book1D(nbins,xmin,xmax,key) or book1D(title,nbins,xmin,xmax,key)"""
         if len( args ) not in ( 4, 5 ):
             raise TypeError( 'book1D: invalid arguments' )
-        return self._add( Hist1D( *args[:-1] ), args[-1] )
+        title = args[0] if len( args ) == 5 else ''
+        nbins, xmin, xmax, key = args[-4:]
+        _sys.stdout.flush()
+        return self._cached( key, self._c.book1d( title, nbins, xmin, xmax, key ) )
 
     def book2D( self, *args ):
         """book2D(nbinsx,xmin,xmax,nbinsy,ymin,ymax,key) or book2D(title,nbinsx,...,key)"""
         if len( args ) not in ( 7, 8 ):
             raise TypeError( 'book2D: invalid arguments' )
-        return self._add( Hist2D( *args[:-1] ), args[-1] )
+        title = args[0] if len( args ) == 8 else ''
+        _sys.stdout.flush()
+        return self._cached( args[-1], self._c.book2d( title, *args[-7:] ) )
 
     def bookCounts( self, *args ):
         """bookCounts(key) or bookCounts(title,key)"""
         if len( args ) not in ( 1, 2 ):
             raise TypeError( 'bookCounts: invalid arguments' )
-        return self._add( HistCounts( args[0] if len( args ) == 2 else '' ), args[-1] )
+        title = args[0] if len( args ) == 2 else ''
+        _sys.stdout.flush()
+        return self._cached( args[-1], self._c.bookcounts( title, args[-1] ) )
 
     def add( self, h, key ):
-        """Add histogram with the given key"""
-        _cppobj( h )
-        self._add( h, key )
+        """Add histogram with the given key (the histogram is shared, not copied)"""
+        _sys.stdout.flush()
+        self._c.add( _cppobj( h ), key )
+        self._cache[key] = h
 
     def hasKey( self, key ):
-        return key in self._hists
+        return self._c.has_key( key )
 
     def getKey( self, h ):
-        for k, o in self._hists.items():
-            if o._h.same( _cppobj( h ) ):
-                return k
-        raise KeyError( 'Histogram not in collection' )
+        """Key of histogram (empty string if not in the collection)"""
+        return self._c.get_key( _cppobj( h ) )
 
     def hist( self, key ):
-        h = self._hists.get( key )
+        h = self._cache.get( key )
         if h is None:
             _sys.stdout.flush()
-            print( 'HistCollection::hist ERROR unknown key "%s"'%key, flush = True )
-            raise RuntimeError( 'HistCollection::hist unknown key' )
+            h = self._cached( key, self._c.hist( key ) )
         return h
 
     def remove( self, key ):
         """Remove histogram from collection and return it"""
-        return self._hists.pop( key )
+        _sys.stdout.flush()
+        h = self._c.remove( key )
+        return self._cache.pop( key, None ) or _wrap( h )
 
     removeAndManage = remove
 
     def saveToFile( self, filename, allowOverwrite = False ):
         if hasattr( filename, '__fspath__' ):
             filename = filename.__fspath__()
-        c = _impl.Collection.create()
-        for k in sorted( self._hists ):
-            c.add_clone( self._hists[k]._h, k )
         _sys.stdout.flush()
-        c.save( filename, bool( allowOverwrite ) )
+        self._c.save( filename, bool( allowOverwrite ) )
 
     def getKeys( self ):
-        return sorted( self._hists )
+        keys = self._c.keys()
+        return keys.split( '\n' ) if keys else []
 
     keys = property( getKeys )
 
     def merge( self, other ):
         """Merge with another collection (or a collection in a file), which must
         have identical keys and compatible histograms"""
-        if not isinstance( other, HistCollection ):
-            other = HistCollection( other )
-        e = 'HistCollection attempted merge with incompatible collection'
-        if self.getKeys() != other.getKeys():
-            raise RuntimeError( e )
-        for k, h in self._hists.items():
-            if not h.mergeCompatible( other._hists[k] ):
-                raise RuntimeError( e )
-        for k, h in self._hists.items():
-            h.merge( other._hists[k] )
+        _sys.stdout.flush()
+        if isinstance( other, HistCollection ):
+            self._c.merge( other._c )
+        else:
+            if hasattr( other, '__fspath__' ):
+                other = other.__fspath__()
+            self._c.merge_file( other )
 
     def isSimilar( self, other ):
-        if self.getKeys() != other.getKeys():
-            return False
-        return all( h.isSimilar( other._hists[k] ) for k, h in self._hists.items() )
+        return self._c.is_similar( other._c )
 
 ###############################################################################
 # 2) Detect presence of numpy and if present, we add methods for getting

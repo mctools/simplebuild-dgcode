@@ -29,9 +29,6 @@ SimpleHists::HistCollection::~HistCollection()
 
 void SimpleHists::HistCollection::clear()
 {
-  auto itE = m_hists.end();
-  for (auto it = m_hists.begin();it!=itE;++it)
-    delete it->second;
   m_hists.clear();
 }
 
@@ -39,16 +36,16 @@ SimpleHists::Hist1D* SimpleHists::HistCollection::book1D(unsigned nbins, double 
                                                          const std::string& key)
 {
   testKey(key);
-  Hist1D * h = new Hist1D(nbins,xmin,xmax);
+  auto h = std::make_shared<Hist1D>(nbins,xmin,xmax);
   m_hists[key]=h;
-  return h;
+  return h.get();
 }
 
 void SimpleHists::HistCollection::cloneMissing( const HistCollection& o )
 {
   for( auto& e : o.m_hists ) {
     if ( !m_hists.count( e.first ) )
-      m_hists[ e.first ] = e.second->clone();
+      m_hists[ e.first ] = std::shared_ptr<HistBase>( e.second->clone() );
   }
 }
 
@@ -57,9 +54,9 @@ SimpleHists::Hist1D* SimpleHists::HistCollection::book1D(const std::string& titl
                                                          const std::string& key)
 {
   testKey(key);
-  Hist1D * h = new Hist1D(title,nbins,xmin,xmax);
+  auto h = std::make_shared<Hist1D>(title,nbins,xmin,xmax);
   m_hists[key]=h;
-  return h;
+  return h.get();
 }
 
 SimpleHists::Hist2D* SimpleHists::HistCollection::book2D(unsigned nbinsx, double xmin, double xmax,
@@ -67,9 +64,9 @@ SimpleHists::Hist2D* SimpleHists::HistCollection::book2D(unsigned nbinsx, double
                                                          const std::string& key)
 {
   testKey(key);
-  Hist2D * h = new Hist2D(nbinsx,xmin,xmax,nbinsy,ymin,ymax);
+  auto h = std::make_shared<Hist2D>(nbinsx,xmin,xmax,nbinsy,ymin,ymax);
   m_hists[key]=h;
-  return h;
+  return h.get();
 }
 
 SimpleHists::Hist2D* SimpleHists::HistCollection::book2D(const std::string& title,
@@ -78,25 +75,25 @@ SimpleHists::Hist2D* SimpleHists::HistCollection::book2D(const std::string& titl
                                                          const std::string& key)
 {
   testKey(key);
-  Hist2D * h = new Hist2D(title,nbinsx,xmin,xmax,nbinsy,ymin,ymax);
+  auto h = std::make_shared<Hist2D>(title,nbinsx,xmin,xmax,nbinsy,ymin,ymax);
   m_hists[key]=h;
-  return h;
+  return h.get();
 }
 
 SimpleHists::HistCounts* SimpleHists::HistCollection::bookCounts(const std::string& key)
 {
   testKey(key);
-  HistCounts * h = new HistCounts();
+  auto h = std::make_shared<HistCounts>();
   m_hists[key]=h;
-  return h;
+  return h.get();
 }
 
 SimpleHists::HistCounts* SimpleHists::HistCollection::bookCounts(const std::string& title,const std::string& key)
 {
   testKey(key);
-  HistCounts * h = new HistCounts(title);
+  auto h = std::make_shared<HistCounts>(title);
   m_hists[key]=h;
-  return h;
+  return h.get();
 }
 
 void SimpleHists::HistCollection::testKey(const std::string& key)
@@ -168,7 +165,13 @@ const SimpleHists::HistBase* SimpleHists::HistCollection::hist(const std::string
     printf("HistCollection::hist ERROR unknown key \"%s\"\n",key.c_str());
     throw std::runtime_error("HistCollection::hist unknown key");
   }
-  return it->second;
+  return it->second.get();
+}
+
+std::shared_ptr<SimpleHists::HistBase> SimpleHists::HistCollection::histPtr(const std::string& key) const
+{
+  hist(key);//checks key
+  return m_hists.find(key)->second;
 }
 
 //Expensive search for key associated to histogram (returns empty string if not part of this collection)
@@ -177,7 +180,7 @@ const std::string& SimpleHists::HistCollection::getKey(const HistBase*h) const
   //Expensive reverse search!
   auto itE = m_hists.end();
   for (auto it = m_hists.begin(); it!=itE; ++it) {
-    if (it->second == h)
+    if (it->second.get() == h)
       return it->first;
   }
   static std::string empty;
@@ -338,7 +341,7 @@ SimpleHists::HistCollection::HistCollection(const std::string& filename)
     HistBase * h = deserialise(histbuf);
     if (!h)
       throw std::runtime_error("HistCollection ERROR problems unpacking histogram!");
-    m_hists[keybuf]=h;
+    m_hists[keybuf]=std::shared_ptr<HistBase>(h);
   }
 
   int res = gzclose(fp);
@@ -356,9 +359,8 @@ void SimpleHists::HistCollection::getKeys(std::set<std::string>& keys) const
 
 void SimpleHists::HistCollection::merge(const std::string& filename_other_collection)
 {
-  auto o = new HistCollection(filename_other_collection);
-  merge(o);
-  delete o;
+  HistCollection o(filename_other_collection);
+  merge(&o);
 }
 
 void SimpleHists::HistCollection::merge(const HistCollection* o)
@@ -375,7 +377,7 @@ void SimpleHists::HistCollection::merge(const HistCollection* o)
   for (;it!=itE;++it,++ito) {
     if (it->first!=ito->first)
       throw std::runtime_error(e);
-    if (!it->second->mergeCompatible(ito->second))
+    if (!it->second->mergeCompatible(ito->second.get()))
       throw std::runtime_error(e);
   }
   assert(ito==o->m_hists.end());
@@ -384,7 +386,7 @@ void SimpleHists::HistCollection::merge(const HistCollection* o)
   it=m_hists.begin();
   ito=o->m_hists.begin();
   for (;it!=itE;++it,++ito)
-    it->second->merge(ito->second);
+    it->second->merge(ito->second.get());
   assert(ito==o->m_hists.end());
 }
 
@@ -408,7 +410,7 @@ bool SimpleHists::HistCollection::isSimilar(const HistCollection*o) const
   it=m_hists.begin();
   ito=o->m_hists.begin();
   for (;it!=itE;++it,++ito) {
-    if (!it->second->isSimilar(ito->second))
+    if (!it->second->isSimilar(ito->second.get()))
       return false;
   }
   return true;
@@ -417,17 +419,25 @@ bool SimpleHists::HistCollection::isSimilar(const HistCollection*o) const
 void SimpleHists::HistCollection::add(HistBase*h,const std::string&key)
 {
   testKey(key);
-  m_hists[key]=h;
+  m_hists[key]=std::shared_ptr<HistBase>(h);
 }
 
-SimpleHists::HistBase* SimpleHists::HistCollection::remove(const std::string&key)
+void SimpleHists::HistCollection::add(std::shared_ptr<HistBase> h,const std::string&key)
+{
+  if (!h)
+    throw std::runtime_error("HistCollection::add null histogram");
+  testKey(key);
+  m_hists[key]=std::move(h);
+}
+
+std::shared_ptr<SimpleHists::HistBase> SimpleHists::HistCollection::remove(const std::string&key)
 {
   auto it = m_hists.find(key);
   if (it==m_hists.end()) {
     printf("HistCollection::remove ERROR unknown key \"%s\"\n",key.c_str());
     throw std::runtime_error("HistCollection::remove unknown key");
   }
-  HistBase* h = it->second;
+  auto h = std::move(it->second);
   m_hists.erase(it);
   return h;
 }

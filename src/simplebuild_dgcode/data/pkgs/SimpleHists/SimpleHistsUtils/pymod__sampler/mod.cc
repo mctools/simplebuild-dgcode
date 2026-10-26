@@ -1,46 +1,39 @@
 #include "sbldpy/sbldpy.hh"
 #include "SimpleHistsUtils/Sampler.hh"
 #include "SimpleHists/Hist1D.hh"
+#include "SimpleHists/Handles.hh"
 #include <cstdint>
-#include <memory>
-#include <string>
-#include <vector>
+#include <stdexcept>
 
-//Compiled part of SimpleHistsUtils.Sampler (see python/Sampler.py). Since
-//objects can not be passed between sbldpy modules, the histogram is passed in
-//serialised form (the Sampler only uses it during initialisation).
+//Compiled part of SimpleHistsUtils.Sampler (see python/Sampler.py). The
+//histogram is passed by its handle (see SimpleHists/Handles.hh).
 
 namespace SimpleHistsUtils_py {
 
-  std::string toString( sbldpy::NumpyView<const std::uint8_t> data )
+  SimpleHists::Hist1D * getHist1D( std::int64_t handle )
   {
-    return std::string( reinterpret_cast<const char*>( data.data() ), data.size() );
-  }
-
-  std::unique_ptr<SimpleHists::Hist1D> makeHist( sbldpy::NumpyView<const std::uint8_t> data )
-  {
-    return std::make_unique<SimpleHists::Hist1D>( toString( data ) );
+    auto h = dynamic_cast<SimpleHists::Hist1D*>( SimpleHists::getHist( handle ).get() );
+    if ( !h )
+      throw sbldpy::TypeError( "Sampler requires a Hist1D histogram" );
+    return h;//(only used during the call)
   }
 
   class PySampler {
   public:
-    PySampler( sbldpy::NumpyView<const std::uint8_t> serialised_hist, double scalefact )
-      : m_sampler( makeHist( serialised_hist ).get(), scalefact )
+    PySampler( std::int64_t hist_handle, double scalefact )
+      : m_sampler( getHist1D( hist_handle ), scalefact )
     {
     }
-    void reinit( sbldpy::NumpyView<const std::uint8_t> serialised_hist, double scalefact )
+    void reinit( std::int64_t hist_handle, double scalefact )
     {
-      SimpleHists::Hist1D h( toString( serialised_hist ) );
-      m_sampler.reinit( &h, scalefact );
+      m_sampler.reinit( getHist1D( hist_handle ), scalefact );
     }
     double sample( double r ) const { return m_sampler.sample( r ); }
-    sbldpy::NumpyCopy<double> sampleMany( sbldpy::NumpyView<const double> rand_vals ) const
+    //Replaces random numbers with sampled values:
+    void sampleMany( sbldpy::NumpyView<double> vals ) const
     {
-      std::vector<double> res;
-      res.reserve( rand_vals.size() );
-      for ( double r : rand_vals )
-        res.push_back( m_sampler.sample( r ) );
-      return res;
+      for ( auto& v : vals )
+        v = m_sampler.sample( v );
     }
   private:
     SimpleHists::Sampler m_sampler;
@@ -52,8 +45,8 @@ SBLDPY_MODULE( _sampler )
 {
   using SimpleHistsUtils_py::PySampler;
   m.add_class<PySampler>( "Sampler" )
-    .def_init<sbldpy::NumpyView<const std::uint8_t>,double>( { "serialised_hist", "scalefact" } )
-    .def( "reinit", &PySampler::reinit, { "serialised_hist", "scalefact" } )
+    .def_init<std::int64_t,double>( { "hist_handle", "scalefact" } )
+    .def( "reinit", &PySampler::reinit, { "hist_handle", "scalefact" } )
     .def( "sample", &PySampler::sample, { "rand" } )
-    .def( "sampleMany", &PySampler::sampleMany, { "rand_vals" } );
+    .def( "sampleMany", &PySampler::sampleMany, { "vals" } );
 }

@@ -137,6 +137,19 @@ following differences compared to pybind11:
   and wrap the resulting handles in ``G4Interfaces.ToPy.CppObject`` objects
   on the Python side. For an example, see
   :sbpkg:`G4Tests.CppObjTest<G4Tests/pymod__CppObjTest/mod.cc>`.
+* Similarly, :ref:`SimpleHists <sbsimplehists>` histograms and collections are
+  shared between modules with handles (see
+  :sbpkg:`SimpleHists/Handles.hh<SimpleHists/libinc/Handles.hh>`). The Python
+  histograms and collections have a ``handle()`` method, and a C++ function
+  receiving the handle (as a ``std::int64_t`` parameter) can access the very
+  same object with ``SimpleHists::getHist(handle)`` or
+  ``SimpleHists::getCollection(handle)``, which return a ``std::shared_ptr``.
+  Conversely, C++ code can register a histogram or collection with
+  ``SimpleHists::registerHist`` or ``SimpleHists::registerCollection`` and
+  return the handle, which Python code can turn into a Python object with
+  ``SimpleHists.histFromHandle(handle)`` or
+  ``SimpleHists.HistCollection.fromHandle(handle)``. For an example, see
+  :sbpkg:`SimpleHistsTests._handletest<SimpleHistsTests/pymod__handletest/mod.cc>`.
 * The launcher is an sbldpy based module, and Python's global interpreter lock
   (GIL) is released while it runs a simulation. Therefore, if C++ code of your
   own in ``pycpp_*`` modules calls Python code (or otherwise uses Python

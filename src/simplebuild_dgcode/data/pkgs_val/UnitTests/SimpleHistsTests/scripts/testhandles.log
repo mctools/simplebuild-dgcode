@@ -1,0 +1,9 @@
+filled from C++: 2.0 1.0 1.0
+created in C++: Hist1D made in C++ 3.0
+keys: ['cpp', 'py'] booked in C++ 1.0
+collection from C++: ['counts', 'shared']
+shared hist after filling in C++: 1.0
+still alive in Python after C++ released it: 1.0
+shared after add: True 3.0
+unknown handle: Unknown SimpleHists handle
+handle can only be taken over once: Unknown SimpleHists handle

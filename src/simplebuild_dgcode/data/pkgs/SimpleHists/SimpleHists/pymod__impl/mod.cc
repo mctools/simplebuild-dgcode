@@ -1,4 +1,5 @@
 #include "sbldpy/sbldpy.hh"
+#include "SimpleHists/Handles.hh"
 #include "SimpleHists/Hist1D.hh"
 #include "SimpleHists/Hist2D.hh"
 #include "SimpleHists/HistCounts.hh"
@@ -13,9 +14,10 @@
 //Compiled part of the SimpleHists Python module (see python/__init__.py, which
 //provides the actual Python classes). All histograms are held by objects of
 //the class Hist (sharing the ownership of the C++ histogram), which provides
-//the methods of all histogram types (checking the type at runtime). Loading
-//and saving of .shist files is done with the C++ HistCollection class, to keep
-//the file format in a single place.
+//the methods of all histogram types (checking the type at runtime). Similarly,
+//objects of the class Collection share the ownership of a C++ HistCollection.
+//Histograms and collections can be shared with other modules via handles (see
+//SimpleHists/Handles.hh).
 
 namespace SimpleHists_py {
 
@@ -25,6 +27,18 @@ namespace SimpleHists_py {
   class Hist {
   public:
     explicit Hist( sh::HistBase* h ) : m_h( h ) { if ( !h ) throw std::runtime_error("null histogram"); }
+    explicit Hist( std::shared_ptr<sh::HistBase> h ) : m_h( std::move( h ) ) { if ( !m_h ) throw std::runtime_error("null histogram"); }
+    Hist( const Hist& o ) : m_h( o.m_h ) {}//(the handle is not copied)
+    Hist& operator=( const Hist& ) = delete;
+    ~Hist() { if ( m_handle ) sh::unregisterHist( m_handle ); }
+    //Handle for other modules (registered on first use, unregistered when this
+    //object is deleted):
+    std::int64_t handle()
+    {
+      if ( !m_handle )
+        m_handle = sh::registerHist( m_h );
+      return m_handle;
+    }
     sh::HistBase& base() { return *m_h; }
     sh::Hist1D& h1() { return cast<sh::Hist1D>( "Hist1D" ); }
     sh::Hist2D& h2() { return cast<sh::Hist2D>( "Hist2D" ); }
@@ -32,6 +46,7 @@ namespace SimpleHists_py {
     const std::shared_ptr<sh::HistBase>& ptr() const { return m_h; }
   private:
     std::shared_ptr<sh::HistBase> m_h;
+    std::int64_t m_handle = 0;
     template<class T>
     T& cast( const char * what )
     {
@@ -73,32 +88,35 @@ namespace SimpleHists_py {
     ~FlushAfter() { std::fflush( stdout ); }
   };
 
-  //For loading and saving collections:
   class Collection {
   public:
-    Collection() = default;
-    explicit Collection( const std::string& filename ) : m_c( filename ) {}
-    std::vector<std::string> keys() const
+    explicit Collection( std::shared_ptr<sh::HistCollection> c ) : m_c( std::move( c ) ) {}
+    Collection( const Collection& o ) : m_c( o.m_c ) {}//(the handle is not copied)
+    Collection& operator=( const Collection& ) = delete;
+    ~Collection() { if ( m_handle ) sh::unregisterCollection( m_handle ); }
+    sh::HistCollection& c() { return *m_c; }
+    //Handle for other modules (registered on first use, unregistered when this
+    //object is deleted):
+    std::int64_t handle()
     {
-      std::vector<std::string> res;
-      for ( auto& e : m_c.getHistograms() )
-        res.push_back( e.first );
+      if ( !m_handle )
+        m_handle = sh::registerCollection( m_c );
+      return m_handle;
+    }
+    std::string keys() const
+    {
+      std::string res;//keys separated by newlines (keys can not contain newlines)
+      for ( auto& e : m_c->getHistograms() ) {
+        if ( !res.empty() )
+          res += '\n';
+        res += e.first;
+      }
       return res;
     }
-    Hist take( const std::string& key ) { return Hist( m_c.remove( key ) ); }
-    void addClone( Hist& h, const std::string& key ) { m_c.add( h.base().clone(), key ); }
-    void save( const std::string& filename, bool allowOverwrite ) { m_c.saveToFile( filename, allowOverwrite ); }
-    std::size_t size() const { return m_c.getHistograms().size(); }
   private:
-    sh::HistCollection m_c;
+    std::shared_ptr<sh::HistCollection> m_c;
+    std::int64_t m_handle = 0;
   };
-
-  //Validate keys with the rules of the C++ HistCollection class:
-  void checkKey( const std::string& key )
-  {
-    sh::HistCollection c;
-    c.add( new sh::HistCounts, key );//throws in case of problems
-  }
 
 }
 
@@ -107,7 +125,6 @@ SBLDPY_MODULE( _impl )
   using namespace SimpleHists_py;
   using sbldpy::NumpyView;
 
-  m.def( "check_key", &checkKey );
   m.def( "hist_type_of_data", []( sbldpy::NumpyView<const std::uint8_t> d ) -> std::int64_t
   {
     return sh::histTypeOfData( fromBytes( d ) );
@@ -134,6 +151,14 @@ SBLDPY_MODULE( _impl )
     {
       return Hist( sh::deserialise( fromBytes( d ) ) );
     } )
+    .def_static( "from_handle", []( std::int64_t handle )
+    {
+      //Takes over the registered histogram (sharing its ownership):
+      auto h = sh::getHist( handle );
+      sh::unregisterHist( handle );
+      return Hist( std::move( h ) );
+    } )
+    .def( "handle", []( Hist& h ) { return h.handle(); } )
     //HistBase:
     .def( "same", []( Hist& h, Hist& o ) { return h.ptr() == o.ptr(); } )
     .def( "hist_type", []( Hist& h ) -> std::int64_t { return h.base().histType(); } )
@@ -332,21 +357,51 @@ SBLDPY_MODULE( _impl )
     } )
     ;
 
-  m.add_class<Collection>( "Collection", "For loading and saving .shist files" )
-    .def_static( "load", []( const std::string& filename ) { return Collection( filename ); } )
-    .def_static( "create", []() { return Collection(); } )
-    .def( "keys", []( Collection& c )
+  m.add_class<Collection>( "Collection", "C++ histogram collection (see SimpleHists/python/__init__.py)" )
+    .def_static( "load", []( const std::string& filename )
     {
-      std::string res;//keys separated by newlines (keys can not contain newlines)
-      for ( auto& k : c.keys() ) {
-        if ( !res.empty() )
-          res += '\n';
-        res += k;
-      }
-      return res;
+      FlushAfter f;
+      return Collection( std::make_shared<sh::HistCollection>( filename ) );
     } )
-    .def( "take", []( Collection& c, const std::string& key ) { return c.take( key ); } )
-    .def( "add_clone", []( Collection& c, Hist& h, const std::string& key ) { c.addClone( h, key ); } )
-    .def( "save", []( Collection& c, const std::string& fn, bool allowOverwrite ) { FlushAfter f; c.save( fn, allowOverwrite ); } )
+    .def_static( "create", []() { return Collection( std::make_shared<sh::HistCollection>() ); } )
+    .def_static( "from_handle", []( std::int64_t handle )
+    {
+      //Takes over the registered collection (sharing its ownership):
+      auto c = sh::getCollection( handle );
+      sh::unregisterCollection( handle );
+      return Collection( std::move( c ) );
+    } )
+    .def( "handle", &Collection::handle )
+    .def( "keys", &Collection::keys )
+    .def( "size", []( Collection& c ) -> std::int64_t { return c.c().getHistograms().size(); } )
+    .def( "has_key", []( Collection& c, const std::string& key ) { return c.c().hasKey( key ); } )
+    .def( "get_key", []( Collection& c, Hist& h ) { return c.c().getKey( &h.base() ); } )
+    .def( "hist", []( Collection& c, const std::string& key ) { FlushAfter f; return Hist( c.c().histPtr( key ) ); } )
+    .def( "book1d", []( Collection& c, const std::string& title, std::int64_t nbins, double xmin, double xmax,
+                        const std::string& key )
+    {
+      FlushAfter f;
+      c.c().book1D( title, toUnsigned( nbins ), xmin, xmax, key );
+      return Hist( c.c().histPtr( key ) );
+    } )
+    .def( "book2d", []( Collection& c, const std::string& title, std::int64_t nbinsx, double xmin, double xmax,
+                        std::int64_t nbinsy, double ymin, double ymax, const std::string& key )
+    {
+      FlushAfter f;
+      c.c().book2D( title, toUnsigned( nbinsx ), xmin, xmax, toUnsigned( nbinsy ), ymin, ymax, key );
+      return Hist( c.c().histPtr( key ) );
+    } )
+    .def( "bookcounts", []( Collection& c, const std::string& title, const std::string& key )
+    {
+      FlushAfter f;
+      c.c().bookCounts( title, key );
+      return Hist( c.c().histPtr( key ) );
+    } )
+    .def( "add", []( Collection& c, Hist& h, const std::string& key ) { FlushAfter f; c.c().add( h.ptr(), key ); } )
+    .def( "remove", []( Collection& c, const std::string& key ) { FlushAfter f; return Hist( c.c().remove( key ) ); } )
+    .def( "save", []( Collection& c, const std::string& fn, bool allowOverwrite ) { FlushAfter f; c.c().saveToFile( fn, allowOverwrite ); } )
+    .def( "merge", []( Collection& c, Collection& o ) { FlushAfter f; c.c().merge( &o.c() ); } )
+    .def( "merge_file", []( Collection& c, const std::string& fn ) { FlushAfter f; c.c().merge( fn ); } )
+    .def( "is_similar", []( Collection& c, Collection& o ) { return c.c().isSimilar( &o.c() ); } )
     ;
 }
