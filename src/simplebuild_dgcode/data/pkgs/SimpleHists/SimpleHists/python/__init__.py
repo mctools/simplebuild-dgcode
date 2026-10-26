@@ -195,7 +195,7 @@ class Hist1D( HistBase ):
         return self._h.h1_canrebin( n )
     def resetAndRebin( self, n, xmin, xmax ):
         self._h.h1_resetandrebin( n, xmin, xmax )
-    def getPercentileBin( self, percentile = 0.5 ):
+    def getPercentileBin( self, percentile ):
         return self._h.h1_percentilebin( percentile )
     def getBinSum( self, bin1, bin2 ):
         return self._h.h1_binsum( bin1, bin2 )
