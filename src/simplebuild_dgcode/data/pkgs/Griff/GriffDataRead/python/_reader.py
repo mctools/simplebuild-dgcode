@@ -1,33 +1,40 @@
-"""Pure Python implementation of the GriffDataRead module, for reading .griff
-files. It provides the same interface as the C++ classes in the GriffDataRead
-package (see GriffDataRead/libinc/*.hh). The file format is defined by the
-writing code in the G4DataCollect package, and by the reading code in the
-EvtFile and GriffDataRead packages, which must be kept consistent with the
-code here.
+"""Implementation of the GriffDataRead module, for reading .griff files. It
+provides the same interface as the C++ classes in the GriffDataRead package
+(see GriffDataRead/libinc/*.hh).
 
-Implementation notes: The data of each event is decoded with the struct module
-only when needed. Steps are decoded per segment, when first requested. To avoid
-reference cycles (which would require the garbage collector to free the
-objects of each event), segments and steps refer to their track and segment
-via the reader and indices, rather than directly. As in C++, objects from an
-event must not be used after the reader moves to another event.
+Implementation notes: All reading of files is done by a C++ GriffDataReader
+(in the _impl module), which unpacks the data of the current event into a
+buffer owned by the Python reader. The data is decoded here with the struct
+module, only when needed (the layout of the data is defined by the writing
+code in the G4DataCollect package, and by the reading code in the
+GriffDataRead package, which must be kept consistent with the code here).
+Steps are decoded per segment, when first requested. To avoid reference
+cycles (which would require the garbage collector to free the objects of each
+event), segments and steps refer to their track and segment via the reader and
+indices, rather than directly. As in C++, objects from an event must not be
+used after the reader moves to another event (their data is overwritten).
+Shared data of the files (volume names, materials, particle definitions, ...)
+is looked up in the C++ reader, and cached.
 """
 
 import struct as _struct
-import zlib as _zlib
 import os as _os
+import numpy as _np
+from . import _impl
 from math import copysign as _copysign
 from Units import units as _u, constants as _c
 
 __all__ = [ 'Element', 'FilterParams', 'GenParams', 'GeoParams', 'GriffDataReader', 'Isotope',
             'Material', 'Segment', 'Setup', 'Step', 'Track' ]
 
-_MAGIC = 0xe5506ea4#~= ess_gea4
-_FILE_VERSION = 2
-
+#Header at the start of the buffer, written by the _impl module (active flag,
+#offset and size of the brief data, offset and size of the full data (-1 when
+#not loaded), run number, event number, file index, event index in file, loop
+#count, checksum, file format version, and a counter which changes whenever
+#the reader moves to another event):
+_s_bufhdr = _struct.Struct('<13q')
+_FULLSIZE_OFFSET = 4 * 8
 #Data layouts (all little endian):
-_s_filehdr = _struct.Struct('<Ii')#magic, version
-_s_evthdr = _struct.Struct('<6I')#checksum, run, evt, sizes of db/brief/full sections
 _s_trkhdr = _struct.Struct('<QIII')#seed, metadata index, ntracks, mode
 _s_trk = _struct.Struct('<iifIiII')#id, pdg, weight, creator process, parent id, nsegments, ndaughters
 #Segment record (32 bytes) followed by the end time and energy (16 bytes),
@@ -41,8 +48,6 @@ _s_seg = _struct.Struct('<ddIiffdd')
 _s_step = _struct.Struct('<5d6fI3fI5d6fI')
 _s_u16 = _struct.Struct('<H')
 _s_u32 = _struct.Struct('<I')
-_s_touch = _struct.Struct('<iIII')#copy number, volume name, physical volume name, material
-_s_pdef = _struct.Struct('<4d3I3ifhBB')#see GriffFormat/ParticleDefinition.hh
 _SIZE_TRKHDR = 20
 _SIZE_TRK = 28
 _SIZE_SEG = 32
@@ -94,9 +99,8 @@ class _Buf:
 
 class _Touchable:
     __slots__ = ( 'info', )
-    def __init__( self, buf ):
-        depth, = buf.fmt( 'B' )
-        self.info = [ buf.unpack( _s_touch ) for _ in range( depth ) ]
+    def __init__( self, info ):
+        self.info = info#(copy number, volume name, physical volume name, material) per depth
 
 class _ParticleDefinition:
     #Fields in the order stored:
@@ -110,9 +114,9 @@ class _ParticleDefinition:
 
 class Isotope:
     """Isotope in a material (see GriffDataRead/Isotope.hh)"""
-    def __init__( self, dr, buf ):
+    def __init__( self, dr, info ):
         self._dr = dr
-        _, self._nameIdx, self._Z, self._N, self._A, self._m = buf.fmt( 'iIiidi' )
+        self._nameIdx, self._Z, self._N, self._A, self._m = info
     def getName( self ):
         return self._dr._strings[_DB_ISONAMES][self._nameIdx]
     def Z( self ):
@@ -131,11 +135,10 @@ class Isotope:
 
 class Element:
     """Element in a material (see GriffDataRead/Element.hh)"""
-    def __init__( self, dr, buf ):
+    def __init__( self, dr, info, isos ):
         self._dr = dr
-        _, self._nameIdx, self._symbolIdx, self._Z, self._N, self._A, na, niso = buf.fmt( 'iIIdddII' )
-        self._natural = bool( na )
-        self._isos = [ buf.fmt( 'dI' ) for _ in range( niso ) ]#(relative abundance, index)
+        self._nameIdx, self._symbolIdx, self._Z, self._N, self._A, self._natural = info
+        self._isos = _pairs( isos )#(relative abundance, index)
     def getName( self ):
         return self._dr._strings[_DB_ELEMNAMES][self._nameIdx]
     def getSymbol( self ):
@@ -170,11 +173,11 @@ class Element:
 
 class Material:
     """Material of a volume (see GriffDataRead/Material.hh)"""
-    def __init__( self, dr, buf ):
+    def __init__( self, dr, info, elems ):
         self._dr = dr
-        ( _, self._nameIdx, self._density, self._temperature, self._pressure, self._radlen,
-          self._nuclintlen, self._imean, self._state, nelem ) = buf.fmt( 'iI6diI' )
-        self._elems = [ buf.fmt( 'dI' ) for _ in range( nelem ) ]#(fraction, index)
+        ( self._nameIdx, self._density, self._temperature, self._pressure, self._radlen,
+          self._nuclintlen, self._imean, self._state ) = info
+        self._elems = _pairs( elems )#(fraction, index)
     def getName( self ):
         return self._dr._strings[_DB_MATNAMES][self._nameIdx]
     def density( self ):
@@ -222,11 +225,18 @@ class Material:
             s += ' elem%i[%f%%]=%s'%( i, 100.0*self._elems[i][0], self.getElement( i ).getName() )
         print( s + ']', end = '' )
 
-class _MetaData:
-    __slots__ = ( 'pairs', )
-    def __init__( self, buf ):
-        _, n = buf.fmt( 'iI' )
-        self.pairs = [ buf.fmt( 'II' ) for _ in range( n ) ]#indices of keys and values
+def _pairs( a ):
+    #(float, index) pairs from flat numpy array:
+    return [ ( float( a[i] ), int( a[i+1] ) ) for i in range( 0, len( a ), 2 ) ]
+
+class _Lookup( dict ):
+    """Cache of shared data, filled on demand"""
+    __slots__ = ( '_fct', )
+    def __init__( self, fct ):
+        self._fct = fct
+    def __missing__( self, key ):
+        v = self[key] = self._fct( key )
+        return v
 
 ################################################################################
 # Setup                                                                        #
@@ -589,11 +599,18 @@ class Segment:
         return bool( self._v[2] & 0x80000000 )
 
     def _touchable( self ):
-        return self._dr._db[_DB_TOUCHABLES][self._v[2] & 0x1FFFFFFF]
+        try:
+            return self._dr._touchables[self._v[2] & 0x1FFFFFFF]
+        except IndexError:
+            return self._dr._loadTouchables( self._v[2] & 0x1FFFFFFF )
     def volumeDepthStored( self ):
         return len( self._touchable().info )
     def volumeName( self, idepth = 0 ):
-        return self._dr._strings[_DB_VOLNAMES][self._touchable().info[idepth][1]]
+        i = self._touchable().info[idepth][1]
+        try:
+            return self._dr._volnames[i]
+        except KeyError:
+            return self._dr._strings[_DB_VOLNAMES][i]
     def physicalVolumeName( self, idepth = 0 ):
         return self._dr._strings[_DB_VOLNAMES][self._touchable().info[idepth][2]]
     def volumeCopyNumber( self, idepth = 0 ):
@@ -772,143 +789,16 @@ class Track:
 # Reading of files                                                             #
 ################################################################################
 
-def _murmurhash3_32( data, seed ):
-    """32 bit MurmurHash3 (as in Utils/ProgressiveHash.hh)"""
-    c1, c2, m32 = 0xcc9e2d51, 0x1b873593, 0xffffffff
-    h = seed
-    n = len( data )
-    nblocks = n // 4
-    for k in _struct.unpack_from( '<%iI'%nblocks, data ):
-        k = ( k * c1 ) & m32
-        k = ( ( k << 15 ) | ( k >> 17 ) ) & m32
-        k = ( k * c2 ) & m32
-        h ^= k
-        h = ( ( h << 13 ) | ( h >> 19 ) ) & m32
-        h = ( h * 5 + 0xe6546b64 ) & m32
-    tail = data[nblocks*4:]
-    if tail:
-        k = int.from_bytes( tail, 'little' )
-        k = ( k * c1 ) & m32
-        k = ( ( k << 15 ) | ( k >> 17 ) ) & m32
-        k = ( k * c2 ) & m32
-        h ^= k
-    h ^= n
-    h ^= h >> 16
-    h = ( h * 0x85ebca6b ) & m32
-    h ^= h >> 13
-    h = ( h * 0xc2b2ae35 ) & m32
-    h ^= h >> 16
-    return h
-
-class _FileReader:
-    """Event navigation within a single file (see EvtFile/FileReader.hh)"""
-
-    def __init__( self, filename, dbcallback ):
-        self.filename = filename
-        self.f = open( filename, 'rb' )
-        hdr = self.f.read( _s_filehdr.size )
-        if len( hdr ) != _s_filehdr.size:
-            raise RuntimeError( 'File not in right format' )
-        magic, version = _s_filehdr.unpack( hdr )
-        if magic != _MAGIC or version < 0:
-            raise RuntimeError( 'File not in right format' )
-        if version < 2:
-            raise RuntimeError( 'Version of file is too old and no longer supported' )
-        if version > _FILE_VERSION:
-            raise RuntimeError( 'File format version is too new' )
-        self.version = version
-        self.dbcallback = dbcallback
-        self.evts = []#(checksum, run, evt, dbsize, briefsize, fullsize, position)
-        self.current = None
-        self._readEvent( _s_filehdr.size )
-
-    def close( self ):
-        self.f.close()
-
-    def _readEvent( self, pos ):
-        self.f.seek( pos )
-        hdr = self.f.read( _s_evthdr.size )
-        if not hdr:
-            self.current = None#end of file
-            return
-        if len( hdr ) != _s_evthdr.size:
-            raise RuntimeError( 'Errors encountered while reading event header in %s'%self.filename )
-        e = _s_evthdr.unpack( hdr ) + ( pos, )
-        if e[3]:
-            db = self.f.read( e[3] )
-            if len( db ) != e[3]:
-                raise RuntimeError( 'Errors encountered while reading database section of event in %s'%self.filename )
-            self.dbcallback( db )
-        self.evts.append( e )
-        self.current = len( self.evts ) - 1
-
-    def goToNextEvent( self ):
-        if self.current is None:
-            return False
-        idx = self.current + 1
-        if idx < len( self.evts ):
-            self.current = idx
-            return True
-        e = self.evts[-1]
-        self._readEvent( e[6] + _s_evthdr.size + e[3] + e[4] + e[5] )
-        return self.current is not None
-
-    def goToFirstEvent( self ):
-        if not self.evts:
-            return False
-        self.current = 0
-        return True
-
-    def seekEventByIndex( self, idx ):
-        if not self.evts:
-            return False
-        if idx < len( self.evts ):
-            self.current = idx
-            return True
-        self.current = len( self.evts ) - 1
-        while self.goToNextEvent():
-            if self.current == idx:
-                return True
-        return False
-
-    def event( self ):
-        return self.evts[self.current]
-
-    def _read( self, offset, n ):
-        e = self.evts[self.current]
-        self.f.seek( e[6] + _s_evthdr.size + offset )
-        data = self.f.read( n )
-        if len( data ) != n:
-            raise RuntimeError( 'Errors encountered while reading event data in %s'%self.filename )
-        return data
-
-    def sharedData( self ):
-        e = self.evts[self.current]
-        return self._read( 0, e[3] ) if e[3] else b''
-
-    def briefData( self ):
-        e = self.evts[self.current]
-        return self._read( e[3], e[4] ) if e[4] else b''
-
-    def fullData( self ):
-        e = self.evts[self.current]
-        if not e[5]:
-            return b''
-        raw = self._read( e[3] + e[4], e[5] )
-        n, = _u32_unpack( raw, 0 )
-        if not n:
-            return b''
-        data = _zlib.decompress( raw[4:] )
-        if len( data ) != n:
-            raise RuntimeError( 'Errors encountered while decompressing event data in %s'%self.filename )
-        return data
-
 _openMsg = [ True ]
+_impl.set_open_msg( False )#(the message is printed here instead)
 
 class GriffDataReader:
     """Reader of .griff files (see GriffDataRead/GriffDataReader.hh). The input
     file name can contain wildcards, or a list of files can be given. Use
-    nloops > 1 to loop through the files several times (0 means forever)."""
+    nloops > 1 to loop through the files several times (0 means forever). The
+    data of each event is unpacked into a buffer of buffer_mb megabytes (an
+    error is raised for events which do not fit), which also determines the
+    size of the buffers used by the iterators in the GriffAnaUtils module."""
 
     @staticmethod
     def setOpenMsg( b ):
@@ -919,7 +809,7 @@ class GriffDataReader:
     def openMsg():
         return _openMsg[0]
 
-    def __init__( self, inputFiles, nloops = 1 ):
+    def __init__( self, inputFiles, nloops = 1, buffer_mb = 20 ):
         import glob
         patterns = [ inputFiles ] if isinstance( inputFiles, ( str, _os.PathLike ) ) else list( inputFiles )
         files = []
@@ -932,79 +822,67 @@ class GriffDataReader:
         for f in files:
             if not _os.path.exists( f ):
                 raise RuntimeError( 'GriffDataReader::ERROR Input file does not exist: %s'%f )
+            if '\n' in f:
+                raise RuntimeError( 'GriffDataReader::ERROR Unsupported file name: %r'%f )
+        nloops = int( nloops )
+        if nloops < 0:
+            raise ValueError( 'nloops must not be negative' )
         self._files = files
-        self._loopsOrig = self._loops = int( nloops )
-        self._fr = None
-        self._fileIdx = None
+        self._buffer_mb = float( buffer_mb )
+        self._buf = _np.empty( int( self._buffer_mb * 1024 * 1024 ), dtype = _np.uint8 )
+        self._mv = memoryview( self._buf )
         self._allowSetupChange = False
         self._cachedMetaData = None#(fileIdx, metadata index, metadata map) for consistency checks
         self._lastSetup = None#(fileIdx, metadata index, Setup object) for setup() and setupChanged()
+        self._dbFileIdx = None
+        self._openedFile = None
         self._clearEvent()
-        self.goToFirstEvent()
+        self._r = _impl.Reader( '\n'.join( files ), nloops, self._buf )
+        self._rh = self._r.handle()#handle of the C++ reader (for the GriffAnaUtils module)
+        self._newEvent( True )
 
     ######################
     # Shared data        #
     ######################
 
     def _clearDB( self ):
-        self._strings = dict( ( k, [] ) for k in _DB_STRINGS )
-        self._db = dict( ( k, [] ) for k in ( _DB_TOUCHABLES, _DB_MATERIALS, _DB_ELEMENTS, _DB_ISOTOPES, _DB_METADATA ) )
-        self._pdefs = {}
+        r = self._r
+        self._strings = dict( ( k, _Lookup( lambda i, k = k : r.db_string( k, i ) ) ) for k in _DB_STRINGS
+                              if k != _DB_METADATASTRINGS )
+        self._touchables = []
+        self._volnames = {}#plain dict for fast access to cached volume names
+        self._strings[_DB_VOLNAMES] = _Lookup( lambda i : self._volnames.setdefault( i, r.db_string( _DB_VOLNAMES, i ) ) )
+        self._db = { _DB_MATERIALS : _Lookup( lambda i : Material( self, r.material( i ), r.material_elements( i ) ) ),
+                     _DB_ELEMENTS : _Lookup( lambda i : Element( self, r.element( i ), r.element_isotopes( i ) ) ),
+                     _DB_ISOTOPES : _Lookup( lambda i : Isotope( self, r.isotope( i ) ) ) }
+        self._pdefs = _Lookup( lambda pdg : _ParticleDefinition( r.particle_definition( pdg ) ) )
 
-    def _loadDB( self, data ):
-        buf = _Buf( data )
-        n = len( data )
-        strings, db = self._strings, self._db
-        entrytypes = { _DB_TOUCHABLES : _Touchable, _DB_METADATA : _MetaData,
-                       _DB_MATERIALS : lambda b : Material( self, b ),
-                       _DB_ELEMENTS : lambda b : Element( self, b ),
-                       _DB_ISOTOPES : lambda b : Isotope( self, b ) }
-        while buf.pos < n:
-            sid, = buf.unpack( _s_u16 )
-            if sid in strings:
-                _, nstr = buf.fmt( 'HH' )
-                if sid == _DB_METADATASTRINGS:
-                    strings[sid] += [ buf.string() for _ in range( nstr ) ]#can be binary data
-                else:
-                    strings[sid] += [ _decode( buf.string() ) for _ in range( nstr ) ]
-            elif sid in db:
-                _, nobj = buf.fmt( 'HI' )
-                mk = entrytypes[sid]
-                db[sid] += [ mk( buf ) for _ in range( nobj ) ]
-            elif sid == _DB_PDGCODES:
-                _, npdg = buf.fmt( 'BI' )
-                for _ in range( npdg ):
-                    pd = _ParticleDefinition( buf.unpack( _s_pdef ) )
-                    self._pdefs[pd.pdgcode] = pd
-            else:
-                raise RuntimeError( 'no reader for db subsection with id %i'%sid )
+    def _loadTouchables( self, i ):
+        #Load all touchables available, in one go:
+        t = self._touchables
+        vals = self._r.touchables( len( t ) ).tolist()
+        pos, n = 0, len( vals )
+        while pos < n:
+            depth = vals[pos]
+            t.append( _Touchable( [ tuple( vals[k:k+4] ) for k in range( pos + 1, pos + 1 + 4 * depth, 4 ) ] ) )
+            pos += 1 + 4 * depth
+        return t[i]
 
     def _metaDataMap( self, mdidx ):
-        s = self._strings[_DB_METADATASTRINGS]
-        return dict( ( _decode( s[k] ), s[v] ) for k, v in self._db[_DB_METADATA][mdidx].pairs )
+        data = self._r.metadata( mdidx ).tobytes()
+        res, pos, n = {}, 0, len( data )
+        while pos < n:
+            kv = []
+            for _ in range( 2 ):
+                k, = _u32_unpack( data, pos )
+                kv.append( data[pos+4:pos+4+k] )
+                pos += 4 + k
+            res[_decode( kv[0] )] = kv[1]
+        return res
 
     ######################
     # Navigation         #
     ######################
-
-    def _initFile( self, i ):
-        self._clearEvent()
-        if self._fr and self._fr.filename == self._files[i]:
-            #Same file as the current one, simply jump back to the first event:
-            self._fr.goToFirstEvent()
-            self._fileIdx = i
-            return
-        if self._fr:
-            self._fr.close()
-            self._fr = None
-        self._clearDB()
-        try:
-            self._fr = _FileReader( self._files[i], self._loadDB )
-        except RuntimeError as e:
-            raise RuntimeError( 'GriffDataReader::ERROR Trouble while opening file %s : %s'%( self._files[i], e ) )
-        if self.openMsg():
-            print( 'GriffDataReader opened file %s'%_os.path.basename( self._files[i] ) )
-        self._fileIdx = i
 
     def _clearEvent( self ):
         self._tracks = None
@@ -1012,20 +890,35 @@ class GriffDataReader:
         self._full = None
         self._hdr = None
 
-    def _beginEvent( self ):
-        if not self._allowSetupChange:
-            self._checkSetupConsistency()
+    def _newEvent( self, ok ):
+        #Called after any navigation (the C++ reader has updated the buffer):
+        self._clearEvent()
+        h = self._h = _s_bufhdr.unpack_from( self._buf, 0 )
+        if h[0]:
+            fileidx = h[7]
+            if fileidx != self._dbFileIdx:
+                self._dbFileIdx = fileidx
+                self._clearDB()
+                fn = self._files[fileidx]
+                if fn != self._openedFile:
+                    self._openedFile = fn
+                    if self.openMsg():
+                        print( 'GriffDataReader opened file %s'%_os.path.basename( fn ) )
+            if not self._allowSetupChange:
+                self._checkSetupConsistency()
+        return ok
 
     def _checkSetupConsistency( self ):
         mdidx = self._metaDataIdx()
         c = self._cachedMetaData
+        fileidx = self._h[7]
         if c is None:
-            self._cachedMetaData = ( self._fileIdx, mdidx, self._metaDataMap( mdidx ) )
+            self._cachedMetaData = ( fileidx, mdidx, self._metaDataMap( mdidx ) )
             return
-        if self._fileIdx != c[0]:
+        if fileidx != c[0]:
             ok = c[2] == self._metaDataMap( mdidx )
             if ok:
-                self._cachedMetaData = ( self._fileIdx, mdidx, c[2] )
+                self._cachedMetaData = ( fileidx, mdidx, c[2] )
         else:
             ok = mdidx == c[1]
         if not ok:
@@ -1034,98 +927,59 @@ class GriffDataReader:
                                 ' then please call allowSetupChange() on the reader before looping over events.' )
 
     def eventActive( self ):
-        return self._fr is not None and self._fr.current is not None
+        return self._h[0] != 0
 
     def goToFirstEvent( self ):
         """Go to the first event of the first file with events"""
-        self._clearEvent()
-        self._eventLoopStart = True
-        self._loopCount = 0
-        for i in range( len( self._files ) ):
-            self._initFile( i )
-            if self.eventActive():
-                self._loops = self._loopsOrig
-                self._beginEvent()
-                return True
-        return False
+        return self._newEvent( self._r.go_to_first_event() )
 
     def goToNextFile( self ):
         """Go to the first event in the next file"""
-        if self._fileIdx == len( self._files ):
-            return False
-        self._clearEvent()
-        self._fileIdx += 1
-        if self._fileIdx == len( self._files ):
-            if self._loops == 0:
-                self._fileIdx = 0
-            elif self._loops > 1:
-                self._loops -= 1
-                self._fileIdx = 0
-        if self._fileIdx == len( self._files ):
-            return False
-        self._initFile( self._fileIdx )
-        if self.eventActive():
-            self._beginEvent()
-        return self.eventActive()
+        return self._newEvent( self._r.go_to_next_file() )
 
     def goToNextEvent( self ):
         """Go to the next event (in the next file if needed)"""
-        if not self.eventActive():
-            return False
-        self._clearEvent()
-        if self._fr.goToNextEvent():
-            self._beginEvent()
-            return True
-        return self.goToNextFile()
+        return self._newEvent( self._r.go_to_next_event() )
 
     def skipEvents( self, n ):
-        if not self.eventActive():
-            return False
-        for _ in range( n ):
-            if not self.goToNextEvent():
-                return False
-        return self.eventActive()
+        return self._newEvent( self._r.skip_events( n ) )
 
     def loopEvents( self ):
         """For looping through all events: while dr.loopEvents(): ... (reset
         afterwards with goToFirstEvent())"""
-        if self._eventLoopStart:
-            self._loopCount = 0
-            self._eventLoopStart = False
-            return self.eventActive()
-        self._loopCount += 1
-        return self.goToNextEvent() and self.eventActive()
+        return self._newEvent( self._r.loop_events() )
 
     def loopCount( self ):
-        return self._loopCount
+        return self._h[9]
 
     def seekEventByIndexInCurrentFile( self, idx ):
-        if self.eventActive() and self._fr.current == idx:
-            return True
-        self._clearEvent()
-        if not self._fr.seekEventByIndex( idx ):
-            return False
-        self._beginEvent()
-        return True
+        return self._newEvent( self._r.seek_event( idx ) )
 
     def eventIndexInCurrentFile( self ):
-        return self._fr.current
+        return self._h[8]
 
     ######################
     # Event data         #
     ######################
 
     def _briefdata( self ):
+        #NB: The brief data is loaded by the C++ reader for each event.
         b = self._brief
         if b is None:
-            b = self._brief = self._fr.briefData()
+            h = self._h
+            if not h[0]:
+                raise RuntimeError( 'No active event' )
+            b = self._brief = self._mv[h[1]:h[1]+h[2]]
             self._hdr = _s_trkhdr.unpack_from( b, 0 )
         return b
 
     def _fulldata( self ):
         f = self._full
         if f is None:
-            f = self._full = self._fr.fullData()
+            self._r.load_full_data()
+            n, = _struct.unpack_from( '<q', self._buf, _FULLSIZE_OFFSET )
+            off = self._h[3]
+            f = self._full = self._mv[off:off+n]
         return f
 
     def _metaDataIdx( self ):
@@ -1133,13 +987,13 @@ class GriffDataReader:
         return self._hdr[1]
 
     def runNumber( self ):
-        return self._fr.event()[1]
+        return self._h[5]
 
     def eventNumber( self ):
-        return self._fr.event()[2]
+        return self._h[6]
 
     def currentEventVersion( self ):
-        return self._fr.version
+        return self._h[11]
 
     def seed( self ):
         """Random seed used for the event"""
@@ -1157,14 +1011,11 @@ class GriffDataReader:
     eventStorageModeStr = eventStorageMode
 
     def eventCheckSum( self ):
-        return self._fr.event()[0]
+        return self._h[10]
 
     def verifyEventDataIntegrity( self ):
         """Recalculate the checksum of the event and compare with the one stored"""
-        e = self._fr.event()
-        data = ( _struct.pack( '<5I', *e[1:6] ) + self._fr.sharedData()
-                 + self._briefdata() + self._fulldata() )
-        return _murmurhash3_32( data, 0xe3304a54 ) == e[0]
+        return self._r.verify_integrity()
 
     def nTracks( self ):
         self._briefdata()
@@ -1288,13 +1139,13 @@ class GriffDataReader:
         ls = self._lastSetup
         if ls is None:
             return True
-        if ls[0] == self._fileIdx:
+        if ls[0] == self._h[7]:
             return ls[1] != mdidx
         if not self._allowSetupChange:
             return False
         if self._metaDataMap( mdidx ) != ls[2]._allData():
             return True
-        self._lastSetup = ( self._fileIdx, mdidx, ls[2] )
+        self._lastSetup = ( self._h[7], mdidx, ls[2] )
         return False
 
     def setup( self ):
@@ -1303,7 +1154,7 @@ class GriffDataReader:
             return self._lastSetup[2]
         mdidx = self._metaDataIdx()
         s = Setup( self._metaDataMap( mdidx ) )
-        self._lastSetup = ( self._fileIdx, mdidx, s )
+        self._lastSetup = ( self._h[7], mdidx, s )
         return s
 
     def allowSetupChange( self ):
