@@ -65,7 +65,7 @@ _DB_TOUCHABLES, _DB_VOLNAMES, _DB_MATERIALS, _DB_ELEMENTS, _DB_ISOTOPES = 100, 1
 _DB_MATNAMES, _DB_ELEMNAMES, _DB_ISONAMES, _DB_PROCNAMES = 150, 160, 170, 200
 _DB_PDGCODES, _DB_PDGNAMES, _DB_PDGTYPES, _DB_PDGSUBTYPES = 300, 310, 320, 330
 _DB_METADATA, _DB_METADATASTRINGS = 400, 410
-_DB_STRINGS = ( _DB_VOLNAMES, _DB_MATNAMES, _DB_ELEMNAMES, _DB_ISONAMES, _DB_PROCNAMES,
+_DB_STRINGS = ( _DB_MATNAMES, _DB_ELEMNAMES, _DB_ISONAMES, _DB_PROCNAMES,
                 _DB_PDGNAMES, _DB_PDGTYPES, _DB_PDGSUBTYPES, _DB_METADATASTRINGS )
 
 _modes = { 0 : 'FULL', 1 : 'REDUCED', 3 : 'MINIMAL' }
@@ -609,10 +609,14 @@ class Segment:
         i = self._touchable().info[idepth][1]
         try:
             return self._dr._volnames[i]
-        except KeyError:
-            return self._dr._strings[_DB_VOLNAMES][i]
+        except IndexError:
+            return self._dr._loadVolNames( i )
     def physicalVolumeName( self, idepth = 0 ):
-        return self._dr._strings[_DB_VOLNAMES][self._touchable().info[idepth][2]]
+        i = self._touchable().info[idepth][2]
+        try:
+            return self._dr._volnames[i]
+        except IndexError:
+            return self._dr._loadVolNames( i )
     def volumeCopyNumber( self, idepth = 0 ):
         return self._touchable().info[idepth][0]
     def material( self, idepth = 0 ):
@@ -850,12 +854,17 @@ class GriffDataReader:
         self._strings = dict( ( k, _Lookup( lambda i, k = k : r.db_string( k, i ) ) ) for k in _DB_STRINGS
                               if k != _DB_METADATASTRINGS )
         self._touchables = []
-        self._volnames = {}#plain dict for fast access to cached volume names
-        self._strings[_DB_VOLNAMES] = _Lookup( lambda i : self._volnames.setdefault( i, r.db_string( _DB_VOLNAMES, i ) ) )
+        self._volnames = []
         self._db = { _DB_MATERIALS : _Lookup( lambda i : Material( self, r.material( i ), r.material_elements( i ) ) ),
                      _DB_ELEMENTS : _Lookup( lambda i : Element( self, r.element( i ), r.element_isotopes( i ) ) ),
                      _DB_ISOTOPES : _Lookup( lambda i : Isotope( self, r.isotope( i ) ) ) }
         self._pdefs = _Lookup( lambda pdg : _ParticleDefinition( r.particle_definition( pdg ) ) )
+
+    def _loadVolNames( self, i ):
+        #Load all volume names available, in one go:
+        v = self._volnames
+        v += self._r.volume_names( len( v ) ).split( '\0' )
+        return v[i]
 
     def _loadTouchables( self, i ):
         #Load all touchables available, in one go:

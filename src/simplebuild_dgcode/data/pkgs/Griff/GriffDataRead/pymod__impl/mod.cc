@@ -39,6 +39,20 @@ namespace GriffDataRead {
     //All touchables loaded so far, starting at the given index. For each, the
     //depth is followed by the copy number and indices of the volume name,
     //physical volume name and material for each depth:
+    //All volume names loaded so far, starting at the given index (separated
+    //by null characters):
+    static std::string volumeNames( GriffDataReader& dr, std::int64_t start )
+    {
+      std::string res;
+      const std::size_t n = dr.m_dbVolNames.size();
+      for ( std::size_t i = static_cast<std::size_t>( start ); i < n; ++i ) {
+        if ( i != static_cast<std::size_t>( start ) )
+          res += '\0';
+        res += dr.m_dbVolNames.getString( static_cast<EvtFile::index_type>( i ) );
+      }
+      return res;
+    }
+
     static sbldpy::NumpyCopy<std::int64_t> touchables( GriffDataReader& dr, std::int64_t start )
     {
       std::vector<std::int64_t> res;
@@ -308,6 +322,7 @@ SBLDPY_MODULE( _impl )
     .def( "load_full_data", &Reader::loadFullData )
     .def( "verify_integrity", &Reader::verifyEventDataIntegrity )
     .def( "db_string", &Reader::dbString, { "subsect", "idx" } )
+    .def( "volume_names", []( Reader& r, std::int64_t start ) { return ExpertAccess::volumeNames( r.dr(), start ); } )
     .def( "touchables", []( Reader& r, std::int64_t start ) { return ExpertAccess::touchables( r.dr(), start ); } )
     .def( "material", []( Reader& r, std::int64_t i ) { return ExpertAccess::material( r.dr(), i ); } )
     .def( "material_elements", []( Reader& r, std::int64_t i ) { return ExpertAccess::materialElements( r.dr(), i ); } )
