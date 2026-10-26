@@ -1,7 +1,10 @@
-package(USEPKG SimpleHists USEEXT ROOT)
+package()
 
 ######################################################################
 
-Utilities for converting between SimpleHists and ROOT histograms.
+Placeholder for the disabled SimpleHists2ROOT package, which provided
+utilities for converting between SimpleHists and ROOT histograms. Using it
+results in an error explaining why it is disabled. The original code is kept in
+the attic/SimpleHists2ROOT directory of the simplebuild-dgcode repository.
 
 primary author: thomas.kittelmann@ess.eu
