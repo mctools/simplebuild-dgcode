@@ -34,5 +34,5 @@ code. Of particular note is the work and support by Kalliopi Kanaki (former ESS
 ERIC, now IAEA), Xiao Xiao Cai (former DTU, now CSNS) and Richard Hall-Wilton
 (former ESS ERIC, now FDK-SD). Although a lot of the technical details and names
 changed in the meantime, this `old tutorial from 2015
-<https://indico.esss.lu.se/event/335/attachments/2549/3795/dgcode_tutorial_june2015.pdf>`__
+<https://indico.ess.eu/event/335/attachments/2549/3795/dgcode_tutorial_june2015.pdf>`__
 might still be interesting for those interested in the history of dgcode.

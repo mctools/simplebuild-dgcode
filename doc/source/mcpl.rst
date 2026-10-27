@@ -11,11 +11,9 @@ McStas, MCNP, etc. It is described in great detail in a `published paper
 with other programmes can be found on the `MCPL website
 <https://mctools.github.io/mcpl/>`__. Rather than being comprehensive, the
 present page will focus on MCPL tools and recipes that are most likely to be of
-interest for users of dgcode. There is also some information in the `MCPL talk
-given at the DG jamboree September 2016
-<https://indico.esss.lu.se/event/617/>`__. Since the paper and that talk, the
-number of applications supporting MCPL has only continued to grow, but the basic
-concepts are still relevant.
+interest for users of dgcode. Since the paper, the number of applications
+supporting MCPL has only continued to grow, but the basic concepts are still
+relevant.
 
 |image_mcplpaper| \ |image_mcplwww|
 
