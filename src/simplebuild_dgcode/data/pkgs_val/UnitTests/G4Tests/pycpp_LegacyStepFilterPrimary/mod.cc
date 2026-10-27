@@ -1,0 +1,12 @@
+//Module based on the legacy pybind11 based export headers, which are still
+//used by external projects. It is only here to test that such modules keep
+//working (including in combination with sbldpy based modules, see the
+//testtopy script), and should be removed along with those headers.
+
+#include "G4Interfaces/StepFilterPyExport.hh"
+#include "G4CollectFilters/StepFilterPrimary.hh"
+
+PYTHON_MODULE( mod )
+{
+  StepFilterPyExport::exportFilter<StepFilterPrimary>(mod, "LegacyStepFilterPrimary");
+}

@@ -43,6 +43,7 @@ namespace GriffDataRead {
     const Element* getElement(unsigned ielem) const;
 
   private:
+    friend struct ExpertAccess;
     friend class EvtFile::DBEntryReader<Material>;
     friend class Touchable;
 

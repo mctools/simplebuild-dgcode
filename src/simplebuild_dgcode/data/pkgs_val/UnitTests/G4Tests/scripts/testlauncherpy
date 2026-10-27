@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+# Test the Python interface of the launcher, including passing C++ objects
+# (user actions and hooks) from sbldpy modules to the launcher (see
+# G4Interfaces/CppObjectHandles.hh and G4Interfaces/ToPy.py).
+
+import sys
+import G4Launcher
+import G4StdGeometries.GeoSlab
+import G4StdGenerators.SimpleGen
+import G4Tests.CppObjTest as T
+
+def expect_error( f, *args, exc = ValueError ):
+    try:
+        f( *args )
+    except exc as e:
+        print( 'Error as expected:', e )
+    else:
+        raise AssertionError( 'expected error' )
+
+pregen = T.create_pregen()
+print( pregen )
+assert pregen.kind() == 'PreGenCallBack' and not pregen.isUsed()
+
+launcher = G4Launcher( G4StdGeometries.GeoSlab.create(), G4StdGenerators.SimpleGen.create() )
+launcher.setOutput( 'none' )
+assert G4Launcher.getTheLauncher() is launcher
+assert isinstance( G4Launcher.g4version(), int ) and G4Launcher.g4versionstr()
+
+#Seeds can use the full range of unsigned 64 bit integers:
+for seed in ( 1, 2**32 - 1, 2**32, 2**63, 2**64 - 1 ):
+    launcher.setSeed( seed )
+    assert launcher.getSeed() == seed
+expect_error( launcher.setSeed, -1 )
+expect_error( launcher.setSeed, 2**64 )
+launcher.setSeed( 123 )
+
+#Extra parameters, which can be set on the command line:
+launcher.addParameterDouble( 'myextrapar', 1.5 )
+launcher.addParameterString( 'myextrastr', 'hello' )
+
+#User actions and hooks must be CppObject objects:
+expect_error( launcher.setUserSteppingAction, 17, exc = TypeError )
+
+def install_actions():
+    #User actions must be created and installed after the run manager
+    #initialisation:
+    stepact = T.create_stepact()
+    evtact = T.create_evtact()
+    print( stepact, evtact )
+    assert stepact.kind() == 'G4UserSteppingAction' and not stepact.isUsed()
+    expect_error( launcher.setUserSteppingAction, evtact )
+    launcher.setUserSteppingAction( stepact )
+    launcher.setUserEventAction( evtact )
+    expect_error( launcher.setUserSteppingAction, stepact )
+    print( 'Installed:', stepact, evtact )
+
+launcher.postinit_hook( install_actions )
+launcher.addPreGenHook( pregen )
+assert pregen.isUsed()
+print( pregen )
+launcher.addPostGenHook( T.create_postgen() )
+launcher.postsim_hook( T.create_hook() )
+expect_error( launcher.addPostGenHook, T.create_pregen() )
+
+sys.argv[1:] = [ '-n', '5', 'myextrapar=2.5' ]
+launcher.go()
+
+assert launcher.getParameterDouble( 'myextrapar' ) == 2.5
+assert launcher.getParameterString( 'myextrastr' ) == 'hello'
+
+nsteps, nevents, npregen, npostgen, nhooks = T.counts()
+print( 'events:', nevents, 'pregen:', npregen, 'postgen:', npostgen, 'hooks:', nhooks )
+assert nsteps > 0 and nevents == npregen == npostgen == 5 and nhooks == 1
+print( 'All OK' )

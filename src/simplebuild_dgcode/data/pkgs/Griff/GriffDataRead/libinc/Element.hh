@@ -35,6 +35,7 @@ namespace GriffDataRead {
     const Isotope* getIsotope(unsigned i_isotope) const;
 
   private:
+    friend struct ExpertAccess;
     friend class EvtFile::DBEntryReader<Element>;
 
     Element(const char*&data);

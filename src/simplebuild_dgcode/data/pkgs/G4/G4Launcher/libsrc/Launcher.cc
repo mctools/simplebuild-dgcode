@@ -12,6 +12,7 @@
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/StepFilterBase.hh"
 #include "G4Interfaces/PhysListProviderBase.hh"
+#include "G4Interfaces/ComponentHandles.hh"
 #include "G4DataCollect/G4DataCollect.hh"
 #include "G4Random/RandomManager.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
@@ -493,6 +494,7 @@ void G4Launcher::Launcher::Imp::preinit()
       print("Setting up geometry:");
       m_geo->dump((std::string(Imp::prefix())+"  --> ").c_str());
       m_rm->SetUserInitialization(m_geo);
+      G4Interfaces::disownComponent(m_geo);//now owned by the run manager
     }
   }
 
@@ -619,6 +621,7 @@ void G4Launcher::Launcher::Imp::finalMetadata()
   if (m_filter) {
     //install griff step filter:
     G4DataCollect::setStepFilter(m_filter);
+    G4Interfaces::disownComponent(m_filter);//now owned by G4DataCollect
     //record meta-data
     G4DataCollect::setMetaData("filterName",m_filter->getName());
     char * dataS;
@@ -632,6 +635,7 @@ void G4Launcher::Launcher::Imp::finalMetadata()
   if (m_killfilter) {
     //install griff step kill-filter:
     G4DataCollect::setStepKillFilter(m_killfilter);
+    G4Interfaces::disownComponent(m_killfilter);//now owned by G4DataCollect
     //record meta-data
     G4DataCollect::setMetaData("killFilterName",m_killfilter->getName());
     char * dataS;

@@ -110,3 +110,14 @@ ParametersBase.__setattr__ = _parambase_setattr
 ParametersBase.getParameterList = _getParameterList
 ParametersBase.getParameterTypes = _getParameterTypes
 ParametersBase.asDict = _asDict
+
+def _accept_sbldpy_components( method ):
+    #Components from sbldpy based modules (see G4Interfaces/python/ToPy.py)
+    #passed as arguments are replaced with objects of the classes here:
+    def m( self, *args ):
+        return method( self, *[ ( a._legacy_object() if hasattr( a, '_legacy_object' ) else a )
+                                for a in args ] )
+    m.__doc__ = method.__doc__
+    return m
+for _n in ( 'tieParameters', 'exposeParameter', 'exposeParameters' ):
+    setattr( ParametersBase, _n, _accept_sbldpy_components( getattr( ParametersBase, _n ) ) )

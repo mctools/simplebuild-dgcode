@@ -5,6 +5,7 @@
 #include "SimpleHists/Hist2D.hh"//for convenience
 #include "SimpleHists/HistCounts.hh"//for convenience
 #include <map>
+#include <memory>
 #include <set>
 
 namespace SimpleHists {
@@ -24,7 +25,7 @@ namespace SimpleHists {
     //Load histogram collection which was previously persistified by saveToFile(..):
     HistCollection(const std::string& filename);
 
-    virtual ~HistCollection();//deallocates all contained histogram instances
+    virtual ~HistCollection();//releases all contained histogram instances
 
     //Book histograms to be managed by the collection and use the returned
     //pointers to fill the histograms before displaying or persistifiying.
@@ -49,8 +50,11 @@ namespace SimpleHists {
     //Instead of booking, one can add existing hists (the HistCollection will own them afterwards)
     void add(HistBase*,const std::string&key);
 
-    //Remove histogram from the collection (caller owns the hist afterwards)
-    HistBase* remove(const std::string&key);
+    //Add histogram, sharing its ownership:
+    void add(std::shared_ptr<HistBase>,const std::string&key);
+
+    //Remove histogram from the collection (returning it):
+    std::shared_ptr<HistBase> remove(const std::string&key);
 
     //Expensive search for key associated to histogram (returns empty string if not part of this collection)
     const std::string& getKey(const HistBase*) const;
@@ -62,13 +66,16 @@ namespace SimpleHists {
     HistBase* hist(const std::string& key);
     const HistBase* hist(const std::string& key) const;
 
+    //retrieve histogram by key, sharing its ownership:
+    std::shared_ptr<HistBase> histPtr(const std::string& key) const;
+
     //persistification:
     virtual void saveToFile(const std::string& filename, bool allowOverwrite = false) const;
 
     //Browse and access (for interactive tools - not necessarily super efficient):
     void getKeys(std::set<std::string>& keys) const;//keys will be inserted to passed list
 
-    const std::map<std::string,HistBase*>& getHistograms() const { return m_hists; }
+    const std::map<std::string,std::shared_ptr<HistBase>>& getHistograms() const { return m_hists; }
 
     //Merge contents of other compatible histograms onto this one.
     void merge(const HistCollection*);
@@ -79,7 +86,7 @@ namespace SimpleHists {
     //Must have (up to floating point precision) similar histograms, including contents and errors.
     bool isSimilar(const HistCollection*) const;
 
-    //Delete contained histograms (called automatically in destructor):
+    //Release contained histograms (called automatically in destructor):
     void clear();
 
     //Only allow move construction, no copy/assign:
@@ -92,7 +99,7 @@ namespace SimpleHists {
 
   private:
     //Contained histograms, in order of keys
-    std::map<std::string,HistBase*> m_hists;
+    std::map<std::string,std::shared_ptr<HistBase>> m_hists;
     std::string m_autosavefilename;
 
     void testKey(const std::string& key);

@@ -5,6 +5,7 @@
 #include "G4Interfaces/StepFilterBase.hh"
 #include "G4Interfaces/PhysListProviderBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
+#include "G4Interfaces/ComponentHandles.hh"
 #include "G4Utils/GenUtils.hh"
 
 namespace{
@@ -43,6 +44,39 @@ namespace{
     py::object pgb_randisotropic(G4Interfaces::ParticleGenBase*) {
       G4ThreeVector isodir = G4Utils::randIsotropicDirection();
       return py::make_tuple(isodir.x(),isodir.y(),isodir.z());
+    }
+
+    //Object of the pybind11 based classes above, referring to a component
+    //created by an sbldpy based module (given its handle, see
+    //G4Interfaces/python/ToPy.py). The returned object does not own the
+    //component, which is owned by the table in
+    //G4Interfaces/ComponentHandles.hh (or by Geant4 after being handed over
+    //to it), so it must only be used while the component is alive:
+    py::object legacy_component( std::int64_t handle ) {
+      auto& c = G4Interfaces::getComponent( handle );
+      const auto ref = py::return_value_policy::reference;
+      if ( auto p = dynamic_cast<G4Interfaces::GeoConstructBase*>( &c ) )
+        return py::cast( p, ref );
+      if ( auto p = dynamic_cast<G4Interfaces::ParticleGenBase*>( &c ) )
+        return py::cast( p, ref );
+      if ( auto p = dynamic_cast<G4Interfaces::StepFilterBase*>( &c ) )
+        return py::cast( p, ref );
+      return py::cast( &c, ref );
+    }
+
+    //Register a component from a pybind11 based module in the table in
+    //G4Interfaces/ComponentHandles.hh and return its handle, so it can be
+    //passed to sbldpy based code like the G4Launcher module (returns None for
+    //other objects). The caller must keep the Python object alive. This is a
+    //temporary measure for as long as pybind11 based components are supported:
+    py::object register_legacy_component( py::handle o ) {
+      if ( py::isinstance<G4Interfaces::GeoConstructBase>( o ) )
+        return py::cast( G4Interfaces::registerUnownedComponent( py::cast<G4Interfaces::GeoConstructBase*>( o ) ) );
+      if ( py::isinstance<G4Interfaces::ParticleGenBase>( o ) )
+        return py::cast( G4Interfaces::registerUnownedComponent( py::cast<G4Interfaces::ParticleGenBase*>( o ) ) );
+      if ( py::isinstance<G4Interfaces::StepFilterBase>( o ) )
+        return py::cast( G4Interfaces::registerUnownedComponent( py::cast<G4Interfaces::StepFilterBase*>( o ) ) );
+      return py::none();
     }
 
   }
@@ -98,5 +132,8 @@ PYTHON_MODULE( mod )
   mod.def("isChild",&FrameworkGlobals::isChild);
   mod.def("mpID",&FrameworkGlobals::mpID);
   mod.def("nProcs",&FrameworkGlobals::nProcs);
+
+  mod.def("_legacy_component",&G4Interfaces_py::legacy_component);
+  mod.def("_register_legacy_component",&G4Interfaces_py::register_legacy_component);
 
 }

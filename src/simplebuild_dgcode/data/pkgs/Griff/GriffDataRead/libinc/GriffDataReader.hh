@@ -27,6 +27,7 @@ namespace GriffDataRead {
   class Track;
   class Segment;
   class Step;
+  struct ExpertAccess;//for low-level access by the Python bindings
   struct BeginEventCallBack {
     virtual void beginEvent(const GriffDataReader*) = 0;
     virtual void dereg(const GriffDataReader*) {}
@@ -223,6 +224,16 @@ public:
   static bool openMsg() { return sm_openMsg; }
 
   EvtFile::FileReader * getRawFileReader() { return m_fr; }//Experts only!
+
+  //Experts only: Place the event data in an external buffer instead of in
+  //internal buffers (see EvtFile::FileReader::setExternalBuffer, which is
+  //called for the files when they are opened):
+  void setExternalEventBuffer( char * buf, std::size_t size, std::size_t offset );
+private:
+  char * m_extbuf = nullptr;
+  std::size_t m_extbuf_size = 0;
+  std::size_t m_extbuf_offset = 0;
+  friend struct GriffDataRead::ExpertAccess;
 
 };
 

@@ -185,7 +185,7 @@ package.
 Generating from MCPL files
 --------------------------
 
-The :sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pycpp_MCPLGen/mod.cc>` module
+The :sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pymod__MCPLGen/mod.cc>` module
 allows one to easily inject particles from MCPL files into a Geant4
 simulation. The particles in those files can come from a multitude of sources,
 such as MCNP simulations, McStas simulations, or even other Geant4
@@ -194,7 +194,7 @@ MCPL files :ref:`here <sbmcpl>`, on the `the official MCPL page at GitHub
 <https://mctools.github.io/mcpl/>`__, or in the `published MCPL paper
 <https://doi.org/10.1016/j.cpc.2017.04.012>`__. To use the MCPL generator,
 simply import and use the
-:sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pycpp_MCPLGen/mod.cc>` module in
+:sbpkg:`G4MCPLPlugins.MCPLGen<G4MCPLPlugins/pymod__MCPLGen/mod.cc>` module in
 your :ref:`sim-script <sbsimscript>`, setting at least the ``input_file``
 parameter:
 
@@ -340,7 +340,7 @@ Generating from Griff files
 ---------------------------
 
 It is possible to use :ref:`Griff <sbgriff>` files as a source of particles, by
-using the :sbpkg:`G4GriffGen.GriffGen<G4GriffGen/pycpp_GriffGen/mod.cc>`
+using the :sbpkg:`G4GriffGen.GriffGen<G4GriffGen/pymod__GriffGen/mod.cc>`
 generator module:
 
 .. code-block:: python

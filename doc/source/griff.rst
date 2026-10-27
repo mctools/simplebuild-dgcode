@@ -247,16 +247,23 @@ To see how Griff analysis can be performed in Python, here are the "basic" and
 There is also another advanced example in
 :sbpkg:`GriffAnaTests/scripts/testiter_py`.
 
-There is unfortunately one major downside of performing the analysis in Python
-rather than in C++, and that is that it can be a lot slower. Mostly, this does
-not matter, but when one have loops with a high number of events, then any
-difference in speed per event will obviously be noticeable. If using the
-"advanced" analysis approach with iterators and selection filters, the act of
-accessing the Griff data itself will be almost as fast in Python as in
-C++. However, normally the user will then do other stuff inside the loop such as
+In Python, the files are read by the C++ reader, which unpacks the data of each
+event into a buffer (20 MB by default, which can be changed with the
+``buffer_mb`` argument of the ``GriffDataReader``). The Python objects
+(tracks, segments and steps) are created only when needed. The iterators and
+the provided filters of the "advanced" approach run in C++, so only the
+selected objects are created in Python. This keeps such analyses fast in Python
+when the filters select a small fraction of the data (custom filters can also
+be implemented in Python, but are then applied in Python). One downside of performing the analysis in Python rather than in C++
+is that it can be a lot slower. Mostly, this does not matter, but when one have
+loops with a high number of events, then any difference in speed per event will
+obviously be noticeable. Simply looping over events and inspecting the job-level
+or event-level metadata is about as fast in Python as in C++. However, looping
+over all tracks, segments or steps involves the creation of many Python
+objects, and is typically 5-100 times slower than doing the same in C++.
+Additionally, the user will normally do other stuff inside the loop such as
 performing calculations with the extracted data, and those calculations might
-unfortunately not be very fast when implemented inside a very long loop in
-Python.
+also not be very fast when implemented inside a very long loop in Python.
 
 The recommendation is thus to use C++ for Griff analysis when computational
 speed is a concern, but for smaller statistics (say, millions of particles

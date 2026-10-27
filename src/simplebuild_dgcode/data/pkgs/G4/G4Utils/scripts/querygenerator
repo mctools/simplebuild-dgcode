@@ -17,6 +17,7 @@ def detect_generator_examples():
     gens = sorted(f'G4StdGenerators.{e.name}' for e in
                   pkgutil.iter_modules(G4StdGenerators.__path__)
                   if e.name != 'FlexGenDefaultSpherical'#hide obsolete
+                  and not e.name.startswith('_')#hide private modules
                   )
     #And why not the python examples, if present:
     try:

@@ -25,6 +25,7 @@ namespace GriffDataRead {
     int32_t m() const;//isomer level
 
   private:
+    friend struct ExpertAccess;
     friend class EvtFile::DBEntryReader<Isotope>;
 
     Isotope(const char*&data);

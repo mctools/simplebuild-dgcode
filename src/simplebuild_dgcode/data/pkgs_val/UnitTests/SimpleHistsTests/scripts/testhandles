@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+#Test sharing of histograms and collections between the SimpleHists module and
+#C++ code in another module, using handles.
+
+import gc
+import SimpleHists as sh
+from SimpleHistsTests import _handletest as T
+
+#Python -> C++: The C++ code fills the very same histogram:
+h = sh.Hist1D( 'made in Python', 10, 0.0, 10.0 )
+T.fill_hist( h.handle(), 4.5 )
+T.fill_hist( h.handle(), 5.5 )
+print( 'filled from C++:', h.integral, h.getBinContent( 4 ), h.getBinContent( 5 ) )
+
+#C++ -> Python: A histogram created in C++:
+h2 = sh.histFromHandle( T.create_hist() )
+print( 'created in C++:', type( h2 ).__name__, h2.title, h2.integral )
+
+#C++ books in a collection created in Python:
+hc = sh.HistCollection()
+hc.book1D( 10, 0.0, 1.0, 'py' )
+T.book_in_collection( hc.handle(), 'cpp' )
+print( 'keys:', hc.keys, hc.hist( 'cpp' ).title, hc.hist( 'cpp' ).integral )
+
+#C++ -> Python: A collection created in C++, which shares a histogram with C++:
+hc2 = sh.HistCollection.fromHandle( T.create_collection() )
+print( 'collection from C++:', hc2.keys )
+T.fill_kept( 1.5 )
+print( 'shared hist after filling in C++:', hc2.hist( 'shared' ).integral )
+T.release_kept()
+gc.collect()
+print( 'still alive in Python after C++ released it:', hc2.hist( 'shared' ).integral )
+
+#Histograms added to collections are shared, not copied:
+hc.add( h, 'added' )
+h.fill( 6.5 )
+print( 'shared after add:', hc.hist( 'added' ) is h, hc.hist( 'added' ).integral )
+
+#Unknown handles:
+try:
+    sh.histFromHandle( 999999 )
+except ValueError as e:
+    print( 'unknown handle:', e )
+hd = T.create_hist()
+sh.histFromHandle( hd )
+try:
+    sh.histFromHandle( hd )
+except ValueError as e:
+    print( 'handle can only be taken over once:', e )

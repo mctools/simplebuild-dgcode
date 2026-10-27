@@ -29,6 +29,9 @@ namespace EvtFile {
       return m_stringdb[i];
     }
 
+    //Number of strings loaded so far:
+    std::size_t size() const { return m_stringdb.size(); }
+
     //For the data loading framework:
     virtual subsectid_type uniqueSubSectionID() const { return m_subSectionID; }
     virtual void load(const char*&);

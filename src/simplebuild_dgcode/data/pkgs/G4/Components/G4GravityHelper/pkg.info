@@ -1,4 +1,4 @@
-package(USEEXT Geant4 )
+package(USEPKG G4StepLimitHelper Units USEEXT Geant4 )
 
 
 ######################################################################

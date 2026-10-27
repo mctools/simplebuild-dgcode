@@ -1,4 +1,4 @@
-package(USEPKG G4Interfaces)
+package(USEPKG G4Interfaces USEEXT Numpy)
 
 ####################################################################
 

@@ -90,6 +90,7 @@ namespace GriffDataRead
     Track & operator= ( const Track & o );
     Track( const Track & o );
   private:
+    friend struct ExpertAccess;
     mutable ::GriffDataReader * m_dr;
     mutable const GriffFormat::ParticleDefinition * m_pdef;
     const char * m_data;
