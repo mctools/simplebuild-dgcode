@@ -16,7 +16,6 @@
 #include <cstdio>
 #ifdef MCPLEXTRA_AVOID_USING_PYTHON
 #  include <cstdlib>
-#  include <stdexcept>
 #  include "sys/wait.h"
 #  include <iostream>
 #  include "Utils/Cmd.hh"
@@ -173,8 +172,10 @@ int main(int argc, char** argv) {
     }
     std::cout<<"Launching: "<<cmd<<std::endl;
     int status = std::system(cmd);
-    if ( ! (status >=0 && WIFEXITED( status ) && WEXITSTATUS( status ) == 0 ) )
-      throw std::runtime_error(std::string("cmd failed: ")+cmd);
+    if ( ! (status >=0 && WIFEXITED( status ) && WEXITSTATUS( status ) == 0 ) ) {
+      std::cerr<<"ERROR: Command failed: "<<cmd<<std::endl;
+      return 1;
+    }
 #else
     try {
       pyextra::ensurePyInit();
