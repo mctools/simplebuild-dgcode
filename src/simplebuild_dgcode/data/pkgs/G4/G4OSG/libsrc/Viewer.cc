@@ -208,6 +208,13 @@ void G4OSG::Viewer::init()
 
   compviewer->setKeyEventSetsDone(0);//no quit
 
+#ifdef __APPLE__
+  //macOS: after a window resize (fullscreen toggle, user resize), osgViewer
+  //calls [NSOpenGLContext update] in the next makeCurrent, which AppKit only
+  //allows on the main thread. A draw thread (re)started by startThreading()
+  //then dies with SIGILL, so render in the main thread:
+  compviewer->setThreadingModel(osgViewer::ViewerBase::SingleThreaded);
+#endif
   m_viewer->setUpThreading();
 
   // clear stencil buffer... (for outline FX)
