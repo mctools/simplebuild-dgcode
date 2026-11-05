@@ -7,8 +7,14 @@
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4ExprParser/G4SteppingASTBuilder.hh"
 #include "mcpl.h"
+#if !defined(MCPL_VERSION) || MCPL_VERSION < 2002008
+#  error "MCPL version 2.2.8 or later is required"
+#endif
 
 #include "G4VSensitiveDetector.hh"
+#include "G4Event.hh"
+#include "G4PrimaryVertex.hh"
+#include "G4PrimaryParticle.hh"
 #include "G4Step.hh"
 #include "G4SDManager.hh"
 #include "G4RegionStore.hh"
@@ -33,6 +39,49 @@ namespace G4MCPLWriter {
   private:
     MCPLSensitiveDetector * m_sd;
   };
+
+  //Statistics of the simulated events, which are written to the output files
+  //as stat:sum values (they are added up when files are merged):
+  //
+  //  geant4_nevts           : The number of simulated events.
+  //  initial_geant4_weights : The sum of the weights of the primary particles
+  //                           of the simulated events.
+  //
+  //They are collected via a post-generation callback on the particle
+  //generator (so they are independent of which particles reach the volumes).
+  class EventStats : public G4Interfaces::PostGenCallBack {
+  public:
+    EventStats( const G4Interfaces::ParticleGenBase* gen ) : m_gen(gen) {}
+    void postGen( G4Event* evt ) override
+    {
+      const int nvertices = evt->GetNumberOfPrimaryVertex();
+      if ( !nvertices && m_gen->reachedLimit() )
+        return;//the generator ran out of events, so this event is aborted
+      ++m_nevts;
+      for ( int i = 0; i < nvertices; ++i ) {
+        const G4PrimaryVertex* vtx = evt->GetPrimaryVertex(i);
+        for ( const G4PrimaryParticle* pp = vtx->GetPrimary(); pp; pp = pp->GetNext() )
+          m_sumweights += sumWeights( pp, vtx->GetWeight() );
+      }
+    }
+    std::uint64_t nevts() const { return m_nevts; }
+    double sumWeights() const { return m_sumweights; }
+  private:
+    static double sumWeights( const G4PrimaryParticle* pp, double vtxweight )
+    {
+      //The weight of the track of a primary particle is the product of the
+      //weights of the vertex and the particle (also for pre-assigned
+      //daughters):
+      double w = vtxweight * pp->GetWeight();
+      for ( const G4PrimaryParticle* d = pp->GetDaughter(); d; d = d->GetNext() )
+        w += sumWeights( d, vtxweight );
+      return w;
+    }
+    const G4Interfaces::ParticleGenBase* m_gen;
+    std::uint64_t m_nevts = 0;
+    double m_sumweights = 0.0;
+  };
+  typedef std::shared_ptr<EventStats> EventStatsPtr;
 
   enum KillStrategy { KS_NEVER, KS_ALWAYS, KS_FILTERED };
   KillStrategy ks_from_string(const std::string& s)
@@ -73,7 +122,8 @@ namespace G4MCPLWriter {
                            BuilderPtr builder,
                            EP::Evaluator<bool> filter_evaluator,
                            EP::Evaluator<EP::int_type> flag_evaluator,
-                           std::vector<std::pair<std::string,std::string>> comments_and_blobs)
+                           std::vector<std::pair<std::string,std::string>> comments_and_blobs,
+                           EventStatsPtr evtstats)
       : G4VSensitiveDetector(name),
         m_expr_builder(builder),
         m_eval_filter(filter_evaluator),
@@ -89,7 +139,8 @@ namespace G4MCPLWriter {
         m_initialised(false),
         m_closed(false),
         m_om(0),
-        m_comments_and_blobs(comments_and_blobs)
+        m_comments_and_blobs(comments_and_blobs),
+        m_evtstats(evtstats)
     {
       std::memset(&m_p,0,sizeof(m_p));
     }
@@ -125,6 +176,11 @@ namespace G4MCPLWriter {
         return;
       m_closed = true;
       assert(m_f.internal);
+      if (m_evtstats) {
+        //Final values of the stat:sum entries reserved in initmcpl():
+        mcpl_hdr_add_stat_sum(m_f,"geant4_nevts",(double)m_evtstats->nevts());
+        mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",m_evtstats->sumWeights());
+      }
       if (!FrameworkGlobals::isForked())
         mcpl_closeandgzip_outfile(m_f);
       else
@@ -268,6 +324,13 @@ namespace G4MCPLWriter {
           mcpl_hdr_add_data(m_f,it->first.c_str(),it->second.size(),it->second.c_str());
       }
 
+      if (m_evtstats) {
+        //Reserve space for the stat:sum values, which are set when the file is
+        //closed (see ensure_close_file()):
+        mcpl_hdr_add_stat_sum(m_f,"geant4_nevts",-1.0);
+        mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",-1.0);
+      }
+
       if (m_opt_writedoubleprec)   mcpl_enable_doubleprec(m_f);
       if (m_opt_writepolarisation) mcpl_enable_polarisation(m_f);
       if (m_opt_writeuserflags) mcpl_enable_userflags(m_f);
@@ -290,6 +353,7 @@ namespace G4MCPLWriter {
     mcpl_particle_t m_p;
     MCPLOutputMerger * m_om;
     std::vector<std::pair<std::string,std::string>> m_comments_and_blobs;
+    EventStatsPtr m_evtstats;
   };
 
   void MCPLOutputMerger::merge() {
@@ -370,6 +434,10 @@ namespace G4MCPLWriter {
 
       m_geo = geo_handle ? &G4Interfaces::getComponentAs<G4Interfaces::GeoConstructBase>( geo_handle, "geometry" ) : nullptr;
       m_gen = gen_handle ? &G4Interfaces::getComponentAs<G4Interfaces::ParticleGenBase>( gen_handle, "particle generator" ) : nullptr;
+      if ( m_gen && !m_evtstats ) {
+        m_evtstats = std::make_shared<EventStats>( m_gen );
+        m_gen->installPostGenCallBack( m_evtstats );
+      }
 
       if (m_vols.empty()&&!m_vols_all)
         throw std::runtime_error("MCPLWriter: No volumes added!");
@@ -448,7 +516,8 @@ namespace G4MCPLWriter {
     bool m_vols_all;
     MCPLSensitiveDetector * m_sd;
     const G4Interfaces::GeoConstructBase* m_geo = nullptr;
-    const G4Interfaces::ParticleGenBase* m_gen = nullptr;
+    G4Interfaces::ParticleGenBase* m_gen = nullptr;
+    EventStatsPtr m_evtstats;
     std::vector<std::pair<std::string,std::string>> createCommentsAndBlobs() const
     {
       std::vector<std::pair<std::string,std::string>> out;
@@ -536,6 +605,9 @@ namespace G4MCPLWriter {
         tmp << "ESS/dgcode generator module : " << gen_name;
         out.emplace_back("comment",tmp.str());
       }
+      if (gen)
+        out.emplace_back("comment","MCPLWriter stat:sum values : geant4_nevts is the number of simulated"
+                         " events, initial_geant4_weights is the sum of the weights of their primary particles");
 
       if (geo) {
         char * geodata(0);
@@ -588,7 +660,8 @@ namespace G4MCPLWriter {
                                            m_expr_builder,
                                            m_eval_filter,
                                            m_eval_flags,
-                                           createCommentsAndBlobs());
+                                           createCommentsAndBlobs(),
+                                           m_evtstats);
           G4SDManager::GetSDMpointer()->AddNewDetector(m_sd);
         }
         auto currentsd = lv->GetSensitiveDetector();

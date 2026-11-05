@@ -62,6 +62,18 @@ your :ref:`sim script <sbsimscript>`:
 
 See :ref:`the dedicated documentation <sbparticlegen>` for more options.
 
+If the input file has a ``stat:sum:initial_ray_count`` value, all weights are
+divided by it, so that the weights in the Geant4 simulation are per initial ray
+of the simulation which wrote the file, and do not depend on its number of
+rays. This is for instance the case for files written by the ``MCPL_output``
+component of McStas 3.10 and later (with ``weight_mode=1``, the default), which
+store the weights multiplied by the number of rays. The value of the whole file
+is always used, also when only some of its particles are used (e.g. with
+``skip_events`` or a limited number of events), so the results of jobs which
+each process a part of a file can be added up. Files without the value are used
+with their weights as stored. To always use the weights as stored, set
+``gen.normalise_by_initial_ray_count = False``.
+
 
 MCPL files as simulation output
 -------------------------------
@@ -93,6 +105,19 @@ options, by using the
 :sbpkg:`G4MCPLPlugins.MCPLWriter<G4MCPLPlugins/python/MCPLWriter.py>`
 module. See an example :sbpkg:`here <G4MCPLTests/scripts/mcplwrite>` for how to
 use it.
+
+The MCPL files written by Geant4 contain two ``stat:sum`` values, which describe
+the simulation as a whole (independently of how many particles ended up in the
+file), and are added up when files are merged (e.g. with ``mcpltool --merge``,
+or when merging the output of multiple processes):
+
+* ``stat:sum:geant4_nevts``: The number of simulated events.
+* ``stat:sum:initial_geant4_weights``: The sum of the weights of the primary
+  particles of the simulated events.
+
+The weights of the particles in the file are the weights in the Geant4
+simulation (i.e. any ``stat:sum:initial_ray_count`` of an input file read with
+MCPLGen is already accounted for, and is not copied to the output).
 
 Modify MCPL files
 -----------------

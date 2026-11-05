@@ -29,6 +29,7 @@ G4Launcher::   -->   [dbl] roty_degree = 90
 G4Launcher::   -->   [dbl] rotz_degree = 0
 G4Launcher::   -->   [int] skip_events = 0
 G4Launcher::   -->   [flg] allow_zero_weight = no
+G4Launcher::   -->   [flg] normalise_by_initial_ray_count = yes
 G4Launcher:: Requested to not set output of GRIFF files:
 G4Launcher:: Pre-init done
 G4Launcher:: Calling G4RunManager::Initialize()

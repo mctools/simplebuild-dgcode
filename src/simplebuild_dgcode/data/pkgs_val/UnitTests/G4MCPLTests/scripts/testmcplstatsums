@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+#Tests of the stat:sum handling of MCPLGen and MCPLWriter:
+#
+#  * MCPLGen divides the weights by stat:sum:initial_ray_count of the input
+#    file (if present), unless normalise_by_initial_ray_count is disabled.
+#  * MCPLWriter writes stat:sum:geant4_nevts and stat:sum:initial_geant4_weights
+#    (the number of simulated events and the sum of the weights of their
+#    primary particles), which are added up when the output of multiple
+#    processes is merged.
+
+import subprocess
+import mcpl
+
+def mkfile( fn, nparticles, weight, initial_ray_count ):
+    subprocess.run( [ 'sb_g4mcpltests_mkfile', fn, str(nparticles), str(weight),
+                      str(initial_ray_count) ], check = True )
+
+def sim( title, infile, *args, expect_ok = True ):
+    print()
+    print( f'==> {title}' )
+    outfile = 'out.mcpl'
+    cmd = [ 'sb_g4mcpltests_mcplstatsums', f'input_file={infile}',
+            f'--mcpl=grabsrc to {outfile}' ] + list(args)
+    r = subprocess.run( cmd, capture_output = True, text = True, check = False )
+    #Only show the lines of MCPLGen and MCPLWriter (others are not relevant here):
+    for line in ( r.stdout + r.stderr ).splitlines():
+        if line.startswith( ( 'MCPLGen', 'MCPLWriter: Done merging' ) ):
+            print( '   ', line )
+    if not expect_ok:
+        assert r.returncode != 0, 'simulation unexpectedly succeeded'
+        print( '    (simulation failed as expected)' )
+        return
+    assert r.returncode == 0, 'simulation failed:\n' + r.stdout + r.stderr
+    f = mcpl.MCPLFile( outfile + '.gz' )
+    weights = sorted( float(p.weight) for p in f.particles )
+    print( f'    Output weights: {weights}' )
+    for k, v in sorted( f.stat_sum.items() ):
+        print( f'    Output stat:sum:{k} = {v:g}' )
+
+mkfile( 'rays.mcpl', 5, 1000.0, 1000 )
+mkfile( 'norays.mcpl', 5, 2.0, 'none' )
+mkfile( 'notfinal.mcpl', 5, 1000.0, 'notfinal' )
+mkfile( 'zero.mcpl', 5, 1000.0, 0 )
+
+sim( 'File with initial_ray_count', 'rays.mcpl' )
+sim( 'File with initial_ray_count, not normalised', 'rays.mcpl',
+     'normalise_by_initial_ray_count=0' )
+sim( 'File with initial_ray_count, skipping events', 'rays.mcpl', 'skip_events=2' )
+sim( 'File with initial_ray_count, limited number of events', 'rays.mcpl', '-n2' )
+sim( 'File with initial_ray_count, multiple processes', 'rays.mcpl', '-j2' )
+sim( 'File without initial_ray_count', 'norays.mcpl' )
+sim( 'File with initial_ray_count which is not finalised', 'notfinal.mcpl',
+     expect_ok = False )
+sim( 'File with initial_ray_count which is not finalised, not normalised',
+     'notfinal.mcpl', 'normalise_by_initial_ray_count=0' )
+sim( 'File with initial_ray_count of zero', 'zero.mcpl', expect_ok = False )
+
+#Reading a file written by MCPLWriter again does not normalise its weights a
+#second time (since it has no initial_ray_count):
+sim( 'File with initial_ray_count, for reading again', 'rays.mcpl' )
+subprocess.run( [ 'mv', 'out.mcpl.gz', 'again.mcpl.gz' ], check = True )
+sim( 'Reading the output again', 'again.mcpl.gz' )
