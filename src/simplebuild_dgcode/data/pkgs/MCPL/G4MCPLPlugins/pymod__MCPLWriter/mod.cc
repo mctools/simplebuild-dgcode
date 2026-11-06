@@ -2,6 +2,7 @@
 #include "G4Interfaces/ComponentHandles.hh"
 
 #include "G4MCPL/G4MCPLUserFlags.hh"
+#include "G4MCPL/InitialRayCountInfo.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
 #include "G4Interfaces/GeoConstructBase.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
@@ -123,7 +124,8 @@ namespace G4MCPLWriter {
                            EP::Evaluator<bool> filter_evaluator,
                            EP::Evaluator<EP::int_type> flag_evaluator,
                            std::vector<std::pair<std::string,std::string>> comments_and_blobs,
-                           EventStatsPtr evtstats)
+                           EventStatsPtr evtstats,
+                           const G4MCPL::InitialRayCountInfo* ircinfo)
       : G4VSensitiveDetector(name),
         m_expr_builder(builder),
         m_eval_filter(filter_evaluator),
@@ -140,7 +142,10 @@ namespace G4MCPLWriter {
         m_closed(false),
         m_om(0),
         m_comments_and_blobs(comments_and_blobs),
-        m_evtstats(evtstats)
+        m_evtstats(evtstats),
+        m_ircinfo(ircinfo),
+        m_transfer_irc(false),
+        m_weight_factor(1.0)
     {
       std::memset(&m_p,0,sizeof(m_p));
     }
@@ -180,6 +185,23 @@ namespace G4MCPLWriter {
         //Final values of the stat:sum entries reserved in initmcpl():
         mcpl_hdr_add_stat_sum(m_f,"geant4_nevts",(double)m_evtstats->nevts());
         mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",m_evtstats->sumWeights());
+      }
+      if (m_transfer_irc) {
+        //The initial_ray_count of the input file is only valid if all of its
+        //particles were used. When multiprocessing, the value is only set in
+        //the file of the parent process (since the values are added up when
+        //the files are merged), and the files of all processes must have used
+        //all their particles (-1 in any of the files makes the merged value
+        //unavailable):
+        //
+        //NB: The value would preferably be set only after merging the files,
+        //but MCPL currently does not support editing stat:sum values of
+        //existing files.
+        const double irc = m_ircinfo->inputInitialRayCount();
+        double value = -1.0;
+        if ( irc > 0.0 && m_ircinfo->usedAllInputParticles() )
+          value = FrameworkGlobals::isChild() ? 0.0 : irc;
+        mcpl_hdr_add_stat_sum(m_f,"initial_ray_count",value);
       }
       if (!FrameworkGlobals::isForked())
         mcpl_closeandgzip_outfile(m_f);
@@ -251,7 +273,7 @@ namespace G4MCPLWriter {
       }
 
       m_p.time = pt->GetGlobalTime() / CLHEP::millisecond;
-      m_p.weight = pt->GetWeight();
+      m_p.weight = pt->GetWeight() * m_weight_factor;
       assert(CLHEP::MeV==1.0);
       m_p.ekin = pt->GetKineticEnergy();//already in MeV
       const G4ThreeVector& pos = pt->GetPosition();
@@ -331,10 +353,20 @@ namespace G4MCPLWriter {
         mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",-1.0);
       }
 
+      //Transfer the stat:sum:initial_ray_count of an input file (read by
+      //MCPLGen), with the weights in the same convention as in the input file
+      //(i.e. undoing any normalisation by MCPLGen), so the weights per initial
+      //ray are the same when reading the file again:
+      if ( m_ircinfo && m_ircinfo->inputInitialRayCount() != -2.0 ) {
+        m_transfer_irc = true;
+        m_weight_factor = 1.0 / m_ircinfo->inputWeightFactor();
+        mcpl_hdr_add_stat_sum(m_f,"initial_ray_count",-1.0);
+      }
+
       if (m_opt_writedoubleprec)   mcpl_enable_doubleprec(m_f);
       if (m_opt_writepolarisation) mcpl_enable_polarisation(m_f);
       if (m_opt_writeuserflags) mcpl_enable_userflags(m_f);
-      if (m_opt_universalweight) mcpl_enable_universal_weight(m_f,m_opt_universalweight);
+      if (m_opt_universalweight) mcpl_enable_universal_weight(m_f,m_opt_universalweight*m_weight_factor);
 
       if (FrameworkGlobals::isForked()&&FrameworkGlobals::isParent())
         m_om = new MCPLOutputMerger(this);//used by mergeIfNeeded()
@@ -354,6 +386,9 @@ namespace G4MCPLWriter {
     MCPLOutputMerger * m_om;
     std::vector<std::pair<std::string,std::string>> m_comments_and_blobs;
     EventStatsPtr m_evtstats;
+    const G4MCPL::InitialRayCountInfo* m_ircinfo;
+    bool m_transfer_irc;
+    double m_weight_factor;
   };
 
   void MCPLOutputMerger::merge() {
@@ -661,7 +696,8 @@ namespace G4MCPLWriter {
                                            m_eval_filter,
                                            m_eval_flags,
                                            createCommentsAndBlobs(),
-                                           m_evtstats);
+                                           m_evtstats,
+                                           dynamic_cast<const G4MCPL::InitialRayCountInfo*>(m_gen));
           G4SDManager::GetSDMpointer()->AddNewDetector(m_sd);
         }
         auto currentsd = lv->GetSensitiveDetector();

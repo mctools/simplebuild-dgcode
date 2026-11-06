@@ -1,4 +1,5 @@
 #include "G4MCPL/G4MCPLUserFlags.hh"
+#include "G4MCPL/InitialRayCountInfo.hh"
 #include "G4Interfaces/ParticleGenToPy.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
@@ -21,12 +22,18 @@
 #include "G4ParticleTable.hh"
 #include "G4IonTable.hh"
 
-class MCPLGen : public G4Interfaces::ParticleGenBase {
+class MCPLGen : public G4Interfaces::ParticleGenBase,
+                public G4MCPL::InitialRayCountInfo {
 public:
   MCPLGen();
   virtual ~MCPLGen();
   void init();
   void gen(G4Event*);
+
+  //For MCPLWriter (see G4MCPL/InitialRayCountInfo.hh):
+  double inputInitialRayCount() const override;
+  double inputWeightFactor() const override;
+  bool usedAllInputParticles() const override;
 
   virtual bool unlimited() const { return false; }//only has the events available in the input
 
@@ -38,6 +45,7 @@ private:
   void delayed_init();
   void setPDG(int);
   void init_weight_scale();
+  std::string resolved_input_file() const;
   mcpl_file_t m_mcplfile;
   const mcpl_particle_t * m_p;//particle to be used for next generation
   bool m_unfiltered;
@@ -54,6 +62,7 @@ private:
   HepGeom::Transform3D m_rotation;
   bool m_allow_zero_weight;
   double m_weight_scale;//factor applied to all weights in the file
+  mutable double m_input_irc;//cache for inputInitialRayCount() (NaN if not loaded)
 };
 
 MCPLGen::MCPLGen()
@@ -65,7 +74,8 @@ MCPLGen::MCPLGen()
     m_lastpdgcode(0),
     m_has_polarisation(false),
     m_allow_zero_weight(false),
-    m_weight_scale(1.0)
+    m_weight_scale(1.0),
+    m_input_irc(std::nan(""))
 {
   m_mcplfile.internal = 0;
 
@@ -172,17 +182,50 @@ void MCPLGen::skip_forward(unsigned nskip) {
   }
 }
 
-void MCPLGen::delayed_init()
+std::string MCPLGen::resolved_input_file() const
 {
-  //opening files should happen after fork() when multi-processing.
   std::string fn = getParameterString("input_file");
   std::string fn_resolved = Core::findData(fn);
   if (fn_resolved.empty()) {
     printf("MCPLGen ERROR - File specified in input_file parameter not found : \"%s\"\n",fn.c_str());
     throw std::runtime_error("MCPLGen: File specified in input_file parameter not found");
   }
+  return fn_resolved;
+}
 
-  m_mcplfile = mcpl_open_file(fn_resolved.c_str());
+double MCPLGen::inputInitialRayCount() const
+{
+  if (std::isnan(m_input_irc)) {
+    if (m_mcplfile.internal) {
+      m_input_irc = mcpl_hdr_stat_sum(m_mcplfile,"initial_ray_count");
+    } else {
+      //Only read the header (the file is opened for reading the particles
+      //later, after any fork() when multiprocessing):
+      mcpl_file_t f = mcpl_open_file(resolved_input_file().c_str());
+      m_input_irc = mcpl_hdr_stat_sum(f,"initial_ray_count");
+      mcpl_close_file(f);
+    }
+  }
+  return m_input_irc;
+}
+
+double MCPLGen::inputWeightFactor() const
+{
+  const double nrays = inputInitialRayCount();
+  if ( getParameterBoolean("normalise_by_initial_ray_count") && nrays > 0.0 && std::isfinite(nrays) )
+    return 1.0 / nrays;
+  return 1.0;
+}
+
+bool MCPLGen::usedAllInputParticles() const
+{
+  return getParameterInt("skip_events") == 0 && reachedLimit();
+}
+
+void MCPLGen::delayed_init()
+{
+  //opening files should happen after fork() when multi-processing.
+  m_mcplfile = mcpl_open_file(resolved_input_file().c_str());
 
   m_has_polarisation = mcpl_hdr_has_polarisation(m_mcplfile);
 
@@ -211,7 +254,7 @@ void MCPLGen::delayed_init()
 void MCPLGen::init_weight_scale()
 {
   m_weight_scale = 1.0;
-  const double nrays = mcpl_hdr_stat_sum(m_mcplfile,"initial_ray_count");
+  const double nrays = inputInitialRayCount();
   //Only print in one process when multiprocessing:
   const bool doprint = FrameworkGlobals::isParent();
   if (!getParameterBoolean("normalise_by_initial_ray_count")) {
@@ -235,7 +278,7 @@ void MCPLGen::init_weight_scale()
              " the weights as stored in the file.\n",nrays);
     throw std::runtime_error("MCPLGen: Can not normalise weights by stat:sum:initial_ray_count");
   }
-  m_weight_scale = 1.0 / nrays;
+  m_weight_scale = inputWeightFactor();
   if (doprint)
     printf("MCPLGen: Dividing all weights by stat:sum:initial_ray_count = %g"
            " (disable with normalise_by_initial_ray_count=false)\n",nrays);

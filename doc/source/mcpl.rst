@@ -115,9 +115,13 @@ or when merging the output of multiple processes):
 * ``stat:sum:initial_geant4_weights``: The sum of the weights of the primary
   particles of the simulated events.
 
-The weights of the particles in the file are the weights in the Geant4
-simulation (i.e. any ``stat:sum:initial_ray_count`` of an input file read with
-MCPLGen is already accounted for, and is not copied to the output).
+If the input file read with MCPLGen has a ``stat:sum:initial_ray_count`` value,
+it is transferred to the output file, and the weights are written in the same
+convention as in the input file (i.e. multiplied by the value if MCPLGen divided
+the weights by it). So reading the output file with MCPLGen again gives the same
+weights as in the original simulation. Since the value is only valid when all
+particles of the input file were used, it is marked as unavailable when this
+was not the case (e.g. with ``skip_events`` or a limited number of events).
 
 Modify MCPL files
 -----------------

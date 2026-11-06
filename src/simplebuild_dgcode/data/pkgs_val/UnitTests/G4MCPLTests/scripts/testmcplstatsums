@@ -8,6 +8,11 @@
 #    (the number of simulated events and the sum of the weights of their
 #    primary particles), which are added up when the output of multiple
 #    processes is merged.
+#  * MCPLWriter transfers stat:sum:initial_ray_count of the input file to the
+#    output file (marked as unavailable unless all particles of the input file
+#    were used), with the weights in the same convention as in the input file.
+#  * sb_mcplextra_filterfile marks stat:sum values as unavailable when only a
+#    part of the input file is used.
 
 import subprocess
 import mcpl
@@ -36,7 +41,7 @@ def sim( title, infile, *args, expect_ok = True ):
     weights = sorted( float(p.weight) for p in f.particles )
     print( f'    Output weights: {weights}' )
     for k, v in sorted( f.stat_sum.items() ):
-        print( f'    Output stat:sum:{k} = {v:g}' )
+        print( f'    Output stat:sum:{k} = {"<unavailable>" if v is None else format(v,"g")}' )
 
 mkfile( 'rays.mcpl', 5, 1000.0, 1000 )
 mkfile( 'norays.mcpl', 5, 2.0, 'none' )
@@ -49,6 +54,8 @@ sim( 'File with initial_ray_count, not normalised', 'rays.mcpl',
 sim( 'File with initial_ray_count, skipping events', 'rays.mcpl', 'skip_events=2' )
 sim( 'File with initial_ray_count, limited number of events', 'rays.mcpl', '-n2' )
 sim( 'File with initial_ray_count, multiple processes', 'rays.mcpl', '-j2' )
+sim( 'File with initial_ray_count, multiple processes, limited number of events',
+     'rays.mcpl', '-j2', '-n3' )
 sim( 'File without initial_ray_count', 'norays.mcpl' )
 sim( 'File with initial_ray_count which is not finalised', 'notfinal.mcpl',
      expect_ok = False )
@@ -56,8 +63,10 @@ sim( 'File with initial_ray_count which is not finalised, not normalised',
      'notfinal.mcpl', 'normalise_by_initial_ray_count=0' )
 sim( 'File with initial_ray_count of zero', 'zero.mcpl', expect_ok = False )
 
-#Reading a file written by MCPLWriter again does not normalise its weights a
-#second time (since it has no initial_ray_count):
+#The initial_ray_count of the input file is transferred to the output file if
+#all particles of the input file were used, with the weights in the same
+#convention as in the input file. So reading the output again gives the same
+#weights in Geant4:
 sim( 'File with initial_ray_count, for reading again', 'rays.mcpl' )
 subprocess.run( [ 'mv', 'out.mcpl.gz', 'again.mcpl.gz' ], check = True )
 sim( 'Reading the output again', 'again.mcpl.gz' )
@@ -77,7 +86,7 @@ def filterfile( title, *args ):
     f = mcpl.MCPLFile( 'filtered.mcpl' )
     print( f'    Output particles: {f.nparticles}' )
     for k, v in sorted( f.stat_sum.items() ):
-        print( f'    Output stat:sum:{k} = {v}' )
+        print( f'    Output stat:sum:{k} = {"<unavailable>" if v is None else format(v,"g")}' )
 
 filterfile( 'Filtering a file', 'x > 0.15cm' )
 filterfile( 'Filtering a file with a limit which is not reached', '-l10' )
