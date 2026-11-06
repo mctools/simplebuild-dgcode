@@ -139,6 +139,12 @@ representative file which can be more easily shared for debugging purposes)::
 
   sb_mcplextra_filterfile infile.mcpl outfile.mcpl -l1000
 
+Any ``stat:sum`` values of the original file (like ``stat:sum:initial_ray_count``
+from McStas) are kept when filtering particles, since the new file is simply a
+narrower view of the same simulation. But when only a part of the particles is
+used due to the limit (``-l``), the values are marked as unavailable, since the
+file was then split rather than filtered.
+
 Run ``sb_mcplextra_filterfile --help`` for full usage instructions. Note that
 there also exists a ``sb_mcplextra_filterview`` command, which merely prints the
 selected particles, rather than producing a new file.

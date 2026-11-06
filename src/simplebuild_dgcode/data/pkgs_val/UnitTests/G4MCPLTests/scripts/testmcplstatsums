@@ -61,3 +61,26 @@ sim( 'File with initial_ray_count of zero', 'zero.mcpl', expect_ok = False )
 sim( 'File with initial_ray_count, for reading again', 'rays.mcpl' )
 subprocess.run( [ 'mv', 'out.mcpl.gz', 'again.mcpl.gz' ], check = True )
 sim( 'Reading the output again', 'again.mcpl.gz' )
+
+#sb_mcplextra_filterfile keeps the stat:sum values when filtering the particles,
+#but marks them as unavailable when only a part of the file is used due to a
+#limit on the number of particles:
+def filterfile( title, *args ):
+    print()
+    print( f'==> {title}' )
+    r = subprocess.run( [ 'sb_mcplextra_filterfile', '-n', 'rays.mcpl', 'filtered.mcpl' ] + list(args),
+                        capture_output = True, text = True, check = False )
+    for line in r.stdout.splitlines():
+        if 'stat:sum' in line:
+            print( '   ', line )
+    assert r.returncode == 0, r.stdout + r.stderr
+    f = mcpl.MCPLFile( 'filtered.mcpl' )
+    print( f'    Output particles: {f.nparticles}' )
+    for k, v in sorted( f.stat_sum.items() ):
+        print( f'    Output stat:sum:{k} = {v}' )
+
+filterfile( 'Filtering a file', 'x > 0.15cm' )
+filterfile( 'Filtering a file with a limit which is not reached', '-l10' )
+filterfile( 'Filtering a file with a limit', '-l2' )
+filterfile( 'Filtering a file with a limit, with a filter', '-l2', 'x > 0.15cm' )
+sim( 'File where initial_ray_count is unavailable', 'filtered.mcpl', expect_ok = False )

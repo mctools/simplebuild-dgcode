@@ -224,10 +224,11 @@ void MCPLGen::init_weight_scale()
     return;//not present (e.g. files from older McStas versions): use weights as stored
   if ( !(nrays > 0.0) || !std::isfinite(nrays) ) {
     if (nrays == -1.0)
-      printf("MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which was not"
-             " finalised (for instance due to an interrupted run of the application writing the file),"
-             " so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use"
-             " the weights as stored in the file.\n");
+      printf("MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not"
+             " available (for instance due to an interrupted run of the application writing the file,"
+             " or because the file contains only a part of the particles of another file), so the weights"
+             " can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as"
+             " stored in the file.\n");
     else
       printf("MCPLGen ERROR - The input file has an invalid stat:sum:initial_ray_count value (%g),"
              " so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use"

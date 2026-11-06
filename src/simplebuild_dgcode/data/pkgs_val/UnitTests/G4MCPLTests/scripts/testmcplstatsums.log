@@ -36,7 +36,7 @@
     Output stat:sum:initial_geant4_weights = 10
 
 ==> File with initial_ray_count which is not finalised
-    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which was not finalised (for instance due to an interrupted run of the application writing the file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not available (for instance due to an interrupted run of the application writing the file, or because the file contains only a part of the particles of another file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
     (simulation failed as expected)
 
 ==> File with initial_ray_count which is not finalised, not normalised
@@ -59,3 +59,25 @@
     Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
     Output stat:sum:geant4_nevts = 5
     Output stat:sum:initial_geant4_weights = 5
+
+==> Filtering a file
+    Output particles: 3
+    Output stat:sum:initial_ray_count = 1000.0
+
+==> Filtering a file with a limit which is not reached
+    Output particles: 5
+    Output stat:sum:initial_ray_count = 1000.0
+
+==> Filtering a file with a limit
+    Marking stat:sum values as unavailable, since the limit on the number of particles means that only a part of the input file was used.
+    Output particles: 2
+    Output stat:sum:initial_ray_count = None
+
+==> Filtering a file with a limit, with a filter
+    Marking stat:sum values as unavailable, since the limit on the number of particles means that only a part of the input file was used.
+    Output particles: 2
+    Output stat:sum:initial_ray_count = None
+
+==> File where initial_ray_count is unavailable
+    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not available (for instance due to an interrupted run of the application writing the file, or because the file contains only a part of the particles of another file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    (simulation failed as expected)
