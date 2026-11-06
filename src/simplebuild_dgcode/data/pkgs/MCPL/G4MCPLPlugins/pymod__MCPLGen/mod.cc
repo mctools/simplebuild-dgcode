@@ -31,9 +31,9 @@ public:
   void gen(G4Event*);
 
   //For MCPLWriter (see G4MCPL/InitialRayCountInfo.hh):
-  double inputInitialRayCount() const override;
-  double inputWeightFactor() const override;
-  bool usedAllInputParticles() const override;
+  virtual double inputInitialRayCount() const;
+  virtual double inputWeightFactor() const;
+  virtual bool usedAllInputParticles() const;
 
   virtual bool unlimited() const { return false; }//only has the events available in the input
 
@@ -258,9 +258,11 @@ void MCPLGen::init_weight_scale()
   //Only print in one process when multiprocessing:
   const bool doprint = FrameworkGlobals::isParent();
   if (!getParameterBoolean("normalise_by_initial_ray_count")) {
-    if (doprint && nrays != -2.0)
+    if (doprint && nrays != -2.0) {
       printf("MCPLGen: Using the weights in the file as stored (normalise_by_initial_ray_count"
              " is disabled, stat:sum:initial_ray_count is %g)\n",nrays);
+      fflush(stdout);
+    }
     return;
   }
   if (nrays == -2.0)
@@ -279,9 +281,11 @@ void MCPLGen::init_weight_scale()
     throw std::runtime_error("MCPLGen: Can not normalise weights by stat:sum:initial_ray_count");
   }
   m_weight_scale = inputWeightFactor();
-  if (doprint)
+  if (doprint) {
     printf("MCPLGen: Dividing all weights by stat:sum:initial_ray_count = %g"
            " (disable with normalise_by_initial_ray_count=false)\n",nrays);
+    fflush(stdout);
+  }
 }
 
 void MCPLGen::setPDG(int p)
