@@ -28,10 +28,15 @@ def sim( title, infile, *args, expect_ok = True ):
     cmd = [ 'sb_g4mcpltests_mcplstatsums', f'input_file={infile}',
             f'--mcpl=grabsrc to {outfile}' ] + list(args)
     r = subprocess.run( cmd, capture_output = True, text = True, check = False )
-    #Only show the lines of MCPLGen and MCPLWriter (others are not relevant here):
+    #Only show the messages of MCPLGen and MCPLWriter (others are not relevant
+    #here). With multiple processes, a message might start in the middle of a
+    #line of output from another process, so look for them anywhere in a line:
     for line in ( r.stdout + r.stderr ).splitlines():
-        if line.startswith( ( 'MCPLGen', 'MCPLWriter: Done merging' ) ):
-            print( '   ', line )
+        for m in ( 'MCPLGen: Dividing', 'MCPLGen: Using', 'MCPLGen ERROR',
+                   'MCPLWriter: Done merging' ):
+            if m in line:
+                print( '   ', line[line.index(m):] )
+                break
     if not expect_ok:
         assert r.returncode != 0, 'simulation unexpectedly succeeded'
         print( '    (simulation failed as expected)' )

@@ -6,12 +6,20 @@
 
 namespace ExprParser {
 
-  //Base class for all ExprParser exceptions:
+  //Base class for all ExprParser exceptions.
+  //
+  //NB: The destructors of all exception classes are defined in Exception.cc
+  //(rather than inline), so that their type information is only present in the
+  //ExprParser library. Otherwise each module using them (e.g. Python modules,
+  //which are loaded with RTLD_LOCAL) would get its own copy, and on some
+  //platforms (e.g. Intel macOS, where libc++ compares type information by
+  //address) an exception thrown in one module could not be caught by type in
+  //another module.
 
   class Exception {
   public:
     Exception() {}
-    virtual ~Exception() throw() {}
+    virtual ~Exception() throw();
     virtual const char * epType() const = 0;
     virtual const char * epWhat() const = 0;
   };
@@ -24,6 +32,7 @@ namespace ExprParser {
   class InputError : public Exception {
   public:
     using Exception::Exception;
+    virtual ~InputError() throw();
   };
 
   //Exception thrown if input expressions contains errors (for instance syntax
@@ -32,6 +41,7 @@ namespace ExprParser {
   class ParseError : public std::runtime_error, public InputError {
   public:
     using std::runtime_error::runtime_error;
+    virtual ~ParseError() throw();
     const char * epType() const { return "ParseError"; }
     virtual const char * epWhat() const { return what(); }
   };
@@ -45,6 +55,7 @@ namespace ExprParser {
   class DomainError : public std::domain_error, public InputError {
   public:
     using std::domain_error::domain_error;
+    virtual ~DomainError() throw();
     const char * epType() const { return "DomainError"; }
     virtual const char * epWhat() const { return what(); }
   };
@@ -55,6 +66,7 @@ namespace ExprParser {
   class LogicError : public std::logic_error, public Exception {
   public:
     using std::logic_error::logic_error;
+    virtual ~LogicError() throw();
     const char * epType() const { return "ImplementationError"; }
     virtual const char * epWhat() const { return what(); }
   };
