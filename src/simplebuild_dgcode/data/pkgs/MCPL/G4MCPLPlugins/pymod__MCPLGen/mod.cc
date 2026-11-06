@@ -1,5 +1,5 @@
 #include "G4MCPL/G4MCPLUserFlags.hh"
-#include "G4MCPL/InitialRayCountInfo.hh"
+#include "G4MCPL/OutputStatSums.hh"
 #include "G4Interfaces/ParticleGenToPy.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
@@ -16,24 +16,19 @@
 #include "CLHEP/Geometry/Vector3D.h"
 #include "CLHEP/Geometry/Transform3D.h"
 #include <map>
+#include <memory>
 #include <cmath>
 #include <stdexcept>
 #include <cassert>
 #include "G4ParticleTable.hh"
 #include "G4IonTable.hh"
 
-class MCPLGen : public G4Interfaces::ParticleGenBase,
-                public G4MCPL::InitialRayCountInfo {
+class MCPLGen : public G4Interfaces::ParticleGenBase {
 public:
   MCPLGen();
   virtual ~MCPLGen();
   void init();
   void gen(G4Event*);
-
-  //For MCPLWriter (see G4MCPL/InitialRayCountInfo.hh):
-  virtual double inputInitialRayCount() const;
-  virtual double inputWeightFactor() const;
-  virtual bool usedAllInputParticles() const;
 
   virtual bool unlimited() const { return false; }//only has the events available in the input
 
@@ -45,7 +40,15 @@ private:
   void delayed_init();
   void setPDG(int);
   void init_weight_scale();
+  void register_output_stat_sums();
   std::string resolved_input_file() const;
+  //The stat:sum:initial_ray_count value of the input file (-2 if not present,
+  //-1 if not available), the factor applied to its weights (1/initial_ray_count
+  //when normalising, otherwise 1), and whether all of its particles were used
+  //(in this process, when multiprocessing):
+  double inputInitialRayCount() const;
+  double inputWeightFactor() const;
+  void signalEndOfInput(bool including_current_event);
   mcpl_file_t m_mcplfile;
   const mcpl_particle_t * m_p;//particle to be used for next generation
   bool m_unfiltered;
@@ -63,6 +66,11 @@ private:
   bool m_allow_zero_weight;
   double m_weight_scale;//factor applied to all weights in the file
   mutable double m_input_irc;//cache for inputInitialRayCount() (NaN if not loaded)
+  bool m_registered_output_stat_sums;
+  //Whether all particles of the input file were used (in this process). Shared
+  //with the function registered in register_output_stat_sums(), which might be
+  //evaluated after this generator is deleted:
+  std::shared_ptr<bool> m_used_all_input_particles;
 };
 
 MCPLGen::MCPLGen()
@@ -75,7 +83,9 @@ MCPLGen::MCPLGen()
     m_has_polarisation(false),
     m_allow_zero_weight(false),
     m_weight_scale(1.0),
-    m_input_irc(std::nan(""))
+    m_input_irc(std::nan("")),
+    m_registered_output_stat_sums(false),
+    m_used_all_input_particles(std::make_shared<bool>(false))
 {
   m_mcplfile.internal = 0;
 
@@ -144,7 +154,38 @@ bool MCPLGen::validateParameters()
 
   m_unfiltered = ( m_eval_filter.isConstant() && m_eval_filter() );
 
+  //The input file must be found here (rather than when it is opened for reading
+  //the particles), since its header is needed for registering the values of
+  //the output files:
+  if (Core::findData(fn).empty()) {
+    printf("MCPLGen ERROR - File specified in input_file parameter not found : \"%s\"\n",fn.c_str());
+    return false;
+  }
+  register_output_stat_sums();
+
   return true;
+}
+
+void MCPLGen::register_output_stat_sums()
+{
+  //Transfer stat:sum:initial_ray_count of the input file to MCPL files written
+  //by MCPLWriter, with the weights in the same convention as in the input file
+  //(i.e. undoing any normalisation by this generator), so reading the output
+  //files again gives the same weights. This happens when the parameters are
+  //validated, which is before the simulation starts (and before any fork when
+  //multiprocessing), as required by G4MCPL/OutputStatSums.hh:
+  if (m_registered_output_stat_sums)
+    return;
+  m_registered_output_stat_sums = true;
+  const double nrays = inputInitialRayCount();
+  if (nrays == -2.0)
+    return;//not present
+  //The value is only valid if all particles of the input file were used:
+  auto used_all = m_used_all_input_particles;
+  G4MCPL::addOutputStatSum( "initial_ray_count",
+                            [used_all,nrays]() { return ( nrays > 0.0 && *used_all ) ? nrays : -1.0; },
+                            G4MCPL::StatSumMode::WholeJob );
+  G4MCPL::setOutputWeightFactor( 1.0 / inputWeightFactor() );
 }
 
 void MCPLGen::init()
@@ -217,9 +258,12 @@ double MCPLGen::inputWeightFactor() const
   return 1.0;
 }
 
-bool MCPLGen::usedAllInputParticles() const
+void MCPLGen::signalEndOfInput(bool including_current_event)
 {
-  return getParameterInt("skip_events") == 0 && reachedLimit();
+  //All particles of the input file were used (in this process), unless some
+  //were skipped:
+  *m_used_all_input_particles = ( getParameterInt("skip_events") == 0 );
+  signalEndOfEvents(including_current_event);
 }
 
 void MCPLGen::delayed_init()
@@ -332,7 +376,7 @@ void MCPLGen::gen(G4Event* evt)
     //Oups, we don't have a particle to generate in this event! Should only
     //happen if number of (filtered) particles in the file is less than the
     //number of processes:
-    signalEndOfEvents(true);
+    signalEndOfInput(true);
     return;
   }
 
@@ -406,7 +450,7 @@ void MCPLGen::gen(G4Event* evt)
     }
   }
   if (!m_p)
-    signalEndOfEvents(false);//signal that this will be the last event
+    signalEndOfInput(false);//signal that this will be the last event
 
 }
 

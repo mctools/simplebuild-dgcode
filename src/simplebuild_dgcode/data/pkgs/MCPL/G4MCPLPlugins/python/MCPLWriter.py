@@ -1,4 +1,13 @@
-__all__ = [ 'MCPLWriter' ]
+__all__ = [ 'MCPLWriter', 'addStatSum' ]
+
+def addStatSum( key, value ):
+    """Add a stat:sum entry with a constant value describing the whole
+    simulation (e.g. the duration of a beam pulse), to all MCPL files written by
+    MCPLWriter (including those written due to the --mcpl option). Must be
+    called before the simulation starts. Use -1 to mark the value as not
+    available."""
+    from ._MCPLWriter import addStatSum as _addStatSum
+    _addStatSum( key, float(value) )
 
 class MCPLWriter:
     """Capture particles in a Geant4 simulation and write them to an MCPL file.

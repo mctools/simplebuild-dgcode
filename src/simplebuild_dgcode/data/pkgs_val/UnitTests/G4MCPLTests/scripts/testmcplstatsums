@@ -11,6 +11,7 @@
 #  * MCPLWriter transfers stat:sum:initial_ray_count of the input file to the
 #    output file (marked as unavailable unless all particles of the input file
 #    were used), with the weights in the same convention as in the input file.
+#  * Custom stat:sum values can be added (here from Python).
 #  * sb_mcplextra_filterfile marks stat:sum values as unavailable when only a
 #    part of the input file is used.
 
@@ -21,13 +22,16 @@ def mkfile( fn, nparticles, weight, initial_ray_count ):
     subprocess.run( [ 'sb_g4mcpltests_mkfile', fn, str(nparticles), str(weight),
                       str(initial_ray_count) ], check = True )
 
-def sim( title, infile, *args, expect_ok = True ):
+def sim( title, infile, *args, expect_ok = True, env_extra = None ):
     print()
     print( f'==> {title}' )
     outfile = 'out.mcpl'
     cmd = [ 'sb_g4mcpltests_mcplstatsums', f'input_file={infile}',
             f'--mcpl=grabsrc to {outfile}' ] + list(args)
-    r = subprocess.run( cmd, capture_output = True, text = True, check = False )
+    import os
+    env = dict( os.environ )
+    env.update( env_extra or {} )
+    r = subprocess.run( cmd, capture_output = True, text = True, check = False, env = env )
     #Only show the messages of MCPLGen and MCPLWriter (others are not relevant
     #here). With multiple processes, a message might start in the middle of a
     #line of output from another process, so look for them anywhere in a line:
@@ -75,6 +79,12 @@ sim( 'File with initial_ray_count of zero', 'zero.mcpl', expect_ok = False )
 sim( 'File with initial_ray_count, for reading again', 'rays.mcpl' )
 subprocess.run( [ 'mv', 'out.mcpl.gz', 'again.mcpl.gz' ], check = True )
 sim( 'Reading the output again', 'again.mcpl.gz' )
+
+#Custom stat:sum values added by user code (describing the whole simulation, so
+#they are only added once when merging the output of multiple processes):
+sim( 'Custom stat:sum value', 'rays.mcpl', env_extra = { 'MCPLSTATSUMS_TEST_USERVALUE' : '17.5' } )
+sim( 'Custom stat:sum value, multiple processes', 'rays.mcpl', '-j2',
+     env_extra = { 'MCPLSTATSUMS_TEST_USERVALUE' : '17.5' } )
 
 #sb_mcplextra_filterfile keeps the stat:sum values when filtering the particles,
 #but marks them as unavailable when only a part of the file is used due to a

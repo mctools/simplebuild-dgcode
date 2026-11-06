@@ -77,6 +77,23 @@
     Output stat:sum:initial_geant4_weights = 5
     Output stat:sum:initial_ray_count = 1000
 
+==> Custom stat:sum value
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:initial_ray_count = 1000
+    Output stat:sum:my_beam_time = 17.5
+
+==> Custom stat:sum value, multiple processes
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    MCPLWriter: Done merging output from 2 processes into file out.mcpl
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:initial_ray_count = 1000
+    Output stat:sum:my_beam_time = 17.5
+
 ==> Filtering a file
     Output particles: 3
     Output stat:sum:initial_ray_count = 1000

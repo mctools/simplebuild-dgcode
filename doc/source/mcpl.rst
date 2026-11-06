@@ -123,6 +123,20 @@ weights as in the original simulation. Since the value is only valid when all
 particles of the input file were used, it is marked as unavailable when this
 was not the case (e.g. with ``skip_events`` or a limited number of events).
 
+Custom ``stat:sum`` values describing the whole simulation (for instance the
+duration of a beam pulse) can be added to all MCPL files written by Geant4 from
+the :ref:`sim script <sbsimscript>`, before the simulation is started:
+
+.. code-block:: python
+
+    import G4MCPLPlugins.MCPLWriter as Writer
+    Writer.addStatSum( 'my_beam_time', 3600.0 )
+
+Such values are only added once when the output of multiple processes is
+merged. C++ code can add values computed at the end of the simulation via the
+functions in :sbpkg:`G4MCPL/OutputStatSums.hh<G4MCPL/libinc/OutputStatSums.hh>`,
+which is also how MCPLGen transfers ``stat:sum:initial_ray_count``.
+
 Modify MCPL files
 -----------------
 
