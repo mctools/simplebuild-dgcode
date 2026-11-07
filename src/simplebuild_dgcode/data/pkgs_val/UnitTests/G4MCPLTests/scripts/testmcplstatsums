@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+
+#Tests of the stat:sum handling of MCPLGen and MCPLWriter:
+#
+#  * MCPLGen divides the weights by stat:sum:initial_ray_count of the input
+#    file (if present), unless normalise_by_initial_ray_count is disabled.
+#  * MCPLWriter writes stat:sum:geant4_nevts and stat:sum:initial_geant4_weights
+#    (the number of simulated events and the sum of the weights of their
+#    primary particles), which are added up when the output of multiple
+#    processes is merged.
+#  * MCPLWriter records stat:sum:initial_ray_count of the input file as
+#    stat:sum:original_initial_ray_count, with the weights as used in Geant4.
+#    With the opt_irc keyword, it is instead recorded as initial_ray_count, with
+#    the weights in the same convention as in the input file.
+#  * Values describing the whole job (like the above) are divided between the
+#    processes when multiprocessing, so the merged file gets the value.
+#  * Custom stat:sum values can be added (here from Python).
+#  * sb_mcplextra_filterfile marks stat:sum values as unavailable when only a
+#    part of the input file is used.
+
+import subprocess
+import mcpl
+
+def mkfile( fn, nparticles, weight, initial_ray_count ):
+    subprocess.run( [ 'sb_g4mcpltests_mkfile', fn, str(nparticles), str(weight),
+                      str(initial_ray_count) ], check = True )
+
+def sim( title, infile, *args, expect_ok = True, env_extra = None, mcplkw = 'grabsrc' ):
+    print()
+    print( f'==> {title}' )
+    outfile = 'out.mcpl'
+    cmd = [ 'sb_g4mcpltests_mcplstatsums', f'input_file={infile}',
+            f'--mcpl={mcplkw} to {outfile}' ] + list(args)
+    import os
+    env = dict( os.environ )
+    env.update( env_extra or {} )
+    r = subprocess.run( cmd, capture_output = True, text = True, check = False, env = env )
+    #Only show the messages of MCPLGen and MCPLWriter (others are not relevant
+    #here). With multiple processes, a message might start in the middle of a
+    #line of output from another process, so look for them anywhere in a line:
+    for line in ( r.stdout + r.stderr ).splitlines():
+        for m in ( 'MCPLGen: Dividing', 'MCPLGen: Using', 'MCPLGen ERROR',
+                   'MCPLWriter: Done merging', 'MCPLWriter: Writing stat:sum' ):
+            if m in line:
+                print( '   ', line[line.index(m):] )
+                break
+    if not expect_ok:
+        assert r.returncode != 0, 'simulation unexpectedly succeeded'
+        print( '    (simulation failed as expected)' )
+        return
+    assert r.returncode == 0, 'simulation failed:\n' + r.stdout + r.stderr
+    f = mcpl.MCPLFile( outfile + '.gz' )
+    weights = sorted( float(p.weight) for p in f.particles )
+    print( f'    Output weights: {weights}' )
+    for k, v in sorted( f.stat_sum.items() ):
+        print( f'    Output stat:sum:{k} = {"<unavailable>" if v is None else format(v,"g")}' )
+
+mkfile( 'rays.mcpl', 5, 1000.0, 1000 )
+mkfile( 'norays.mcpl', 5, 2.0, 'none' )
+mkfile( 'notfinal.mcpl', 5, 1000.0, 'notfinal' )
+mkfile( 'zero.mcpl', 5, 1000.0, 0 )
+
+sim( 'File with initial_ray_count', 'rays.mcpl' )
+sim( 'File with initial_ray_count, not normalised', 'rays.mcpl',
+     'normalise_by_initial_ray_count=0' )
+sim( 'File with initial_ray_count, skipping events', 'rays.mcpl', 'skip_events=2' )
+sim( 'File with initial_ray_count, limited number of events', 'rays.mcpl', '-n2' )
+sim( 'File with initial_ray_count, multiple processes', 'rays.mcpl', '-j2' )
+sim( 'File with initial_ray_count, multiple processes, limited number of events',
+     'rays.mcpl', '-j2', '-n3' )
+sim( 'File without initial_ray_count', 'norays.mcpl' )
+sim( 'File with initial_ray_count which is not finalised', 'notfinal.mcpl',
+     expect_ok = False )
+sim( 'File with initial_ray_count which is not finalised, not normalised',
+     'notfinal.mcpl', 'normalise_by_initial_ray_count=0' )
+sim( 'File with initial_ray_count of zero', 'zero.mcpl', expect_ok = False )
+
+#Recording the initial_ray_count of the input file as initial_ray_count, with
+#the weights in the same convention as in the input file (opt_irc):
+sim( 'File with initial_ray_count, opt_irc', 'rays.mcpl', mcplkw = 'grabsrc,opt_irc' )
+sim( 'File with initial_ray_count, opt_irc, not normalised', 'rays.mcpl',
+     'normalise_by_initial_ray_count=0', mcplkw = 'grabsrc,opt_irc' )
+sim( 'File with initial_ray_count, opt_irc, multiple processes', 'rays.mcpl', '-j2',
+     mcplkw = 'grabsrc,opt_irc' )
+sim( 'File without initial_ray_count, opt_irc', 'norays.mcpl', mcplkw = 'grabsrc,opt_irc',
+     expect_ok = False )
+
+#Reading the output files again. With opt_irc, the weights are normalised
+#again, so they are the same in Geant4 as in the original simulation:
+sim( 'File with initial_ray_count, opt_irc, for reading again', 'rays.mcpl',
+     mcplkw = 'grabsrc,opt_irc' )
+subprocess.run( [ 'mv', 'out.mcpl.gz', 'again.mcpl.gz' ], check = True )
+sim( 'Reading the output again', 'again.mcpl.gz' )
+#By default, the output has the weights as used in Geant4, and no
+#initial_ray_count (so it is not normalised again):
+subprocess.run( [ 'mv', 'out.mcpl.gz', 'again2.mcpl.gz' ], check = True )
+sim( 'Reading the output of that again', 'again2.mcpl.gz' )
+
+#Custom stat:sum values added by user code (describing the whole simulation, so
+#they are only added once when merging the output of multiple processes):
+sim( 'Custom stat:sum value', 'rays.mcpl', env_extra = { 'MCPLSTATSUMS_TEST_USERVALUE' : '17.5' } )
+sim( 'Custom stat:sum value, multiple processes', 'rays.mcpl', '-j2',
+     env_extra = { 'MCPLSTATSUMS_TEST_USERVALUE' : '17.5' } )
+
+#sb_mcplextra_filterfile keeps the stat:sum values when filtering the particles,
+#but marks them as unavailable when only a part of the file is used due to a
+#limit on the number of particles:
+def filterfile( title, *args ):
+    print()
+    print( f'==> {title}' )
+    r = subprocess.run( [ 'sb_mcplextra_filterfile', '-n', 'rays.mcpl', 'filtered.mcpl' ] + list(args),
+                        capture_output = True, text = True, check = False )
+    for line in r.stdout.splitlines():
+        if 'stat:sum' in line:
+            print( '   ', line )
+    assert r.returncode == 0, r.stdout + r.stderr
+    f = mcpl.MCPLFile( 'filtered.mcpl' )
+    print( f'    Output particles: {f.nparticles}' )
+    for k, v in sorted( f.stat_sum.items() ):
+        print( f'    Output stat:sum:{k} = {"<unavailable>" if v is None else format(v,"g")}' )
+
+filterfile( 'Filtering a file', 'x > 0.15cm' )
+filterfile( 'Filtering a file with a limit which is not reached', '-l10' )
+filterfile( 'Filtering a file with a limit', '-l2' )
+filterfile( 'Filtering a file with a limit, with a filter', '-l2', 'x > 0.15cm' )
+sim( 'File where initial_ray_count is unavailable', 'filtered.mcpl', expect_ok = False )

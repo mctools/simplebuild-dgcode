@@ -168,6 +168,7 @@ int main(int argc, char** argv) {
   double norig = mcpl_hdr_nparticles(fi);
   int progress = -1;
   const mcpl_particle_t* p;
+  bool truncated = false;
   printf("Start processing particle data.\n");
   while ( ( p=mcpl_read(fi) ) ) {
     ++posp1;
@@ -183,10 +184,25 @@ int main(int argc, char** argv) {
       continue;
     mcpl_add_particle(fo,p);
     ++used;
-    if ( nparticles_limit && used==nparticles_limit )
+    if ( nparticles_limit && used==nparticles_limit ) {
+      truncated = ( mcpl_currentposition(fi) < mcpl_hdr_nparticles(fi) );
       break;
+    }
   }
   printf("Done processing particle data.\n");
+
+  //Any stat:sum values (like stat:sum:initial_ray_count from McStas) remain
+  //valid when filtering the particles, but not when only a part of the file is
+  //used due to the limit (the file was split, rather than filtered):
+  bool has_stat_sums = false;
+  for ( unsigned i = 0; i < mcpl_hdr_ncomments(fi); ++i )
+    if ( std::strncmp( mcpl_hdr_comment(fi,i), "stat:sum:", 9 ) == 0 )
+      has_stat_sums = true;
+  if ( truncated && has_stat_sums ) {
+    printf("Marking stat:sum values as unavailable, since the limit on the number"
+           " of particles means that only a part of the input file was used.\n");
+    mcpl_hdr_scale_stat_sums(fo,-1.0);
+  }
 
   //close:
   if (do_gzip)

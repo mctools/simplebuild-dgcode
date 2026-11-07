@@ -232,6 +232,10 @@ def _display_mcpl_help():
     print("   opt_dp        : Store double-precision numbers in output.")
     print("   opt_pol       : Store polarisation info in output.")
     print("   opt_userflags : Store special user flags in output.")
+    print("   opt_irc       : Store stat:sum:initial_ray_count of the MCPL input")
+    print("                   file, with weights in the same convention as in")
+    print("                   that file (only if each particle can be treated")
+    print("                   as an independent ray).")
     print("   grabsrc       : Short-cut to grab just particles from the particle")
     print('                   generator. Implies kill_never and all_vols plus')
     print('                   prepends "trk.is_primary && step.stepnbr==1" to')
@@ -352,7 +356,7 @@ def _configure_mcplwriter(launcher,cfgstr,parseerror):
     ks_default='NEVER' if 'grabsrc' in cfgs else 'ALWAYS'#default to avoid unintentional double-counting
     on_exit_default = False
     ks, on_exit = [], []
-    opt_dp,opt_pol,opt_userflags = False,False,False
+    opt_dp,opt_pol,opt_userflags,opt_irc = False,False,False,False
     for cfg in cfgs:
         cfg = cfg.strip()
         if not cfg:
@@ -370,6 +374,7 @@ def _configure_mcplwriter(launcher,cfgstr,parseerror):
         elif cfg=='opt_dp': opt_dp = True
         elif cfg=='opt_pol': opt_pol = True
         elif cfg=='opt_userflags': opt_userflags = True
+        elif cfg=='opt_irc': opt_irc = True
         elif cfg=='all_vols': mw.addVolume('*')
         elif cfg == 'where' or cfg == 'to' or cfg.startswith(('kill_', 'on_vol_', 'opt_')) or cfg == 'withflags':
             parseerror('Suspicious volume name "%s" indicates malformed option for --mcpl'%cfg)
@@ -380,6 +385,7 @@ def _configure_mcplwriter(launcher,cfgstr,parseerror):
     mw.setWriteDoublePrecision(opt_dp)
     mw.setWritePolarisation(opt_pol)
     mw.setWriteUserFlags(opt_userflags)
+    mw.setWriteInitialRayCount(opt_irc)
     mw.setWriteOnVolExit(on_exit[0] if on_exit else on_exit_default)
     mw.setKillStrategy(ks[0] if ks else ks_default)
     if mcpl_fltr:

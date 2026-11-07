@@ -2,18 +2,27 @@
 #include "G4Interfaces/ComponentHandles.hh"
 
 #include "G4MCPL/G4MCPLUserFlags.hh"
+#include "G4MCPL/OutputStatSums.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
 #include "G4Interfaces/GeoConstructBase.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4ExprParser/G4SteppingASTBuilder.hh"
 #include "mcpl.h"
+#if !defined(MCPL_VERSION) || MCPL_VERSION < 2002008
+#  error "MCPL version 2.2.8 or later is required"
+#endif
 
 #include "G4VSensitiveDetector.hh"
+#include "G4Event.hh"
+#include "G4PrimaryVertex.hh"
+#include "G4PrimaryParticle.hh"
 #include "G4Step.hh"
 #include "G4SDManager.hh"
 #include "G4RegionStore.hh"
 
 #include <set>
+#include <cmath>
+#include <algorithm>
 #include <stdexcept>
 #include <string.h>
 #include <sstream>
@@ -33,6 +42,49 @@ namespace G4MCPLWriter {
   private:
     MCPLSensitiveDetector * m_sd;
   };
+
+  //Statistics of the simulated events, which are written to the output files
+  //as stat:sum values (they are added up when files are merged):
+  //
+  //  geant4_nevts           : The number of simulated events.
+  //  initial_geant4_weights : The sum of the weights of the primary particles
+  //                           of the simulated events.
+  //
+  //They are collected via a post-generation callback on the particle
+  //generator (so they are independent of which particles reach the volumes).
+  class EventStats : public G4Interfaces::PostGenCallBack {
+  public:
+    EventStats( const G4Interfaces::ParticleGenBase* gen ) : m_gen(gen) {}
+    void postGen( G4Event* evt ) override
+    {
+      const int nvertices = evt->GetNumberOfPrimaryVertex();
+      if ( !nvertices && m_gen->reachedLimit() )
+        return;//the generator ran out of events, so this event is aborted
+      ++m_nevts;
+      for ( int i = 0; i < nvertices; ++i ) {
+        const G4PrimaryVertex* vtx = evt->GetPrimaryVertex(i);
+        for ( const G4PrimaryParticle* pp = vtx->GetPrimary(); pp; pp = pp->GetNext() )
+          m_sumweights += sumWeights( pp, vtx->GetWeight() );
+      }
+    }
+    std::uint64_t nevts() const { return m_nevts; }
+    double sumWeights() const { return m_sumweights; }
+  private:
+    static double sumWeights( const G4PrimaryParticle* pp, double vtxweight )
+    {
+      //The weight of the track of a primary particle is the product of the
+      //weights of the vertex and the particle (also for pre-assigned
+      //daughters):
+      double w = vtxweight * pp->GetWeight();
+      for ( const G4PrimaryParticle* d = pp->GetDaughter(); d; d = d->GetNext() )
+        w += sumWeights( d, vtxweight );
+      return w;
+    }
+    const G4Interfaces::ParticleGenBase* m_gen;
+    std::uint64_t m_nevts = 0;
+    double m_sumweights = 0.0;
+  };
+  typedef std::shared_ptr<EventStats> EventStatsPtr;
 
   enum KillStrategy { KS_NEVER, KS_ALWAYS, KS_FILTERED };
   KillStrategy ks_from_string(const std::string& s)
@@ -68,12 +120,14 @@ namespace G4MCPLWriter {
                            bool writepolarisation,
                            bool writeuserflags,
                            double universalweight,
+                           bool writeinitialraycount,
                            bool writeonvolexit,
                            KillStrategy killstrategy,
                            BuilderPtr builder,
                            EP::Evaluator<bool> filter_evaluator,
                            EP::Evaluator<EP::int_type> flag_evaluator,
-                           std::vector<std::pair<std::string,std::string>> comments_and_blobs)
+                           std::vector<std::pair<std::string,std::string>> comments_and_blobs,
+                           EventStatsPtr evtstats)
       : G4VSensitiveDetector(name),
         m_expr_builder(builder),
         m_eval_filter(filter_evaluator),
@@ -89,7 +143,10 @@ namespace G4MCPLWriter {
         m_initialised(false),
         m_closed(false),
         m_om(0),
-        m_comments_and_blobs(comments_and_blobs)
+        m_comments_and_blobs(comments_and_blobs),
+        m_evtstats(evtstats),
+        m_opt_writeinitialraycount(writeinitialraycount),
+        m_weight_factor(1.0)
     {
       std::memset(&m_p,0,sizeof(m_p));
     }
@@ -125,6 +182,21 @@ namespace G4MCPLWriter {
         return;
       m_closed = true;
       assert(m_f.internal);
+      //Final values of the stat:sum entries reserved in initmcpl():
+      if (m_evtstats) {
+        mcpl_hdr_add_stat_sum(m_f,"geant4_nevts",(double)m_evtstats->nevts());
+        //(in the same convention as the weights in the file):
+        mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",m_evtstats->sumWeights()*m_weight_factor);
+      }
+      if (!m_irc_key.empty())
+        mcpl_hdr_add_stat_sum(m_f,m_irc_key.c_str(),wholeJobValue(G4MCPL::inputInitialRayCount()));
+      for ( auto& e : m_statsums ) {
+        const double value = e.value();
+        mcpl_hdr_add_stat_sum(m_f,e.key.c_str(),
+                              ( e.mode == G4MCPL::StatSumMode::WholeJob
+                                ? wholeJobValue(value)
+                                : ( value >= 0.0 && std::isfinite(value) ? value : -1.0 ) ));
+      }
       if (!FrameworkGlobals::isForked())
         mcpl_closeandgzip_outfile(m_f);
       else
@@ -195,7 +267,7 @@ namespace G4MCPLWriter {
       }
 
       m_p.time = pt->GetGlobalTime() / CLHEP::millisecond;
-      m_p.weight = pt->GetWeight();
+      m_p.weight = pt->GetWeight() * m_weight_factor;
       assert(CLHEP::MeV==1.0);
       m_p.ekin = pt->GetKineticEnergy();//already in MeV
       const G4ThreeVector& pos = pt->GetPosition();
@@ -268,10 +340,40 @@ namespace G4MCPLWriter {
           mcpl_hdr_add_data(m_f,it->first.c_str(),it->second.size(),it->second.c_str());
       }
 
+      if (m_evtstats) {
+        //Reserve space for the stat:sum values, which are set when the file is
+        //closed (see ensure_close_file()):
+        mcpl_hdr_add_stat_sum(m_f,"geant4_nevts",-1.0);
+        mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",-1.0);
+      }
+
+      //The stat:sum:initial_ray_count of an input file read by MCPLGen. By
+      //default it is recorded as original_initial_ray_count, with the weights
+      //as used in Geant4. Only if requested, it is recorded as
+      //initial_ray_count, with the weights in the same convention as in the
+      //input file (i.e. multiplied by the value if MCPLGen divided the weights
+      //by it), so that reading the file again gives the same weights. That
+      //convention assumes that each particle is an independent ray, which is
+      //for the user to decide. The space for the values is reserved here, and
+      //the values are set when the file is closed:
+      m_irc_key.clear();
+      m_weight_factor = 1.0;
+      if ( G4MCPL::hasInputInitialRayCount() ) {
+        m_irc_key = ( m_opt_writeinitialraycount ? "initial_ray_count" : "original_initial_ray_count" );
+        if ( m_opt_writeinitialraycount )
+          m_weight_factor = 1.0 / G4MCPL::inputWeightFactor();
+        mcpl_hdr_add_stat_sum(m_f,m_irc_key.c_str(),-1.0);
+      }
+
+      //Values added by other components or user code:
+      m_statsums = G4MCPL::outputStatSums();
+      for ( auto& e : m_statsums )
+        mcpl_hdr_add_stat_sum(m_f,e.key.c_str(),-1.0);
+
       if (m_opt_writedoubleprec)   mcpl_enable_doubleprec(m_f);
       if (m_opt_writepolarisation) mcpl_enable_polarisation(m_f);
       if (m_opt_writeuserflags) mcpl_enable_userflags(m_f);
-      if (m_opt_universalweight) mcpl_enable_universal_weight(m_f,m_opt_universalweight);
+      if (m_opt_universalweight) mcpl_enable_universal_weight(m_f,m_opt_universalweight*m_weight_factor);
 
       if (FrameworkGlobals::isForked()&&FrameworkGlobals::isParent())
         m_om = new MCPLOutputMerger(this);//used by mergeIfNeeded()
@@ -290,6 +392,25 @@ namespace G4MCPLWriter {
     mcpl_particle_t m_p;
     MCPLOutputMerger * m_om;
     std::vector<std::pair<std::string,std::string>> m_comments_and_blobs;
+    EventStatsPtr m_evtstats;
+    std::vector<G4MCPL::OutputStatSum> m_statsums;
+    bool m_opt_writeinitialraycount;
+    std::string m_irc_key;
+    double m_weight_factor;
+
+    static double wholeJobValue( double value )
+    {
+      //A value describing the whole job. When multiprocessing, each of the N
+      //processes writes the value divided by N, so the merged file gets the
+      //value (MCPL adds up stat:sum values when merging files).
+      //
+      //NB: The value would preferably be set only in the merged file, but MCPL
+      //does not currently support updating stat:sum values of existing files
+      //(see mctools/mcpl#254 and mctools/simplebuild-dgcode#63).
+      if ( !( value >= 0.0 ) || !std::isfinite(value) )
+        return -1.0;//not available
+      return value / std::max<unsigned>( 1, FrameworkGlobals::nProcs() );
+    }
   };
 
   void MCPLOutputMerger::merge() {
@@ -321,6 +442,7 @@ namespace G4MCPLWriter {
     bool m_opt_writeonvolexit;
     KillStrategy m_opt_killstrategy;
     double m_opt_universalweight;
+    bool m_opt_writeinitialraycount;
     BuilderPtr m_expr_builder;
     EP::Evaluator<bool> m_eval_filter;
     EP::Evaluator<EP::int_type> m_eval_flags;
@@ -332,6 +454,7 @@ namespace G4MCPLWriter {
     void setWriteUserFlags(bool b) {  m_opt_writeuserflags = b; }
     void setWriteOnVolExit(bool b) {  m_opt_writeonvolexit = b; }
     void setUniversalWeight(double w) {  m_opt_universalweight = w; }
+    void setWriteInitialRayCount(bool b) {  m_opt_writeinitialraycount = b; }
     void setFilter(const char * expr) { m_expr_filter = expr; }
     void setUserFlags(const char * expr) { m_expr_flags = expr; }
     void setKillStrategy(KillStrategy ks) {  m_opt_killstrategy = ks; }
@@ -345,6 +468,7 @@ namespace G4MCPLWriter {
         m_opt_writeonvolexit(false),
         m_opt_killstrategy(KS_NEVER),
         m_opt_universalweight(0.0),
+        m_opt_writeinitialraycount(false),
         m_expr_filter("true"),
         m_vols_all(false),
         m_sd(0)
@@ -370,9 +494,19 @@ namespace G4MCPLWriter {
 
       m_geo = geo_handle ? &G4Interfaces::getComponentAs<G4Interfaces::GeoConstructBase>( geo_handle, "geometry" ) : nullptr;
       m_gen = gen_handle ? &G4Interfaces::getComponentAs<G4Interfaces::ParticleGenBase>( gen_handle, "particle generator" ) : nullptr;
+      if ( m_gen && !m_evtstats ) {
+        m_evtstats = std::make_shared<EventStats>( m_gen );
+        m_gen->installPostGenCallBack( m_evtstats );
+      }
 
       if (m_vols.empty()&&!m_vols_all)
         throw std::runtime_error("MCPLWriter: No volumes added!");
+
+      if ( m_opt_writeinitialraycount && !( G4MCPL::hasInputInitialRayCount()
+                                            && G4MCPL::inputInitialRayCount() > 0.0 ) )
+        throw std::runtime_error("MCPLWriter: Writing stat:sum:initial_ray_count was requested, but there"
+                                 " is no MCPL input file (read with MCPLGen) with a valid"
+                                 " stat:sum:initial_ray_count value");
 
       //Setup filter:
 
@@ -448,7 +582,8 @@ namespace G4MCPLWriter {
     bool m_vols_all;
     MCPLSensitiveDetector * m_sd;
     const G4Interfaces::GeoConstructBase* m_geo = nullptr;
-    const G4Interfaces::ParticleGenBase* m_gen = nullptr;
+    G4Interfaces::ParticleGenBase* m_gen = nullptr;
+    EventStatsPtr m_evtstats;
     std::vector<std::pair<std::string,std::string>> createCommentsAndBlobs() const
     {
       std::vector<std::pair<std::string,std::string>> out;
@@ -536,6 +671,11 @@ namespace G4MCPLWriter {
         tmp << "ESS/dgcode generator module : " << gen_name;
         out.emplace_back("comment",tmp.str());
       }
+      if (gen)
+        out.emplace_back("comment","MCPLWriter stat:sum values : geant4_nevts is the number of simulated"
+                         " events, initial_geant4_weights is the sum of the weights of their primary particles"
+                         " (in the convention of the weights in this file), original_initial_ray_count is the"
+                         " initial_ray_count of the input file (if any)");
 
       if (geo) {
         char * geodata(0);
@@ -583,12 +723,14 @@ namespace G4MCPLWriter {
                                            m_opt_writepolarisation,
                                            m_opt_writeuserflags,
                                            m_opt_universalweight,
+                                           m_opt_writeinitialraycount,
                                            m_opt_writeonvolexit,
                                            m_opt_killstrategy,
                                            m_expr_builder,
                                            m_eval_filter,
                                            m_eval_flags,
-                                           createCommentsAndBlobs());
+                                           createCommentsAndBlobs(),
+                                           m_evtstats);
           G4SDManager::GetSDMpointer()->AddNewDetector(m_sd);
         }
         auto currentsd = lv->GetSensitiveDetector();
@@ -647,7 +789,13 @@ SBLDPY_MODULE( _MCPLWriter )
     .def("setWritePolarisation",[]( PyMCPLWriter& o, bool b ) { o.w().setWritePolarisation( b ); }, { "b" } )
     .def("setWriteUserFlags",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteUserFlags( b ); }, { "b" } )
     .def("setUniversalWeight",[]( PyMCPLWriter& o, double w ) { o.w().setUniversalWeight( w ); }, { "w" } )
+    .def("setWriteInitialRayCount",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteInitialRayCount( b ); }, { "b" } )
     .def("setKillStrategy",[]( PyMCPLWriter& o, const std::string& ks ) { o.w().setKillStrategyFromString( ks.c_str() ); }, { "ks" } )
     .def("inithook",[]( PyMCPLWriter& o, std::int64_t geo, std::int64_t gen ) { o.w().inithook( geo, gen ); }, { "geo_handle", "gen_handle" } )
     .def("postmp",[]( PyMCPLWriter& o ) { o.w().postmp(); } );
+  //Add a constant stat:sum value describing the whole job to all output files
+  //(see G4MCPL/OutputStatSums.hh):
+  m.def("addStatSum",[]( const std::string& key, double value ) {
+    G4MCPL::addOutputStatSum( key, [value](){ return value; }, G4MCPL::StatSumMode::WholeJob );
+  }, { "key", "value" } );
 }

@@ -62,6 +62,18 @@ your :ref:`sim script <sbsimscript>`:
 
 See :ref:`the dedicated documentation <sbparticlegen>` for more options.
 
+If the input file has a ``stat:sum:initial_ray_count`` value, all weights are
+divided by it, so that the weights in the Geant4 simulation are per initial ray
+of the simulation which wrote the file, and do not depend on its number of
+rays. This is for instance the case for files written by the ``MCPL_output``
+component of McStas 3.10 and later (with ``weight_mode=1``, the default), which
+store the weights multiplied by the number of rays. The value of the whole file
+is always used, also when only some of its particles are used (e.g. with
+``skip_events`` or a limited number of events), so the results of jobs which
+each process a part of a file can be added up. Files without the value are used
+with their weights as stored. To always use the weights as stored, set
+``gen.normalise_by_initial_ray_count = False``.
+
 
 MCPL files as simulation output
 -------------------------------
@@ -94,6 +106,51 @@ options, by using the
 module. See an example :sbpkg:`here <G4MCPLTests/scripts/mcplwrite>` for how to
 use it.
 
+The MCPL files written by Geant4 contain ``stat:sum`` values which describe the
+simulation as a whole (independently of how many particles ended up in the
+file), and are added up when files are merged (e.g. with ``mcpltool --merge``,
+or when merging the output of multiple processes):
+
+* ``stat:sum:geant4_nevts``: The number of simulated events.
+* ``stat:sum:initial_geant4_weights``: The sum of the weights of the primary
+  particles of the simulated events, in the same convention as the weights in
+  the file. For instance, the sum of the weights of the particles in the file
+  divided by this value is an efficiency.
+* ``stat:sum:original_initial_ray_count``: The ``stat:sum:initial_ray_count``
+  value of the input file read with MCPLGen (if it has one). This is for
+  reference only: the weights in the file are the weights used in Geant4.
+
+The ``stat:sum:initial_ray_count`` convention of instrument simulations like
+McStas (see above) assumes that each particle in a file is an independent ray.
+This is usually not the case for files written by Geant4, where a single event
+can produce several (correlated) particles. Therefore Geant4 output files do not
+claim the convention by default. If it is appropriate for your use case, the
+``opt_irc`` keyword of ``--mcpl`` (or ``setWriteInitialRayCount(True)`` on an
+``MCPLWriter``) instead records the value of the input file as
+``stat:sum:initial_ray_count``, and writes the weights in the same convention as
+in the input file (i.e. multiplied by the value if MCPLGen divided the weights by
+it). Reading such a file with MCPLGen again then gives the same weights as in the
+original simulation.
+
+When the output of multiple processes is merged, each process writes its share
+of the values describing the whole job (like ``initial_ray_count``), so the
+merged file gets the value.
+
+Custom ``stat:sum`` values describing the whole simulation (for instance the
+duration of a beam pulse) can be added to all MCPL files written by Geant4 from
+the :ref:`sim script <sbsimscript>`, before the simulation is started:
+
+.. code-block:: python
+
+    import G4MCPLPlugins.MCPLWriter as Writer
+    Writer.addStatSum( 'my_beam_time', 3600.0 )
+
+Such values are only added once when the output of multiple processes is
+merged. C++ code can add values computed at the end of the simulation via the
+functions in :sbpkg:`G4MCPL/OutputStatSums.hh<G4MCPL/libinc/OutputStatSums.hh>`,
+which is also how MCPLGen provides the ``stat:sum:initial_ray_count`` of its
+input file.
+
 Modify MCPL files
 -----------------
 
@@ -113,6 +170,12 @@ Or, getting the first 1000 particles from a file (perhaps to get a smaller
 representative file which can be more easily shared for debugging purposes)::
 
   sb_mcplextra_filterfile infile.mcpl outfile.mcpl -l1000
+
+Any ``stat:sum`` values of the original file (like ``stat:sum:initial_ray_count``
+from McStas) are kept when filtering particles, since the new file is simply a
+narrower view of the same simulation. But when only a part of the particles is
+used due to the limit (``-l``), the values are marked as unavailable, since the
+file was then split rather than filtered.
 
 Run ``sb_mcplextra_filterfile --help`` for full usage instructions. Note that
 there also exists a ``sb_mcplextra_filterview`` command, which merely prints the

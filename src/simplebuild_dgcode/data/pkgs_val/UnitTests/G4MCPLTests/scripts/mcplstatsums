@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+#Simulation used by testmcplstatsums: the particles of an MCPL file in an empty
+#world (use --mcpl="grabsrc to FILE" to capture them).
+
+import G4StdGeometries.GeoEmptyWorld as Geo
+geo = Geo.create()
+geo.material = "Vacuum"
+geo.dimension_cm = 200
+
+import G4MCPLPlugins.MCPLGen as Gen
+gen = Gen.create()
+
+#A custom stat:sum value for the output files (if requested by the test):
+import os
+if os.environ.get('MCPLSTATSUMS_TEST_USERVALUE'):
+    import G4MCPLPlugins.MCPLWriter as Writer
+    Writer.addStatSum( 'my_beam_time', float(os.environ['MCPLSTATSUMS_TEST_USERVALUE']) )
+
+import G4Launcher
+g4 = G4Launcher(geo,gen)
+g4.setPhysicsList("PL_Empty")
+g4.setOutput("none")
+g4.go()

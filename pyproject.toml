@@ -28,13 +28,13 @@ dependencies = [
 recommended = [
     'numpy',
     'ncrystal>=4.2.10',
-    'mcpl>=2.2.4',
+    'mcpl>=2.2.8',
     'matplotlib'
 ]
 all = [
     'numpy',
     'ncrystal[all]>=4.2.10',
-    'mcpl>=2.2.4',
+    'mcpl>=2.2.8',
     'matplotlib',
     'scipy',
     'pandas',

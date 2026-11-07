@@ -1,9 +1,13 @@
 #include "G4MCPL/G4MCPLUserFlags.hh"
+#include "G4MCPL/OutputStatSums.hh"
 #include "G4Interfaces/ParticleGenToPy.hh"
 #include "G4Interfaces/ParticleGenBase.hh"
 #include "G4Interfaces/FrameworkGlobals.hh"
 #include "MCPLExprParser/MCPLASTBuilder.hh"
 #include "mcpl.h"
+#if !defined(MCPL_VERSION) || MCPL_VERSION < 2002008
+#  error "MCPL version 2.2.8 or later is required"
+#endif
 #include "Core/FindData.hh"
 #include "Units/Units.hh"
 #include "Core/String.hh"
@@ -12,6 +16,7 @@
 #include "CLHEP/Geometry/Vector3D.h"
 #include "CLHEP/Geometry/Transform3D.h"
 #include <map>
+#include <cmath>
 #include <stdexcept>
 #include <cassert>
 #include "G4ParticleTable.hh"
@@ -33,6 +38,16 @@ private:
   void skip_forward(unsigned nskip);
   void delayed_init();
   void setPDG(int);
+  void init_weight_scale();
+  void register_output_stat_sums();
+  std::string resolved_input_file() const;
+  //The stat:sum:initial_ray_count value of the input file (-2 if not present,
+  //-1 if not available), the factor applied to its weights (1/initial_ray_count
+  //when normalising, otherwise 1), and whether all of its particles were used
+  //(in this process, when multiprocessing):
+  double inputInitialRayCount() const;
+  double inputWeightFactor() const;
+
   mcpl_file_t m_mcplfile;
   const mcpl_particle_t * m_p;//particle to be used for next generation
   bool m_unfiltered;
@@ -48,6 +63,9 @@ private:
   HepGeom::Vector3D<double> m_translation;
   HepGeom::Transform3D m_rotation;
   bool m_allow_zero_weight;
+  double m_weight_scale;//factor applied to all weights in the file
+  mutable double m_input_irc;//cache for inputInitialRayCount() (NaN if not loaded)
+  bool m_registered_output_stat_sums;
 };
 
 MCPLGen::MCPLGen()
@@ -58,7 +76,10 @@ MCPLGen::MCPLGen()
     m_nprocs(0),
     m_lastpdgcode(0),
     m_has_polarisation(false),
-    m_allow_zero_weight(false)
+    m_allow_zero_weight(false),
+    m_weight_scale(1.0),
+    m_input_irc(std::nan("")),
+    m_registered_output_stat_sums(false)
 {
   m_mcplfile.internal = 0;
 
@@ -82,6 +103,14 @@ MCPLGen::MCPLGen()
 
   //If not set, input events with weight=0 triggers an error.
   addParameterBoolean("allow_zero_weight",false);
+
+  //Divide the weights by stat:sum:initial_ray_count if the file has it
+  //(e.g. files from McStas MCPL_output with weight_mode=1, the default since
+  //McStas 3.10), so that the weights are per initial ray of the simulation
+  //that wrote the file and do not depend on its ray count. The value of the
+  //whole file is used, also when only some of its particles are used (e.g.
+  //with skip_events, or a limited number of events):
+  addParameterBoolean("normalise_by_initial_ray_count",true);
 
 }
 
@@ -119,7 +148,32 @@ bool MCPLGen::validateParameters()
 
   m_unfiltered = ( m_eval_filter.isConstant() && m_eval_filter() );
 
+  //The input file must be found here (rather than when it is opened for reading
+  //the particles), since its header is needed for registering the values of
+  //the output files:
+  if (Core::findData(fn).empty()) {
+    printf("MCPLGen ERROR - File specified in input_file parameter not found : \"%s\"\n",fn.c_str());
+    return false;
+  }
+  register_output_stat_sums();
+
   return true;
+}
+
+void MCPLGen::register_output_stat_sums()
+{
+  //Provide the stat:sum:initial_ray_count of the input file (and the factor
+  //applied to its weights) to MCPLWriter, which records it in its output files
+  //(see G4MCPL/OutputStatSums.hh). This happens when the parameters are
+  //validated, which is before the simulation starts (and before any fork when
+  //multiprocessing):
+  if (m_registered_output_stat_sums)
+    return;
+  m_registered_output_stat_sums = true;
+  const double nrays = inputInitialRayCount();
+  if (nrays == -2.0)
+    return;//not present
+  G4MCPL::setInputInitialRayCount( nrays, inputWeightFactor() );
 }
 
 void MCPLGen::init()
@@ -157,19 +211,50 @@ void MCPLGen::skip_forward(unsigned nskip) {
   }
 }
 
-void MCPLGen::delayed_init()
+std::string MCPLGen::resolved_input_file() const
 {
-  //opening files should happen after fork() when multi-processing.
   std::string fn = getParameterString("input_file");
   std::string fn_resolved = Core::findData(fn);
   if (fn_resolved.empty()) {
     printf("MCPLGen ERROR - File specified in input_file parameter not found : \"%s\"\n",fn.c_str());
     throw std::runtime_error("MCPLGen: File specified in input_file parameter not found");
   }
+  return fn_resolved;
+}
 
-  m_mcplfile = mcpl_open_file(fn_resolved.c_str());
+double MCPLGen::inputInitialRayCount() const
+{
+  if (std::isnan(m_input_irc)) {
+    if (m_mcplfile.internal) {
+      m_input_irc = mcpl_hdr_stat_sum(m_mcplfile,"initial_ray_count");
+    } else {
+      //Only read the header (the file is opened for reading the particles
+      //later, after any fork() when multiprocessing):
+      mcpl_file_t f = mcpl_open_file(resolved_input_file().c_str());
+      m_input_irc = mcpl_hdr_stat_sum(f,"initial_ray_count");
+      mcpl_close_file(f);
+    }
+  }
+  return m_input_irc;
+}
+
+double MCPLGen::inputWeightFactor() const
+{
+  const double nrays = inputInitialRayCount();
+  if ( getParameterBoolean("normalise_by_initial_ray_count") && nrays > 0.0 && std::isfinite(nrays) )
+    return 1.0 / nrays;
+  return 1.0;
+}
+
+
+void MCPLGen::delayed_init()
+{
+  //opening files should happen after fork() when multi-processing.
+  m_mcplfile = mcpl_open_file(resolved_input_file().c_str());
 
   m_has_polarisation = mcpl_hdr_has_polarisation(m_mcplfile);
+
+  init_weight_scale();
 
   unsigned nskip = getParameterInt("skip_events");
   if (nskip)
@@ -188,6 +273,43 @@ void MCPLGen::delayed_init()
     if (m_eval_filter())
       return;
     m_p = mcpl_read(m_mcplfile);
+  }
+}
+
+void MCPLGen::init_weight_scale()
+{
+  m_weight_scale = 1.0;
+  const double nrays = inputInitialRayCount();
+  //Only print in one process when multiprocessing:
+  const bool doprint = FrameworkGlobals::isParent();
+  if (!getParameterBoolean("normalise_by_initial_ray_count")) {
+    if (doprint && nrays != -2.0) {
+      printf("MCPLGen: Using the weights in the file as stored (normalise_by_initial_ray_count"
+             " is disabled, stat:sum:initial_ray_count is %g)\n",nrays);
+      fflush(stdout);
+    }
+    return;
+  }
+  if (nrays == -2.0)
+    return;//not present (e.g. files from older McStas versions): use weights as stored
+  if ( !(nrays > 0.0) || !std::isfinite(nrays) ) {
+    if (nrays == -1.0)
+      printf("MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not"
+             " available (for instance due to an interrupted run of the application writing the file,"
+             " or because the file contains only a part of the particles of another file), so the weights"
+             " can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as"
+             " stored in the file.\n");
+    else
+      printf("MCPLGen ERROR - The input file has an invalid stat:sum:initial_ray_count value (%g),"
+             " so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use"
+             " the weights as stored in the file.\n",nrays);
+    throw std::runtime_error("MCPLGen: Can not normalise weights by stat:sum:initial_ray_count");
+  }
+  m_weight_scale = inputWeightFactor();
+  if (doprint) {
+    printf("MCPLGen: Dividing all weights by stat:sum:initial_ray_count = %g"
+           " (disable with normalise_by_initial_ray_count=false)\n",nrays);
+    fflush(stdout);
   }
 }
 
@@ -273,11 +395,13 @@ void MCPLGen::gen(G4Event* evt)
   assert(evt->GetNumberOfPrimaryVertex()==0);
   const int ivertex = 0;
   m_gun->GeneratePrimaryVertex(evt);
-  if (m_p->weight!=1.0) {
-    if ( !m_p->weight && !m_allow_zero_weight ) {
+  //(the weights are normalised before checking if they are 1):
+  const double weight = m_p->weight * m_weight_scale;
+  if (weight!=1.0) {
+    if ( !weight && !m_allow_zero_weight ) {
       throw std::runtime_error("MCPLGen: File contains particles with weight=0 and allow_zero_weight was not enabled.");
     }
-    evt->GetPrimaryVertex(ivertex)->SetWeight(m_p->weight);
+    evt->GetPrimaryVertex(ivertex)->SetWeight(weight);
   }
 
   //User flags require a bit special treatment:

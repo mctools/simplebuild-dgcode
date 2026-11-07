@@ -1,0 +1,148 @@
+
+==> File with initial_ray_count
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> File with initial_ray_count, not normalised
+    MCPLGen: Using the weights in the file as stored (normalise_by_initial_ray_count is disabled, stat:sum:initial_ray_count is 1000)
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5000
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> File with initial_ray_count, skipping events
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 3
+    Output stat:sum:initial_geant4_weights = 3
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> File with initial_ray_count, limited number of events
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1.0, 1.0]
+    Output stat:sum:geant4_nevts = 2
+    Output stat:sum:initial_geant4_weights = 2
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> File with initial_ray_count, multiple processes
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    MCPLWriter: Done merging output from 2 processes into file out.mcpl
+    Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> File with initial_ray_count, multiple processes, limited number of events
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    MCPLWriter: Done merging output from 2 processes into file out.mcpl
+    Output weights: [1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 3
+    Output stat:sum:initial_geant4_weights = 3
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> File without initial_ray_count
+    Output weights: [2.0, 2.0, 2.0, 2.0, 2.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 10
+
+==> File with initial_ray_count which is not finalised
+    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not available (for instance due to an interrupted run of the application writing the file, or because the file contains only a part of the particles of another file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    (simulation failed as expected)
+
+==> File with initial_ray_count which is not finalised, not normalised
+    MCPLGen: Using the weights in the file as stored (normalise_by_initial_ray_count is disabled, stat:sum:initial_ray_count is -1)
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5000
+    Output stat:sum:original_initial_ray_count = <unavailable>
+
+==> File with initial_ray_count of zero
+    MCPLGen ERROR - The input file has an invalid stat:sum:initial_ray_count value (0), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    (simulation failed as expected)
+
+==> File with initial_ray_count, opt_irc
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5000
+    Output stat:sum:initial_ray_count = 1000
+
+==> File with initial_ray_count, opt_irc, not normalised
+    MCPLGen: Using the weights in the file as stored (normalise_by_initial_ray_count is disabled, stat:sum:initial_ray_count is 1000)
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5000
+    Output stat:sum:initial_ray_count = 1000
+
+==> File with initial_ray_count, opt_irc, multiple processes
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    MCPLWriter: Done merging output from 2 processes into file out.mcpl
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5000
+    Output stat:sum:initial_ray_count = 1000
+
+==> File without initial_ray_count, opt_irc
+    MCPLWriter: Writing stat:sum:initial_ray_count was requested, but there is no MCPL input file (read with MCPLGen) with a valid stat:sum:initial_ray_count value
+    (simulation failed as expected)
+
+==> File with initial_ray_count, opt_irc, for reading again
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1000.0, 1000.0, 1000.0, 1000.0, 1000.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5000
+    Output stat:sum:initial_ray_count = 1000
+
+==> Reading the output again
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> Reading the output of that again
+    Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+
+==> Custom stat:sum value
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:my_beam_time = 17.5
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> Custom stat:sum value, multiple processes
+    MCPLGen: Dividing all weights by stat:sum:initial_ray_count = 1000 (disable with normalise_by_initial_ray_count=false)
+    MCPLWriter: Done merging output from 2 processes into file out.mcpl
+    Output weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+    Output stat:sum:geant4_nevts = 5
+    Output stat:sum:initial_geant4_weights = 5
+    Output stat:sum:my_beam_time = 17.5
+    Output stat:sum:original_initial_ray_count = 1000
+
+==> Filtering a file
+    Output particles: 3
+    Output stat:sum:initial_ray_count = 1000
+
+==> Filtering a file with a limit which is not reached
+    Output particles: 5
+    Output stat:sum:initial_ray_count = 1000
+
+==> Filtering a file with a limit
+    Marking stat:sum values as unavailable, since the limit on the number of particles means that only a part of the input file was used.
+    Output particles: 2
+    Output stat:sum:initial_ray_count = <unavailable>
+
+==> Filtering a file with a limit, with a filter
+    Marking stat:sum values as unavailable, since the limit on the number of particles means that only a part of the input file was used.
+    Output particles: 2
+    Output stat:sum:initial_ray_count = <unavailable>
+
+==> File where initial_ray_count is unavailable
+    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not available (for instance due to an interrupted run of the application writing the file, or because the file contains only a part of the particles of another file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    (simulation failed as expected)
