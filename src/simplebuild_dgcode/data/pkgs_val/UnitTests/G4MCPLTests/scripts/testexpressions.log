@@ -1,0 +1,74 @@
+
+==> MCPLGen filter (floating point)
+    Output particles: 110
+
+==> MCPLGen filter (integer)
+    Output particles: 15
+
+==> MCPLGen filter (bool, combined)
+    Output particles: 10
+
+==> MCPLWriter filter (integer)
+    Output particles: 15
+
+==> MCPLWriter filter (floating point)
+    Output particles: 110
+
+==> MCPLWriter filter (string)
+    Output particles: 195
+
+==> MCPLWriter user flags (integer)
+    Output particles: 195
+
+==> Heat map (floating point, with filter)
+    Heat map events: 195
+
+==> MCPLGen filter with syntax error
+    MCPLGen ERROR - ParseError in filter expression : missing arguments for operator : >
+    (failed as expected)
+
+==> MCPLGen filter with unknown variable
+    MCPLGen ERROR - ParseError in filter expression : Unknown or badly placed identifier : nosuchvariable
+    (failed as expected)
+
+==> MCPLGen filter with domain error
+    MCPLGen ERROR - DomainError in filter expression : Division with value which is always zero
+    (failed as expected)
+
+==> MCPLWriter filter with syntax error
+    MCPLWriter ERROR: Invalid filter expression "trk.is_primary && ( step.stepnbr==1 && (trk.pdgcode ==) )"
+    MCPLWriter ERROR: ParseError : missing arguments for operator : &&
+    (failed as expected)
+
+==> MCPLWriter filter with unknown variable
+    MCPLWriter ERROR: Invalid filter expression "trk.is_primary && ( step.stepnbr==1 && (trk.nosuchvariable) )"
+    MCPLWriter ERROR: ParseError : unknown trk property : "nosuchvariable"
+    (failed as expected)
+
+==> MCPLWriter user flags with unknown variable
+    MCPLWriter ERROR: Invalid expression for user flags "trk.nosuchvariable"
+    MCPLWriter ERROR: ParseError : unknown trk property : "nosuchvariable"
+    (failed as expected)
+
+==> Heat map with unknown variable
+    HeatMapWriter ERROR: Invalid quantity expression "step.nosuchvariable"
+    HeatMapWriter ERROR: ParseError : unknown step property : "nosuchvariable"
+    (failed as expected)
+
+==> Heat map filter with syntax error
+    HeatMapWriter ERROR: Invalid filter expression "trk.pdgcode =="
+    HeatMapWriter ERROR: ParseError : missing arguments for operator : ==
+    (failed as expected)
+
+==> sb_mcplextra_filterfile
+    Output particles: 15
+
+==> sb_mcplextra_filterfile with invalid expression
+    in filter expression : missing arguments for operator : >
+    (failed as expected)
+
+==> sb_mcplextra_filterview
+
+==> sb_mcplextra_filterview with invalid expression
+    in filter expression : Unknown or badly placed identifier : nosuchvariable
+    (failed as expected)

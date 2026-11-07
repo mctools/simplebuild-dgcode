@@ -533,7 +533,7 @@ namespace G4MCPLWriter {
         if (!m_expr_flags.empty())
           m_eval_flags = m_expr_builder->createEvaluator<EP::int_type>(m_expr_flags);
       } catch (EP::InputError& e) {
-        printf("\nMCPLWriter ERROR: Invalid expression for user-flas \"%s\"\n",m_expr_flags.c_str());
+        printf("\nMCPLWriter ERROR: Invalid expression for user flags \"%s\"\n",m_expr_flags.c_str());
         printf("MCPLWriter ERROR: %s : %s\n\n",e.epType(),e.epWhat());
         if (m_sd)
           m_sd->abort();

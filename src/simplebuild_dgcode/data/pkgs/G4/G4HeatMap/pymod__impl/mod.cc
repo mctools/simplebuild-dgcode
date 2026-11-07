@@ -288,7 +288,7 @@ namespace DMWriter {
     try {
       m_eval_quantity = m_expr_builder.createEvaluator<ExprParser::float_type>(m_expr_quantity);
     } catch (ExprParser::InputError& e) {
-      printf("\nHeatMapWriter ERROR: Invalid quantity expression \"%s\"\n",m_expr_filter.c_str());
+      printf("\nHeatMapWriter ERROR: Invalid quantity expression \"%s\"\n",m_expr_quantity.c_str());
       printf("HeatMapWriter ERROR: %s : %s\n\n",e.epType(),e.epWhat());
       throw;
     }
