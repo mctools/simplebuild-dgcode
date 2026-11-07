@@ -5,17 +5,18 @@
 #include <vector>
 #include <functional>
 
-//Global (per process) registry of stat:sum values to add to all MCPL files
-//written by G4MCPLPlugins/MCPLWriter, and of a factor to apply to the weights
-//written in those files. This is for instance used by G4MCPLPlugins/MCPLGen to
-//transfer stat:sum:initial_ray_count of its input file, but it can also be
-//used by other components or user code to add custom values.
+//Global (per process) registry of information for the MCPL files written by
+//G4MCPLPlugins/MCPLWriter:
+//
+//  * stat:sum values to add to all its output files (e.g. from user code).
+//  * the stat:sum:initial_ray_count of an MCPL input file (set by
+//    G4MCPLPlugins/MCPLGen), which MCPLWriter records in its output files.
 //
 //Since MCPL requires the same header entries in all files to merge them (e.g.
-//the files of the processes of multi-process jobs), entries must be added
-//before the output files are created, i.e. before the simulation starts (for
-//instance when the parameters of a generator are validated, or in a pre-init
-//hook).
+//the files of the processes of multi-process jobs), the information must be
+//provided before the output files are created, i.e. before the simulation
+//starts (for instance when the parameters of a generator are validated, or in
+//a pre-init hook).
 
 namespace G4MCPL {
 
@@ -23,10 +24,9 @@ namespace G4MCPL {
   //(MCPL adds up stat:sum values when merging files):
   enum class StatSumMode {
     PerProcess,//Each process writes its own value (e.g. a count of events).
-    WholeJob   //The value describes the whole job, so only the parent process
-               //writes it (the others write 0). If the value is unavailable
-               //(-1) in any process, it is written as -1 in all processes
-               //(which makes the merged value unavailable).
+    WholeJob   //The value describes the whole job, so each of the N processes
+               //writes the value divided by N (the merged file then gets the
+               //value). An unavailable value (-1) is written as -1.
   };
 
   //Add a stat:sum entry. The function is evaluated when each output file is
@@ -44,11 +44,14 @@ namespace G4MCPL {
   };
   const std::vector<OutputStatSum>& outputStatSums();
 
-  //Factor applied to the Geant4 weights when writing them (default 1). This is
-  //for instance used by MCPLGen, so the weights are written in the same
-  //convention as in its input file, when transferring initial_ray_count:
-  void setOutputWeightFactor( double );
-  double outputWeightFactor();
+  //The stat:sum:initial_ray_count value of an MCPL input file (positive, or -1
+  //if not available), and the factor which was applied to the weights of the
+  //input file when generating the particles (1/initial_ray_count when
+  //normalising, otherwise 1). Set by MCPLGen:
+  void setInputInitialRayCount( double initial_ray_count, double weight_factor );
+  bool hasInputInitialRayCount();
+  double inputInitialRayCount();
+  double inputWeightFactor();
 
 }
 

@@ -22,6 +22,7 @@
 
 #include <set>
 #include <cmath>
+#include <algorithm>
 #include <stdexcept>
 #include <string.h>
 #include <sstream>
@@ -119,6 +120,7 @@ namespace G4MCPLWriter {
                            bool writepolarisation,
                            bool writeuserflags,
                            double universalweight,
+                           bool writeinitialraycount,
                            bool writeonvolexit,
                            KillStrategy killstrategy,
                            BuilderPtr builder,
@@ -143,6 +145,7 @@ namespace G4MCPLWriter {
         m_om(0),
         m_comments_and_blobs(comments_and_blobs),
         m_evtstats(evtstats),
+        m_opt_writeinitialraycount(writeinitialraycount),
         m_weight_factor(1.0)
     {
       std::memset(&m_p,0,sizeof(m_p));
@@ -179,30 +182,20 @@ namespace G4MCPLWriter {
         return;
       m_closed = true;
       assert(m_f.internal);
+      //Final values of the stat:sum entries reserved in initmcpl():
       if (m_evtstats) {
-        //Final values of the stat:sum entries reserved in initmcpl():
         mcpl_hdr_add_stat_sum(m_f,"geant4_nevts",(double)m_evtstats->nevts());
-        mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",m_evtstats->sumWeights());
+        //(in the same convention as the weights in the file):
+        mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",m_evtstats->sumWeights()*m_weight_factor);
       }
+      if (!m_irc_key.empty())
+        mcpl_hdr_add_stat_sum(m_f,m_irc_key.c_str(),wholeJobValue(G4MCPL::inputInitialRayCount()));
       for ( auto& e : m_statsums ) {
-        //Final values of the entries from G4MCPL/OutputStatSums.hh (reserved
-        //in initmcpl()):
-        double value = e.value();
-        if ( !( value >= 0.0 ) || !std::isfinite(value) )
-          value = -1.0;//not available
-        if ( e.mode == G4MCPL::StatSumMode::WholeJob && FrameworkGlobals::isChild() && value != -1.0 ) {
-          //When multiprocessing, values describing the whole job are only set
-          //in the file of the parent process, since the values are added up
-          //when the files are merged (an unavailable value in any of the files
-          //makes the merged value unavailable).
-          //
-          //NB: The value would preferably be set only after merging the files,
-          //but MCPL does not currently support updating stat:sum values of
-          //existing files (see mctools/mcpl#254 and
-          //mctools/simplebuild-dgcode#63).
-          value = 0.0;
-        }
-        mcpl_hdr_add_stat_sum(m_f,e.key.c_str(),value);
+        const double value = e.value();
+        mcpl_hdr_add_stat_sum(m_f,e.key.c_str(),
+                              ( e.mode == G4MCPL::StatSumMode::WholeJob
+                                ? wholeJobValue(value)
+                                : ( value >= 0.0 && std::isfinite(value) ? value : -1.0 ) ));
       }
       if (!FrameworkGlobals::isForked())
         mcpl_closeandgzip_outfile(m_f);
@@ -354,15 +347,28 @@ namespace G4MCPLWriter {
         mcpl_hdr_add_stat_sum(m_f,"initial_geant4_weights",-1.0);
       }
 
-      //Values added by other components or user code (e.g. MCPLGen adds the
-      //stat:sum:initial_ray_count of its input file, with a factor for the
-      //weights, so they are written in the same convention as in the input
-      //file). The space for the values is reserved here, and the values are
-      //set when the file is closed:
+      //The stat:sum:initial_ray_count of an input file read by MCPLGen. By
+      //default it is recorded as original_initial_ray_count, with the weights
+      //as used in Geant4. Only if requested, it is recorded as
+      //initial_ray_count, with the weights in the same convention as in the
+      //input file (i.e. multiplied by the value if MCPLGen divided the weights
+      //by it), so that reading the file again gives the same weights. That
+      //convention assumes that each particle is an independent ray, which is
+      //for the user to decide. The space for the values is reserved here, and
+      //the values are set when the file is closed:
+      m_irc_key.clear();
+      m_weight_factor = 1.0;
+      if ( G4MCPL::hasInputInitialRayCount() ) {
+        m_irc_key = ( m_opt_writeinitialraycount ? "initial_ray_count" : "original_initial_ray_count" );
+        if ( m_opt_writeinitialraycount )
+          m_weight_factor = 1.0 / G4MCPL::inputWeightFactor();
+        mcpl_hdr_add_stat_sum(m_f,m_irc_key.c_str(),-1.0);
+      }
+
+      //Values added by other components or user code:
       m_statsums = G4MCPL::outputStatSums();
       for ( auto& e : m_statsums )
         mcpl_hdr_add_stat_sum(m_f,e.key.c_str(),-1.0);
-      m_weight_factor = G4MCPL::outputWeightFactor();
 
       if (m_opt_writedoubleprec)   mcpl_enable_doubleprec(m_f);
       if (m_opt_writepolarisation) mcpl_enable_polarisation(m_f);
@@ -388,7 +394,23 @@ namespace G4MCPLWriter {
     std::vector<std::pair<std::string,std::string>> m_comments_and_blobs;
     EventStatsPtr m_evtstats;
     std::vector<G4MCPL::OutputStatSum> m_statsums;
+    bool m_opt_writeinitialraycount;
+    std::string m_irc_key;
     double m_weight_factor;
+
+    static double wholeJobValue( double value )
+    {
+      //A value describing the whole job. When multiprocessing, each of the N
+      //processes writes the value divided by N, so the merged file gets the
+      //value (MCPL adds up stat:sum values when merging files).
+      //
+      //NB: The value would preferably be set only in the merged file, but MCPL
+      //does not currently support updating stat:sum values of existing files
+      //(see mctools/mcpl#254 and mctools/simplebuild-dgcode#63).
+      if ( !( value >= 0.0 ) || !std::isfinite(value) )
+        return -1.0;//not available
+      return value / std::max<unsigned>( 1, FrameworkGlobals::nProcs() );
+    }
   };
 
   void MCPLOutputMerger::merge() {
@@ -420,6 +442,7 @@ namespace G4MCPLWriter {
     bool m_opt_writeonvolexit;
     KillStrategy m_opt_killstrategy;
     double m_opt_universalweight;
+    bool m_opt_writeinitialraycount;
     BuilderPtr m_expr_builder;
     EP::Evaluator<bool> m_eval_filter;
     EP::Evaluator<EP::int_type> m_eval_flags;
@@ -431,6 +454,7 @@ namespace G4MCPLWriter {
     void setWriteUserFlags(bool b) {  m_opt_writeuserflags = b; }
     void setWriteOnVolExit(bool b) {  m_opt_writeonvolexit = b; }
     void setUniversalWeight(double w) {  m_opt_universalweight = w; }
+    void setWriteInitialRayCount(bool b) {  m_opt_writeinitialraycount = b; }
     void setFilter(const char * expr) { m_expr_filter = expr; }
     void setUserFlags(const char * expr) { m_expr_flags = expr; }
     void setKillStrategy(KillStrategy ks) {  m_opt_killstrategy = ks; }
@@ -444,6 +468,7 @@ namespace G4MCPLWriter {
         m_opt_writeonvolexit(false),
         m_opt_killstrategy(KS_NEVER),
         m_opt_universalweight(0.0),
+        m_opt_writeinitialraycount(false),
         m_expr_filter("true"),
         m_vols_all(false),
         m_sd(0)
@@ -476,6 +501,12 @@ namespace G4MCPLWriter {
 
       if (m_vols.empty()&&!m_vols_all)
         throw std::runtime_error("MCPLWriter: No volumes added!");
+
+      if ( m_opt_writeinitialraycount && !( G4MCPL::hasInputInitialRayCount()
+                                            && G4MCPL::inputInitialRayCount() > 0.0 ) )
+        throw std::runtime_error("MCPLWriter: Writing stat:sum:initial_ray_count was requested, but there"
+                                 " is no MCPL input file (read with MCPLGen) with a valid"
+                                 " stat:sum:initial_ray_count value");
 
       //Setup filter:
 
@@ -642,7 +673,9 @@ namespace G4MCPLWriter {
       }
       if (gen)
         out.emplace_back("comment","MCPLWriter stat:sum values : geant4_nevts is the number of simulated"
-                         " events, initial_geant4_weights is the sum of the weights of their primary particles");
+                         " events, initial_geant4_weights is the sum of the weights of their primary particles"
+                         " (in the convention of the weights in this file), original_initial_ray_count is the"
+                         " initial_ray_count of the input file (if any)");
 
       if (geo) {
         char * geodata(0);
@@ -690,6 +723,7 @@ namespace G4MCPLWriter {
                                            m_opt_writepolarisation,
                                            m_opt_writeuserflags,
                                            m_opt_universalweight,
+                                           m_opt_writeinitialraycount,
                                            m_opt_writeonvolexit,
                                            m_opt_killstrategy,
                                            m_expr_builder,
@@ -755,6 +789,7 @@ SBLDPY_MODULE( _MCPLWriter )
     .def("setWritePolarisation",[]( PyMCPLWriter& o, bool b ) { o.w().setWritePolarisation( b ); }, { "b" } )
     .def("setWriteUserFlags",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteUserFlags( b ); }, { "b" } )
     .def("setUniversalWeight",[]( PyMCPLWriter& o, double w ) { o.w().setUniversalWeight( w ); }, { "w" } )
+    .def("setWriteInitialRayCount",[]( PyMCPLWriter& o, bool b ) { o.w().setWriteInitialRayCount( b ); }, { "b" } )
     .def("setKillStrategy",[]( PyMCPLWriter& o, const std::string& ks ) { o.w().setKillStrategyFromString( ks.c_str() ); }, { "ks" } )
     .def("inithook",[]( PyMCPLWriter& o, std::int64_t geo, std::int64_t gen ) { o.w().inithook( geo, gen ); }, { "geo_handle", "gen_handle" } )
     .def("postmp",[]( PyMCPLWriter& o ) { o.w().postmp(); } );

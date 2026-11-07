@@ -106,22 +106,35 @@ options, by using the
 module. See an example :sbpkg:`here <G4MCPLTests/scripts/mcplwrite>` for how to
 use it.
 
-The MCPL files written by Geant4 contain two ``stat:sum`` values, which describe
-the simulation as a whole (independently of how many particles ended up in the
+The MCPL files written by Geant4 contain ``stat:sum`` values which describe the
+simulation as a whole (independently of how many particles ended up in the
 file), and are added up when files are merged (e.g. with ``mcpltool --merge``,
 or when merging the output of multiple processes):
 
 * ``stat:sum:geant4_nevts``: The number of simulated events.
 * ``stat:sum:initial_geant4_weights``: The sum of the weights of the primary
-  particles of the simulated events.
+  particles of the simulated events, in the same convention as the weights in
+  the file. For instance, the sum of the weights of the particles in the file
+  divided by this value is an efficiency.
+* ``stat:sum:original_initial_ray_count``: The ``stat:sum:initial_ray_count``
+  value of the input file read with MCPLGen (if it has one). This is for
+  reference only: the weights in the file are the weights used in Geant4.
 
-If the input file read with MCPLGen has a ``stat:sum:initial_ray_count`` value,
-it is transferred to the output file, and the weights are written in the same
-convention as in the input file (i.e. multiplied by the value if MCPLGen divided
-the weights by it). So reading the output file with MCPLGen again gives the same
-weights as in the original simulation. Since the value is only valid when all
-particles of the input file were used, it is marked as unavailable when this
-was not the case (e.g. with ``skip_events`` or a limited number of events).
+The ``stat:sum:initial_ray_count`` convention of instrument simulations like
+McStas (see above) assumes that each particle in a file is an independent ray.
+This is usually not the case for files written by Geant4, where a single event
+can produce several (correlated) particles. Therefore Geant4 output files do not
+claim the convention by default. If it is appropriate for your use case, the
+``opt_irc`` keyword of ``--mcpl`` (or ``setWriteInitialRayCount(True)`` on an
+``MCPLWriter``) instead records the value of the input file as
+``stat:sum:initial_ray_count``, and writes the weights in the same convention as
+in the input file (i.e. multiplied by the value if MCPLGen divided the weights by
+it). Reading such a file with MCPLGen again then gives the same weights as in the
+original simulation.
+
+When the output of multiple processes is merged, each process writes its share
+of the values describing the whole job (like ``initial_ray_count``), so the
+merged file gets the value.
 
 Custom ``stat:sum`` values describing the whole simulation (for instance the
 duration of a beam pulse) can be added to all MCPL files written by Geant4 from
@@ -135,7 +148,8 @@ the :ref:`sim script <sbsimscript>`, before the simulation is started:
 Such values are only added once when the output of multiple processes is
 merged. C++ code can add values computed at the end of the simulation via the
 functions in :sbpkg:`G4MCPL/OutputStatSums.hh<G4MCPL/libinc/OutputStatSums.hh>`,
-which is also how MCPLGen transfers ``stat:sum:initial_ray_count``.
+which is also how MCPLGen provides the ``stat:sum:initial_ray_count`` of its
+input file.
 
 Modify MCPL files
 -----------------

@@ -19,7 +19,7 @@ class MCPLWriter:
         self._w = _MCPLWriter( filename )
         for n in ( 'addVolume', 'setFilter', 'setUserFlags', 'setWriteOnVolExit',
                    'setWriteDoublePrecision', 'setWritePolarisation', 'setWriteUserFlags',
-                   'setUniversalWeight', 'setKillStrategy' ):
+                   'setUniversalWeight', 'setKillStrategy', 'setWriteInitialRayCount' ):
             setattr( self, n, getattr( self._w, n ) )
 
     def inithook( self ):

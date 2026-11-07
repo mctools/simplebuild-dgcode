@@ -9,10 +9,15 @@ namespace G4MCPL {
       static std::vector<OutputStatSum> s_registry;
       return s_registry;
     }
-    double& weightFactor()
+    struct InputInfo {
+      bool present = false;
+      double initial_ray_count = -1.0;
+      double weight_factor = 1.0;
+    };
+    InputInfo& inputInfo()
     {
-      static double s_factor = 1.0;
-      return s_factor;
+      static InputInfo s_info;
+      return s_info;
     }
   }
 }
@@ -26,7 +31,8 @@ void G4MCPL::addOutputStatSum( const std::string& key,
   if ( key.empty() || key.size() > 64 || key.find(':') != std::string::npos )
     throw std::runtime_error("G4MCPL: Invalid stat:sum key (must be non-empty, at"
                              " most 64 characters, and not contain colons): \""+key+"\"");
-  if ( key == "geant4_nevts" || key == "initial_geant4_weights" )
+  if ( key == "geant4_nevts" || key == "initial_geant4_weights"
+       || key == "initial_ray_count" || key == "original_initial_ray_count" )
     throw std::runtime_error("G4MCPL: The stat:sum key \""+key+"\" is reserved for MCPLWriter");
   for ( auto& e : registry() )
     if ( e.key == key )
@@ -41,14 +47,20 @@ const std::vector<G4MCPL::OutputStatSum>& G4MCPL::outputStatSums()
   return registry();
 }
 
-void G4MCPL::setOutputWeightFactor( double f )
+void G4MCPL::setInputInitialRayCount( double initial_ray_count, double weight_factor )
 {
-  if ( !( f > 0.0 ) || !std::isfinite(f) )
-    throw std::runtime_error("G4MCPL: Output weight factor must be positive and finite");
-  weightFactor() = f;
+  if ( !( weight_factor > 0.0 ) || !std::isfinite(weight_factor) )
+    throw std::runtime_error("G4MCPL: Weight factor must be positive and finite");
+  if ( !( initial_ray_count > 0.0 ) || !std::isfinite(initial_ray_count) )
+    initial_ray_count = -1.0;//not available
+  auto& info = inputInfo();
+  if ( info.present )
+    throw std::runtime_error("G4MCPL: The initial_ray_count of an input file was already set");
+  info.present = true;
+  info.initial_ray_count = initial_ray_count;
+  info.weight_factor = weight_factor;
 }
 
-double G4MCPL::outputWeightFactor()
-{
-  return weightFactor();
-}
+bool G4MCPL::hasInputInitialRayCount() { return inputInfo().present; }
+double G4MCPL::inputInitialRayCount() { return inputInfo().initial_ray_count; }
+double G4MCPL::inputWeightFactor() { return inputInfo().weight_factor; }

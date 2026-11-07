@@ -871,7 +871,7 @@ Opened MCPL file target.mcpl.gz:
   Basic info
     Format             : MCPL-3
     No. of particles   : 0
-    Header storage     : 1197 bytes
+    Header storage     : 1325 bytes
     Data storage       : 0 bytes
 
   Custom meta data
@@ -885,7 +885,7 @@ Opened MCPL file target.mcpl.gz:
           -> comment 5 : "MPCLWriter track kill strategy : <tracks-of-written-steps>"
           -> comment 6 : "ESS/dgcode geometry module : G4StdGeometries/GeoSlab"
           -> comment 7 : "ESS/dgcode generator module : G4StdGenerators/SimpleGen"
-          -> comment 8 : "MCPLWriter stat:sum values : geant4_nevts is the number of simulated events, initial_geant4_weights is the sum of the weights of their primary particles"
+          -> comment 8 : "MCPLWriter stat:sum values : geant4_nevts is the number of simulated events, initial_geant4_weights is the sum of the weights of their primary particles (in the convention of the weights in this file), original_initial_ray_count is the initial_ray_count of the input file (if any)"
           -> comment 9 : "stat:sum:geant4_nevts:                      10"
           -> comment 10 : "stat:sum:initial_geant4_weights:                      10"
     Number of blobs    : 2
@@ -906,7 +906,7 @@ Opened MCPL file recordfwd.mcpl.gz:
   Basic info
     Format             : MCPL-3
     No. of particles   : 6
-    Header storage     : 1124 bytes
+    Header storage     : 1252 bytes
     Data storage       : 192 bytes
 
   Custom meta data
@@ -920,7 +920,7 @@ Opened MCPL file recordfwd.mcpl.gz:
           -> comment 5 : "MPCLWriter track kill strategy : <none>"
           -> comment 6 : "ESS/dgcode geometry module : G4StdGeometries/GeoSlab"
           -> comment 7 : "ESS/dgcode generator module : G4StdGenerators/SimpleGen"
-          -> comment 8 : "MCPLWriter stat:sum values : geant4_nevts is the number of simulated events, initial_geant4_weights is the sum of the weights of their primary particles"
+          -> comment 8 : "MCPLWriter stat:sum values : geant4_nevts is the number of simulated events, initial_geant4_weights is the sum of the weights of their primary particles (in the convention of the weights in this file), original_initial_ray_count is the initial_ray_count of the input file (if any)"
           -> comment 9 : "stat:sum:geant4_nevts:                      10"
           -> comment 10 : "stat:sum:initial_geant4_weights:                      10"
     Number of blobs    : 2
