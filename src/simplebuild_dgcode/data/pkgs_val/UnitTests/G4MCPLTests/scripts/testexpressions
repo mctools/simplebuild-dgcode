@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+
+#Tests of expressions (G4ExprParser, MCPLExprParser) given to MCPLGen,
+#MCPLWriter (--mcpl), G4HeatMap (--heatmap) and the sb_mcplextra_filterfile
+#and sb_mcplextra_filterview commands.
+#
+#The expressions are parsed and evaluated in the ExprParser libraries, but used
+#(and errors are caught) in Python modules. This tests that this works across
+#modules, also on platforms which compare type information by address (e.g.
+#Intel macOS):
+#
+#  * Valid expressions of various value types (bool, integer, floating point,
+#    string) work.
+#  * Invalid expressions (syntax errors, unknown variables, domain errors) give
+#    a clean error message (the ExprParser exception is caught by its base class
+#    in another module), rather than a crash.
+
+import subprocess
+import pathlib
+import mcpl
+
+infile = 'MCPLTestData/miscphys.mcpl.gz'
+infile_path = subprocess.run( [ 'sb_core_finddata', 'MCPLTestData', 'miscphys.mcpl.gz' ],
+                              capture_output = True, text = True, check = True ).stdout.strip()
+
+def run( title, cmd, expect_ok, markers ):
+    print()
+    print( f'==> {title}' )
+    r = subprocess.run( cmd, capture_output = True, text = True, check = False )
+    out = r.stdout + r.stderr
+    #Only show the relevant messages:
+    for line in out.splitlines():
+        for m in markers:
+            if m in line:
+                print( '   ', line[line.index(m):].strip() )
+                break
+    #A negative return code means the process was killed by a signal (e.g. an
+    #uncaught exception leading to abort()):
+    assert r.returncode >= 0, f'command crashed (signal {-r.returncode}):\n' + out
+    assert 'terminate called' not in out and 'libc++abi' not in out, 'uncaught exception:\n' + out
+    if expect_ok:
+        assert r.returncode == 0, 'command failed:\n' + out
+    else:
+        assert r.returncode != 0, 'command unexpectedly succeeded:\n' + out
+        print( '    (failed as expected)' )
+    return out
+
+def nparticles( fn ):
+    return mcpl.MCPLFile( fn ).nparticles
+
+def sim( title, *args, expect_ok = True ):
+    for f in pathlib.Path('.').glob('out.mcpl*'):
+        f.unlink()
+    run( title, [ 'sb_g4mcpltests_mcplstatsums', f'input_file={infile}' ] + list(args),
+         expect_ok, ( 'MCPLGen ERROR', 'MCPLWriter ERROR', 'HeatMapWriter ERROR' ) )
+    if expect_ok and pathlib.Path('out.mcpl.gz').exists():
+        print( f'    Output particles: {nparticles("out.mcpl.gz")}' )
+
+#Valid expressions of different value types, in MCPLGen, MCPLWriter and
+#G4HeatMap:
+sim( 'MCPLGen filter (floating point)', 'input_filter=ekin > 1MeV',
+     '--mcpl=grabsrc to out.mcpl' )
+sim( 'MCPLGen filter (integer)', 'input_filter=pdgcode == 2112',
+     '--mcpl=grabsrc to out.mcpl' )
+sim( 'MCPLGen filter (bool, combined)', 'input_filter=is_neutron && neutron_wl > 1Aa',
+     '--mcpl=grabsrc to out.mcpl' )
+sim( 'MCPLWriter filter (integer)', '--mcpl=grabsrc where trk.pdgcode == 22 to out.mcpl' )
+sim( 'MCPLWriter filter (floating point)', '--mcpl=grabsrc where step.pre.ekin > 1 MeV to out.mcpl' )
+sim( 'MCPLWriter filter (string)', '--mcpl=grabsrc where step.volname == "World" to out.mcpl' )
+sim( 'MCPLWriter user flags (integer)', '--mcpl=grabsrc withflags trk.pdgcode to out.mcpl' )
+sim( 'Heat map (floating point, with filter)',
+     '--heatmap=step.steplength where trk.is_neutron to heatmap' )
+import Mesh3D
+print( '    Heat map events: %i'%Mesh3D.Mesh3D( 'heatmap.mesh3d' ).stats['nevts'] )
+
+#Invalid expressions:
+sim( 'MCPLGen filter with syntax error', 'input_filter=ekin >', expect_ok = False )
+sim( 'MCPLGen filter with unknown variable', 'input_filter=nosuchvariable > 1',
+     expect_ok = False )
+sim( 'MCPLGen filter with domain error', 'input_filter=ekin > 1/0', expect_ok = False )
+sim( 'MCPLWriter filter with syntax error', '--mcpl=grabsrc where trk.pdgcode == to out.mcpl',
+     expect_ok = False )
+sim( 'MCPLWriter filter with unknown variable', '--mcpl=grabsrc where trk.nosuchvariable to out.mcpl',
+     expect_ok = False )
+sim( 'MCPLWriter user flags with unknown variable',
+     '--mcpl=grabsrc withflags trk.nosuchvariable to out.mcpl', expect_ok = False )
+sim( 'Heat map with unknown variable', '--heatmap=step.nosuchvariable to heatmap',
+     expect_ok = False )
+sim( 'Heat map filter with syntax error', '--heatmap=step.steplength where trk.pdgcode == to heatmap',
+     expect_ok = False )
+
+#The sb_mcplextra_filterfile and sb_mcplextra_filterview commands:
+def mcplextra( title, cmd, expect_ok ):
+    run( title, cmd, expect_ok, ( 'in filter expression', 'Error', 'ERROR' ) )
+mcplextra( 'sb_mcplextra_filterfile', [ 'sb_mcplextra_filterfile', '-n',
+                                        infile_path, 'filtered.mcpl', 'is_neutron' ], True )
+print( f'    Output particles: {nparticles("filtered.mcpl")}' )
+mcplextra( 'sb_mcplextra_filterfile with invalid expression',
+           [ 'sb_mcplextra_filterfile', '-n', infile_path, 'filtered2.mcpl', 'ekin >' ], False )
+mcplextra( 'sb_mcplextra_filterview', [ 'sb_mcplextra_filterview', 'is_neutron', infile_path ], True )
+mcplextra( 'sb_mcplextra_filterview with invalid expression',
+           [ 'sb_mcplextra_filterview', 'nosuchvariable > 1', infile_path ], False )
