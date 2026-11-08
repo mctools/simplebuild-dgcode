@@ -37,6 +37,9 @@ namespace ExprParser {
     virtual bool isConstant() const;//Default implementation returns true when
                                     //all children are constant.
 
+    //Whether this is an ExprEntityConstantValue node (i.e. already optimal):
+    virtual bool isConstantValue() const { return false; }
+
     virtual ExprType returnType() const = 0;
     virtual str_type name() const = 0;
 
@@ -72,14 +75,13 @@ namespace ExprParser {
 
   template<class TValue>
   class ExprEntityConstantValue final : public ExprEntity<TValue> {
-    //Class representing a constant value. This class is final so we can be sure
-    //a dynamic_cast to ExprEntityConstantValue<TValue>* will only be successful
-    //for this exact class instance (useful when optimising the node tree).
+    //Class representing a constant value.
   public:
     virtual str_type name() const;
     explicit ExprEntityConstantValue(TValue val);
     virtual ~ExprEntityConstantValue(){}
     virtual bool isConstant() const { return true; }
+    virtual bool isConstantValue() const final { return true; }
     virtual TValue evaluate() const { return m_val; }
   private:
     TValue m_val;
@@ -139,5 +141,17 @@ namespace ExprParser {
 }
 
 #include "ExprParser/ASTNode.icc"
+
+namespace ExprParser {
+  //The class templates are only used with these types, and are instantiated
+  //once in the ExprParser library (so their vtables and type information exist
+  //in one place, rather than in each library using them):
+  extern template class ExprEntity<float_type>;
+  extern template class ExprEntity<int_type>;
+  extern template class ExprEntity<str_type>;
+  extern template class ExprEntityConstantValue<float_type>;
+  extern template class ExprEntityConstantValue<int_type>;
+  extern template class ExprEntityConstantValue<str_type>;
+}
 
 #endif

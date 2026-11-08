@@ -22,8 +22,9 @@ namespace ExprParser {
   {
     if (!p)
       EXPRPARSER_THROW(LogicError,"Trying to evaluate type of null entity");
-    if (p->returnType()!=exprType<TValue>()
-        ||!dynamic_cast<ExprEntity<TValue>*>(p.get()))
+    //(ExprEntity<TValue>::returnType() is final, so this also ensures that p
+    //is an ExprEntity<TValue>):
+    if (p->returnType()!=exprType<TValue>())
       EXPRPARSER_THROW(LogicError,"Type error in abstract syntax tree");
   }
   template<class TValue>
@@ -76,11 +77,7 @@ namespace ExprParser {
     //
     //TODO: Figure out a smart way involving allocators and placement new to get
     //control block and allocated object in the same allocated area of memory.
-#  ifndef NDEBUG
-    return ExprEntityPtr(dynamic_cast<ExprEntityBase*>(new T(std::forward<Arg>(arg)...)));
-#  else
     return ExprEntityPtr(static_cast<ExprEntityBase*>(new T(std::forward<Arg>(arg)...)));
-#  endif
 #endif
   }
 
@@ -89,7 +86,7 @@ namespace ExprParser {
   {
     //todo: Can we move this to .cc and make sure implementations don't get copied to clients?
     if (isConstant()) {
-      if (dynamic_cast<ExprEntityConstantValue<TValue>*>(this))
+      if (isConstantValue())
         return 0;//we are already optimal
       return makeobj<ExprEntityConstantValue<TValue>>(evaluate());
     }
