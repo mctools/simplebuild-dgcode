@@ -2,6 +2,30 @@
 
 namespace ExprParser {
 
+  template<class TValue>
+  ExprEntityPtr ExprEntity<TValue>::optimisedVersion()
+  {
+    if (isConstant()) {
+      if (isConstantValue())
+        return 0;//we are already optimal
+      return makeobj<ExprEntityConstantValue<TValue>>(evaluate());
+    }
+    optimiseChildren();
+    auto p = specialOptimisedVersion();
+    if (p) {
+      for (int i =0; i<100000; ++i) {
+        _ensure_type<TValue>(p);
+        if (i==99999)
+          EXPRPARSER_THROW(LogicError,"non-converging optimisation loop");
+        ExprEntityPtr p_opt = p->optimisedVersion();
+        if (!p_opt)
+          break;
+        p = p_opt;
+      }
+    }
+    return p;
+  }
+
   template class ExprEntity<float_type>;
   template class ExprEntity<int_type>;
   template class ExprEntity<str_type>;
