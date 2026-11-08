@@ -82,31 +82,6 @@ namespace ExprParser {
   }
 
   template<class TValue>
-  inline ExprEntityPtr ExprEntity<TValue>::optimisedVersion()
-  {
-    //todo: Can we move this to .cc and make sure implementations don't get copied to clients?
-    if (isConstant()) {
-      if (isConstantValue())
-        return 0;//we are already optimal
-      return makeobj<ExprEntityConstantValue<TValue>>(evaluate());
-    }
-    optimiseChildren();
-    auto p = specialOptimisedVersion();
-    if (p) {
-      for (int i =0; i<100000; ++i) {
-        _ensure_type<TValue>(p);
-        if (i==99999)
-          EXPRPARSER_THROW(LogicError,"non-converging optimisation loop");
-        ExprEntityPtr p_opt = p->optimisedVersion();
-        if (!p_opt)
-          break;
-        p = p_opt;
-      }
-    }
-    return p;
-  }
-
-  template<class TValue>
   inline ExprEntityConstantValue<TValue>::ExprEntityConstantValue(TValue val)
     : ExprEntity<TValue>(),
     m_val(val)
