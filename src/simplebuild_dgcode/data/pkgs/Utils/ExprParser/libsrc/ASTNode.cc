@@ -2,6 +2,13 @@
 
 namespace ExprParser {
 
+  template class ExprEntity<float_type>;
+  template class ExprEntity<int_type>;
+  template class ExprEntity<str_type>;
+  template class ExprEntityConstantValue<float_type>;
+  template class ExprEntityConstantValue<int_type>;
+  template class ExprEntityConstantValue<str_type>;
+
   bool ExprEntityBase::isConstant() const
   {
     //This default implementation does not handle case where the result might be
