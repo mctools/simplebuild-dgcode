@@ -4,8 +4,8 @@
 //   sb_g4mcpltests_mkfile FILENAME NPARTICLES WEIGHT INITIAL_RAY_COUNT
 //
 //A value of "none" for INITIAL_RAY_COUNT means that the file does not get a
-//stat:sum:initial_ray_count, while "notfinal" leaves the value at -1 (as when
-//the application writing the file was interrupted).
+//stat:sum:initial_ray_count, while "notfinal" leaves the value at -1 (i.e. not
+//available).
 
 #include "mcpl.h"
 #include <cstdio>

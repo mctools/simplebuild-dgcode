@@ -49,7 +49,7 @@
     Output stat:sum:initial_geant4_weights = 10
 
 ==> File with initial_ray_count which is not finalised
-    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not available (for instance due to an interrupted run of the application writing the file, or because the file contains only a part of the particles of another file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value of -1, which means that the value is not available, so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
     (simulation failed as expected)
 
 ==> File with initial_ray_count which is not finalised, not normalised
@@ -144,5 +144,5 @@
     Output stat:sum:initial_ray_count = <unavailable>
 
 ==> File where initial_ray_count is unavailable
-    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value which is not available (for instance due to an interrupted run of the application writing the file, or because the file contains only a part of the particles of another file), so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
+    MCPLGen ERROR - The input file has a stat:sum:initial_ray_count value of -1, which means that the value is not available, so the weights can not be normalised. Set normalise_by_initial_ray_count=false to use the weights as stored in the file.
     (simulation failed as expected)
